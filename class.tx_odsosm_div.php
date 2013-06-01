@@ -49,7 +49,7 @@ class tx_odsosm_div {
 		}else{
 			$pagerender=$GLOBALS['TSFE']->getPageRenderer();
 			foreach($scripts as $script){
-				$pagerender->addJsFile($script,'text/javascript',false);
+				$pagerender->addJsFooterFile($script,'text/javascript',false);
 			}
 		}
 	}

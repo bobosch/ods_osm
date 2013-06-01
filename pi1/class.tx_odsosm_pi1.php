@@ -309,7 +309,7 @@ class tx_odsosm_pi1 extends tslib_pibase {
 		$script=$this->library->getScript();
 		if($script){
 			$GLOBALS['TSFE']->JSeventFuncCalls['onload'][] = "create_".$this->config['id']."();";
-			$GLOBALS['TSFE']->getPageRenderer()->addJsInlineCode($this->config['id'],'
+			$GLOBALS['TSFE']->getPageRenderer()->addJsFooterInlineCode($this->config['id'],'
 				var '.$this->config['id'].';
 				function create_'.$this->config['id'].'(){'.$script.'}
 			');
