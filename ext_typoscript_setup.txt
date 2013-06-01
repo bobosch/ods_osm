@@ -46,4 +46,5 @@ plugin.tx_odsosm_pi1 {
 	layerswitcher.options =
 	path_openlayers =
 	static_script =
+	useJQuery = 0
 }

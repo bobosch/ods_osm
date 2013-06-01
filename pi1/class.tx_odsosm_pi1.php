@@ -308,11 +308,18 @@ class tx_odsosm_pi1 extends tslib_pibase {
 		$content=$this->library->getMap($layers,$markers,$lon,$lat,$zoom);
 		$script=$this->library->getScript();
 		if($script){
-			$GLOBALS['TSFE']->JSeventFuncCalls['onload'][] = "create_".$this->config['id']."();";
-			$GLOBALS['TSFE']->getPageRenderer()->addJsFooterInlineCode($this->config['id'],'
-				var '.$this->config['id'].';
-				function create_'.$this->config['id'].'(){'.$script.'}
-			');
+			if ($this->config['useJQuery']) {
+				$GLOBALS['TSFE']->getPageRenderer()->addJsFooterInlineCode(
+					$this->config['id'],
+					'$(document).ready(function() {' . $script . '});'
+				);
+			} else {
+				$GLOBALS['TSFE']->JSeventFuncCalls['onload'][] = "create_".$this->config['id']."();";
+				$GLOBALS['TSFE']->getPageRenderer()->addJsFooterInlineCode($this->config['id'],'
+					var '.$this->config['id'].';
+					function create_'.$this->config['id'].'(){'.$script.'}
+				');
+			}
 		}
 
 		return($content);
