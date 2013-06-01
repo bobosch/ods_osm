@@ -1,0 +1,31 @@
+plugin.tx_odsosm_pi1 {
+	# cat=OpenStreetMap//0005; type=options[Leaflet=leaflet,Openlayers=openlayers,Static=static]; label= Use Library: Choose between http://openlayers.org/ , http://leaflet.cloudmade.com/ or a static map without javascript.
+	library = openlayers
+
+	# cat=OpenStreetMap//0010; type=int; label= Width: Width of the map in pixels.
+	width = 640
+
+	# cat=OpenStreetMap//0020; type=int; label= Height: Height of the map in pixels.
+	height = 400
+
+	# cat=OpenStreetMap//0030; type=options[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18]; label= Zoom: Zoom level.
+	zoom = 15
+
+	# cat=OpenStreetMap//0050; type=int; label= Base layer ID: Show this map. The user can switch between these base layers if the layerswitcher is enabled.
+	layer = 1
+
+	# cat=OpenStreetMap//0070; type=boolean; label= Mouse navigation: Allow navigation with the mouse.
+	mouse_navigation = 0
+
+	# cat=OpenStreetMap//0080; type=options[No=0,Bar=1,+/-=2]; label= Show pan/zoom: Show pan/zoom element.
+	show_pan_zoom = 0
+
+	# cat=OpenStreetMap//0090; type=options[No=0,Click=1,Hover=2]; label= Show popup: Show popup window with record information.
+	show_popups = 0
+
+	# cat=OpenStreetMap//0100; type=boolean; label= Show layerswitcher: Show layerswitcher which allows the user to hide markers from the same group.
+	show_layerswitcher = 0
+
+	# cat=OpenStreetMap//0110; type=options[Hide map=0,Show map=1]; label= No marker: What to do if no marker is defined.
+	no_marker = 1
+}

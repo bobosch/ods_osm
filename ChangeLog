@@ -1,0 +1,188 @@
+2013-03-07 Robert Heel <typo3@bobosch.de>
+	* Bug #46088: Replaced unsupported \TYPO3\CMS\Core\Utility.
+
+2013-02-25 Robert Heel <typo3@bobosch.de>
+	* Bug: Replaced deprecated method readLLXMLfile.
+	* Bug #45730: No translated overlays from tt_address_group (Thanks to Klaus Weidenbach).
+
+2012-08-06 Robert Heel <rheel@1drop.de>
+	* Change: Change default setting to use local javascript.
+	* Workaround: Use remote openlayers version 2.11 (gpx tracks don't work in 2.12).
+
+2012-07-20 Robert Heel <rheel@1drop.de>
+	* Bug #39087: Popup marker for leaflet library.
+
+2012-06-25 Robert Heel <rheel@1drop.de>
+	* Bugfix: Popup marker back again.
+	* Add: Leaflet subdomains information.
+
+2012-06-09 Robert Heel <rheel@1drop.de>
+	* Add: Layerswitcher for leaflet library.
+	* Change: Code cleanup.
+
+2012-05-31 Robert Heel <rheel@1drop.de>
+	* Add: Leaflet library (http://leaflet.cloudmade.com/) (optimized for mobile devices).
+	* Add: TS option "library" with values "leaflet", "openlayers" and "static".
+	* Change: Removed TS options "static" and "static_layer" (use library=static and layer=x).
+	* Change: Extract all javascript generation code to class files.
+
+2012-04-15 Robert Heel <rheel@1drop.de>
+	* Change: Use geoPHP 0.8 for track file analysis.
+	* Add: Support for GeoJSON, KML and WKT tracks.
+
+2012-03-29 Robert Heel <rheel@1drop.de>
+	* Add: Base layer "MapQuest" (http://www.mapquest.com/).
+	* Add: Base layer "TransportMap".
+	* Remove: Base layer "Osmarender".
+	* Update: OpenLayers to version 2.11.
+	* Update: OpenStreetMap.js.
+	* Update: Database structure.
+
+2011-12-20 Robert Heel <rheel@1drop.de>
+	* Bugfix: Show Map wizard in Backend without default coordinates.
+
+2011-05-16 Robert Heel <rheel@1drop.de>
+	* Add: Choose Record with GET or POST parameter records=[TABLE]_[ID].
+	* Add: Configurable default map position in BE.
+
+2011-03-02 Robert Heel <rheel@1drop.de>
+	* Add: GeoJSON vector elements (alpha).
+	* Change: Disable compression of JS in BE/FE (don't work).
+
+2011-01-04 Robert Heel <rheel@1drop.de>
+	* Add: Base layer "MapSurfer.Net Road ", "MapSurfer.Net Topographic", Overlay layer "MapSurfer.Net Hybrid" (http://www.mapsurfer.net/).
+	* Add: Base layer "Yahoo Map", "Yahoo Satellite", "Yahoo Hybrid" (hidden) (http://maps.yahoo.com/).
+
+2010-12-20 Robert Heel <rheel@1drop.de>
+	* Add: Hover mode for markers.
+	* Update: Use addJsFile function to include JS. Requires TYPO3 4.3.
+
+2010-12-12 Robert Heel <rheel@1drop.de>
+	* Bugfix: Same order of Base layer in FE and BE.
+
+2010-11-27 Robert Heel <rheel@1drop.de>
+	* Add: Base layer "Mapnik BW" (http://toolserver.org/~osm/styles/).
+	* Add: TS option "external_control" to enable map control with GET or POST parameter zoom, lon, lat and layers.
+
+2010-10-21 Robert Heel <rheel@1drop.de>
+	* Add: TS option "static_layer" and plugin dropdown to change layer of static map.
+	* Add: Static map info for Mapnik and CycleMap.
+	* Update: OpenLayers to version 2.10.
+	* Update: OpenStreetMap.js.
+
+2010-09-22 Robert Heel <rheel@1drop.de>
+	* Add: Allow percentaged width and height.
+	* Add: Overlay layer "Hiking Paths" (http://osm.lonvia.de/world_hiking.html).
+
+2010-07-30 Robert Heel <rheel@1drop.de>
+	* Bugfix: fe_groups didn't work if user is member of multiple groups.
+
+2010-07-24 Robert Heel <rheel@1drop.de>
+	* Add: Plugin option for map center coordinates.
+	* Bugfix: Use TYPO3 function to get coordinates.
+
+2010-06-02 Robert Heel <rheel@1drop.de>
+	* Bugfix: Extension key "ods_osm_search" was NOT loaded!
+
+2010-06-02 Robert Heel <rheel@1drop.de>
+	* Add: Cache for autocomplete longitude and latitude.
+	* Add: Search service "http://nominatim.openstreetmap.org/".
+	* Bugfix: Allow negative longitude.
+	* Change: Swap order of appearance of lon & lat.
+	* Change: Optimize database fields.
+
+2010-05-25 Robert Heel <rheel@1drop.de>
+	* Bugfix: JavaScript cleanup for IE8. (Thanks to Rolf Güssow)
+
+2010-05-20 Robert Heel <rheel@1drop.de>
+	* Bugifx: addFieldsToAllPalettesOfField initial available since TYPO3 4.3.
+	* Bugfix: Escape javascript text parameter for popup content.
+	* Bugfix: Ignore invalid markers set by TS.
+	* Bugfix: Address records latitude default "-1" (no coordinates).
+	* Bugfix: Extension didn't work if not press the update button after install.
+	Thanks to Erik Sokoll for reporting these bugs.
+
+2010-05-14 Robert Heel <rheel@1drop.de>
+	* Add: no_marker option to hide map if no marker is set.
+	* Add: Hook to change records.
+
+2010-05-11 Robert Heel <rheel@1drop.de>
+	* Bugfix: Disable multilanguage flexform.
+	* Change: Sort backend items.
+
+2010-05-10 Robert Heel <rheel@1drop.de>
+	* Change: Show overlays if layerswitcher is disabled.
+
+2010-05-09 Robert Heel <rheel@1drop.de>
+	* Add: Base layer "ÖPNV Deutschland" (http://www.öpnvkarte.de/).
+	* Add: Base layer "Hike & Bike Map" (http://www.hikebikemap.de/) (including overlays "Hillshading" and "By Night").
+	* Change: Move getTileURL to main.js.
+
+2010-05-05 Robert Heel <rheel@1drop.de>
+	* Bugfix: Typo in backpath.
+	* Change: Show base layer title in layerswitcher.
+	* Add: TS option "static_script".
+	* Add: Hidden base layer Bing maps.
+
+2010-05-01 Robert Heel <rheel@1drop.de>
+	* Change: Include "OpenStreetMap.js" only if needed.
+	* Remove: TS option "path_openstreetmap" (can be changed in the layer element).
+	* Add: Manual sorting of layers.
+	* Add: Hidden base layer Google maps.
+
+2010-04-27 Robert Heel <rheel@1drop.de>
+	* Add: Update cached files after one week.
+
+2010-04-22 Robert Heel <rheel@1drop.de>
+	* Add: Option to update coordinates on every address change.
+
+2010-04-10 Robert Heel <rheel@1drop.de>
+	* Add: Layer field for static javascript and static url.
+	* Add: Base layer "OpenPisteMap" (http://openpistemap.org/).
+	* Add: First marker to static map.
+
+2010-04-07 Robert Heel <rheel@1drop.de>
+	* Incompatible change: Base layers as more flexible database elements. Please update your configuration if you didn't use Mapnik.
+	* Incompatible change: Cleanup map control options: Renamed show_navigation to mouse_navigation, show_pan_zoom_bar to show_pan_zoom.
+	* Add: Overlay layer "Seamarks" (http://openseamap.org/).
+	* Add: TS constants.
+	* Update: Documentation.
+
+2010-04-02 Robert Heel <rheel@1drop.de>
+	* Add: TS option for script path.
+	* Add: TS option for additional layerswitcher options.
+	* Add: CycleMap.
+
+2010-04-01 Robert Heel <rheel@1drop.de>
+	* Add: Layerswitcher. (Thanks to Markus Volkmer)
+	* Add: Static Osmarender map.
+	* Bugfix: Show fe_groups marker.
+	* Bugfix: Allow negative values in offset.
+	* Update: Documentation.
+
+2010-03-18 Robert Heel <rheel@1drop.de>
+	* Add: Get items from pages, fe_groups, tt_address_group.
+	* Add: Set icon in group.
+	* Add: Optional local javascript and image files.
+	* Update: Documentation.
+
+2010-03-15 Robert Heel <rheel@1drop.de>
+	* Add: Marker popups.
+	* Change: Javascript cleanup.
+	* Update: Documentation.
+
+2010-03-04 Robert Heel <rheel@1drop.de>
+	* Add: Documentation.
+	* Add: absRefPrefix.
+	* Bugfix: Allow negative longitude.
+
+2010-03-01 Robert Heel <rheel@1drop.de>
+	* Add: Show GPX tracks.
+	* Change: Optimize database fields.
+
+2010-02-26 Robert Heel <rheel@1drop.de>
+	* Add: Coordinate selection wizard.
+	* Add: Coordinates in fe_users.
+
+2010-02-24 Robert Heel <rheel@1drop.de>
+	* initial code generated with kickstarter

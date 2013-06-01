@@ -1,0 +1,23 @@
+# cat=basic; type=options[Never=0,If no coordinates are set=1,On every address change=2]; label=Autocomplete longitude and latitude: Choose service below (curl required)
+autocomplete = 0
+
+# cat=basic; type=options[Only cache=0,http://www.geonames.org/=1,http://nominatim.openstreetmap.org/=2]; label=Use service to find coordinates: Please donate the service you use!
+geo_service = 1
+
+# cat=basic; type=string; label=Contact email address: Enter a contact email address for the service provider here. If not specified, email address of server admin is used.
+geo_service_email =
+
+# cat=basic; type=string; label=Default country: Two letter countrycode used in search if no country is specified.
+default_country =
+
+# cat=basic; type=boolean; label=Use local javascripts and images: Do not use files from http://www.openlayers.org/ and http://www.openstreetmap.org/
+local_js = 1
+
+# cat=BE; type=string; label=Default longitude: Default longitude for BE-maps
+default_lon = 0
+
+# cat=BE; type=string; label=Default latitude: Default latitude for BE-maps
+default_lat = 45
+
+# cat=BE; type=integer; label=Default zoom: Default zoom for BE-maps 
+default_zoom = 1

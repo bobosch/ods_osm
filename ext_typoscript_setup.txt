@@ -1,0 +1,49 @@
+plugin.tx_odsosm_pi1 {
+	library = {$plugin.tx_odsosm_pi1.library}
+
+	marker {
+		pages =
+		fe_users =
+		fe_groups =
+		tt_address =
+		tt_address_group =
+		tx_odsosm_track =
+	}
+	width = {$plugin.tx_odsosm_pi1.width}
+	height = {$plugin.tx_odsosm_pi1.height}
+	lon =
+	lat =
+	zoom = {$plugin.tx_odsosm_pi1.zoom}
+	layer = {$plugin.tx_odsosm_pi1.layer}
+	mouse_navigation = {$plugin.tx_odsosm_pi1.mouse_navigation}
+	show_pan_zoom = {$plugin.tx_odsosm_pi1.show_pan_zoom}
+	show_popups = {$plugin.tx_odsosm_pi1.show_popups}
+	show_layerswitcher = {$plugin.tx_odsosm_pi1.show_layerswitcher}
+	no_marker = {$plugin.tx_odsosm_pi1.no_marker}
+
+	_CSS_DEFAULT_STYLE = .olControlAttribution{bottom:0px!important;}
+	popup {
+		fe_users = COA
+		fe_users {
+			10 = TEXT
+			10.field = name
+			10.wrap = <h2>|</h2>
+			20 = TEXT
+			20.field = description
+		}
+		tt_address = COA
+		tt_address {
+			10 = TEXT
+			10.field = name
+			10.wrap = <h2>|</h2>
+			20 = TEXT
+			20.field = description
+		}
+	}
+
+	external_control = 0
+	layerswitcher.div = 0
+	layerswitcher.options =
+	path_openlayers =
+	static_script =
+}
