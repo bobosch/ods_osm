@@ -1,5 +1,6 @@
 2013-06-01 Robert Heel <typo3@bobosch.de>
-	* Update: Leaflet to version 0.5.1. 
+	* Update: Leaflet to version 0.5.1.
+	* Bug #48752: Custom marker in Leaflet (Thanks to Christian Weiske).
 
 2013-03-07 Robert Heel <typo3@bobosch.de>
 	* Bug #46088: Replaced unsupported \TYPO3\CMS\Core\Utility.
