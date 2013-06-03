@@ -3,7 +3,7 @@ function mapCenter(oMap,fLat,fLon,iZoom){
 	oMap.setCenter(oLonLat,iZoom);
 }
 
-function mapMarker(oMap,oLayer,fLat,fLon,sIcon,iSizeX,iSizeY,iOffsetX,iOffsetY,sText,iPopup){
+function mapMarker(oMap,oLayer,fLat,fLon,sIcon,iSizeX,iSizeY,iOffsetX,iOffsetY,sText,iPopup,initialPopup){
 	var oLonLat = new OpenLayers.LonLat(fLon,fLat).transform(new OpenLayers.Projection('EPSG:4326'), oMap.getProjectionObject());
 	var oSize = new OpenLayers.Size(iSizeX,iSizeY);
 	var oOffset = new OpenLayers.Pixel(iOffsetX,iOffsetY);
@@ -21,6 +21,14 @@ function mapMarker(oMap,oLayer,fLat,fLon,sIcon,iSizeX,iSizeY,iOffsetX,iOffsetY,s
 		feature.data.popupContentHTML = sText;
 		feature.data.overflow = 'auto';
 		oMarker.feature = feature;
+
+		if (initialPopup) {
+			var popup = new OpenLayers.Popup.FramedCloud(
+				"popup", oLonLat, null, sText, null, true
+			);
+			oMap.addPopup(popup);
+			popup.show();
+		}
 
 		var mouseAction = function (evt) {
 			if (this.popup == null) {

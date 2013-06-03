@@ -74,12 +74,13 @@ class tx_odsosm_pi1 extends tslib_pibase {
 		-------------------------------------------------- */
 
 		$flex=array();
-		$options=array('height','lat','layer','leaflet_layer','library','lon','marker','mouse_navigation','openlayers_layer','show_layerswitcher','show_pan_zoom','show_popups','static_layer','width','zoom');
+		$options=array('height','lat','layer','leaflet_layer','library','lon','marker','marker_popup_initial','mouse_navigation','openlayers_layer','show_layerswitcher','show_pan_zoom','show_popups','static_layer','width','zoom');
 		foreach($options as $option){
 			$value=$this->pi_getFFvalue($this->cObj->data['pi_flexform'],$option,'sDEF');
 			if($value){
 				switch($option){
 					case 'marker':
+					case 'marker_popup_initial':
 						$flex[$option]=$this->splitGroup($value,'tt_address');
 						break;
 					default:
@@ -122,6 +123,13 @@ class tx_odsosm_pi1 extends tslib_pibase {
 
 		$this->config['id']='osm_'.$this->cObj->data['uid'];
 		$this->config['marker']=$this->extractGroup($this->config['marker']);
+		foreach ($this->config['marker_popup_initial'] as $table => $records) {
+			foreach ($records as $uid) {
+				if (isset($this->config['marker'][$table][$uid])) {
+					$this->config['marker'][$table][$uid]['initial_popup'] = true;
+				}
+			}
+		}
 
 		// Library
 		if(empty($this->config['library'])) $this->config['library']='leaflet';
