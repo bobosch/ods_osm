@@ -114,9 +114,45 @@ class tx_odsosm_wizard extends t3lib_SCbase {
 ".$action."
 
 	function map(){
+		var lat = " . json_encode($row['lat']) . ";
+		var lon = " . json_encode($row['lon']) . ";
+		var zoom = " . json_encode($row['zoom']) . ";
+		if (typeof " . $this->getJSfieldVariable('lat') . " != 'undefined') {
+			lat = " . $this->getJSfieldVariable('lat') . ".value;
+			zoom = 14;
+		}
+		if (typeof " . $this->getJSfieldVariable('lat', false) . " != 'undefined') {
+			lat = " . $this->getJSfieldVariable('lat', false) . ".value;
+			zoom = 14;
+		}
+		if (typeof " . $this->getJSfieldVariable('lon') . " != 'undefined') {
+			lon = " . $this->getJSfieldVariable('lon') . ".value;
+			zoom = 14;
+		}
+		if (typeof " . $this->getJSfieldVariable('lon', false) . " != 'undefined') {
+			lon = " . $this->getJSfieldVariable('lon', false) . ".value;
+			zoom = 14;
+		}
+		if (typeof " . $this->getJSfieldVariable('zoom') . " != 'undefined') {
+			zoom = " . $this->getJSfieldVariable('zoom') . ".value;
+		}
+		if (typeof " . $this->getJSfieldVariable('zoom', false) . " != 'undefined') {
+			zoom = " . $this->getJSfieldVariable('zoom', false) . ".value;
+		}
 		".$library->getMapMain()."
 		".$jsMainLayer."
-		".$library->getMapCenter($row['lat'],$row['lon'],$row['zoom'])."
+		mapCenter(" . $this->config['id'] . ", lat, lon, zoom);
+
+		var markers = new OpenLayers.Layer.Markers('Position');
+		map.addLayer(markers);
+		var size = new OpenLayers.Size(21,25);
+		var offset = new OpenLayers.Pixel(-(size.w/2), -size.h);
+		var icon = new OpenLayers.Icon('../res/marker.png', size, offset);
+		markers.addMarker(new OpenLayers.Marker(
+			new OpenLayers.LonLat(lon, lat).transform(new OpenLayers.Projection('EPSG:4326'), map.getProjectionObject()),
+			icon)
+		);
+
 		mapAction();
 	}
 </script>
@@ -201,6 +237,24 @@ class tx_odsosm_wizard extends t3lib_SCbase {
 		close();
 	}
 ";
+	}
+
+	/**
+	 * Get Javascript variable of edit form field of the given name
+	 *
+	 * @param string $name Field name, e.g. "lat" or "lon"
+	 *
+	 * @return string Javascript variable for the field
+	 */
+	protected function getJSfieldVariable($name, $stripHr)
+	{
+		$replacements = array('lon' => $name);
+		if ($stripHr) {
+			$replacements['_hr'] = '';
+		}
+		return 'window.opener.document.editform["'
+			. strtr($this->P['itemName'], $replacements)
+			. '"]';
 	}
 
 	function getJSsetField($valueString,$replace=array()){
