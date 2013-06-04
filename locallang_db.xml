@@ -10,6 +10,7 @@
 			<label index="tt_content.list_type_pi1">Openstreetmap</label>
 			<label index="tt_content.pi_flexform.sheet_sDEF">Default</label>
 			<label index="tt_content.pi_flexform.marker">Marker to show</label>
+			<label index="tt_content.pi_flexform.marker_popup_intial">Show this marker's popup intially</label>
 			<label index="tt_content.pi_flexform.width">Width</label>
 			<label index="tt_content.pi_flexform.height">Height</label>
 			<label index="tt_content.pi_flexform.layer">Base layer</label>
@@ -65,6 +66,7 @@
 			<label index="tt_content.list_type_pi1">Openstreetmap</label>
 			<label index="tt_content.pi_flexform.sheet_sDEF">Standard</label>
 			<label index="tt_content.pi_flexform.marker">Markierungen anzeigen</label>
+			<label index="tt_content.pi_flexform.marker_popup_intial">Markierungspopup anfangs anzeigen</label>
 			<label index="tt_content.pi_flexform.width">Breite</label>
 			<label index="tt_content.pi_flexform.height">Höhe</label>
 			<label index="tt_content.pi_flexform.layer">Hauptebene</label>

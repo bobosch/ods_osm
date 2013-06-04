@@ -312,6 +312,21 @@
 							</config>
 						</TCEforms>
 					</show_popups>
+					<marker_popup_initial>
+						<TCEforms>
+							<label>LLL:EXT:ods_osm/locallang_db.xml:tt_content.pi_flexform.marker_popup_intial</label>
+							<displayCond>FIELD:show_popups:=:1</displayCond>
+							<config>
+								<type>group</type>
+								<internal_type>db</internal_type>
+								<allowed>fe_users,tt_address</allowed>
+								<size>1</size>
+								<minitems>0</minitems>
+								<maxitems>1</maxitems>
+								<show_thumbs>1</show_thumbs>
+							</config>
+						</TCEforms>
+					</marker_popup_initial>
 					<show_layerswitcher>
 						<TCEforms>
 							<label>LLL:EXT:ods_osm/locallang_db.xml:tt_content.pi_flexform.show_layerswitcher</label>
