@@ -1,5 +1,6 @@
 2013-06-05 Robert Heel <typo3@bobosch.de>
 	* Bug #48797: Update user agent version.
+	* Feature #48804: Show popup opened (Thanks to Christian Weiske).
 
 2013-06-01 Robert Heel <typo3@bobosch.de>
 	* Update: Leaflet to version 0.5.1.
