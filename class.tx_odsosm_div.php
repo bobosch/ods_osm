@@ -110,7 +110,7 @@ class tx_odsosm_div {
 					$xml=t3lib_div::getURL(
 						'http://ws.geonames.org/postalCodeSearch?'.http_build_query($query),
 						false,
-						'User-Agent: TYPO3 extension ods_osm/1.3'
+						'User-Agent: TYPO3 extension ods_osm/'.t3lib_extMgm::getExtensionVersion('ods_osm')
 					);
 
 					if($xml){
@@ -141,7 +141,7 @@ class tx_odsosm_div {
 					$xml=t3lib_div::getURL(
 						'http://nominatim.openstreetmap.org/search?'.http_build_query($query),
 						false,
-						'User-Agent: TYPO3 extension ods_osm/1.3'
+						'User-Agent: TYPO3 extension ods_osm/'.t3lib_extMgm::getExtensionVersion('ods_osm')
 					);
 
 					if($xml){
