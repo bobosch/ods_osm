@@ -85,7 +85,12 @@ class tx_odsosm_leaflet extends tx_odsosm_common {
 				$jsMarker='var markerLocation = new L.LatLng('.$item['tx_odsosm_lat'].', '.$item['tx_odsosm_lon'].');
 				var marker = new L.Marker(markerLocation, {' . implode(',', $markerOptions) . '});
 				'.$this->config['id'].'.addLayer(marker);';
-				if($item['popup']) $jsMarker.='marker.bindPopup("'.strtr($item['popup'],$this->escape_js).'");';
+				if($item['popup']) {
+					$jsMarker.='marker.bindPopup("'.strtr($item['popup'],$this->escape_js).'");';
+					if ($item['initial_popup']) {
+						$jsMarker.= 'marker.openPopup();';
+					}
+				}
 				break;
 		}
 		return $jsMarker;
