@@ -54,6 +54,17 @@ class tx_odsosm_div {
 		}
 	}
 
+	/**
+	 * Update the given address record with geo data from a geocoding service.
+	 *
+	 * Note that the record does not get update in database.
+	 *
+	 * @param array &$address Address record from database
+	 *
+	 * @return boolean True if the address got updated, false if not.
+	 *
+	 * @uses searchAddress()
+	 */
 	function updateAddress(&$address){
 		$config=unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['ods_osm']);
 
@@ -65,6 +76,20 @@ class tx_odsosm_div {
 		return $ll;
 	}
 
+	/**
+	 * Search for the given address in one of the geocoding services and update
+	 * its data.
+	 *
+	 * Data lat, lon, zip and city may get updated.
+	 *
+	 * @param array   &$address Address record from database
+	 * @param integer $service  Geocoding service to use
+	 *						  - 0: internal caching database table
+	 *						  - 1: geonames.org
+	 *						  - 2: nominatim.openstreetmap.org
+	 *
+	 * @return boolean True if the address got updated, false if not.
+	 */
 	function searchAddress(&$address,$service=0){
 		$config=unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['ods_osm']);
 		$ll=false;

@@ -8,10 +8,12 @@
 		<languageKey index="default" type="array">
 			<label index="pi1_title">Openstreetmap</label>
 			<label index="pi1_plus_wiz_description">Add an interactive map to your website.</label>
+			<label index="wiz_geocode">Geocode addresses</label>
 		</languageKey>
 		<languageKey index="de" type="array">
 			<label index="pi1_title">Openstreetmap</label>
 			<label index="pi1_plus_wiz_description">Interaktive Karte zur Website hinzufügen.</label>
+			<label index="wiz_geocode">Adressen geokodieren</label>
 		</languageKey>
 	</data>
 </T3locallang>
