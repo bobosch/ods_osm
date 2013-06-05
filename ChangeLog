@@ -1,5 +1,6 @@
 2013-06-05 Robert Heel <typo3@bobosch.de>
 	* Bug #48797: Update user agent version.
+	* Bug #48886: PHP Warning: Missing argument 3 for tx_odsosm_leaflet::getMarker().
 	* Feature #48743: Mass geo-code tt_address records (Thanks to Christian Weiske).
 	* Feature #48804: Show popup opened (Thanks to Christian Weiske).
 

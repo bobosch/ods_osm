@@ -66,7 +66,7 @@ class tx_odsosm_leaflet extends tx_odsosm_common {
 		';
 	}
 
-	public function getMarker($item,$table,$text){
+	public function getMarker($item,$table){
 		$jsMarker='';
 		switch($table){
 			case 'fe_users':
