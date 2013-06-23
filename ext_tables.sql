@@ -40,7 +40,9 @@ CREATE TABLE tx_odsosm_geocache (
 	deleted tinyint(1) unsigned NOT NULL DEFAULT '0',
 	country char(2) NOT NULL DEFAULT '',
 	city varchar(255) NOT NULL DEFAULT '',
-	zip char(5) DEFAULT '' NOT NULL,
+	zip char(5) NOT NULL DEFAULT '',
+	street varchar(255) NOT NULL DEFAULT '',
+	housenumber varchar(5) NOT NULL DEFAULT '',
 	lon decimal(9,6) NOT NULL DEFAULT '0.000000',
 	lat decimal(8,6) NOT NULL DEFAULT '0.000000',
 	

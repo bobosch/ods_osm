@@ -35,6 +35,24 @@ $TCA['tx_odsosm_geocache'] = array (
 				'max' => 5,
 			)
 		),
+		'street' => array (
+			'exclude' => 0,
+			'label' => 'LLL:EXT:ods_osm/locallang_db.xml:tx_odsosm_geocache.street',
+			'config' => array (
+				'type' => 'input',
+				'size' => 30,
+				'max' => 255,
+			)
+		),
+		'housenumber' => array (
+			'exclude' => 0,
+			'label' => 'LLL:EXT:ods_osm/locallang_db.xml:tx_odsosm_geocache.housenumber',
+			'config' => array (
+				'type' => 'input',
+				'size' => 5,
+				'max' => 5,
+			)
+		),
 		'lon' => array (
 			'exclude' => 0,
 			'label' => 'LLL:EXT:ods_osm/locallang_db.xml:tx_odsosm_geocache.lon',

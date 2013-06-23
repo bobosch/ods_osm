@@ -67,6 +67,8 @@ class tx_odsosm_div {
 	 */
 	function updateAddress(&$address){
 		$config=unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['ods_osm']);
+		
+		tx_odsosm_div::splitAddressField($address);
 
 		$ll=tx_odsosm_div::searchAddress($address,0);
 		if(!$ll){
@@ -99,9 +101,11 @@ class tx_odsosm_div {
 		switch($service){
 			case 0: // cache
 				$where=array();
-				if($address['zip']) $where[]='zip='.$GLOBALS['TYPO3_DB']->fullQuoteStr($address['zip'],'tx_odsosm_geocache');
-				if($address['city']) $where[]='city='.$GLOBALS['TYPO3_DB']->fullQuoteStr($address['city'],'tx_odsosm_geocache');
 				if($country) $where[]='country='.$GLOBALS['TYPO3_DB']->fullQuoteStr($country,'tx_odsosm_geocache');
+				if($address['city']) $where[]='city='.$GLOBALS['TYPO3_DB']->fullQuoteStr($address['city'],'tx_odsosm_geocache');
+				if($address['zip']) $where[]='zip='.$GLOBALS['TYPO3_DB']->fullQuoteStr($address['zip'],'tx_odsosm_geocache');
+				if($address['street']) $where[]='street='.$GLOBALS['TYPO3_DB']->fullQuoteStr($address['street'],'tx_odsosm_geocache');
+				if($address['housenumber']) $where[]='housenumber='.$GLOBALS['TYPO3_DB']->fullQuoteStr($address['housenumber'],'tx_odsosm_geocache');
 
 				if($where){
 					$where[]='deleted=0';
@@ -125,9 +129,9 @@ class tx_odsosm_div {
 			break;
 
 			case 1: // http://www.geonames.org/
-				if($address['zip']) $query['postalcode']=$address['zip'];
-				if($address['city']) $query['placename']=$address['city'];
 				if($country) $query['country']=$country;
+				if($address['city']) $query['placename']=$address['city'];
+				if($address['zip']) $query['postalcode']=$address['zip'];
 
 				if($query){
 					$query['maxRows']=1;
@@ -153,12 +157,13 @@ class tx_odsosm_div {
 			break;
 
 			case 2: // http://nominatim.openstreetmap.org/
-				if($address['zip']) $q[]=$address['zip'];
-				if($address['city']) $q[]=$address['city'];
-				if($country) $q[]=$country;
+				if($country) $query['country']=$country;
+				if($address['city']) $query['city']=$address['city'];
+				if($address['zip']) $query['postalcode']=$address['zip'];
+				if($address['street']) $query['street']=$address['street'];
+				if($address['housenumber']) $query['street']=$address['housenumber'].' '.$query['street'];
 
-				if($q){
-					$query['q']=implode(',',$q);
+				if($query){
 					$query['addressdetails']=1;
 					$query['format']='xml';
 					$query['email']=t3lib_div::validEmail($config['geo_service_email']) ? $config['geo_service_email'] : $_SERVER['SERVER_ADMIN'];
@@ -196,10 +201,22 @@ class tx_odsosm_div {
 				'country'=>$address['country'],
 				'city'=>$address['city'],
 				'zip'=>$address['zip'],
+				'street'=>$address['street'],
+				'housenumber'=>$address['housenumber'],
 				'lat'=>$address['lat'],
 				'lon'=>$address['lon'],
 			)
 		);
+	}
+	
+	function splitAddressField(&$address){
+		preg_match('/^(.+)\s(\d+(\s*[^\d\s]+)*)$/',$address['address'],$matches);
+		if($matches){
+			$address['street']=$matches[1];
+			$address['housenumber']=$matches[2];
+		}else{
+			$address['street']=$address['address'];
+		}
 	}
 }
 ?>
