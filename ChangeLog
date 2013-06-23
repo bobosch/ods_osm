@@ -1,3 +1,6 @@
+2013-06-23 Robert Heel <typo3@bobosch.de>
+	* Change: Compatibility to TYPO3 LTS Version 4.5.
+
 2013-06-05 Robert Heel <typo3@bobosch.de>
 	* Bug #48797: Update user agent version.
 	* Bug #48886: PHP Warning: Missing argument 3 for tx_odsosm_leaflet::getMarker().

@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 
 /***************************************************************
  * Extension Manager/Repository config file for ext "ods_osm".
@@ -33,7 +33,7 @@ $EM_CONF[$_EXTKEY] = array(
 	'constraints' => array(
 		'depends' => array(
 			'tt_address' => '',
-			'typo3' => '4.7.0-0.0.0',
+			'typo3' => '4.5.0-0.0.0',
 		),
 		'conflicts' => array(
 		),
