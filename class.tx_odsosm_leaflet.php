@@ -22,7 +22,7 @@ class tx_odsosm_leaflet extends tx_odsosm_common {
 	public function getMapCore($backpath=''){
 		$path=$backpath.t3lib_extMgm::siteRelPath('ods_osm').'res/';
 		$GLOBALS['TSFE']->getPageRenderer()->addCssFile($path.'leaflet/leaflet.css');
-		$scripts=array($path.'leaflet/leaflet.js');
+		$scripts=array($path.'leaflet/leaflet.js', $path.'leaflet-gpx/gpx.js');
 		tx_odsosm_div::addJsFiles($scripts);
 	}
 
@@ -91,6 +91,31 @@ class tx_odsosm_leaflet extends tx_odsosm_common {
 						$jsMarker.= 'marker.openPopup();';
 					}
 				}
+				break;
+				case 'tx_odsosm_track':
+					$path = t3lib_extMgm::siteRelPath('ods_osm').'res/leaflet-gpx/';
+					$jsMarker = "var trackGPX = new L.GPX(";
+					$jsMarker .= '"' . $GLOBALS['TSFE']->absRefPrefix.'uploads/tx_odsosm/' . $item['file'] . '"';
+					$jsMarker .= ", { color: '" . $item['color'] . "', clickable: false ";
+					$jsMarker .= ", marker_options: { startIconUrl: '" . $path . "pin-icon-start.png',";
+					$jsMarker .= "endIconUrl: '" . $path . "pin-icon-end.png',";
+					$jsMarker .= "shadowUrl: '" . $path . "pin-shadow.png'} ";
+					$jsMarker .= "});";
+					$jsMarker .= $this->config['id'] . ".addLayer(trackGPX);";
+				break;
+				case 'tx_odsosm_vector':
+					$vData = json_decode($item['data']);
+					$jsMarker .= "poly = new L.Polygon([";
+					$isFirst = true;
+					foreach($vData->{'geometry'}->{'coordinates'}[0] as $coord) {
+						if (!$isFirst)
+							$jsMarker .= ",";
+						else
+							$isFirst = false;
+						$jsMarker .= "[" . $coord[1] . ", " . $coord[0] . "]";
+					}
+					$jsMarker .= "], {});";
+					$jsMarker .= $this->config['id'] . ".addLayer(poly);";
 				break;
 		}
 		return $jsMarker;
