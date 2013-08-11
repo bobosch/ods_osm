@@ -97,6 +97,7 @@ class tx_odsosm_div {
 		$ll=false;
 
 		$country=strtoupper(strlen($address['country'])==2 ? $address['country'] : $config['default_country']);
+		$email=t3lib_div::validEmail($config['geo_service_email']) ? $config['geo_service_email'] : $_SERVER['SERVER_ADMIN'];
 
 		switch($service){
 			case 0: // cache
@@ -158,41 +159,64 @@ class tx_odsosm_div {
 			break;
 
 			case 2: // http://nominatim.openstreetmap.org/
-				if($country) $query['country']=$country;
-				if($address['city']) $query['city']=$address['city'];
-				if($address['zip']) $query['postalcode']=$address['zip'];
-				if($address['street']) $query['street']=$address['street'];
-				if($address['housenumber']) $query['street']=$address['housenumber'].' '.$query['street'];
+				$query['country']=$country;
+				$query['email']=$email;
+				$query['addressdetails']=1;
+				$query['format']='xml';
 
-				if($query){
-					$query['addressdetails']=1;
-					$query['format']='xml';
-					$query['email']=t3lib_div::validEmail($config['geo_service_email']) ? $config['geo_service_email'] : $_SERVER['SERVER_ADMIN'];
+				if($this->address_type=='structured'){
+					if($address['city']) $query['city']=$address['city'];
+					if($address['zip']) $query['postalcode']=$address['zip'];
+					if($address['street']) $query['street']=$address['street'];
+					if($address['housenumber']) $query['street']=$address['housenumber'].' '.$query['street'];
 
-					$xml=t3lib_div::getURL(
-						'http://nominatim.openstreetmap.org/search?'.http_build_query($query),
-						false,
-						'User-Agent: TYPO3 extension ods_osm/'.t3lib_extMgm::getExtensionVersion('ods_osm')
-					);
+					t3lib_div::devLog('search_address Nominatim structured', "ods_osm", -1, $query);
+					$ll=tx_odsosm_div::searchAddressNominatim($query,$address);
+					
+					if(!$ll && $query['postalcode']){
+						unset($query['postalcode']);
 
-					if($xml){
-						$xmlobj=new SimpleXMLElement($xml);
-						if($xmlobj->place){
-							$ll=true;
-							$address['lat']=(string)$xmlobj->place['lat'];
-							$address['lon']=(string)$xmlobj->place['lon'];
-							if($xmlobj->place->road) $address['street']=(string)$xmlobj->place->road;
-							if($xmlobj->place->house_number) $address['housenumber']=(string)$xmlobj->place->house_number;
-							if($xmlobj->place->postcode) $address['zip']=(string)$xmlobj->place->postcode;
-							if($xmlobj->place->city || $xmlobj->place->villag) $address['city']=$xmlobj->place->city ? (string)$xmlobj->place->city : (string)$xmlobj->place->village;
-							if($xmlobj->place->state) $address['state']=(string)$xmlobj->place->state;
-							if($xmlobj->place->country_code && empty($address['country'])) $address['country']=strtoupper((string)$xmlobj->place->country_code);
-						}
+						t3lib_div::devLog('search_address Nominatim retrying without zip', "ods_osm", -1, $query);
+						$ll=tx_odsosm_div::searchAddressNominatim($query,$address);
 					}
+				}
+
+				if($this->address_type=='unstructured'){
+					$query['q']=$address['address'];
+
+					t3lib_div::devLog('search_address Nominatim unstructured', "ods_osm", -1, $query);
+					$ll=tx_odsosm_div::searchAddressNominatim($query,$address);
 				}
 			break;
 		}
 
+		return $ll;
+	}
+	
+	function searchAddressNominatim($query,&$address){
+		$ll=false;
+	
+		$xml=t3lib_div::getURL(
+			'http://nominatim.openstreetmap.org/search?'.http_build_query($query),
+			false,
+			'User-Agent: TYPO3 extension ods_osm/'.t3lib_extMgm::getExtensionVersion('ods_osm')
+		);
+
+		if($xml){
+			$xmlobj=new SimpleXMLElement($xml);
+			if($xmlobj->place){
+				$ll=true;
+				$address['lat']=(string)$xmlobj->place['lat'];
+				$address['lon']=(string)$xmlobj->place['lon'];
+				if($xmlobj->place->road) $address['street']=(string)$xmlobj->place->road;
+				if($xmlobj->place->house_number) $address['housenumber']=(string)$xmlobj->place->house_number;
+				if($xmlobj->place->postcode) $address['zip']=(string)$xmlobj->place->postcode;
+				if($xmlobj->place->city || $xmlobj->place->villag) $address['city']=$xmlobj->place->city ? (string)$xmlobj->place->city : (string)$xmlobj->place->village;
+				if($xmlobj->place->state) $address['state']=(string)$xmlobj->place->state;
+				if($xmlobj->place->country_code && empty($address['country'])) $address['country']=strtoupper((string)$xmlobj->place->country_code);
+			}
+		}
+		
 		return $ll;
 	}
 
@@ -215,12 +239,21 @@ class tx_odsosm_div {
 	}
 	
 	function splitAddressField(&$address){
-		preg_match('/^(.+)\s(\d+(\s*[^\d\s]+)*)$/',$address['address'],$matches);
-		if($matches){
-			$address['street']=$matches[1];
-			$address['housenumber']=$matches[2];
+		// Address field contains street if country, city or zip is set
+		if($address['country'] || $address['city'] || $address['zip']){
+			$this->address_type='structured';
+			// Split street and house number
+			preg_match('/^(.+)\s(\d+(\s*[^\d\s]+)*)$/',$address['address'],$matches);
+			if($matches){
+				$address['street']=$matches[1];
+				$address['housenumber']=$matches[2];
+			}else{
+				$address['street']=$address['address'];
+			}
+		}elseif($address['address']){
+			$this->address_type='unstructured';
 		}else{
-			$address['street']=$address['address'];
+			$this->address_type='empty';
 		}
 	}
 }

@@ -17,7 +17,7 @@ class tx_odsosm_tcemain {
 				$config=unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['ods_osm']);
 
 				// Search coordinates
-				if($config['autocomplete'] && ($fieldArray['zip'] || $fieldArray['city'] || $fieldArray['street'])){
+				if($config['autocomplete'] && ($fieldArray['zip'] || $fieldArray['city'] || $fieldArray['address'])){
 					$address=$obj->datamap[$table][$id];
 					if($config['autocomplete']==2 || floatval($address['tx_odsosm_lon'])==0){
 						$ll=tx_odsosm_div::updateAddress($address);
