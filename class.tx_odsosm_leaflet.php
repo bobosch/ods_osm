@@ -48,12 +48,16 @@ class tx_odsosm_leaflet extends tx_odsosm_common {
 
 	public function getLayerSwitcher(){
 		$base=array();
-		foreach($this->layers[0] as $title=>$var){
-			$base[]='"'.$title.'":'.$var;
+		if(is_array($this->layers[0])){
+			foreach($this->layers[0] as $title=>$var){
+				$base[]='"'.$title.'":'.$var;
+			}
 		}
 		$overlay=array();
-		foreach($this->layers[1] as $title=>$var){
-			$overlay[]='"'.$title.'":'.$var;
+		if(is_array($this->layers[1])){
+			foreach($this->layers[1] as $title=>$var){
+				$overlay[]='"'.$title.'":'.$var;
+			}
 		}
 		return 'var layersControl=new L.Control.Layers({'.implode(',',$base).'},{'.implode(',',$overlay).'});
 			'.$this->config['id'].'.addControl(layersControl);';
