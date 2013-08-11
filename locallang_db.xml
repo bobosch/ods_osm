@@ -28,6 +28,7 @@
 			<label index="tx_odsosm_lat">Latitude</label>
 			<label index="tx_odsosm_geocache">Geocache</label>
 			<label index="tx_odsosm_geocache.country">Country</label>
+			<label index="tx_odsosm_geocache.state">State</label>
 			<label index="tx_odsosm_geocache.city">City</label>
 			<label index="tx_odsosm_geocache.zip">Zip</label>
 			<label index="tx_odsosm_geocache.street">Street</label>
@@ -87,6 +88,7 @@
 			<label index="tx_odsosm_geocache">Geocache</label>
 			<label index="tx_odsosm_geocache.country">Land</label>
 			<label index="tx_odsosm_geocache.city">Stadt</label>
+			<label index="tx_odsosm_geocache.state">Bundesland</label>
 			<label index="tx_odsosm_geocache.zip">PLZ</label>
 			<label index="tx_odsosm_geocache.street">Straße</label>
 			<label index="tx_odsosm_geocache.housenumber">Hausnummer</label>

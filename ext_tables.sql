@@ -39,6 +39,7 @@ CREATE TABLE tx_odsosm_geocache (
 	cruser_id int(10) unsigned NOT NULL DEFAULT '0',
 	deleted tinyint(1) unsigned NOT NULL DEFAULT '0',
 	country char(2) NOT NULL DEFAULT '',
+	state varchar(255) NOT NULL DEFAULT '',
 	city varchar(255) NOT NULL DEFAULT '',
 	zip char(5) NOT NULL DEFAULT '',
 	street varchar(255) NOT NULL DEFAULT '',

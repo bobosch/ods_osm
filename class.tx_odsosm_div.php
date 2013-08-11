@@ -123,6 +123,7 @@ class tx_odsosm_div {
 						$address['lon']=$row['lon'];
 						if($row['zip']) $address['zip']=$row['zip'];
 						if($row['city']) $address['city']=$row['city'];
+						if($row['state']) $address['state']=$row['state'];
 						if(empty($address['country'])) $address['country']=$row['country'];
 					}
 				}
@@ -180,9 +181,12 @@ class tx_odsosm_div {
 							$ll=true;
 							$address['lat']=(string)$xmlobj->place['lat'];
 							$address['lon']=(string)$xmlobj->place['lon'];
+							if($xmlobj->place->road) $address['street']=(string)$xmlobj->place->road;
+							if($xmlobj->place->house_number) $address['housenumber']=(string)$xmlobj->place->house_number;
 							if($xmlobj->place->postcode) $address['zip']=(string)$xmlobj->place->postcode;
 							if($xmlobj->place->city || $xmlobj->place->villag) $address['city']=$xmlobj->place->city ? (string)$xmlobj->place->city : (string)$xmlobj->place->village;
-							if(empty($address['country'])) $address['country']=strtoupper((string)$xmlobj->place->country_code);
+							if($xmlobj->place->state) $address['state']=(string)$xmlobj->place->state;
+							if($xmlobj->place->country_code && empty($address['country'])) $address['country']=strtoupper((string)$xmlobj->place->country_code);
 						}
 					}
 				}
@@ -199,6 +203,7 @@ class tx_odsosm_div {
 				'tstamp'=>time(),
 				'crdate'=>time(),
 				'country'=>$address['country'],
+				'state'=>$address['state'],
 				'city'=>$address['city'],
 				'zip'=>$address['zip'],
 				'street'=>$address['street'],

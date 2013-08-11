@@ -17,6 +17,15 @@ $TCA['tx_odsosm_geocache'] = array (
 				'max' => 2,
 			)
 		),
+		'state' => array (
+			'exclude' => 0,
+			'label' => 'LLL:EXT:ods_osm/locallang_db.xml:tx_odsosm_geocache.state',
+			'config' => array (
+				'type' => 'input',
+				'size' => 30,
+				'max' => 255,
+			)
+		),
 		'city' => array (
 			'exclude' => 0,
 			'label' => 'LLL:EXT:ods_osm/locallang_db.xml:tx_odsosm_geocache.city',

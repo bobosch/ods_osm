@@ -1,5 +1,6 @@
 2013-08-09 Robert Heel <typo3@bobosch.de>
 	* Bug #49251: PHP Warning: Invalid argument supplied for foreach() in class.tx_odsosm_leaflet.php.
+	* Add: State field in address search.
 
 2013-08-09 Robert Heel <typo3@bobosch.de>
 	* Add: tx_odsosm_track and tx_odsosm_vector for Leaflet (Thanks to Niklas Olmes).

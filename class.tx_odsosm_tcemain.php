@@ -17,16 +17,21 @@ class tx_odsosm_tcemain {
 				$config=unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['ods_osm']);
 
 				// Search coordinates
-				if($config['autocomplete'] && ($fieldArray['zip'] || $fieldArray['city'])){
+				if($config['autocomplete'] && ($fieldArray['zip'] || $fieldArray['city'] || $fieldArray['street'])){
 					$address=$obj->datamap[$table][$id];
 					if($config['autocomplete']==2 || floatval($address['tx_odsosm_lon'])==0){
 						$ll=tx_odsosm_div::updateAddress($address);
 						if($ll){
 							$fieldArray['tx_odsosm_lon']=sprintf('%01.6f',$address['lon']);
 							$fieldArray['tx_odsosm_lat']=sprintf('%01.6f',$address['lat']);
-							$fieldArray['zip']=$address['zip'];
-							$fieldArray['city']=$address['city'];
-							$fieldArray['country']=$address['country'];
+							if($address['street']){
+								$fieldArray['address']=$address['street'];
+								if($address['housenumber']) $fieldArray['address'].=' '.$address['housenumber'];
+							}
+							if($address['zip']) $fieldArray['zip']=$address['zip'];
+							if($address['city']) $fieldArray['city']=$address['city'];
+							if($address['state']) $fieldArray['region']=$address['state'];
+							if($address['country']) $fieldArray['country']=$address['country'];
 						}
 					}
 				}
