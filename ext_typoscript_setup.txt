@@ -19,6 +19,7 @@ plugin.tx_odsosm_pi1 {
 	show_pan_zoom = {$plugin.tx_odsosm_pi1.show_pan_zoom}
 	show_popups = {$plugin.tx_odsosm_pi1.show_popups}
 	show_layerswitcher = {$plugin.tx_odsosm_pi1.show_layerswitcher}
+	show_scalebar = {$plugin.tx_odsosm_pi1.show_scalebar}
 	no_marker = {$plugin.tx_odsosm_pi1.no_marker}
 
 	_CSS_DEFAULT_STYLE = .olControlAttribution{bottom:0px!important;}

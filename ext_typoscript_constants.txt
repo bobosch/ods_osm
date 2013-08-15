@@ -28,4 +28,7 @@ plugin.tx_odsosm_pi1 {
 
 	# cat=OpenStreetMap//0110; type=options[Hide map=0,Show map=1]; label= No marker: What to do if no marker is defined.
 	no_marker = 1
+
+	# cat=OpenStreetMap//0120; type=boolean; label= Show ScaleBar: Show a scale line on the map.
+	show_scalebar = 0
 }
