@@ -23,6 +23,9 @@ plugin.tx_odsosm_pi1 {
 	# cat=OpenStreetMap//0090; type=options[No=0,Click=1,Hover=2]; label= Show popup: Show popup window with record information.
 	show_popups = 0
 
+	# cat=OpenStreetMap//0095; type=boolean; label= Exclusive popup: Show only one popup in OpenLayers if popup type is Click
+	exclusive_popup = 0
+
 	# cat=OpenStreetMap//0100; type=boolean; label= Show layerswitcher: Show layerswitcher which allows the user to hide markers from the same group.
 	show_layerswitcher = 0
 

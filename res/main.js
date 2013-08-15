@@ -3,7 +3,7 @@ function mapCenter(oMap,fLat,fLon,iZoom){
 	oMap.setCenter(oLonLat,iZoom);
 }
 
-function mapMarker(oMap,oLayer,fLat,fLon,sIcon,iSizeX,iSizeY,iOffsetX,iOffsetY,sText,iPopup,initialPopup){
+function mapMarker(oMap,oLayer,fLat,fLon,sIcon,iSizeX,iSizeY,iOffsetX,iOffsetY,sText,iPopup,initialPopup,bExclusivePopup){
 	var oLonLat = new OpenLayers.LonLat(fLon,fLat).transform(new OpenLayers.Projection('EPSG:4326'), oMap.getProjectionObject());
 	var oSize = new OpenLayers.Size(iSizeX,iSizeY);
 	var oOffset = new OpenLayers.Pixel(iOffsetX,iOffsetY);
@@ -32,14 +32,24 @@ function mapMarker(oMap,oLayer,fLat,fLon,sIcon,iSizeX,iSizeY,iOffsetX,iOffsetY,s
 
 		var mouseAction = function (evt) {
 			if (this.popup == null) {
-				if(iPopup==2)
+				if(iPopup==2) {
 					this.popup = this.createPopup();
-				else
+					oMap.addPopup(this.popup);
+				} else {
 					this.popup = this.createPopup(this.closeBox);
-				oMap.addPopup(this.popup);
+					oMap.addPopup(this.popup,bExclusivePopup);
+				}
 				this.popup.show();
 			} else {
-				if(evt.type=='mousedown') this.popup.toggle()
+				if(evt.type=='mousedown') {
+					// exclusive uses removePopup(), so need to addPopup() again
+					if (bExclusivePopup) {
+						oMap.addPopup(this.popup,bExclusivePopup);
+						this.popup.show();
+					} else {
+						this.popup.toggle();
+					}
+				}
 				if(evt.type=='mouseover') this.popup.show();
 				if(evt.type=='mouseout') this.popup.hide();
 			}

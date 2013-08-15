@@ -292,6 +292,7 @@
 						<TCEforms>
 							<label>LLL:EXT:ods_osm/locallang_db.xml:tt_content.pi_flexform.show_popups</label>
 							<displayCond>FIELD:library:IN:openlayers,leaflet</displayCond>
+							<onChange>reload</onChange>
 							<config>
 								<type>select</type>
 								<size>1</size>
@@ -312,6 +313,15 @@
 							</config>
 						</TCEforms>
 					</show_popups>
+					<exclusive_popup>
+						<TCEforms>
+							<label>LLL:EXT:ods_osm/locallang_db.xml:tt_content.pi_flexform.exclusive_popup</label>
+							<displayCond>FIELD:show_popups:=:1</displayCond>
+							<config>
+								<type>check</type>
+							</config>
+						</TCEforms>
+					</exclusive_popup>
 					<marker_popup_initial>
 						<TCEforms>
 							<label>LLL:EXT:ods_osm/locallang_db.xml:tt_content.pi_flexform.marker_popup_intial</label>

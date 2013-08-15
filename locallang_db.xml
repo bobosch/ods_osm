@@ -25,6 +25,7 @@
 			<label index="tt_content.pi_flexform.show_layerswitcher">Show layerswitcher</label>
 			<label index="tt_content.pi_flexform.show_scalebar">Show ScaleBar</label>
 			<label index="tt_content.pi_flexform.zoom">Zoom</label>
+			<label index="tt_content.pi_flexform.exclusive_popup">Show only one popup</label>
 			<label index="tx_odsosm_lon">Longitude</label>
 			<label index="tx_odsosm_lat">Latitude</label>
 			<label index="tx_odsosm_geocache">Geocache</label>
@@ -87,6 +88,7 @@
 			<label index="tt_content.pi_flexform.show_layerswitcher">Ebenenumschalter anzeigen</label>
 			<label index="tt_content.pi_flexform.show_scalebar">Massstabsanzeige anzeigen</label>
 			<label index="tt_content.pi_flexform.zoom">Zoom</label>
+			<label index="tt_content.pi_flexform.exclusive_popup">Immer nur ein Popup anzeigen</label>
 			<label index="tx_odsosm_lon">Längengrad</label>
 			<label index="tx_odsosm_lat">Breitengrad</label>
 			<label index="tx_odsosm_geocache">Geocache</label>
