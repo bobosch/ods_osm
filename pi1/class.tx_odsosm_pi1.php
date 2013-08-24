@@ -74,7 +74,7 @@ class tx_odsosm_pi1 extends tslib_pibase {
 		-------------------------------------------------- */
 
 		$flex=array();
-		$options=array('height','lat','layer','leaflet_layer','library','lon','marker','marker_popup_initial','mouse_navigation','openlayers_layer','show_layerswitcher','show_pan_zoom','show_popups','static_layer','width','zoom');
+		$options=array('height','lat','layer','leaflet_layer','library','lon','marker','marker_popup_initial','mouse_navigation','openlayers_layer','show_layerswitcher','show_scalebar','show_pan_zoom','show_popups','static_layer','width','zoom');
 		foreach($options as $option){
 			$value=$this->pi_getFFvalue($this->cObj->data['pi_flexform'],$option,'sDEF');
 			if($value){
