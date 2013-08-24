@@ -70,10 +70,13 @@ class tx_odsosm_div {
 		
 		tx_odsosm_div::splitAddressField($address);
 
-		$ll=tx_odsosm_div::searchAddress($address,0);
+		// Use cache only when enabled
+		if($config['cache_enabled']==1) $ll=tx_odsosm_div::searchAddress($address,0);
+
 		if(!$ll){
 			$ll=tx_odsosm_div::searchAddress($address,$config['geo_service']);
-			if($ll) tx_odsosm_div::updateCache($address);
+			// Update cache when enabled or needed for statistic
+			if($ll && if($config['cache_enabled'])) tx_odsosm_div::updateCache($address);
 		}
 		return $ll;
 	}

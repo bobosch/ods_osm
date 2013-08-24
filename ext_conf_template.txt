@@ -10,6 +10,9 @@ geo_service_email =
 # cat=basic; type=string; label=Default country: Two letter countrycode used in search if no country is specified.
 default_country =
 
+# cat=basic; type=options[Off=0,On=1,Statistic only=2]; label=Enable address search cache: Cache is also needed for statistics.
+cache_enabled = 1
+
 # cat=basic; type=boolean; label=Use local javascripts and images: Do not use files from http://www.openlayers.org/ and http://www.openstreetmap.org/
 local_js = 1
 
