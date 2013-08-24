@@ -76,7 +76,7 @@ class tx_odsosm_div {
 		if(!$ll){
 			$ll=tx_odsosm_div::searchAddress($address,$config['geo_service']);
 			// Update cache when enabled or needed for statistic
-			if($ll && if($config['cache_enabled'])) tx_odsosm_div::updateCache($address);
+			if($ll && $config['cache_enabled']) tx_odsosm_div::updateCache($address);
 		}
 		return $ll;
 	}
