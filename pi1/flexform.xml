@@ -336,6 +336,15 @@
 							</config>
 						</TCEforms>
 					</show_layerswitcher>
+					<show_scalebar>
+						<TCEforms>
+							<label>LLL:EXT:ods_osm/locallang_db.xml:tt_content.pi_flexform.show_scalebar</label>
+							<displayCond>FIELD:library:=:openlayers</displayCond>
+							<config>
+								<type>check</type>
+							</config>
+						</TCEforms>
+					</show_scalebar>
 				</el>
 			</ROOT>
 		</sDEF>

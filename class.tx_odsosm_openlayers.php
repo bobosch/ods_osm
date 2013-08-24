@@ -38,6 +38,7 @@ class tx_odsosm_openlayers extends tx_odsosm_common {
 					($this->config['mouse_navigation'] ? "new OpenLayers.Control.Navigation()," : "").
 					($this->config['show_pan_zoom'] ? "new OpenLayers.Control.PanZoom".($this->config['show_pan_zoom']==1 ? 'Bar' : '')."()," : "").
 					($this->config['show_layerswitcher'] ? "new OpenLayers.Control.LayerSwitcher({".($this->config['layerswitcher.']['div'] ? "'div':OpenLayers.Util.getElement('".$this->config['id']."_layerswitcher')" : "").$this->config['layerswitcher.']['options']."})," : "").
+					($this->config['show_scalebar'] ? "new OpenLayers.Control.ScaleLine()," : "").
 					"new OpenLayers.Control.Attribution()],
 				maxExtent:new OpenLayers.Bounds(-20037508.34,-20037508.34,20037508.34,20037508.34),
 				maxResolution:156543.0399,
