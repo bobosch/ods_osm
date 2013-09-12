@@ -74,9 +74,10 @@ class tx_odsosm_div {
 		if($config['cache_enabled']==1) $ll=tx_odsosm_div::searchAddress($address,0);
 
 		if(!$ll){
+			$search=$address;
 			$ll=tx_odsosm_div::searchAddress($address,$config['geo_service']);
 			// Update cache when enabled or needed for statistic
-			if($ll && $config['cache_enabled']) tx_odsosm_div::updateCache($address);
+			if($ll && $config['cache_enabled']) tx_odsosm_div::updateCache($address,$search);
 		}
 		return $ll;
 	}
@@ -106,7 +107,7 @@ class tx_odsosm_div {
 			case 0: // cache
 				$where=array();
 				if($country) $where[]='country='.$GLOBALS['TYPO3_DB']->fullQuoteStr($country,'tx_odsosm_geocache');
-				if($address['city']) $where[]='city='.$GLOBALS['TYPO3_DB']->fullQuoteStr($address['city'],'tx_odsosm_geocache');
+				if($address['city']) $where[]='(city='.$GLOBALS['TYPO3_DB']->fullQuoteStr($address['city'],'tx_odsosm_geocache').' OR search_city='.$GLOBALS['TYPO3_DB']->fullQuoteStr($address['city'],'tx_odsosm_geocache').')';
 				if($address['zip']) $where[]='zip='.$GLOBALS['TYPO3_DB']->fullQuoteStr($address['zip'],'tx_odsosm_geocache');
 				if($address['street']) $where[]='street='.$GLOBALS['TYPO3_DB']->fullQuoteStr($address['street'],'tx_odsosm_geocache');
 				if($address['housenumber']) $where[]='housenumber='.$GLOBALS['TYPO3_DB']->fullQuoteStr($address['housenumber'],'tx_odsosm_geocache');
@@ -123,6 +124,11 @@ class tx_odsosm_div {
 
 					if($row){
 						$ll=true;
+						$set=array(
+							'tstamp'=>time(),
+							'cache_hit'=>$row['cache_hit']+1,
+						);
+						$GLOBALS['TYPO3_DB']->exec_UPDATEquery('tx_odsosm_geocache','uid='.$row['uid'],$set);
 						$address['lat']=$row['lat'];
 						$address['lon']=$row['lon'];
 						if($row['zip']) $address['zip']=$row['zip'];
@@ -223,22 +229,37 @@ class tx_odsosm_div {
 		return $ll;
 	}
 
-	function updateCache($address){
-		$GLOBALS['TYPO3_DB']->exec_INSERTquery(
-			'tx_odsosm_geocache',
-			array(
-				'tstamp'=>time(),
-				'crdate'=>time(),
-				'country'=>$address['country'],
-				'state'=>$address['state'],
-				'city'=>$address['city'],
-				'zip'=>$address['zip'],
-				'street'=>$address['street'],
-				'housenumber'=>$address['housenumber'],
-				'lat'=>$address['lat'],
-				'lon'=>$address['lon'],
-			)
+	function updateCache($address,$search=array()){
+		$set=array(
+			'search_city'=>$search['city'],
+			'country'=>$address['country'],
+			'state'=>$address['state'],
+			'city'=>$address['city'],
+			'zip'=>$address['zip'],
+			'street'=>$address['street'],
+			'housenumber'=>$address['housenumber'],
 		);
+
+		$res=$GLOBALS['TYPO3_DB']->exec_SELECTquery(
+			'*',
+			'tx_odsosm_geocache',
+			implode(' AND ',tx_odsosm_div::getSet($set))
+		);
+		$row=$GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
+		if($row){
+			$set=array(
+				'tstamp'=>time(),
+				'service_hit'=>$row['service_hit']+1,
+			);
+			$GLOBALS['TYPO3_DB']->exec_UPDATEquery('tx_odsosm_geocache','uid='.$row['uid'],$set);
+		}else{
+			$set['tstamp']=time();
+			$set['crdate']=time();
+			$set['service_hit']=1;
+			$set['lat']=$address['lat'];
+			$set['lon']=$address['lon'];
+			$GLOBALS['TYPO3_DB']->exec_INSERTquery('tx_odsosm_geocache',$set);
+		}
 	}
 	
 	function splitAddressField(&$address){
@@ -258,6 +279,14 @@ class tx_odsosm_div {
 		}else{
 			$this->address_type='empty';
 		}
+	}
+
+	function getSet($data){
+		$set=array();
+		foreach($data as $field=>$value){
+			$set[$field]='`'.$field.'`="'.mysql_real_escape_string($value).'"';
+		}
+		return($set);
 	}
 }
 ?>

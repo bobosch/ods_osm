@@ -4,10 +4,39 @@ if (!defined ('TYPO3_MODE')) die ('Access denied.');
 $TCA['tx_odsosm_geocache'] = array (
 	'ctrl' => $TCA['tx_odsosm_geocache']['ctrl'],
 	'interface' => array (
-		'showRecordFieldList' => 'country,city,zip,lon,lat'
+		'showRecordFieldList' => 'cache_hit,service_hit,search_city,country,state,city,zip,street,housenumber,lon,lat'
 	),
 	'feInterface' => $TCA['tx_odsosm_geocache']['feInterface'],
 	'columns' => array (
+		'cache_hit' => array (
+			'exclude' => 0,
+			'label' => 'LLL:EXT:ods_osm/locallang_db.xml:tx_odsosm_geocache.cache_hit',
+			'config' => array (
+				'type' => 'input',
+				'size' => 10,
+				'max' => 10,
+				'eval' => '',
+			)
+		),
+		'service_hit' => array (
+			'exclude' => 0,
+			'label' => 'LLL:EXT:ods_osm/locallang_db.xml:tx_odsosm_geocache.service_hit',
+			'config' => array (
+				'type' => 'input',
+				'size' => 10,
+				'max' => 10,
+				'eval' => '',
+			)
+		),
+		'search_city' => array (
+			'exclude' => 0,
+			'label' => 'LLL:EXT:ods_osm/locallang_db.xml:tx_odsosm_geocache.city',
+			'config' => array (
+				'type' => 'input',
+				'size' => 30,
+				'max' => 255,
+			)
+		),
 		'country' => array (
 			'exclude' => 0,
 			'label' => 'LLL:EXT:ods_osm/locallang_db.xml:tx_odsosm_geocache.country',
@@ -84,7 +113,7 @@ $TCA['tx_odsosm_geocache'] = array (
 		),
 	),
 	'types' => array (
-		'0' => array('showitem' => 'country, city, zip, lon;;1;;1-1-1')
+		'0' => array('showitem' => 'cache_hit,service_hit,search_city,country,state,city,zip,street,housenumber,lon;;1;;1-1-1')
 	),
 	'palettes' => array (
 		'1' => array(
