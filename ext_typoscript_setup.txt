@@ -21,7 +21,6 @@ plugin.tx_odsosm_pi1 {
 	show_layerswitcher = {$plugin.tx_odsosm_pi1.show_layerswitcher}
 	show_scalebar = {$plugin.tx_odsosm_pi1.show_scalebar}
 	no_marker = {$plugin.tx_odsosm_pi1.no_marker}
-	exclusive_popup = {$plugin.tx_odsosm_pi1.exclusive_popup}
 
 	_CSS_DEFAULT_STYLE = .olControlAttribution{bottom:0px!important;}
 	popup {

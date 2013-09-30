@@ -3,7 +3,7 @@ function mapCenter(oMap,fLat,fLon,iZoom){
 	oMap.setCenter(oLonLat,iZoom);
 }
 
-function mapMarker(oMap,oLayer,fLat,fLon,sIcon,iSizeX,iSizeY,iOffsetX,iOffsetY,sText,iPopup,initialPopup,bExclusivePopup){
+function mapMarker(oMap,oLayer,fLat,fLon,sIcon,iSizeX,iSizeY,iOffsetX,iOffsetY,sText,iPopup,initialPopup){
 	var oLonLat = new OpenLayers.LonLat(fLon,fLat).transform(new OpenLayers.Projection('EPSG:4326'), oMap.getProjectionObject());
 	var oSize = new OpenLayers.Size(iSizeX,iSizeY);
 	var oOffset = new OpenLayers.Pixel(iOffsetX,iOffsetY);
@@ -37,14 +37,17 @@ function mapMarker(oMap,oLayer,fLat,fLon,sIcon,iSizeX,iSizeY,iOffsetX,iOffsetY,s
 					oMap.addPopup(this.popup);
 				} else {
 					this.popup = this.createPopup(this.closeBox);
-					oMap.addPopup(this.popup,bExclusivePopup);
+					if (iPopup==3)
+						oMap.addPopup(this.popup,true);
+					else
+						oMap.addPopup(this.popup);
 				}
 				this.popup.show();
 			} else {
 				if(evt.type=='mousedown') {
 					// exclusive uses removePopup(), so need to addPopup() again
-					if (bExclusivePopup) {
-						oMap.addPopup(this.popup,bExclusivePopup);
+					if (iPopup==3) {
+						oMap.addPopup(this.popup,true);
 						this.popup.show();
 					} else {
 						this.popup.toggle();

@@ -98,7 +98,7 @@ class tx_odsosm_openlayers extends tx_odsosm_common {
 					$this->group_titles[]=$item['group_title'];
 					$jsMarker.="var layerMarkers_".array_search($item['group_title'],$this->group_titles)."=new OpenLayers.Layer.Markers('<img src=\"".$icon."\" /> ".$item['group_title']."');\n";
 				}
-				$jsMarker.="mapMarker(".$this->config['id'].",layerMarkers_".array_search($item['group_title'],$this->group_titles).",".$item['tx_odsosm_lat'].",".$item['tx_odsosm_lon'].",'".$icon."',".$marker['size_x'].",".$marker['size_y'].",".$marker['offset_x'].",".$marker['offset_y'].",'".strtr($item['popup'],$this->escape_js)."',".intval($this->config['show_popups']).",".intval($item['initial_popup']).",".($this->config['exclusive_popup'] ? "1" : "0").");\n";
+				$jsMarker.="mapMarker(".$this->config['id'].",layerMarkers_".array_search($item['group_title'],$this->group_titles).",".$item['tx_odsosm_lat'].",".$item['tx_odsosm_lon'].",'".$icon."',".$marker['size_x'].",".$marker['size_y'].",".$marker['offset_x'].",".$marker['offset_y'].",'".strtr($item['popup'],$this->escape_js)."',".intval($this->config['show_popups']).",".intval($item['initial_popup']).");\n";
 			break;
 			case 'tx_odsosm_track':
 				$jsMarker.="mapGpx(".$this->config['id'].",'".$GLOBALS['TSFE']->absRefPrefix.'uploads/tx_odsosm/'.$item['file']."','".$item['title']."','".$item['color']."',".$item['width'].");\n";
