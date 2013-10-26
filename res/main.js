@@ -32,14 +32,27 @@ function mapMarker(oMap,oLayer,fLat,fLon,sIcon,iSizeX,iSizeY,iOffsetX,iOffsetY,s
 
 		var mouseAction = function (evt) {
 			if (this.popup == null) {
-				if(iPopup==2)
+				if(iPopup==2) {
 					this.popup = this.createPopup();
-				else
+					oMap.addPopup(this.popup);
+				} else {
 					this.popup = this.createPopup(this.closeBox);
-				oMap.addPopup(this.popup);
+					if (iPopup==3)
+						oMap.addPopup(this.popup,true);
+					else
+						oMap.addPopup(this.popup);
+				}
 				this.popup.show();
 			} else {
-				if(evt.type=='mousedown') this.popup.toggle()
+				if(evt.type=='mousedown') {
+					// exclusive uses removePopup(), so need to addPopup() again
+					if (iPopup==3) {
+						oMap.addPopup(this.popup,true);
+						this.popup.show();
+					} else {
+						this.popup.toggle();
+					}
+				}
 				if(evt.type=='mouseover') this.popup.show();
 				if(evt.type=='mouseout') this.popup.hide();
 			}

@@ -20,7 +20,7 @@ plugin.tx_odsosm_pi1 {
 	# cat=OpenStreetMap//0080; type=options[No=0,Bar=1,+/-=2]; label= Show pan/zoom: Show pan/zoom element.
 	show_pan_zoom = 0
 
-	# cat=OpenStreetMap//0090; type=options[No=0,Click=1,Hover=2]; label= Show popup: Show popup window with record information.
+	# cat=OpenStreetMap//0090; type=options[No=0,Click=1,Hover=2,Exclusive=3]; label= Show popup: Show popup window with record information.
 	show_popups = 0
 
 	# cat=OpenStreetMap//0100; type=boolean; label= Show layerswitcher: Show layerswitcher which allows the user to hide markers from the same group.

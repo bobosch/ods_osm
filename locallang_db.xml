@@ -22,6 +22,7 @@
 			<label index="tt_content.pi_flexform.show_popups">Show popups</label>
 			<label index="tt_content.pi_flexform.show_popups.I.1">Click</label>
 			<label index="tt_content.pi_flexform.show_popups.I.2">Hover</label>
+			<label index="tt_content.pi_flexform.show_popups.I.3">Exclusive</label>
 			<label index="tt_content.pi_flexform.show_layerswitcher">Show layerswitcher</label>
 			<label index="tt_content.pi_flexform.show_scalebar">Show ScaleBar</label>
 			<label index="tt_content.pi_flexform.zoom">Zoom</label>
@@ -84,6 +85,7 @@
 			<label index="tt_content.pi_flexform.show_popups">Popups anzeigen</label>
 			<label index="tt_content.pi_flexform.show_popups.I.1">Click</label>
 			<label index="tt_content.pi_flexform.show_popups.I.2">Hover</label>
+			<label index="tt_content.pi_flexform.show_popups.I.3">Exklusiv</label>
 			<label index="tt_content.pi_flexform.show_layerswitcher">Ebenenumschalter anzeigen</label>
 			<label index="tt_content.pi_flexform.show_scalebar">Massstabsanzeige anzeigen</label>
 			<label index="tt_content.pi_flexform.zoom">Zoom</label>
