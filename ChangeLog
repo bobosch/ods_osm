@@ -1,3 +1,6 @@
+2013-10-28 Robert Heel <typo3@bobosch.de>
+	* Add: Plugin option "Use this coordinates only if no marker exists".
+
 2013-10-26 Robert Heel <typo3@bobosch.de>
 	* Add: Plugin option "Show Popup Exclusive" to show only one popup at once (Thanks to Klaus).
 
