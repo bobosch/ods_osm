@@ -43,11 +43,11 @@ class tx_odsosm_tcemain {
 					require_once t3lib_extMgm::extPath('ods_osm','res/geoPHP/geoPHP.inc');
 					$polygon = geoPHP::load(file_get_contents($filename),pathinfo($filename,PATHINFO_EXTENSION));
 					$box = $polygon->getBBox();
+					$fieldArray['min_lon']=sprintf('%01.6f',$box['minx']);
+					$fieldArray['min_lat']=sprintf('%01.6f',$box['miny']);
+					$fieldArray['max_lon']=sprintf('%01.6f',$box['maxx']);
+					$fieldArray['max_lat']=sprintf('%01.6f',$box['maxy']);
 				}
-				$fieldArray['min_lon']=sprintf('%01.6f',$box['minx']);
-				$fieldArray['min_lat']=sprintf('%01.6f',$box['miny']);
-				$fieldArray['max_lon']=sprintf('%01.6f',$box['maxx']);
-				$fieldArray['max_lat']=sprintf('%01.6f',$box['maxy']);
 			break;
 
 			case 'tx_odsosm_marker':

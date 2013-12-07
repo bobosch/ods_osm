@@ -1,6 +1,7 @@
 2013-12-07 Robert Heel <typo3@bobosch.de>
 	* Add: Plugin option to activate the layer switcher opened.
 	* Add: Track option to change visiblity of tracks.
+	* Bug: Don't delete bounding coordinates from track on save.
 
 2013-10-28 Robert Heel <typo3@bobosch.de>
 	* Add: Plugin option "Use this coordinates only if no marker exists".
