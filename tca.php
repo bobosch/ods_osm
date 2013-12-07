@@ -322,7 +322,7 @@ $TCA['tx_odsosm_marker'] = array (
 $TCA['tx_odsosm_track'] = array (
 	'ctrl' => $TCA['tx_odsosm_track']['ctrl'],
 	'interface' => array (
-		'showRecordFieldList' => 'hidden,title,color,width,file,min_lat,min_lon,max_lat,max_lon'
+		'showRecordFieldList' => 'hidden,visible,title,color,width,file,min_lat,min_lon,max_lat,max_lon'
 	),
 	'feInterface' => $TCA['tx_odsosm_track']['feInterface'],
 	'columns' => array (
@@ -332,6 +332,14 @@ $TCA['tx_odsosm_track'] = array (
 			'config'  => array (
 				'type'    => 'check',
 				'default' => 0
+			)
+		),
+		'visible' => array (        
+			'exclude' => 0,
+			'label'   => 'LLL:EXT:ods_osm/locallang_db.xml:tx_odsosm_track.visible',
+			'config'  => array (
+				'type'    => 'check',
+				'default' => 1
 			)
 		),
 		'title' => array (        
@@ -427,7 +435,7 @@ $TCA['tx_odsosm_track'] = array (
 		),
 	),
 	'types' => array (
-		'0' => array('showitem' => 'hidden;;;;1-1-1, title;;;;2-2-2, color, width, file;;1;;3-3-3')
+		'0' => array('showitem' => 'hidden,visible;;;;1-1-1, title;;;;2-2-2, color, width, file;;1;;3-3-3')
 	),
 	'palettes' => array (
 		'1' => array(

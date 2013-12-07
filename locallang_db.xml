@@ -60,6 +60,7 @@
 			<label index="tx_odsosm_marker.offset_x">Offset X</label>
 			<label index="tx_odsosm_marker.offset_y">Offset Y</label>
 			<label index="tx_odsosm_track">Track</label>
+			<label index="tx_odsosm_track.visible">Visible on map</label>
 			<label index="tx_odsosm_track.title">Title</label>
 			<label index="tx_odsosm_track.color">Color</label>
 			<label index="tx_odsosm_track.width">Width</label>
@@ -109,6 +110,7 @@
 			<label index="tx_odsosm_geocache.lon">Längengrad</label>
 			<label index="tx_odsosm_geocache.lat">Breitengrad</label>
 			<label index="tx_odsosm_layer">Ebene</label>
+			<label index="tx_odsosm_track.visible">Sichtbar auf Karte</label>
 			<label index="tx_odsosm_layer.title">Titel</label>
 			<label index="tx_odsosm_layer.overlay">Ist Overlay</label>
 			<label index="tx_odsosm_layer.javascript">JavaScript</label>

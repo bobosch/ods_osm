@@ -104,7 +104,7 @@ function mapGpx_new(oMap,sFilename,sTitle,sColor,iWidth){
 	oMap.addLayer(oLayer);
 }
 
-function mapGpx(oMap,sFilename,sTitle,sColor,iWidth){
+function mapGpx(oMap,sFilename,sTitle,sColor,iWidth,bVisible){
 	var ext=sFilename.split('.').pop();
 	var sFormat;
 	switch(ext){
@@ -128,6 +128,7 @@ function mapGpx(oMap,sFilename,sTitle,sColor,iWidth){
 			strokeWidth: iWidth,
 			strokeOpacity: 1
 		},
+		visibility: bVisible,
 		projection: new OpenLayers.Projection('EPSG:4326')
 	});
 	oMap.addLayer(oLayer);
