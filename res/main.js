@@ -70,25 +70,59 @@ function mapMarker(oMap,oLayer,fLat,fLon,sIcon,iSizeX,iSizeY,iOffsetX,iOffsetY,s
 	oLayer.addMarker(oMarker);
 }
 
+function mapGpx_new(oMap,sFilename,sTitle,sColor,iWidth){
+	var ext=sFilename.split('.').pop();
+	var sFormat;
+	switch(ext){
+		case 'gpx':
+			oFormat=OpenLayers.Format.GPX;
+			break;
+		case 'json':
+			oFormat=OpenLayers.Format.GeoJSON;
+			break;
+		case 'kml':
+			oFormat=OpenLayers.Format.KML;
+			break;
+		case 'wkt':
+			oFormat=OpenLayers.Format.WKT;
+			break;
+	}
+
+	var oLayer = new OpenLayers.Layer.Vector(sTitle, {
+		strategies: [new OpenLayers.Strategy.Fixed()],
+		protocol: new OpenLayers.Protocol.HTTP({
+			url: sFilename,
+			format: oFormat,
+			style: {
+				strokeColor: sColor,
+				strokeWidth: iWidth,
+				strokeOpacity: 1
+			},
+			projection: new OpenLayers.Projection('EPSG:4326')
+		})
+	})
+	oMap.addLayer(oLayer);
+}
+
 function mapGpx(oMap,sFilename,sTitle,sColor,iWidth){
 	var ext=sFilename.split('.').pop();
 	var sFormat;
 	switch(ext){
 		case 'gpx':
-			sFormat=OpenLayers.Format.GPX;
+			oFormat=OpenLayers.Format.GPX;
 			break;
 		case 'json':
-			sFormat=OpenLayers.Format.GeoJSON;
+			oFormat=OpenLayers.Format.GeoJSON;
 			break;
 		case 'kml':
-			sFormat=OpenLayers.Format.KML;
+			oFormat=OpenLayers.Format.KML;
 			break;
 		case 'wkt':
-			sFormat=OpenLayers.Format.WKT;
+			oFormat=OpenLayers.Format.WKT;
 			break;
 	}
 	var oLayer = new OpenLayers.Layer.GML(sTitle,sFilename,{
-		format: sFormat,
+		format: oFormat,
 		style: {
 			strokeColor: sColor,
 			strokeWidth: iWidth,

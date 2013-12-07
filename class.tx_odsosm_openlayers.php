@@ -33,11 +33,12 @@ class tx_odsosm_openlayers extends tx_odsosm_common {
 
 	public function getMapMain(){
 		return("
+			oLayerSwitcher=".($this->config['show_layerswitcher'] ? "new OpenLayers.Control.LayerSwitcher({".($this->config['layerswitcher.']['div'] ? "'div':OpenLayers.Util.getElement('".$this->config['id']."_layerswitcher')" : "").$this->config['layerswitcher.']['options']."})" : "").";
 			".$this->config['id']."=new OpenLayers.Map('".$this->config['id']."',{
 				controls:[".
 					($this->config['mouse_navigation'] ? "new OpenLayers.Control.Navigation()," : "").
 					($this->config['show_pan_zoom'] ? "new OpenLayers.Control.PanZoom".($this->config['show_pan_zoom']==1 ? 'Bar' : '')."()," : "").
-					($this->config['show_layerswitcher'] ? "new OpenLayers.Control.LayerSwitcher({".($this->config['layerswitcher.']['div'] ? "'div':OpenLayers.Util.getElement('".$this->config['id']."_layerswitcher')" : "").$this->config['layerswitcher.']['options']."})," : "").
+					"oLayerSwitcher,".
 					($this->config['show_scalebar'] ? "new OpenLayers.Control.ScaleLine()," : "").
 					"new OpenLayers.Control.Attribution()],
 				maxExtent:new OpenLayers.Bounds(-20037508.34,-20037508.34,20037508.34,20037508.34),
@@ -46,8 +47,9 @@ class tx_odsosm_openlayers extends tx_odsosm_common {
 				units:'m',
 				projection:new OpenLayers.Projection('EPSG:900913'),
 				displayProjection:new OpenLayers.Projection('EPSG:4326')
-			});
-		");
+			});\n".
+			($this->config['show_layerswitcher']==2 ? "oLayerSwitcher.maximizeControl();\n" : "")
+		);
 	}
 
 	public function getLayer($layer,$i,$backpath=''){
