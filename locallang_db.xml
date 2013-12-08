@@ -92,9 +92,9 @@
 			<label index="tt_content.pi_flexform.show_popups.I.2">Hover</label>
 			<label index="tt_content.pi_flexform.show_popups.I.3">Exklusiv</label>
 			<label index="tt_content.pi_flexform.show_layerswitcher">Ebenenumschalter anzeigen</label>
-			<label index="tt_content.pi_flexform.show_layerswitcher.I.1">Nein</label>
-			<label index="tt_content.pi_flexform.show_layerswitcher.I.2">Geschlossen</label>
-			<label index="tt_content.pi_flexform.show_layerswitcher.I.3">Geöffnet</label>
+			<label index="tt_content.pi_flexform.show_layerswitcher.I.0">Nein</label>
+			<label index="tt_content.pi_flexform.show_layerswitcher.I.1">Geschlossen</label>
+			<label index="tt_content.pi_flexform.show_layerswitcher.I.2">Geöffnet</label>
 			<label index="tt_content.pi_flexform.show_scalebar">Massstabsanzeige anzeigen</label>
 			<label index="tt_content.pi_flexform.use_coords_only_nomarker">Diese Koordinaten nur verwenden wenn keine Markierung existiert</label>
 			<label index="tt_content.pi_flexform.zoom">Zoom</label>
