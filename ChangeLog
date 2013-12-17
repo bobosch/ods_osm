@@ -1,3 +1,6 @@
+2013-12-17 Robert Heel <typo3@bobosch.de>
+	* Bug: Get map work again without layer switch.
+
 2013-12-08 Robert Heel <typo3@bobosch.de>
 	* Bug: Wrong german localisation of layer switch options.
 

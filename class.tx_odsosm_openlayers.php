@@ -32,15 +32,21 @@ class tx_odsosm_openlayers extends tx_odsosm_common {
 	}
 
 	public function getMapMain(){
-		return("
-			oLayerSwitcher=".($this->config['show_layerswitcher'] ? "new OpenLayers.Control.LayerSwitcher({".($this->config['layerswitcher.']['div'] ? "'div':OpenLayers.Util.getElement('".$this->config['id']."_layerswitcher')" : "").$this->config['layerswitcher.']['options']."})" : "").";
-			".$this->config['id']."=new OpenLayers.Map('".$this->config['id']."',{
-				controls:[".
-					($this->config['mouse_navigation'] ? "new OpenLayers.Control.Navigation()," : "").
-					($this->config['show_pan_zoom'] ? "new OpenLayers.Control.PanZoom".($this->config['show_pan_zoom']==1 ? 'Bar' : '')."()," : "").
-					"oLayerSwitcher,".
-					($this->config['show_scalebar'] ? "new OpenLayers.Control.ScaleLine()," : "").
-					"new OpenLayers.Control.Attribution()],
+		$controls=array('oAttribution'=>'new OpenLayers.Control.Attribution()');
+		if($this->config['show_layerswitcher']) $controls['oLayerSwitcher']="new OpenLayers.Control.LayerSwitcher({".($this->config['layerswitcher.']['div'] ? "'div':OpenLayers.Util.getElement('".$this->config['id']."_layerswitcher')" : "").$this->config['layerswitcher.']['options']."})";
+		if($this->config['mouse_navigation']) $controls['oNavigation']="new OpenLayers.Control.Navigation()";
+		if($this->config['show_pan_zoom']) $controls['oPanZoom']="new OpenLayers.Control.PanZoom".($this->config['show_pan_zoom']==1 ? 'Bar' : '')."()";
+		if($this->config['show_scalebar']) $controls['oScalebar']="new OpenLayers.Control.ScaleLine()";
+
+		$vars='';
+		foreach($controls as $var=>$obj){
+			$vars.=$var.'='.$obj.";\n";
+		}
+
+		return(
+			$vars.
+			$this->config['id']."=new OpenLayers.Map('".$this->config['id']."',{
+				controls:[".implode(',',array_keys($controls))."],
 				maxExtent:new OpenLayers.Bounds(-20037508.34,-20037508.34,20037508.34,20037508.34),
 				maxResolution:156543.0399,
 				numZoomLevels:19,
