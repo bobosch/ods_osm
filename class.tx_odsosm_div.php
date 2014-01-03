@@ -103,6 +103,11 @@ class tx_odsosm_div {
 		$country=strtoupper(strlen($address['country'])==2 ? $address['country'] : $config['default_country']);
 		$email=t3lib_div::validEmail($config['geo_service_email']) ? $config['geo_service_email'] : $_SERVER['SERVER_ADMIN'];
 
+		if(TYPO3_DLOG){
+			$service_names=array(0=>'cache',1=>'geonames',2=>'nominatim');
+			t3lib_div::devLog('Search address using '.$service_names[$service],'ods_osm',0,$address);
+		}
+		
 		switch($service){
 			case 0: // cache
 				$where=array();
@@ -152,6 +157,7 @@ class tx_odsosm_div {
 						false,
 						'User-Agent: TYPO3 extension ods_osm/'.t3lib_extMgm::getExtensionVersion('ods_osm')
 					);
+					if(TYPO3_DLOG && $xml===false) t3lib_div::devLog('t3lib_div::getURL failed', "ods_osm", 3);
 
 					if($xml){
 						$xmlobj=new SimpleXMLElement($xml);
@@ -179,13 +185,13 @@ class tx_odsosm_div {
 					if($address['street']) $query['street']=$address['street'];
 					if($address['housenumber']) $query['street']=$address['housenumber'].' '.$query['street'];
 
-					t3lib_div::devLog('search_address Nominatim structured', "ods_osm", -1, $query);
+					if(TYPO3_DLOG) t3lib_div::devLog('Nominatim structured', 'ods_osm', -1, $query);
 					$ll=tx_odsosm_div::searchAddressNominatim($query,$address);
 					
 					if(!$ll && $query['postalcode']){
 						unset($query['postalcode']);
 
-						t3lib_div::devLog('search_address Nominatim retrying without zip', "ods_osm", -1, $query);
+						if(TYPO3_DLOG) t3lib_div::devLog('Nominatim retrying without zip', 'ods_osm', -1, $query);
 						$ll=tx_odsosm_div::searchAddressNominatim($query,$address);
 					}
 				}
@@ -193,10 +199,15 @@ class tx_odsosm_div {
 				if($this->address_type=='unstructured'){
 					$query['q']=$address['address'];
 
-					t3lib_div::devLog('search_address Nominatim unstructured', "ods_osm", -1, $query);
+					if(TYPO3_DLOG) t3lib_div::devLog('Nominatim unstructured', 'ods_osm', -1, $query);
 					$ll=tx_odsosm_div::searchAddressNominatim($query,$address);
 				}
 			break;
+		}
+
+		if(TYPO3_DLOG){
+			if($ll)	t3lib_div::devLog('Return address','ods_osm',0,$address);
+			else t3lib_div::devLog('No address found','ods_osm',0);
 		}
 
 		return $ll;
@@ -210,6 +221,7 @@ class tx_odsosm_div {
 			false,
 			'User-Agent: TYPO3 extension ods_osm/'.t3lib_extMgm::getExtensionVersion('ods_osm')
 		);
+		if(TYPO3_DLOG && $xml===false) t3lib_div::devLog('t3lib_div::getURL failed', 'ods_osm', 3);
 
 		if($xml){
 			$xmlobj=new SimpleXMLElement($xml);

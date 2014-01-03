@@ -1,3 +1,6 @@
+2014-01-04 Robert Heel <typo3@bobosch.de>
+	* Add: Some debug messages.
+
 2013-12-17 Robert Heel <typo3@bobosch.de>
 	* Bug: Get map work again without layer switch.
 
