@@ -14,7 +14,7 @@ class tx_odsosm_tcemain {
 		switch($table){
 			case 'fe_users':
 			case 'tt_address':
-				$config=unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['ods_osm']);
+				$config=tx_odsosm_div::getConfig(array('autocomplete'));
 
 				// Search coordinates
 				if($config['autocomplete'] && ($fieldArray['zip'] || $fieldArray['city'] || $fieldArray['address'])){

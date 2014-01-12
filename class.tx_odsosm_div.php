@@ -66,8 +66,8 @@ class tx_odsosm_div {
 	 * @uses searchAddress()
 	 */
 	function updateAddress(&$address){
-		$config=unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['ods_osm']);
-		
+		$config=tx_odsosm_div::getConfig(array('cache_enabled','geo_service'));
+
 		tx_odsosm_div::splitAddressField($address);
 
 		// Use cache only when enabled
@@ -97,7 +97,7 @@ class tx_odsosm_div {
 	 * @return boolean True if the address got updated, false if not.
 	 */
 	function searchAddress(&$address,$service=0){
-		$config=unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['ods_osm']);
+		$config=tx_odsosm_div::getConfig(array('default_country','geo_service_email'));
 		$ll=false;
 
 		$country=strtoupper(strlen($address['country'])==2 ? $address['country'] : $config['default_country']);
@@ -299,6 +299,31 @@ class tx_odsosm_div {
 			$set[$field]='`'.$field.'`="'.mysql_real_escape_string($value).'"';
 		}
 		return($set);
+	}
+	
+	/* Get extension configuration, and if not available use default configuration. Optional parameter checks if single value is available. */
+	function getConfig($values=array()){
+		$config=unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['ods_osm']);
+		$getDefault=array();
+		
+		if($config && is_array($values) && count($values)){
+			foreach($values as $value){
+				if(!isset($config[$value])) $getDefault[]=$value;
+			}
+		}
+		
+		if($config===false || count($getDefault)){
+			$default=parse_ini_file(t3lib_extMgm::extPath('ods_osm').'ext_conf_template.txt');
+			if($config===false){
+				return $default;
+			}else{
+				foreach($getDefault as $value){
+					$config[$value]=$default[$value];
+				}
+			}
+		}
+
+		return $config;
 	}
 }
 ?>

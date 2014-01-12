@@ -91,7 +91,7 @@ class tx_odsosm_pi1 extends tslib_pibase {
 		}
 		if($flex['library']) $flex['layer']=$flex[$flex['library'].'_layer'];
 
-		$this->config=array_merge((array)unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['ods_osm']),$conf,$flex);
+		$this->config=array_merge(tx_odsosm_div::getConfig(),$conf,$flex);
 		if(!is_array($this->config['marker'])) $this->config['marker']=array();
 		if(is_array($conf['marker.'])){
 			foreach($conf['marker.'] as $name=>$value){
