@@ -78,6 +78,34 @@ class tx_odsosm_openlayers extends tx_odsosm_common {
 				'###TITLE###'=>$layer['title'],
 				'###VISIBLE###'=>"'visibility':".($layer['visible'] ? 'true' : 'false'),
 			)).");\n";
+		}elseif($layer['tile_url']){
+			// url
+			$layer['tile_url']=strtr($layer['tile_url'],array('{x}'=>'${x}','{y}'=>'${y}','{z}'=>'${z}'));
+			if(strpos($layer['tile_url'],'{s}')){
+				if($layer['subdomains']){
+					$subdomains=$layer['subdomains'];
+				}else{
+					$subdomains='abc';
+				}
+				$url=array();
+				for($i=0;$i<strlen($subdomains);$i++){
+					$url[]=strtr($layer['tile_url'],array('{s}'=>substr($subdomains,$i,1)));
+				}
+			}else{
+				$url=$layer['tile_url'];
+			}
+			
+			// options
+			$options=array();
+ 			if($layer['attribution']) $options['attribution']=$layer['attribution'];
+			if($layer['max_zoom']) $options['numZoomLevels']=$layer['max_zoom'];
+
+			$params=array(
+				'"'.$layer['title'].'"',
+				json_encode($url),
+				json_encode($options,JSON_NUMERIC_CHECK)
+			);
+			$jsMainLayer=$this->config['id'].'.addLayer(new OpenLayers.Layer.OSM('.implode(',',$params).'));'."\n";
 		}
 		if(!$layer['overlay'] && $layer['visible']){
 			$jsMainLayer.=$this->config['id'].'.setBaseLayer('.$this->config['id'].'.layers['.$i."]);\n";
