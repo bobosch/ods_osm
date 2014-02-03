@@ -34,11 +34,10 @@ class tx_odsosm_leaflet extends tx_odsosm_common {
 		$var=preg_replace('/[^a-z]/','',strtolower($layer['title']));
 		$this->layers[$layer['overlay']][$layer['title']]=$var;
 
-		$options=array(
-			'attribution'=>'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors',
-		);
+		$options=array();
 		if($layer['max_zoom']) $options['maxZoom']=$layer['max_zoom'];
 		if($layer['subdomains']) $options['subdomains']=$layer['subdomains'];
+		if($layer['attribution']) $options['attribution']=$layer['attribution'];
 
 		return '
 			var '.$var.' = new L.TileLayer(\''.$layer['tile_url'].'\','.json_encode($options).');

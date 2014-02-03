@@ -126,7 +126,7 @@ $TCA['tx_odsosm_geocache'] = array (
 $TCA['tx_odsosm_layer'] = array (
 	'ctrl' => $TCA['tx_odsosm_layer']['ctrl'],
 	'interface' => array (
-		'showRecordFieldList' => 'hidden,title,overlay,javascript,javascript_include,static_url,homepage'
+		'showRecordFieldList' => 'hidden,title,overlay,javascript,javascript_include,static_url,tile_url,max_zoom,subdomains,attribution,homepage'
 	),
 	'feInterface' => $TCA['tx_odsosm_layer']['feInterface'],
 	'columns' => array (
@@ -196,6 +196,22 @@ $TCA['tx_odsosm_layer'] = array (
 				'eval' => 'num',
 			)
 		),
+		'subdomains' => array (        
+			'exclude' => 0,        
+			'label' => 'LLL:EXT:ods_osm/locallang_db.xml:tx_odsosm_layer.subdomains',        
+			'config' => array (
+				'type' => 'input',
+				'size' => '5',
+			)
+		),
+		'attribution' => array (        
+			'exclude' => 0,        
+			'label' => 'LLL:EXT:ods_osm/locallang_db.xml:tx_odsosm_layer.attribution',        
+			'config' => array (
+				'type' => 'input',
+				'size' => '30',
+			)
+		),
 		'homepage' => array (        
 			'exclude' => 0,        
 			'label' => 'LLL:EXT:ods_osm/locallang_db.xml:tx_odsosm_layer.homepage',        
@@ -206,7 +222,7 @@ $TCA['tx_odsosm_layer'] = array (
 		),
 	),
 	'types' => array (
-		'0' => array('showitem' => 'hidden;;;;1-1-1, title;;;;2-2-2, overlay, javascript;;;;3-3-3, javascript_include, static_url;;;;4-4-4, homepage;;;;5-5-5')
+		'0' => array('showitem' => 'hidden;;;;1-1-1, title, overlay, javascript, javascript_include, static_url, tile_url, max_zoom, subdomains, attribution, homepage')
 	),
 	'palettes' => array (
 		'1' => array('showitem' => '')

@@ -1,3 +1,6 @@
+2014-02-03 Robert Heel <typo3@bobosch.de>
+	* Add: Database column for attribution.
+
 2014-01-12 Robert Heel <typo3@bobosch.de>
 	* Bug: Use default configuration if extension is not configured.
 

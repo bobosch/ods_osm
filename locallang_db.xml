@@ -51,6 +51,8 @@
 			<label index="tx_odsosm_layer.static_url">Static map URL</label>
 			<label index="tx_odsosm_layer.tile_url">Tile URL</label>
 			<label index="tx_odsosm_layer.max_zoom">Maximum zoom</label>
+			<label index="tx_odsosm_layer.subdomains">Subdomains</label>
+			<label index="tx_odsosm_layer.attribution">Attribution</label>
 			<label index="tx_odsosm_layer.homepage">Homepage</label>
 			<label index="tx_odsosm_marker">Marker</label>
 			<label index="tx_odsosm_marker.title">Title</label>
