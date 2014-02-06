@@ -30,7 +30,7 @@ class tx_odsosm_tcemain {
 							}
 							if($address['zip']) $fieldArray['zip']=$address['zip'];
 							if($address['city']) $fieldArray['city']=$address['city'];
-							if($address['state']) $fieldArray['region']=$address['state'];
+							if($address['state'] && $table=='tt_address') $fieldArray['region']=$address['state'];
 							if($address['country']) $fieldArray['country']=$address['country'];
 						}
 					}

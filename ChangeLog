@@ -1,3 +1,6 @@
+2014-02-06 Robert Heel <typo3@bobosch.de>
+	* Bugfix: SQL error: Unknown column 'region' in 'field list' (fe_users).
+
 2014-02-03 Robert Heel <typo3@bobosch.de>
 	* Add: Base layer "MapQuest Open Aerial" (http://www.mapquest.com/).
 	* Add: Database column for attribution.
