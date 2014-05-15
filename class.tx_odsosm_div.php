@@ -97,7 +97,7 @@ class tx_odsosm_div {
 	 * @return boolean True if the address got updated, false if not.
 	 */
 	function searchAddress(&$address,$service=0){
-		$config=tx_odsosm_div::getConfig(array('default_country','geo_service_email'));
+		$config=tx_odsosm_div::getConfig(array('default_country','geo_service_email','geo_service_user'));
 		$ll=false;
 
 		$country=strtoupper(strlen($address['country'])==2 ? $address['country'] : $config['default_country']);
@@ -151,9 +151,10 @@ class tx_odsosm_div {
 
 				if($query){
 					$query['maxRows']=1;
+					$query['username']=$config['geo_service_user'];
 
 					$xml=t3lib_div::getURL(
-						'http://ws.geonames.org/postalCodeSearch?'.http_build_query($query,'','&'),
+						'http://api.geonames.org/postalCodeSearch?'.http_build_query($query,'','&'),
 						false,
 						'User-Agent: TYPO3 extension ods_osm/'.t3lib_extMgm::getExtensionVersion('ods_osm')
 					);
@@ -161,6 +162,17 @@ class tx_odsosm_div {
 
 					if($xml){
 						$xmlobj=new SimpleXMLElement($xml);
+						if($xmlobj->status){
+							if(TYPO3_DLOG) t3lib_div::devLog('GeoNames message','ods_osm',2,(array)$xmlobj->status->attributes());
+							$o_flashMessage = t3lib_div::makeInstance(
+								't3lib_FlashMessage',
+								(string)$xmlobj->status->attributes()->message,
+								'GeoNames message',
+								t3lib_FlashMessage::WARNING
+							);
+							t3lib_FlashMessageQueue::addMessage($o_flashMessage);
+						}
+						
 						if($xmlobj->code){
 							$ll=true;
 							$address['lat']=(string)$xmlobj->code->lat;

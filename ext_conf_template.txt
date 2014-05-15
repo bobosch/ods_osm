@@ -4,8 +4,11 @@ autocomplete = 0
 # cat=basic; type=options[Only cache=0,http://www.geonames.org/=1,http://nominatim.openstreetmap.org/=2]; label=Use service to find coordinates: Please donate the service you use!
 geo_service = 1
 
-# cat=basic; type=string; label=Contact email address: Enter a contact email address for the service provider here. If not specified, email address of server admin is used.
+# cat=basic; type=string; label=Geo service contact email: Enter a contact email address for the service provider here. If not specified, email address of server admin is used.
 geo_service_email =
+
+# cat=basic; type=string; label=Geo service user name: The GeoNames service requires a username.
+geo_service_user =
 
 # cat=basic; type=string; label=Default country: Two letter countrycode used in search if no country is specified.
 default_country =

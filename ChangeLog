@@ -1,3 +1,6 @@
+2014-05-15 Robert Heel <typo3@bobosch.de>
+	* Add: Config option for GeoNames username.
+
 2014-02-19 Robert Heel <typo3@bobosch.de>
 	* Add: Default seperator parameter to geonames and nominatim http_build_query.
 
