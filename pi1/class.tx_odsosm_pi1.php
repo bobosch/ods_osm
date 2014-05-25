@@ -200,6 +200,7 @@ class tx_odsosm_pi1 extends tslib_pibase {
 							$res=$GLOBALS['TYPO3_DB']->exec_SELECTquery('*','fe_users','FIND_IN_SET("'.$item.'",usergroup)'.$this->cObj->enableFields('fe_users'));
 							while($row=$GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)){
 								$records['fe_users'][$row['uid']]=$row;
+								$records['fe_users'][$row['uid']]['group_uid']='fe_groups_'.$group['uid'];
 								$records['fe_users'][$row['uid']]['group_title']=$group['title'];
 								$records['fe_users'][$row['uid']]['group_description']=$group['description'];
 								$records['fe_users'][$row['uid']]['tx_odsosm_marker']=$group['tx_odsosm_marker'];
@@ -214,6 +215,7 @@ class tx_odsosm_pi1 extends tslib_pibase {
 							$res=$GLOBALS['TYPO3_DB']->exec_SELECT_mm_query('tt_address.*','tt_address','tt_address_group_mm','tt_address_group','AND tt_address_group.uid='.intval($group['uid']).$this->cObj->enableFields('tt_address'));
 							while($row=$GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)){
 								$records['tt_address'][$row['uid']]=$row;
+								$records['tt_address'][$row['uid']]['group_uid']='tt_address_group_'.$group['uid'];
 								$records['tt_address'][$row['uid']]['group_title']=$group['title'];
 								$records['tt_address'][$row['uid']]['group_description']=$group['description'];
 								$records['tt_address'][$row['uid']]['tx_odsosm_marker']=$group['tx_odsosm_marker'];

@@ -9,8 +9,7 @@ class tx_odsosm_leaflet extends tx_odsosm_common {
 			".$this->getMapMain()."
 			".$this->getMainLayers($layers)."
 			".$this->getMapCenter($lat,$lon,$zoom)."
-			".$this->getMarkers($markers)."
-			".$this->getMarkerLayer();
+			".$this->getMarkers($markers);
 
 		if($this->config['show_layerswitcher']){
 			$this->script.=$this->getLayerSwitcher();
@@ -47,7 +46,7 @@ class tx_odsosm_leaflet extends tx_odsosm_common {
 
 	public function getLayerSwitcher(){
 		$base=array();
-		if(is_array($this->layers[0])){
+		if(is_array($this->layers[0]) && count($this->layers[0])>1){
 			foreach($this->layers[0] as $title=>$var){
 				$base[]='"'.$title.'":'.$var;
 			}
@@ -77,6 +76,7 @@ class tx_odsosm_leaflet extends tx_odsosm_common {
 				$markerOptions = array();
 				if($item['tx_odsosm_marker'] && is_array($this->markers[$item['tx_odsosm_marker']])){
 					$marker=$this->markers[$item['tx_odsosm_marker']];
+					$icon=$GLOBALS['TSFE']->absRefPrefix.'uploads/tx_odsosm/'.$marker['icon'];
 					$iconOptions = (object) array(
 						'iconUrl' => $GLOBALS['TSFE']->absRefPrefix.'uploads/tx_odsosm/'.$marker['icon'],
 						'iconSize' => array((int)$marker['size_x'], (int)$marker['size_y']),
@@ -84,15 +84,27 @@ class tx_odsosm_leaflet extends tx_odsosm_common {
 						'popupAnchor' => array(0, (int)$marker['offset_y'])
 					);
 					$markerOptions['icon'] = 'icon: new L.Icon(' . json_encode($iconOptions) . ')';
+				}else{
+					$icon=$GLOBALS['TSFE']->absRefPrefix.t3lib_extMgm::siteRelPath('ods_osm').'res/leaflet/images/marker-icon.png';
 				}
-				$jsMarker='var markerLocation = new L.LatLng('.$item['tx_odsosm_lat'].', '.$item['tx_odsosm_lon'].');
-				var marker = new L.Marker(markerLocation, {' . implode(',', $markerOptions) . '});
-				'.$this->config['id'].'.addLayer(marker);';
+				$jsMarker.='var marker=new L.Marker(['.$item['tx_odsosm_lat'].', '.$item['tx_odsosm_lon'].'], {' . implode(',', $markerOptions) . "});\n";
 				if($item['popup']) {
-					$jsMarker.='marker.bindPopup("'.strtr($item['popup'],$this->escape_js).'");';
+					$jsMarker.='marker.bindPopup("'.strtr($item['popup'],$this->escape_js)."\");\n";
 					if ($item['initial_popup']) {
-						$jsMarker.= 'marker.openPopup();';
+						$jsMarker.="marker.openPopup();\n";
 					}
+				}
+				// Add group to layer switch
+				if($item['group_title']){
+					if(!in_array($item['group_uid'], $this->layers[1])) {
+						$this->layers[1]["<img src='".$icon."' /> ".$item['group_title']]=$item['group_uid'];
+						$jsMarker.='var '.$item['group_uid']."=L.layerGroup([marker]);\n";
+						$jsMarker.=$this->config['id'].'.addLayer('.$item['group_uid'].");\n";
+					}else{
+						$jsMarker.=$item['group_uid'].".addLayer(marker);\n";
+					}
+				}else{
+					$jsMarker.=$this->config['id'].".addLayer(marker);\n";
 				}
 				break;
 				case 'tx_odsosm_track':
@@ -122,9 +134,6 @@ class tx_odsosm_leaflet extends tx_odsosm_common {
 				break;
 		}
 		return $jsMarker;
-	}
-
-	public function getMarkerLayer(){
 	}
 }
 ?>

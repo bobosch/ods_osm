@@ -130,7 +130,8 @@ class tx_odsosm_openlayers extends tx_odsosm_common {
 					$marker=array('size_x'=>21,'size_y'=>25,'offset_x'=>-11,'offset_y'=>-25);
 					$icon=$GLOBALS['TSFE']->absRefPrefix.t3lib_extMgm::siteRelPath('ods_osm').'res/marker.png';
 				}
-				if(!in_array($item['group_title'], $this->group_titles)) {
+				// Add group to layer switch
+				if($item['group_title'] && !in_array($item['group_title'], $this->group_titles)) {
 					$this->group_titles[]=$item['group_title'];
 					$jsMarker.="var layerMarkers_".array_search($item['group_title'],$this->group_titles)."=new OpenLayers.Layer.Markers('<img src=\"".$icon."\" /> ".$item['group_title']."');\n";
 				}
