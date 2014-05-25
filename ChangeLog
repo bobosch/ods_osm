@@ -1,5 +1,6 @@
 2014-05-29 Robert Heel <typo3@bobosch.de>
-	*Add: Icon groups in leaflet layer switch.
+	* Add: Icon groups in Leaflet layer switch.
+	* Update: Leaflet to version 0.7.3.
 
 2014-05-15 Robert Heel <typo3@bobosch.de>
 	* Add: Config option for GeoNames username.
