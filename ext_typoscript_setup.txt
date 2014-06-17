@@ -31,6 +31,7 @@ plugin.tx_odsosm_pi1 {
 			10.wrap = <h2>|</h2>
 			20 = TEXT
 			20.field = description
+			20.htmlSpecialChars = 1
 		}
 		tt_address = COA
 		tt_address {
@@ -39,6 +40,7 @@ plugin.tx_odsosm_pi1 {
 			10.wrap = <h2>|</h2>
 			20 = TEXT
 			20.field = description
+			20.htmlSpecialChars = 1
 		}
 	}
 
