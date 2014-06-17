@@ -1,4 +1,5 @@
 2014-06-17 Robert Heel <typo3@bobosch.de>
+	* Bugfix: Show marker without groups again.
 	* Bugfix: htmlSpecialChars = 1 in default typoscript to allow special characters in description.
 
 2014-05-29 Robert Heel <typo3@bobosch.de>
