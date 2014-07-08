@@ -1,3 +1,6 @@
+2014-07-08 Robert Heel <typo3@bobosch.de>
+	* Bugfix: Use global var osm_x in JS (Thanks to FriesenKiwi).
+
 2014-06-17 Robert Heel <typo3@bobosch.de>
 	* Bugfix: Show marker without groups again.
 	* Bugfix: htmlSpecialChars = 1 in default typoscript to allow special characters in description.

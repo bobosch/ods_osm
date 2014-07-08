@@ -26,7 +26,7 @@ class tx_odsosm_leaflet extends tx_odsosm_common {
 	}
 
 	public function getMapMain(){
-		return "var ".$this->config['id']."=new L.Map('".$this->config['id']."');";
+		return $this->config['id']."=new L.Map('".$this->config['id']."');";
 	}
 
 	public function getLayer($layer,$i,$backpath=''){
