@@ -9,7 +9,7 @@ require_once ($BACK_PATH.'init.php');
 require_once ($BACK_PATH.'template.php');
 $LANG->includeLLFile('EXT:ods_osm/wizard/locallang.xml');
 
-require_once(PATH_t3lib."class.t3lib_scbase.php");
+require_once(PATH_t3lib.'class.t3lib_scbase.php');
 require_once(t3lib_extMgm::extPath('ods_osm').'class.tx_odsosm_common.php');
 require_once(t3lib_extMgm::extPath('ods_osm').'class.tx_odsosm_openlayers.php');
 require_once(t3lib_extMgm::extPath('ods_osm').'class.tx_odsosm_div.php');
@@ -36,8 +36,8 @@ class tx_odsosm_wizard extends t3lib_SCbase {
 			
 		$this->pageinfo = t3lib_BEfunc::readPageAccess($this->id,$this->perms_clause);
 		$access = is_array($this->pageinfo) ? 1 : 0;
-		if (($this->id && $access) || ($BE_USER->user['admin'] && !$this->id) || ($BE_USER->user["uid"] && !$this->id))    {
-			if (($BE_USER->user['admin'] && !$this->id) || ($BE_USER->user["uid"] && !$this->id)) {
+		if (($this->id && $access) || ($BE_USER->user['admin'] && !$this->id) || ($BE_USER->user['uid'] && !$this->id))    {
+			if (($BE_USER->user['admin'] && !$this->id) || ($BE_USER->user['uid'] && !$this->id)) {
 				$this->moduleContent();
 			}
 		}
@@ -107,20 +107,20 @@ class tx_odsosm_wizard extends t3lib_SCbase {
 			break;
 		}
 
-		$this->doc->JScode.="
-<script type=\"text/javascript\">
+		$this->doc->JScode.='
+<script type="text/javascript">
 	var map; //complex object of type OpenLayers.Map
 
-".$action."
+'.$action.'
 
 	function map(){
-		".$library->getMapMain()."
-		".$jsMainLayer."
-		".$library->getMapCenter($row['lat'],$row['lon'],$row['zoom'])."
+		'.$library->getMapMain().'
+		'.$jsMainLayer.'
+		'.$library->getMapCenter($row['lat'],$row['lon'],$row['zoom']).'
 		mapAction();
 	}
 </script>
-";
+';
 
 		$this->content.='<div style="position:absolute;width:100%;height:100%;" id="map"></div><script type="text/javascript">map();</script>';
 	}
@@ -166,12 +166,12 @@ class tx_odsosm_wizard extends t3lib_SCbase {
 		var pixel = new OpenLayers.Pixel(evt.xy.x,evt.xy.y);
 		var lonlat = map.getLonLatFromPixel(pixel);
 		var lonlatGCS = OpenLayers.Layer.SphericalMercator.inverseMercator(lonlat.lon, lonlat.lat);
-		".$this->getJSsetField('lonlatGCS.lon')."
-		".$this->getJSsetField('lonlatGCS.lat',array('lon'=>'lat'))."
+		".$this->getJSsetField('lonlatGCS.lon').'
+		'.$this->getJSsetField('lonlatGCS.lat',array('lon'=>'lat')).'
 		window.opener.focus();
 		close();
 	}
-";
+';
 	}
 
 	function getJSvectors(){
@@ -196,11 +196,11 @@ class tx_odsosm_wizard extends t3lib_SCbase {
 			'externalProjection': new OpenLayers.Projection('EPSG:4326')
 		});
 		var str = format.write(feature);
-		".$this->getJSsetField('str')."
+		".$this->getJSsetField('str').'
 		window.opener.focus();
 		close();
 	}
-";
+';
 	}
 
 	function getJSsetField($valueString,$replace=array()){

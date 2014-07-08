@@ -6,15 +6,13 @@ require_once t3lib_extMgm::extPath('ods_osm') . 'class.tx_odsosm_div.php';
  *
  * @author Christian Weiske <cweiske@cweiske.de>
  */
-class tx_odsosm_geocodeWizard extends t3lib_extobjbase
-{
+class tx_odsosm_geocodeWizard extends t3lib_extobjbase {
 	/**
 	 * Main function
 	 *
 	 * @returnstring Output HTML for the module
 	 */
-	public function main()
-	{
+	public function main() {
 		global $BACK_PATH, $LANG, $SOBE, $BE_USER, $TYPO3_DB;
 
 		$html = '';
@@ -34,8 +32,7 @@ class tx_odsosm_geocodeWizard extends t3lib_extobjbase
 	 *
 	 * @return string HTML code with geocoding results
 	 */
-	protected function geocode($mode)
-	{
+	protected function geocode($mode) {
 		if ($mode != 'all' && $mode != 'missing') {
 			//wrong mode
 			$message = new t3lib_FlashMessage(
@@ -102,8 +99,7 @@ class tx_odsosm_geocodeWizard extends t3lib_extobjbase
 	 *
 	 * @return string HTML code
 	 */
-	protected function overview()
-	{
+	protected function overview() {
 		global $TYPO3_DB;
 
 		$num = $TYPO3_DB->exec_SELECTcountRows(
@@ -138,8 +134,7 @@ class tx_odsosm_geocodeWizard extends t3lib_extobjbase
 	/**
 	 * @return string
 	 */
-	protected function getFormUrl()
-	{
+	protected function getFormUrl() {
 		$urlParams = $this->pObj->MOD_SETTINGS;
 		$urlParams['id'] = $this->pObj->id;
 		return $this->pObj->doc->scriptID . '?' . t3lib_div::implodeArrayForUrl(

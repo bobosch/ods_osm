@@ -1,5 +1,6 @@
 2014-07-08 Robert Heel <typo3@bobosch.de>
 	* Bugfix: Use global var osm_x in JS (Thanks to FriesenKiwi).
+	* Quality: typo3.org "DoubleQuoteUsageNotRequired" and "OpeningFunctionBraceKernighanRitchieBraceOnNewLine" changed.
 
 2014-06-17 Robert Heel <typo3@bobosch.de>
 	* Bugfix: Show marker without groups again.
