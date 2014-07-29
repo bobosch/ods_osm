@@ -66,7 +66,7 @@ class tx_odsosm_openlayers extends tx_odsosm_common {
 			$parts=parse_url($javascript_include);
 			$filename=basename($parts['path']);
 			if($parts['scheme']){
-				$script=($this->config['local_js'] && file_exists($backpath.'typo3conf/ext/ods_osm/res/layers/'.$filename)) ? $GLOBALS['TSFE']->absRefPrefix.$backpath.'typo3conf/ext/ods_osm/res/layers/'.$filename : $javascript_include;
+				$script=$javascript_include;
 			}else{
 				$script=$GLOBALS['TSFE']->absRefPrefix.$backpath.$javascript_include;
 			}
@@ -99,6 +99,8 @@ class tx_odsosm_openlayers extends tx_odsosm_common {
 			$options=array();
  			if($layer['attribution']) $options['attribution']=$layer['attribution'];
 			if($layer['max_zoom']) $options['numZoomLevels']=$layer['max_zoom'];
+			if($layer['overlay']) {$options['isBaseLayer']=false;$options['transparent']=true;}
+			$options['visibility']=$layer['visible'] ? true : false;
 
 			$params=array(
 				'"'.$layer['title'].'"',

@@ -16,7 +16,7 @@ default_country =
 # cat=basic; type=options[Off=0,On=1,Statistic only=2]; label=Enable address search cache: Cache is also needed for statistics.
 cache_enabled = 1
 
-# cat=basic; type=boolean; label=Use local javascripts and images: Do not use files from http://www.openlayers.org/ and http://www.openstreetmap.org/
+# cat=basic; type=boolean; label=Use local javascripts and images: Do not use files from http://www.openlayers.org/ and http://leafletjs.com/
 local_js = 1
 
 # cat=BE; type=string; label=Default longitude: Default longitude for BE-maps

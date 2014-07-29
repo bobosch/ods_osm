@@ -1,5 +1,6 @@
 2014-07-29 Robert Heel <typo3@bobosch.de>
 	* Bugfix: Coordinate selection wizard works now in TYPO3 6.2.
+	* Change: Remove local layer scripts and only use javascript includes with special layers.
 
 2014-07-08 Robert Heel <typo3@bobosch.de>
 	* Bugfix: Use global var osm_x in JS (Thanks to FriesenKiwi).
