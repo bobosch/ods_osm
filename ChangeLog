@@ -1,3 +1,6 @@
+2014-07-29 Robert Heel <typo3@bobosch.de>
+	* Bugfix: Coordinate selection wizard works now in TYPO3 6.2.
+
 2014-07-08 Robert Heel <typo3@bobosch.de>
 	* Bugfix: Use global var osm_x in JS (Thanks to FriesenKiwi).
 	* Quality: typo3.org "DoubleQuoteUsageNotRequired" and "OpeningFunctionBraceKernighanRitchieBraceOnNewLine" changed.

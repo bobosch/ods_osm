@@ -6,10 +6,8 @@ $MCONF['access']='user,group';
 $MCONF['script']='index.php';
 
 require_once ($BACK_PATH.'init.php');
-require_once ($BACK_PATH.'template.php');
 $LANG->includeLLFile('EXT:ods_osm/wizard/locallang.xml');
 
-require_once(PATH_t3lib.'class.t3lib_scbase.php');
 require_once(t3lib_extMgm::extPath('ods_osm').'class.tx_odsosm_common.php');
 require_once(t3lib_extMgm::extPath('ods_osm').'class.tx_odsosm_openlayers.php');
 require_once(t3lib_extMgm::extPath('ods_osm').'class.tx_odsosm_div.php');
