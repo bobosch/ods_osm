@@ -1,4 +1,5 @@
 2014-07-29 Robert Heel <typo3@bobosch.de>
+	* Add: Overlay layer "Cycling routes" (http://cycling.waymarkedtrails.org/).
 	* Bugfix: Coordinate selection wizard works now in TYPO3 6.2.
 	* Change: Remove local layer scripts and only use javascript includes with special layers.
 
