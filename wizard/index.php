@@ -86,7 +86,7 @@ class tx_odsosm_wizard extends t3lib_SCbase {
 		$library->doc=$this->doc;
 
 		// Layer
-		$layers=$GLOBALS['TYPO3_DB']->exec_SELECTgetRows('uid,title,javascript,javascript_include','tx_odsosm_layer','uid IN ('.$this->config['layer'].')');
+		$layers=$GLOBALS['TYPO3_DB']->exec_SELECTgetRows('*','tx_odsosm_layer','uid IN ('.$this->config['layer'].')');
 		$jsMainLayer=$library->getMainLayers($layers,$GLOBALS['BACK_PATH'].'../');
 
 		// Include CSS
