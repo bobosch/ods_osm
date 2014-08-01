@@ -70,66 +70,46 @@ function mapMarker(oMap,oLayer,fLat,fLon,sIcon,iSizeX,iSizeY,iOffsetX,iOffsetY,s
 	oLayer.addMarker(oMarker);
 }
 
-function mapGpx_new(oMap,sFilename,sTitle,sColor,iWidth){
+function mapGpx(oMap,sFilename,sTitle,sColor,iWidth){
 	var ext=sFilename.split('.').pop();
-	var sFormat;
+	var oProtocol;
 	switch(ext){
 		case 'gpx':
-			oFormat=OpenLayers.Format.GPX;
+			oProtocol = new OpenLayers.Protocol.HTTP({
+				url: sFilename,
+				format: new OpenLayers.Format.GPX
+			});
 			break;
 		case 'json':
-			oFormat=OpenLayers.Format.GeoJSON;
+			oProtocol = new OpenLayers.Protocol.HTTP({
+				url: sFilename,
+				format: new OpenLayers.Format.GeoJSON
+			});
 			break;
 		case 'kml':
-			oFormat=OpenLayers.Format.KML;
+			oProtocol = new OpenLayers.Protocol.HTTP({
+				url: sFilename,
+				format: new OpenLayers.Format.KML
+			});
 			break;
 		case 'wkt':
-			oFormat=OpenLayers.Format.WKT;
+			oProtocol = new OpenLayers.Protocol.HTTP({
+				url: sFilename,
+				format: new OpenLayers.Format.WKT
+			});
 			break;
 	}
 
-	var oLayer = new OpenLayers.Layer.Vector(sTitle, {
-		strategies: [new OpenLayers.Strategy.Fixed()],
-		protocol: new OpenLayers.Protocol.HTTP({
-			url: sFilename,
-			format: oFormat,
-			style: {
-				strokeColor: sColor,
-				strokeWidth: iWidth,
-				strokeOpacity: 1
-			},
-			projection: new OpenLayers.Projection('EPSG:4326')
-		})
-	})
-	oMap.addLayer(oLayer);
-}
-
-function mapGpx(oMap,sFilename,sTitle,sColor,iWidth,bVisible){
-	var ext=sFilename.split('.').pop();
-	var sFormat;
-	switch(ext){
-		case 'gpx':
-			oFormat=OpenLayers.Format.GPX;
-			break;
-		case 'json':
-			oFormat=OpenLayers.Format.GeoJSON;
-			break;
-		case 'kml':
-			oFormat=OpenLayers.Format.KML;
-			break;
-		case 'wkt':
-			oFormat=OpenLayers.Format.WKT;
-			break;
-	}
-	var oLayer = new OpenLayers.Layer.GML(sTitle,sFilename,{
-		format: oFormat,
-		style: {
+	var oLayer = new OpenLayers.Layer.Vector(sTitle,{
+		protocol: oProtocol,
+		styleMap: new OpenLayers.StyleMap({
 			strokeColor: sColor,
 			strokeWidth: iWidth,
 			strokeOpacity: 1
-		},
-		visibility: bVisible,
-		projection: new OpenLayers.Projection('EPSG:4326')
+		}),
+		strategies: [new OpenLayers.Strategy.Fixed()],
+		projection: new OpenLayers.Projection("EPSG:4326"),
+// 		onFeatureInsert: function(e) {e.layer.map.zoomToExtent(e.geometry.bounds);}
 	});
 	oMap.addLayer(oLayer);
 }

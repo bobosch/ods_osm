@@ -1,3 +1,6 @@
+2014-08-01 Robert Heel <typo3@bobosch.de>
+	* Update: OpenLayers to version 2.13.1
+
 2014-07-30 Robert Heel <typo3@bobosch.de>
 	* Bugfix: New static URL for mapnik.
 
@@ -31,7 +34,7 @@
 2014-02-03 Robert Heel <typo3@bobosch.de>
 	* Add: Base layer "MapQuest Open Aerial" (http://www.mapquest.com/).
 	* Add: Database column for attribution.
-	* Change: Also use tile_url in openlayers.
+	* Change: Also use tile_url in OpenLayers.
 
 2014-01-12 Robert Heel <typo3@bobosch.de>
 	* Bug: Use default configuration if extension is not configured.
@@ -95,7 +98,7 @@
 
 2012-08-06 Robert Heel <rheel@1drop.de>
 	* Change: Change default setting to use local javascript.
-	* Workaround: Use remote openlayers version 2.11 (gpx tracks don't work in 2.12).
+	* Workaround: Use remote OpenLayers version 2.11 (gpx tracks don't work in 2.12).
 
 2012-07-20 Robert Heel <rheel@1drop.de>
 	* Bug #39087: Popup marker for leaflet library.
@@ -110,7 +113,7 @@
 
 2012-05-31 Robert Heel <rheel@1drop.de>
 	* Add: Leaflet library (http://leaflet.cloudmade.com/) (optimized for mobile devices).
-	* Add: TS option "library" with values "leaflet", "openlayers" and "static".
+	* Add: TS option "library" with values "leaflet", "OpenLayers" and "static".
 	* Change: Removed TS options "static" and "static_layer" (use library=static and layer=x).
 	* Change: Extract all javascript generation code to class files.
 
