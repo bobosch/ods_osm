@@ -11,6 +11,7 @@
 	* Quality: typo3.org "DoubleQuoteUsageNotRequired" and "OpeningFunctionBraceKernighanRitchieBraceOnNewLine" changed.
 
 2014-06-17 Robert Heel <typo3@bobosch.de>
+	* Bugfix: Compatibility to TYPO3 6.2 (Thanks to Charles Brunet).
 	* Bugfix: Show marker without groups again.
 	* Bugfix: htmlSpecialChars = 1 in default typoscript to allow special characters in description.
 
