@@ -8,6 +8,7 @@
 	* Bugfix: Use leaflet files from leaflet.com if configured.
 	* Update: Documentation.
 	* Update: Google maps to api v3.
+	* Update: Bing maps with api key.
 
 2014-07-30 Robert Heel <typo3@bobosch.de>
 	* Bugfix: New static URL for mapnik.

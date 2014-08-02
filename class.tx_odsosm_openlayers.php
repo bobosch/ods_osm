@@ -72,6 +72,7 @@ class tx_odsosm_openlayers extends tx_odsosm_common {
 		}
 		if($layer['javascript']){
 			$jsMainLayer=$this->config['id'].".addLayer(".strtr($layer['javascript'],array(
+				'###STATIC_SCRIPT###'=>$this->config['static_script'],
 				'###TITLE###'=>$layer['title'],
 				'###VISIBLE###'=>"'visibility':".($layer['visible'] ? 'true' : 'false'),
 			)).");\n";
