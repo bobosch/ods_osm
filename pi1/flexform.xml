@@ -19,7 +19,7 @@
 								<allowed>pages,fe_users,fe_groups,tx_odsosm_track,tx_odsosm_vector,tt_address,tt_address_group</allowed>
 								<size>5</size>
 								<minitems>0</minitems>
-								<maxitems>-1</maxitems>
+								<maxitems>9999</maxitems>
 								<autoSizeMax>20</autoSizeMax>
 								<show_thumbs>1</show_thumbs>
 							</config>

@@ -1,5 +1,6 @@
 2014-08-01 Robert Heel <typo3@bobosch.de>
 	* Update: OpenLayers to version 2.13.1
+	* Bugfix: Set maximum number of markers to 9999 (-1 don't work in TYPO3 6.2).
 
 2014-07-30 Robert Heel <typo3@bobosch.de>
 	* Bugfix: New static URL for mapnik.
