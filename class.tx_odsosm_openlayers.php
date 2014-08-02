@@ -47,10 +47,7 @@ class tx_odsosm_openlayers extends tx_odsosm_common {
 			$vars.
 			$this->config['id']."=new OpenLayers.Map('".$this->config['id']."',{
 				controls:[".implode(',',array_keys($controls))."],
-				maxExtent:new OpenLayers.Bounds(-20037508.34,-20037508.34,20037508.34,20037508.34),
-				maxResolution:156543.0399,
 				numZoomLevels:19,
-				units:'m',
 				projection:new OpenLayers.Projection('EPSG:900913'),
 				displayProjection:new OpenLayers.Projection('EPSG:4326')
 			});\n".
@@ -100,6 +97,7 @@ class tx_odsosm_openlayers extends tx_odsosm_common {
  			if($layer['attribution']) $options['attribution']=$layer['attribution'];
 			if($layer['max_zoom']) $options['numZoomLevels']=$layer['max_zoom'];
 			if($layer['overlay']) {$options['isBaseLayer']=false;$options['transparent']=true;}
+			$options['tileOptions']['crossOriginKeyword']=null;
 			$options['visibility']=$layer['visible'] ? true : false;
 
 			$params=array(
