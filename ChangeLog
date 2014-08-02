@@ -7,6 +7,7 @@
 	* Bugfix: Parameter crossOriginKeword is needed by OpenLayers >2.11.
 	* Bugfix: Use leaflet files from leaflet.com if configured.
 	* Update: Documentation.
+	* Update: Google maps to api v3.
 
 2014-07-30 Robert Heel <typo3@bobosch.de>
 	* Bugfix: New static URL for mapnik.
