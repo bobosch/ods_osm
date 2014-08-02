@@ -2,6 +2,7 @@
 	* Update: OpenLayers to version 2.13.1
 	* Add: Base layer "Stamen Toner" (http://maps.stamen.com/#toner/).
 	* Add: Base layer "Stamen Watercolor" (http://maps.stamen.com/#watercolor/).
+	* Add: Overlay layer "Public Transport Lines" (http://www.openptmap.org/).
 	* Bugfix: Set maximum number of markers to 9999 (-1 don't work in TYPO3 6.2).
 	* Bugfix: Parameter crossOriginKeword is needed by OpenLayers >2.11.
 	* Bugfix: Use leaflet files from leaflet.com if configured.
