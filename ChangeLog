@@ -2,6 +2,7 @@
 	* Update: OpenLayers to version 2.13.1
 	* Bugfix: Set maximum number of markers to 9999 (-1 don't work in TYPO3 6.2).
 	* Bugfix: Parameter crossOriginKeword is needed by OpenLayers >2.11.
+	* Bugfix: Use leaflet files from leaflet.com if configured.
 
 2014-07-30 Robert Heel <typo3@bobosch.de>
 	* Bugfix: New static URL for mapnik.
