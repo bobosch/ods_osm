@@ -74,7 +74,7 @@ CREATE TABLE tx_odsosm_layer (
 	tile_url varchar(64) NOT NULL DEFAULT '',
 	max_zoom tinyint(2) unsigned NOT NULL DEFAULT '0',
 	subdomains varchar(8) NOT NULL DEFAULT '',
-	attribution varchar(255) NOT NULL default '',
+	attribution varchar(300) NOT NULL default '',
 	homepage varchar(255) NOT NULL DEFAULT '',
 	
 	PRIMARY KEY (uid),
