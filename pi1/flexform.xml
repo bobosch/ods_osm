@@ -193,6 +193,10 @@
 										<numIndex index="1">openlayers</numIndex>
 									</numIndex>
 									<numIndex index="3" type="array">
+										<numIndex index="0">OpenLayers 3</numIndex>
+										<numIndex index="1">openlayers3</numIndex>
+									</numIndex>
+									<numIndex index="4" type="array">
 										<numIndex index="0">Static</numIndex>
 										<numIndex index="1">static</numIndex>
 									</numIndex>
@@ -245,6 +249,24 @@
 							</config>
 						</TCEforms>
 					</openlayers_layer>
+					<openlayers3_layer>
+						<TCEforms>
+							<label>LLL:EXT:ods_osm/locallang_db.xml:tt_content.pi_flexform.layer</label>
+							<displayCond>FIELD:library:=:openlayers3</displayCond>
+							<config>
+								<type>select</type>
+								<size>1</size>
+								<foreign_table>tx_odsosm_layer</foreign_table>
+								<foreign_table_where>AND tx_odsosm_layer.hidden=0 AND tx_odsosm_layer.tile_url!="" ORDER BY tx_odsosm_layer.sorting</foreign_table_where>
+								<items type="array">
+									<numIndex index="0" type="array">
+										<numIndex index="0"></numIndex>
+										<numIndex index="1"></numIndex>
+									</numIndex>
+								</items>
+							</config>
+						</TCEforms>
+					</openlayers3_layer>
 					<static_layer>
 						<TCEforms>
 							<label>LLL:EXT:ods_osm/locallang_db.xml:tt_content.pi_flexform.layer</label>

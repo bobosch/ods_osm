@@ -1,5 +1,6 @@
 2014-08-03 Robert Heel <typo3@bobosch.de>
-	* Change: Cleanup service classes.
+	* Change: Cleanup library classes.
+	* Add: Library OpenLayers 3.
 
 2014-08-01 Robert Heel <typo3@bobosch.de>
 	* Update: OpenLayers to version 2.13.1
