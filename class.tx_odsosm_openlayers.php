@@ -3,25 +3,6 @@ class tx_odsosm_openlayers extends tx_odsosm_common {
 	protected $scripts=array();
 	protected $group_titles=array();
 
-	public function getMap($layers,$markers,$lon,$lat,$zoom){
-		$this->script="
-			".$this->getMapMain()."
-			".$this->getMainLayers($layers)."
-			".$this->getMapCenter($lat,$lon,$zoom)."
-			".$this->getMarkers($markers)."
-			".$this->getMarkerLayer();
-
- 		$this->getMapCore();
-
-		/* ==================================================
-			Map container
-		================================================== */
-		$content='<div style="width:'.$this->config['width'].';height:'.$this->config['height'].';" id="'.$this->config['id'].'"></div>';
-		if($this->config['layerswitcher.']['div']) $content.='<div id="'.$this->config['id'].'_layerswitcher" class="olControlLayerSwitcher"></div>';
-
-		return $content;
-	}
-
 	public function getMapCore($backpath=''){
 		$path=$backpath.t3lib_extMgm::siteRelPath('ods_osm').'res/';
 		$scripts=array(
@@ -54,8 +35,16 @@ class tx_odsosm_openlayers extends tx_odsosm_common {
 			($this->config['show_layerswitcher']==2 ? "oLayerSwitcher.maximizeControl();\n" : "")
 		);
 	}
+	
+	public function getMapCenter($lat,$lon,$zoom){
+		return "mapCenter(".$this->config['id'].",".floatval($lat).",".floatval($lon).",".intval($zoom).");";
+	}
 
-	public function getLayer($layer,$i,$backpath=''){
+	protected function getLayerSwitcher(){
+		if($this->config['layerswitcher.']['div']) $content.='<div id="'.$this->config['id'].'_layerswitcher" class="olControlLayerSwitcher"></div>';
+	}
+
+	protected function getLayer($layer,$i,$backpath=''){
 		if($layer['javascript_include']){
 			$javascript_include=strtr($layer['javascript_include'],array(
 				'###STATIC_SCRIPT###'=>$this->config['static_script'],
@@ -115,11 +104,7 @@ class tx_odsosm_openlayers extends tx_odsosm_common {
 		return $jsMainLayer;
 	}
 
-	public function getMapCenter($lat,$lon,$zoom){
-		return "mapCenter(".$this->config['id'].",".floatval($lat).",".floatval($lon).",".intval($zoom).");";
-	}
-
-	public function getMarker($item,$table){
+	protected function getMarker($item,$table){
 		$jsMarker='';
 		switch($table){
 			case 'fe_users':
@@ -148,7 +133,7 @@ class tx_odsosm_openlayers extends tx_odsosm_common {
 		return $jsMarker;
 	}
 
-	public function getMarkerLayer(){
+	protected function getMarkerLayer(){
 		$jsMarkerLayer='';
 		foreach($this->group_titles as $key=>$title) {
 			$jsMarkerLayer.= $this->config['id'].".addLayer(layerMarkers_".$key.");\n";

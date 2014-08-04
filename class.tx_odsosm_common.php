@@ -1,6 +1,6 @@
 <?php
 class tx_odsosm_common {
-	public $cObj;
+	public $cObj; // Must set from instantiating class
 	public $markers;
 
 	protected $config;
@@ -11,10 +11,33 @@ class tx_odsosm_common {
 		"'"=>"\'",
 		'"'=>'\"',
 	);
-	protected $script=false;
+	protected $script;
+
+	// Implement these functions
+	public function getMapCore($backpath=''){}
+	public function getMapMain(){}
+	public function getMapCenter($lat,$lon,$zoom){}
+	protected function getLayer($layer,$i,$backpath=''){}
+	protected function getMarker($item,$table){}
 
 	public function init($config) {
 		$this->config=$config;
+	}
+
+	public function getMap($layers,$markers,$lon,$lat,$zoom){
+		$this->script="
+			".$this->getMapMain()."
+			".$this->getMainLayers($layers)."
+			".$this->getMapCenter($lat,$lon,$zoom)."
+			".$this->getMarkers($markers);
+
+		if($this->config['show_layerswitcher']){
+			$this->script.=$this->getLayerSwitcher();
+		}
+
+		$this->getMapCore();
+
+		return $this->getHtml();
 	}
 
 	public function getMainLayers($layers,$backpath=''){
@@ -30,7 +53,11 @@ class tx_odsosm_common {
 		return $jsMainLayer;
 	}
 
-	public function getMarkers($markers){
+	public function getScript(){
+		return $this->script;
+	}
+
+	protected function getMarkers($markers){
 		$jsMarker='';
 		foreach($markers as $table=>$items){
 			foreach($items as $item){
@@ -40,11 +67,11 @@ class tx_odsosm_common {
 		return $jsMarker;
 	}
 
-	public function getScript(){
-		return $this->script;
+	protected function getLayerSwitcher(){
+		return '';
 	}
 
-	public function getHtml(){
+	protected function getHtml(){
 		return '<div style="width:'.$this->config['width'].';height:'.$this->config['height'].';" id="'.$this->config['id'].'"></div>';
 	}
 }

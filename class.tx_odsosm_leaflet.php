@@ -2,22 +2,6 @@
 class tx_odsosm_leaflet extends tx_odsosm_common {
 	protected $layers;
 
-	public function getMap($layers,$markers,$lon,$lat,$zoom){
- 		$this->getMapCore();
-
-		$this->script="
-			".$this->getMapMain()."
-			".$this->getMainLayers($layers)."
-			".$this->getMapCenter($lat,$lon,$zoom)."
-			".$this->getMarkers($markers);
-
-		if($this->config['show_layerswitcher']){
-			$this->script.=$this->getLayerSwitcher();
-		}
-
-		return $this->getHtml();
-	}
-
 	public function getMapCore($backpath=''){
 		$path=$backpath.t3lib_extMgm::siteRelPath('ods_osm').'res/';
 		$path_leaflet=($this->config['local_js'] ? $path.'leaflet/' : 'http://cdn.leafletjs.com/leaflet-0.7.3/');
@@ -30,7 +14,7 @@ class tx_odsosm_leaflet extends tx_odsosm_common {
 		return $this->config['id']."=new L.Map('".$this->config['id']."');";
 	}
 
-	public function getLayer($layer,$i,$backpath=''){
+	protected function getLayer($layer,$i,$backpath=''){
 		$var=preg_replace('/[^a-z]/','',strtolower($layer['title']));
 		$this->layers[$layer['overlay']][$layer['title']]=$var;
 
@@ -45,7 +29,7 @@ class tx_odsosm_leaflet extends tx_odsosm_common {
 		';
 	}
 
-	public function getLayerSwitcher(){
+	protected function getLayerSwitcher(){
 		$base=array();
 		if(is_array($this->layers[0]) && count($this->layers[0])>1){
 			foreach($this->layers[0] as $title=>$var){
@@ -69,7 +53,7 @@ class tx_odsosm_leaflet extends tx_odsosm_common {
 		';
 	}
 
-	public function getMarker($item,$table){
+	protected function getMarker($item,$table){
 		$jsMarker='';
 		switch($table){
 			case 'fe_users':

@@ -1,3 +1,6 @@
+2014-08-03 Robert Heel <typo3@bobosch.de>
+	* Change: Cleanup service classes.
+
 2014-08-01 Robert Heel <typo3@bobosch.de>
 	* Update: OpenLayers to version 2.13.1
 	* Add: Base layer "Stamen Toner" (http://maps.stamen.com/#toner/).
