@@ -1,3 +1,6 @@
+2014-08-18 Robert Heel <typo3@bobosch.de>
+	* Bug #61011: Invalid argument supplied for foreach() in class.tx_odsosm_pi1.php on line 127
+
 2014-08-03 Robert Heel <typo3@bobosch.de>
 	* Change: Cleanup library classes.
 	* Add: Library OpenLayers 3.

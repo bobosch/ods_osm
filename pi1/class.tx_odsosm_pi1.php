@@ -124,10 +124,12 @@ class tx_odsosm_pi1 extends tslib_pibase {
 		$this->config['marker']=$this->extractGroup($this->config['marker']);
 		
 		// Show this marker's popup intially
-		foreach ($this->config['marker_popup_initial'] as $table => $records) {
-			foreach ($records as $uid) {
-				if (isset($this->config['marker'][$table][$uid])) {
-					$this->config['marker'][$table][$uid]['initial_popup'] = true;
+		if(is_array($this->config['marker_popup_initial'])){
+			foreach($this->config['marker_popup_initial'] as $table=>$records) {
+				foreach($records as $uid) {
+					if(isset($this->config['marker'][$table][$uid])) {
+						$this->config['marker'][$table][$uid]['initial_popup'] = true;
+					}
 				}
 			}
 		}

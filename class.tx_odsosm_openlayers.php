@@ -120,6 +120,7 @@ class tx_odsosm_openlayers extends tx_odsosm_common {
 				if(!in_array($item['group_title'], $this->group_titles)) {
 					$this->group_titles[$item['group_uid']]=$item['group_title'];
 					$jsMarker.="var layerMarkers_".$item['group_uid']."=new OpenLayers.Layer.Markers('<img src=\"".$icon."\" /> ".$item['group_title']."');\n";
+					$jsMarker.=$this->config['id'].'.addLayer(layerMarkers_'.$item['group_uid'].');';
 				}
 				$jsMarker.="mapMarker(".$this->config['id'].",layerMarkers_".$item['group_uid'].",".$item['tx_odsosm_lat'].",".$item['tx_odsosm_lon'].",'".$icon."',".$marker['size_x'].",".$marker['size_y'].",".$marker['offset_x'].",".$marker['offset_y'].",'".strtr($item['popup'],$this->escape_js)."',".intval($this->config['show_popups']).",".intval($item['initial_popup']).");\n";
 			break;
@@ -131,14 +132,6 @@ class tx_odsosm_openlayers extends tx_odsosm_common {
 			break;
 		}
 		return $jsMarker;
-	}
-
-	protected function getMarkerLayer(){
-		$jsMarkerLayer='';
-		foreach($this->group_titles as $key=>$title) {
-			$jsMarkerLayer.= $this->config['id'].".addLayer(layerMarkers_".$key.");\n";
-		}
-		return $jsMarkerLayer;
 	}
 }
 ?>
