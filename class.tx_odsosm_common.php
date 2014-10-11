@@ -10,6 +10,7 @@ class tx_odsosm_common {
 		"\r"=>"<br />",
 		"'"=>"\'",
 		'"'=>'\"',
+		'/'=>'\/',
 	);
 	protected $script;
 
