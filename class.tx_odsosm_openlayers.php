@@ -1,6 +1,5 @@
 <?php
 class tx_odsosm_openlayers extends tx_odsosm_common {
-	protected $scripts=array();
 	protected $group_titles=array();
 
 	public function getMapCore($backpath=''){
@@ -9,7 +8,7 @@ class tx_odsosm_openlayers extends tx_odsosm_common {
 			($this->config['path_openlayers'] ? $this->config['path_openlayers'] : ($this->config['local_js'] ? $path.'OpenLayers' : 'http://www.openlayers.org/api')).'/OpenLayers.js',
 			$path.'tx_odsosm_openlayers.js',
 		);
-		tx_odsosm_div::addJsFiles(array_merge($scripts,$this->scripts));
+		tx_odsosm_div::addJsFiles($scripts);
 	}
 
 	public function getMapMain(){

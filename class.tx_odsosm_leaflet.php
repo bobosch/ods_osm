@@ -1,17 +1,20 @@
 <?php
 class tx_odsosm_leaflet extends tx_odsosm_common {
 	protected $layers;
+	protected $path_leaflet;
 
 	public function getMapCore($backpath=''){
 		$path=$backpath.t3lib_extMgm::siteRelPath('ods_osm').'res/';
-		$path_leaflet=($this->config['local_js'] ? $path.'leaflet/' : 'http://cdn.leafletjs.com/leaflet-0.7.3/');
-		$GLOBALS['TSFE']->getPageRenderer()->addCssFile($path_leaflet.'leaflet.css');
-		$scripts=array($path_leaflet.'leaflet.js', $path.'leaflet-gpx/gpx.js');
+		$this->path_leaflet=($this->config['local_js'] ? $path.'leaflet/' : 'http://cdn.leafletjs.com/leaflet-0.7.3/');
+		$GLOBALS['TSFE']->getPageRenderer()->addCssFile($this->path_leaflet.'leaflet.css');
+		$scripts=array($this->path_leaflet.'leaflet.js', $path.'leaflet-gpx/gpx.js');
 		tx_odsosm_div::addJsFiles($scripts);
 	}
 
 	public function getMapMain(){
-		return $this->config['id']."=new L.Map('".$this->config['id']."');";
+		return
+			$this->config['id']."=new L.Map('".$this->config['id']."');
+			L.Icon.Default.imagePath='".$this->path_leaflet."images';";
 	}
 
 	protected function getLayer($layer,$i,$backpath=''){

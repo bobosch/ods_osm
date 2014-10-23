@@ -13,6 +13,7 @@ class tx_odsosm_common {
 		'/'=>'\/',
 	);
 	protected $script;
+	protected $scripts=array();
 
 	// Implement these functions
 	public function getMapCore($backpath=''){}
@@ -26,6 +27,8 @@ class tx_odsosm_common {
 	}
 
 	public function getMap($layers,$markers,$lon,$lat,$zoom){
+		$this->getMapCore();
+
 		$this->script="
 			".$this->getMapMain()."
 			".$this->getMainLayers($layers)."
@@ -36,8 +39,6 @@ class tx_odsosm_common {
 			$this->script.=$this->getLayerSwitcher();
 		}
 
-		$this->getMapCore();
-
 		return $this->getHtml();
 	}
 
@@ -45,12 +46,11 @@ class tx_odsosm_common {
 		// Main layer
 		$i=0;
 		$jsMainLayer='';
-		$scripts=array();
 		foreach($layers as $layer){
 			$jsMainLayer.=$this->getLayer($layer,$i,$backpath);
 			$i++;
 		}
-		tx_odsosm_div::addJsFiles($scripts);
+		tx_odsosm_div::addJsFiles($this->scripts);
 		return $jsMainLayer;
 	}
 
