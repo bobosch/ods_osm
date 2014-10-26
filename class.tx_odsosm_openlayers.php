@@ -3,7 +3,7 @@ class tx_odsosm_openlayers extends tx_odsosm_common {
 	protected $group_titles=array();
 
 	public function getMapCore($backpath=''){
-		$path=$backpath.t3lib_extMgm::siteRelPath('ods_osm').'res/';
+		$path=($backpath ? $backpath : $GLOBALS['TSFE']->absRefPrefix).t3lib_extMgm::siteRelPath('ods_osm').'res/';
 		$scripts=array(
 			($this->config['path_openlayers'] ? $this->config['path_openlayers'] : ($this->config['local_js'] ? $path.'OpenLayers' : 'http://www.openlayers.org/api')).'/OpenLayers.js',
 			$path.'tx_odsosm_openlayers.js',

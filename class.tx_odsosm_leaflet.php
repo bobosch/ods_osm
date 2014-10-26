@@ -4,7 +4,7 @@ class tx_odsosm_leaflet extends tx_odsosm_common {
 	protected $path_leaflet;
 
 	public function getMapCore($backpath=''){
-		$path=$backpath.t3lib_extMgm::siteRelPath('ods_osm').'res/';
+		$path=($backpath ? $backpath : $GLOBALS['TSFE']->absRefPrefix).t3lib_extMgm::siteRelPath('ods_osm').'res/';
 		$this->path_leaflet=($this->config['local_js'] ? $path.'leaflet/' : 'http://cdn.leafletjs.com/leaflet-0.7.3/');
 		$GLOBALS['TSFE']->getPageRenderer()->addCssFile($this->path_leaflet.'leaflet.css');
 		$scripts=array($this->path_leaflet.'leaflet.js', $path.'leaflet-gpx/gpx.js');
