@@ -16,6 +16,7 @@
 			<label index="tt_content.pi_flexform.layer">Base layer</label>
 			<label index="tt_content.pi_flexform.library">Library</label>
 			<label index="tt_content.pi_flexform.mouse_navigation">Mouse navigation</label>
+			<label index="tt_content.pi_flexform.position_show">Show current position</label>
 			<label index="tt_content.pi_flexform.show_pan_zoom">Show pan/zoom</label>
 			<label index="tt_content.pi_flexform.show_pan_zoom.I.1">Bar</label>
 			<label index="tt_content.pi_flexform.show_pan_zoom.I.2">+/-</label>
@@ -86,6 +87,7 @@
 			<label index="tt_content.pi_flexform.layer">Hauptebene</label>
 			<label index="tt_content.pi_flexform.library">Programm</label>
 			<label index="tt_content.pi_flexform.mouse_navigation">Navigation mit der Maus</label>
+			<label index="tt_content.pi_flexform.position_show">Aktuelle Position anzeigen</label>
 			<label index="tt_content.pi_flexform.show_pan_zoom">Schwenken/zoomen anzeigen</label>
 			<label index="tt_content.pi_flexform.show_pan_zoom.I.1">Balken</label>
 			<label index="tt_content.pi_flexform.show_pan_zoom.I.2">+/-</label>

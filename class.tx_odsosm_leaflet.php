@@ -50,10 +50,9 @@ class tx_odsosm_leaflet extends tx_odsosm_common {
 	}
 
 	public function getMapCenter($lat,$lon,$zoom){
-		return '
-			var center = new L.LatLng('.floatval($lat).','.floatval($lon).');
-			'.$this->config['id'].'.setView(center,'.intval($zoom).');
-		';
+		$return='var center = new L.LatLng('.floatval($lat).','.floatval($lon).');'.$this->config['id'].'.setView(center,'.intval($zoom).');';
+		if($this->config['position']) $return.=$this->config['id'].'.locate();'.$this->config['id'].'.on("locationfound",function(e){var radius=e.accuracy/2;L.circle(e.latlng,radius).addTo('.$this->config['id'].');});';
+		return $return;
 	}
 
 	protected function getMarker($item,$table){
