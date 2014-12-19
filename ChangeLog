@@ -1,3 +1,6 @@
+2014-12-19 Robert Heel <typo3@bobosch.de>
+	* Bug #63990: Replace mysql function with TYPO3 function.
+
 2014-12-17 Robert Heel <typo3@bobosch.de>
 	* Add: Option to show current (gps) position in leaflet.
 	* Bugfix: Change links from toolserver.org to wmflabs.org.

@@ -267,7 +267,7 @@ class tx_odsosm_div {
 		$res=$GLOBALS['TYPO3_DB']->exec_SELECTquery(
 			'*',
 			'tx_odsosm_geocache',
-			implode(' AND ',tx_odsosm_div::getSet($set))
+			implode(' AND ',tx_odsosm_div::getSet($set,'tx_odsosm_geocache'))
 		);
 		$row=$GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
 		if($row){
@@ -305,10 +305,10 @@ class tx_odsosm_div {
 		}
 	}
 
-	function getSet($data){
+	function getSet($data,$table){
 		$set=array();
 		foreach($data as $field=>$value){
-			$set[$field]='`'.$field.'`="'.mysql_real_escape_string($value).'"';
+			$set[$field]='`'.$field.'`='.$GLOBALS['TYPO3_DB']->fullQuoteStr($value,$table);
 		}
 		return($set);
 	}
