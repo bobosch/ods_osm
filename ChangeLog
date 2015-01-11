@@ -1,3 +1,6 @@
+2015-01-11 Robert Heel <typo3@bobosch.de>
+	* Bug #64119: Import ext_tables_static+adt.sql on extension update.
+
 2014-12-19 Robert Heel <typo3@bobosch.de>
 	* Bug #63990: Replace mysql function with TYPO3 function.
 
