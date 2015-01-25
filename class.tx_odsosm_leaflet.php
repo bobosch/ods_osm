@@ -42,7 +42,7 @@ class tx_odsosm_leaflet extends tx_odsosm_common {
 		$overlay=array();
 		if(is_array($this->layers[1])){
 			foreach($this->layers[1] as $title=>$var){
-				$overlay[]='"'.$title.'":'.$var;
+				$overlay[]='\''.$title.'\':'.$var;
 			}
 		}
 		return 'var layersControl=new L.Control.Layers({'.implode(',',$base).'},{'.implode(',',$overlay).'});
@@ -84,8 +84,8 @@ class tx_odsosm_leaflet extends tx_odsosm_common {
 				// Add group to layer switch
 				if($item['group_title']){
 					if(!in_array($item['group_uid'], $this->layers[1])) {
-						$this->layers[1]["<img src='".$icon."' /> ".$item['group_title']]=$item['group_uid'];
-						$jsMarker.='var '.$item['group_uid']."=L.layerGroup([marker]);\n";
+						$this->layers[1]['<img src="'.$icon.'"> '.$item['group_title']] = $item['group_uid'];
+						$jsMarker.='var '.$item['group_uid']." = L.layerGroup([marker]);\n";
 						$jsMarker.=$this->config['id'].'.addLayer('.$item['group_uid'].");\n";
 					}else{
 						$jsMarker.=$item['group_uid'].".addLayer(marker);\n";
