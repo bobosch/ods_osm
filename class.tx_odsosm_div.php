@@ -314,7 +314,7 @@ class tx_odsosm_div {
 	}
 	
 	/* Get extension configuration, and if not available use default configuration. Optional parameter checks if single value is available. */
-	function getConfig($values=array()){
+	static function getConfig($values=array()){
 		$config=unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['ods_osm']);
 		$getDefault=array();
 		
