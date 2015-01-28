@@ -42,7 +42,7 @@ class tx_odsosm_leaflet extends tx_odsosm_common {
 		$overlay=array();
 		if(is_array($this->layers[1])){
 			foreach($this->layers[1] as $title=>$var){
-				$overlay[]='"'.$title.'":'.$var;
+				$overlay[]='\''.$title.'\':'.$var;
 			}
 		}
 		return 'var layersControl=new L.Control.Layers({'.implode(',',$base).'},{'.implode(',',$overlay).'});
@@ -84,8 +84,8 @@ class tx_odsosm_leaflet extends tx_odsosm_common {
 				// Add group to layer switch
 				if($item['group_title']){
 					if(!in_array($item['group_uid'], $this->layers[1])) {
-						$this->layers[1]["<img src='".$icon."' /> ".$item['group_title']]=$item['group_uid'];
-						$jsMarker.='var '.$item['group_uid']."=L.layerGroup([marker]);\n";
+						$this->layers[1]['<img src="'.$icon.'"> '.$item['group_title']] = $item['group_uid'];
+						$jsMarker.='var '.$item['group_uid']." = L.layerGroup([marker]);\n";
 						$jsMarker.=$this->config['id'].'.addLayer('.$item['group_uid'].");\n";
 					}else{
 						$jsMarker.=$item['group_uid'].".addLayer(marker);\n";
@@ -95,15 +95,30 @@ class tx_odsosm_leaflet extends tx_odsosm_common {
 				}
 				break;
 				case 'tx_odsosm_track':
-					$path = t3lib_extMgm::siteRelPath('ods_osm').'res/leaflet-gpx/';
-					$jsMarker = "var trackGPX = new L.GPX(";
-					$jsMarker .= '"' . $GLOBALS['TSFE']->absRefPrefix.'uploads/tx_odsosm/' . $item['file'] . '"';
-					$jsMarker .= ", { color: '" . $item['color'] . "', clickable: false ";
-					$jsMarker .= ", marker_options: { startIconUrl: '" . $path . "pin-icon-start.png',";
-					$jsMarker .= "endIconUrl: '" . $path . "pin-icon-end.png',";
-					$jsMarker .= "shadowUrl: '" . $path . "pin-shadow.png'} ";
-					$jsMarker .= "});";
-					$jsMarker .= $this->config['id'] . ".addLayer(trackGPX);";
+					$jsMarker = '';
+					$path = t3lib_extMgm::siteRelPath('ods_osm') .'res/';
+					// Add tracks to layerswitcher
+					$this->layers[1][$item['title']] = 'track_' .$item['uid'];
+
+					// use 3rd party KML parser for KML-files
+					if ( strtolower(pathinfo($item['file'], PATHINFO_EXTENSION)) === 'kml') {
+						// include javascript file for KML support
+						tx_odsosm_div::addJsFiles(array($path .'leaflet-plugins/layer/vector/KML.js'));
+
+						$jsMarker .= 'var track_' .$item['uid'] .' = new L.KML(';
+						$jsMarker .= '"' .$GLOBALS['TSFE']->absRefPrefix .'uploads/tx_odsosm/' .$item['file'] .'"';
+						$jsMarker .= ");\n";
+					} else {
+						$path .= 'leaflet-gpx/';
+						$jsMarker .= 'var track_' .$item['uid'] .' = new L.GPX(';
+						$jsMarker .= '"' .$GLOBALS['TSFE']->absRefPrefix .'uploads/tx_odsosm/' .$item['file'] .'"';
+						$jsMarker .= ", { color: '" .$item['color'] ."', clickable: false";
+						$jsMarker .= ", marker_options: { startIconUrl: '" .$path ."pin-icon-start.png'";
+						$jsMarker .= ", endIconUrl: '" .$path ."pin-icon-end.png'";
+						$jsMarker .= ", shadowUrl: '" .$path ."pin-shadow.png'}";
+						$jsMarker .= "});\n";
+					}
+					$jsMarker .= $this->config['id'] .".addLayer(track_" .$item['uid'] .");\n";
 				break;
 				case 'tx_odsosm_vector':
 					$vData = json_decode($item['data']);
