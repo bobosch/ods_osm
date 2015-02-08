@@ -132,5 +132,125 @@ class tx_odsosm_openlayers extends tx_odsosm_common {
 		}
 		return $jsMarker;
 	}
+
+	/* ********************
+		Backend include
+	******************** */
+	
+	public function getMapBE($layers,$mode,$lat,$lon,$zoom){
+		$jsMainLayer=$this->getMainLayers($layers,$GLOBALS['BACK_PATH'].'../');
+
+		// Include JS
+		$this->getMapCore($GLOBALS['BACK_PATH'].'../');
+		tx_odsosm_div::addJsFiles($this->scripts);
+
+		// Action
+		switch($mode){
+			case 'vector':
+				$action=$this->getJSvectors();
+			break;
+			default:
+				$action=$this->getJScoordinates();
+			break;
+		}
+
+		return 'var map; //complex object of type OpenLayers.Map
+
+'.$action.'
+
+	function map(){
+		'.$this->getMapMain().'
+		'.$jsMainLayer.'
+		'.$this->getMapCenter($lat,$lon,$zoom).'
+		mapAction();
+	}';
+	}
+
+	function getJScoordinates(){
+		return "
+	OpenLayers.Control.Click = OpenLayers.Class(OpenLayers.Control, {                
+		defaultHandlerOptions: {
+			'single': true,
+			'double': false,
+			'pixelTolerance': 0,
+			'stopSingle': false,
+			'stopDouble': false
+		},
+		initialize: function(options) {
+			this.handlerOptions = OpenLayers.Util.extend(
+				{}, this.defaultHandlerOptions
+			);
+			OpenLayers.Control.prototype.initialize.apply(
+				this, arguments
+			); 
+			this.handler = new OpenLayers.Handler.Click(
+				this, {
+					'click': this.onClick
+				}, this.handlerOptions
+			);
+		}, 
+		onClick: getCoordinates
+	});
+
+	function mapAction(){
+		map.addControl(new OpenLayers.Control.MousePosition());
+		var control = new OpenLayers.Control.Click({
+			handlerOptions: {
+				'single': true
+			}
+		});
+		map.addControl(control);
+		control.activate();
+	}
+
+	function getCoordinates(evt){
+		var pixel = new OpenLayers.Pixel(evt.xy.x,evt.xy.y);
+		var lonlat = map.getLonLatFromPixel(pixel);
+		var lonlatGCS = OpenLayers.Layer.SphericalMercator.inverseMercator(lonlat.lon, lonlat.lat);
+		".$this->getJSsetField('lonlatGCS.lon').'
+		'.$this->getJSsetField('lonlatGCS.lat',array('lon'=>'lat')).'
+		window.opener.focus();
+		close();
+	}
+';
+	}
+
+	function getJSvectors(){
+		return "
+	function mapAction(){
+		var vectors = new OpenLayers.Layer.Vector('Vector Layer');
+		map.addControl(new OpenLayers.Control.MousePosition());
+		map.addControl(new OpenLayers.Control.EditingToolbar(vectors));
+		var options = {
+			hover: true,
+			onSelect: getVectors
+		};
+		var control = new OpenLayers.Control.SelectFeature(vectors, options);
+		map.addControl(control);
+		map.addLayer(vectors);
+		control.activate();
+	}
+
+	function getVectors(feature){
+		var format = new OpenLayers.Format.GeoJSON({
+			'internalProjection': map.baseLayer.projection,
+			'externalProjection': new OpenLayers.Projection('EPSG:4326')
+		});
+		var str = format.write(feature);
+		".$this->getJSsetField('str').'
+		window.opener.focus();
+		close();
+	}
+';
+	}
+
+	function getJSsetField($valueString,$replace=array()){
+		$replace_hr=$replace;
+		$replace_hr['_hr']='';
+		return "
+		window.opener.document.editform['".strtr($this->P['itemName'],$replace_hr)."'].value=".$valueString.";
+		window.opener.document.editform['".strtr($this->P['itemName'],$replace)."'].value=".$valueString.";
+		window.opener.".strtr($this->P['fieldChangeFunc']['TBE_EDITOR_fieldChanged'],$replace);
+	}	
 }
 ?>
