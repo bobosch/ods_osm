@@ -1,5 +1,6 @@
 2015-02-08 Robert Heel <typo3@bobosch.de>
 	* Update: geoPHP to version 1.0
+	* Change: Include only used leaflet plugins.
 
 2015-01-25 Klaus Weidenbach <Klaus.Weidenbach@gmx.net>
 	* Add: KML support when using Leaflet library.

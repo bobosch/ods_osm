@@ -39,6 +39,8 @@ class tx_odsosm_common {
 			$this->script.=$this->getLayerSwitcher();
 		}
 
+		tx_odsosm_div::addJsFiles($this->scripts);
+
 		return $this->getHtml();
 	}
 

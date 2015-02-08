@@ -6,7 +6,7 @@ class tx_odsosm_openlayers3 extends tx_odsosm_common {
  		$path=($backpath ? $backpath : $GLOBALS['TSFE']->absRefPrefix).t3lib_extMgm::siteRelPath('ods_osm').'res/';
  		$path=($this->config['local_js'] ? $path.'OpenLayers3/' : 'http://ol3js.org/en/master/');
 		$GLOBALS['TSFE']->getPageRenderer()->addCssFile($path.'css/ol.css');
-		tx_odsosm_div::addJsFiles(array($path.'build/ol.js'));
+		$this->scripts=array($path.'build/ol.js');
 	}
 
 	public function getMapMain(){
