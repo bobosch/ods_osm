@@ -12,10 +12,9 @@
  */
 class GeoRSS extends GeoAdapter
 {
-  private $default_namespace = 'georss';
   private $namespace = FALSE;
   private $nss = ''; // Name-space string. eg 'georss:'
-
+  
   /**
    * Read GeoRSS string into geometry objects
    *
@@ -46,11 +45,10 @@ class GeoRSS extends GeoAdapter
     // Change to lower-case, strip all CDATA, and de-namespace
     $text = strtolower($text);
     $text = preg_replace('/<!\[cdata\[(.*?)\]\]>/s','',$text);
-    $text = str_replace('georss:','',$text);
-    
+        
     // Load into DOMDOcument
     $xmlobj = new DOMDocument();
-    $xmlobj->loadXML($text);
+    @$xmlobj->loadXML($text);
     if ($xmlobj === false) {
       throw new Exception("Invalid GeoRSS: ". $text);
     }
@@ -123,9 +121,15 @@ class GeoRSS extends GeoAdapter
     $polygons = array();
     $poly_elements = $this->xmlobj->getElementsByTagName('polygon');
     foreach ($poly_elements as $poly) {
-      $points = $this->getPointsFromCoords(trim($poly->firstChild->nodeValue));
-      $exterior_ring = new LineString($points);
-      $polygons[] = new Polygon(array($exterior_ring));
+      if ($poly->hasChildNodes()) {
+        $points = $this->getPointsFromCoords(trim($poly->firstChild->nodeValue));
+        $exterior_ring = new LineString($points);
+        $polygons[] = new Polygon(array($exterior_ring));
+      }
+      else {
+        // It's an EMPTY polygon
+        $polygons[] = new Polygon(); 
+      }
     }
     return $polygons;
   }
