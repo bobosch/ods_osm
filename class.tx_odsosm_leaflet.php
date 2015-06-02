@@ -20,12 +20,22 @@ class tx_odsosm_leaflet extends tx_odsosm_common {
 		$var=preg_replace('/[^a-z]/','',strtolower($layer['title']));
 		$this->layers[$layer['overlay']][$layer['title']]=$var;
 
-		$options=array();
-		if($layer['max_zoom']) $options['maxZoom']=$layer['max_zoom'];
-		if($layer['subdomains']) $options['subdomains']=$layer['subdomains'];
-		if($layer['attribution']) $options['attribution']=$layer['attribution'];
+		if($layer['javascript_leaflet']){
+			$jsLayer=strtr($layer['javascript_leaflet'],array(
+				'###STATIC_SCRIPT###'=>$this->config['static_script'],
+				'###TITLE###'=>$layer['title'],
+				'###VISIBLE###'=>"'visibility':".($layer['visible'] ? 'true' : 'false'),
+			)).";\n";
+		}elseif($layer['tile_url']){
+			$options=array();
+			if($layer['max_zoom']) $options['maxZoom']=$layer['max_zoom'];
+			if($layer['subdomains']) $options['subdomains']=$layer['subdomains'];
+			if($layer['attribution']) $options['attribution']=$layer['attribution'];
 
-		$jsLayer = "\n\t\t\tvar ".$var.' = new L.TileLayer(\''.$layer['tile_url'].'\','.json_encode($options).');';
+			$jsLayer = 'new L.TileLayer(\''.$layer['tile_url'].'\','.json_encode($options).');';
+		}
+
+		$jsLayer = "\n\t\t\tvar ".$var.' = '.$jsLayer;
 
 		// only show one base layer on the map
 		if($i == 0)

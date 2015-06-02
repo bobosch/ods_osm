@@ -58,8 +58,8 @@ class tx_odsosm_openlayers extends tx_odsosm_common {
 			// Include javascript only once if different layers use the same javascript
 			$this->scripts[$filename]=$script;
 		}
-		if($layer['javascript']){
-			$jsMainLayer=$this->config['id'].".addLayer(".strtr($layer['javascript'],array(
+		if($layer['javascript_openlayers']){
+			$jsMainLayer=$this->config['id'].".addLayer(".strtr($layer['javascript_openlayers'],array(
 				'###STATIC_SCRIPT###'=>$this->config['static_script'],
 				'###TITLE###'=>$layer['title'],
 				'###VISIBLE###'=>"'visibility':".($layer['visible'] ? 'true' : 'false'),

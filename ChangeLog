@@ -1,3 +1,6 @@
+2015-06-02 Robert Heel <typo3@bobosch.de>
+	* Change: Allow different javascript calls for OpenLayers and Leaflet.
+
 2015-06-02 dawnbreak
 	* Update: leaflet-plugins to 1.3.3.
 	* Bugfix: Bug with base layers and leaflet. 

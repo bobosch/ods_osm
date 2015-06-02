@@ -47,8 +47,10 @@
 			<label index="tx_odsosm_layer">Layer</label>
 			<label index="tx_odsosm_layer.title">Title</label>
 			<label index="tx_odsosm_layer.overlay">Is overlay</label>
-			<label index="tx_odsosm_layer.javascript">JavaScript</label>
 			<label index="tx_odsosm_layer.javascript_include">Include static JavaScript</label>
+			<label index="tx_odsosm_layer.javascript_leaflet">JavaScript for Leaflet</label>
+			<label index="tx_odsosm_layer.javascript_openlayers">JavaScript for OpenLayers</label>
+			<label index="tx_odsosm_layer.javascript_openlayers3">JavaScript for OpenLayers 3</label>
 			<label index="tx_odsosm_layer.static_url">Static map URL</label>
 			<label index="tx_odsosm_layer.tile_url">Tile URL</label>
 			<label index="tx_odsosm_layer.max_zoom">Maximum zoom</label>
@@ -117,8 +119,10 @@
 			<label index="tx_odsosm_track.visible">Sichtbar auf Karte</label>
 			<label index="tx_odsosm_layer.title">Titel</label>
 			<label index="tx_odsosm_layer.overlay">Ist Overlay</label>
-			<label index="tx_odsosm_layer.javascript">JavaScript</label>
 			<label index="tx_odsosm_layer.javascript_include">Statisches JavaScript einbinden</label>
+			<label index="tx_odsosm_layer.javascript_leaflet">JavaScript für Leaflet</label>
+			<label index="tx_odsosm_layer.javascript_openlayers">JavaScript für OpenLayers</label>
+			<label index="tx_odsosm_layer.javascript_openlayers3">JavaScript für OpenLayers 3</label>
 			<label index="tx_odsosm_layer.static_url">URL für statische Karte</label>
 			<label index="tx_odsosm_layer.tile_url">Tile URL</label>
 			<label index="tx_odsosm_layer.max_zoom">Maximaler Zoom</label>

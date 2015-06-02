@@ -230,7 +230,7 @@
 								<maxitems>99</maxitems>
 								<autoSizeMax>20</autoSizeMax>
 								<foreign_table>tx_odsosm_layer</foreign_table>
-								<foreign_table_where>AND tx_odsosm_layer.hidden=0 AND tx_odsosm_layer.tile_url!="" ORDER BY tx_odsosm_layer.sorting</foreign_table_where>
+								<foreign_table_where>AND tx_odsosm_layer.hidden=0 AND (tx_odsosm_layer.javascript_leaflet!="" OR tx_odsosm_layer.tile_url!="") ORDER BY tx_odsosm_layer.sorting</foreign_table_where>
 							</config>
 						</TCEforms>
 					</leaflet_layer>
@@ -245,7 +245,7 @@
 								<maxitems>99</maxitems>
 								<autoSizeMax>20</autoSizeMax>
 								<foreign_table>tx_odsosm_layer</foreign_table>
-								<foreign_table_where>AND tx_odsosm_layer.hidden=0 AND (tx_odsosm_layer.javascript!="" OR tx_odsosm_layer.tile_url!="") ORDER BY tx_odsosm_layer.sorting</foreign_table_where>
+								<foreign_table_where>AND tx_odsosm_layer.hidden=0 AND (tx_odsosm_layer.javascript_openlayers!="" OR tx_odsosm_layer.tile_url!="") ORDER BY tx_odsosm_layer.sorting</foreign_table_where>
 							</config>
 						</TCEforms>
 					</openlayers_layer>

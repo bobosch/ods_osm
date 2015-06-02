@@ -126,7 +126,7 @@ $TCA['tx_odsosm_geocache'] = array (
 $TCA['tx_odsosm_layer'] = array (
 	'ctrl' => $TCA['tx_odsosm_layer']['ctrl'],
 	'interface' => array (
-		'showRecordFieldList' => 'hidden,title,overlay,javascript,javascript_include,static_url,tile_url,max_zoom,subdomains,attribution,homepage'
+		'showRecordFieldList' => 'hidden,title,overlay,javascript_include,javascript_leaflet,javascript_openlayers,javascript_openlayers3,static_url,tile_url,max_zoom,subdomains,attribution,homepage'
 	),
 	'feInterface' => $TCA['tx_odsosm_layer']['feInterface'],
 	'columns' => array (
@@ -154,14 +154,6 @@ $TCA['tx_odsosm_layer'] = array (
 				'default' => '0'
 			)
 		),
-		'javascript' => array (        
-			'exclude' => 0,        
-			'label' => 'LLL:EXT:ods_osm/locallang_db.xml:tx_odsosm_layer.javascript',        
-			'config' => array (
-				'type' => 'input',
-				'size' => '30',
-			)
-		),
 		'javascript_include' => array (        
 			'exclude' => 0,        
 			'label' => 'LLL:EXT:ods_osm/locallang_db.xml:tx_odsosm_layer.javascript_include',        
@@ -169,6 +161,30 @@ $TCA['tx_odsosm_layer'] = array (
 				'type' => 'input',
 				'size' => '30',
 				'checkbox' => '',
+			)
+		),
+		'javascript_leaflet' => array (        
+			'exclude' => 0,        
+			'label' => 'LLL:EXT:ods_osm/locallang_db.xml:tx_odsosm_layer.javascript_leaflet',        
+			'config' => array (
+				'type' => 'input',
+				'size' => '30',
+			)
+		),
+		'javascript_openlayers' => array (        
+			'exclude' => 0,        
+			'label' => 'LLL:EXT:ods_osm/locallang_db.xml:tx_odsosm_layer.javascript_openlayers',        
+			'config' => array (
+				'type' => 'input',
+				'size' => '30',
+			)
+		),
+		'javascript_openlayers3' => array (        
+			'exclude' => 0,        
+			'label' => 'LLL:EXT:ods_osm/locallang_db.xml:tx_odsosm_layer.javascript_openlayers3',        
+			'config' => array (
+				'type' => 'input',
+				'size' => '30',
 			)
 		),
 		'static_url' => array (        
@@ -222,7 +238,7 @@ $TCA['tx_odsosm_layer'] = array (
 		),
 	),
 	'types' => array (
-		'0' => array('showitem' => 'hidden;;;;1-1-1, title, overlay, javascript, javascript_include, static_url, tile_url, max_zoom, subdomains, attribution, homepage')
+		'0' => array('showitem' => 'hidden;;;;1-1-1, title, overlay, javascript_include, javascript_leaflet, javascript_openlayers, javascript_openlayers3, static_url, tile_url, max_zoom, subdomains, attribution, homepage')
 	),
 	'palettes' => array (
 		'1' => array('showitem' => '')
