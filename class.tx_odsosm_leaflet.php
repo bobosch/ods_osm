@@ -25,10 +25,13 @@ class tx_odsosm_leaflet extends tx_odsosm_common {
 		if($layer['subdomains']) $options['subdomains']=$layer['subdomains'];
 		if($layer['attribution']) $options['attribution']=$layer['attribution'];
 
-		return '
-			var '.$var.' = new L.TileLayer(\''.$layer['tile_url'].'\','.json_encode($options).');
-			'.$this->config['id'].'.addLayer('.$var.');
-		';
+		$jsLayer = "\n\t\t\tvar ".$var.' = new L.TileLayer(\''.$layer['tile_url'].'\','.json_encode($options).');';
+
+		// only show one base layer on the map
+		if($i == 0)
+			$jsLayer .= "\n\t\t\t".$this->config['id'].'.addLayer('.$var.');';
+
+		return $jsLayer;
 	}
 
 	protected function getLayerSwitcher(){
