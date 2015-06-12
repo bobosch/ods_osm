@@ -1,3 +1,6 @@
+2015-06-12 dawnbreak
+	* Change: Add scalebar to leaflet map.
+
 2015-06-02 Robert Heel <typo3@bobosch.de>
 	* Change: Allow different javascript calls for OpenLayers and Leaflet.
 

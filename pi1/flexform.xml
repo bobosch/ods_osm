@@ -389,7 +389,7 @@
 					<show_scalebar>
 						<TCEforms>
 							<label>LLL:EXT:ods_osm/locallang_db.xml:tt_content.pi_flexform.show_scalebar</label>
-							<displayCond>FIELD:library:=:openlayers</displayCond>
+							<displayCond>FIELD:library:IN:openlayers,leaflet</displayCond>
 							<config>
 								<type>check</type>
 							</config>
