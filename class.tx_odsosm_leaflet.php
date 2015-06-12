@@ -11,9 +11,18 @@ class tx_odsosm_leaflet extends tx_odsosm_common {
 	}
 
 	public function getMapMain(){
-		return
+		if($this->config['show_scalebar']) $controls['scalebar']='new L.control.scale()';
+
+		$vars='';
+		foreach($controls as $var=>$obj){
+			$vars .= "\n\t\t\t".$this->config['id'].'.addControl('.$obj.");";
+		}
+
+		return(
 			$this->config['id']."=new L.Map('".$this->config['id']."');
-			L.Icon.Default.imagePath='".$this->path_leaflet."images';";
+			L.Icon.Default.imagePath='".$this->path_leaflet."images';"
+			.$vars
+		);
 	}
 
 	protected function getLayer($layer,$i,$backpath=''){
