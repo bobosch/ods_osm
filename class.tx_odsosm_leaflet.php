@@ -11,6 +11,7 @@ class tx_odsosm_leaflet extends tx_odsosm_common {
 	}
 
 	public function getMapMain(){
+		$controls = array();
 		if($this->config['show_scalebar']) $controls['scalebar']='new L.control.scale()';
 
 		$vars='';
