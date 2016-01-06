@@ -149,13 +149,22 @@ class tx_odsosm_leaflet extends tx_odsosm_common {
 				case 'tx_odsosm_vector':
 					$vData = json_decode($item['data']);
 					$jsMarker .= "poly = new L.Polygon([";
-					$isFirst = true;
-					foreach($vData->{'geometry'}->{'coordinates'}[0] as $coord) {
-						if (!$isFirst)
+					$firstPolygon = true;
+					foreach($vData->{'geometry'}->{'coordinates'} as $polygon) {
+						if (!$firstPolygon)
 							$jsMarker .= ",";
 						else
-							$isFirst = false;
-						$jsMarker .= "[" . $coord[1] . ", " . $coord[0] . "]";
+							$firstPolygon = false;
+						$jsMarker .= "[";
+						$isFirst = true;
+						foreach($polygon as $coord) {
+							if (!$isFirst)
+								$jsMarker .= ",";
+							else
+								$isFirst = false;
+							$jsMarker .= "[" . $coord[1] . ", " . $coord[0] . "]";
+						}
+						$jsMarker .= "]";
 					}
 					$jsMarker .= "], {});";
 					$jsMarker .= $this->config['id'] . ".addLayer(poly);";
