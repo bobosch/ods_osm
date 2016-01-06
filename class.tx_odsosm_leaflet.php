@@ -159,6 +159,9 @@ class tx_odsosm_leaflet extends tx_odsosm_common {
 					}
 					$jsMarker .= "], {});";
 					$jsMarker .= $this->config['id'] . ".addLayer(poly);";
+					if($item['popup']) {
+						$jsMarker .= "poly.bindPopup(\"".strtr($item['popup'],$this->escape_js)."\");\n";
+					}
 				break;
 		}
 		return $jsMarker;
