@@ -1,11 +1,12 @@
 <?php
 class tx_odsosm_leaflet extends tx_odsosm_common {
 	protected $layers;
+	protected $path_res;
 	protected $path_leaflet;
 
 	public function getMapCore($backpath=''){
-		$path=($backpath ? $backpath : $GLOBALS['TSFE']->absRefPrefix).t3lib_extMgm::siteRelPath('ods_osm').'res/';
-		$this->path_leaflet=($this->config['local_js'] ? $path.'leaflet/' : 'http://cdn.leafletjs.com/leaflet-0.7.3/');
+		$this->path_res=($backpath ? $backpath : $GLOBALS['TSFE']->absRefPrefix).t3lib_extMgm::siteRelPath('ods_osm').'res/';
+		$this->path_leaflet=($this->config['local_js'] ? $this->path_res.'leaflet/' : 'http://cdn.leafletjs.com/leaflet-0.7.3/');
 		$GLOBALS['TSFE']->getPageRenderer()->addCssFile($this->path_leaflet.'leaflet.css');
 		$this->scripts=array($this->path_leaflet.'leaflet.js');
 	}
@@ -19,11 +20,19 @@ class tx_odsosm_leaflet extends tx_odsosm_common {
 			$vars .= "\n\t\t\t".$this->config['id'].'.addControl('.$obj.");";
 		}
 
-		return(
+		$jsMain=
 			$this->config['id']."=new L.Map('".$this->config['id']."');
 			L.Icon.Default.imagePath='".$this->path_leaflet."images';"
-			.$vars
-		);
+			.$vars;
+		if($this->config['cluster']){
+			$GLOBALS['TSFE']->getPageRenderer()->addCssFile($this->path_res.'leaflet-markercluster/MarkerCluster.css');
+			$GLOBALS['TSFE']->getPageRenderer()->addCssFile($this->path_res.'leaflet-markercluster/MarkerCluster.Default.css');
+			$this->scripts['leaflet-markercluster']=$this->path_res.'leaflet-markercluster/leaflet.markercluster.js';
+			$jsMain.=$this->config['id'].'_c=new L.MarkerClusterGroup({maxClusterRadius:80});';
+			$jsMain.=$this->config['id'].'.addLayer('.$this->config['id'].'_c);';
+		}
+
+		return $jsMain;
 	}
 
 	protected function getLayer($layer,$i,$backpath=''){
@@ -79,6 +88,7 @@ class tx_odsosm_leaflet extends tx_odsosm_common {
 
 	protected function getMarker($item,$table){
 		$jsMarker='';
+		$addLayer='';
 		switch($table){
 			case 'fe_users':
 			case 'tt_address':
@@ -108,49 +118,52 @@ class tx_odsosm_leaflet extends tx_odsosm_common {
 					if(!in_array($item['group_uid'], $this->layers[1])) {
 						$this->layers[1]['<img src="'.$icon.'"> '.$item['group_title']] = $item['group_uid'];
 						$jsMarker.='var '.$item['group_uid']." = L.layerGroup([marker]);\n";
-						$jsMarker.=$this->config['id'].'.addLayer('.$item['group_uid'].");\n";
+						$addLayer=$item['group_uid'];
 					}else{
 						$jsMarker.=$item['group_uid'].".addLayer(marker);\n";
 					}
 				}else{
-					$jsMarker.=$this->config['id'].".addLayer(marker);\n";
+					$addLayer = 'marker';
 				}
 				break;
-				case 'tx_odsosm_track':
-					$jsMarker = '';
-					$path = t3lib_extMgm::siteRelPath('ods_osm') .'res/';
-					// Add tracks to layerswitcher
-					$this->layers[1][$item['title']] = 'track_' .$item['uid'];
+			case 'tx_odsosm_track':
+				$jsMarker = '';
+				$path = t3lib_extMgm::siteRelPath('ods_osm') .'res/';
+				// Add tracks to layerswitcher
+				$this->layers[1][$item['title']] = 'track_' .$item['uid'];
 
-					switch(strtolower(pathinfo($item['file'], PATHINFO_EXTENSION))){
-						case 'kml':
-							// include javascript file for KML support
-							$this->scripts['leaflet-plugins']=$path .'leaflet-plugins/layer/vector/KML.js';
+				switch(strtolower(pathinfo($item['file'], PATHINFO_EXTENSION))){
+					case 'kml':
+						// include javascript file for KML support
+						$this->scripts['leaflet-plugins']=$path .'leaflet-plugins/layer/vector/KML.js';
 
-							$jsMarker .= 'var track_' .$item['uid'] .' = new L.KML(';
-							$jsMarker .= '"' .$GLOBALS['TSFE']->absRefPrefix .'uploads/tx_odsosm/' .$item['file'] .'"';
-							$jsMarker .= ");\n";
-							break;
-						case 'gpx':
-							// include javascript file for GPX support
-							$this->scripts['leaflet-gpx']=$path.'leaflet-gpx/gpx.js';
+						$jsMarker .= 'var track_' .$item['uid'] .' = new L.KML(';
+						$jsMarker .= '"' .$GLOBALS['TSFE']->absRefPrefix .'uploads/tx_odsosm/' .$item['file'] .'"';
+						$jsMarker .= ");\n";
+						break;
+					case 'gpx':
+						// include javascript file for GPX support
+						$this->scripts['leaflet-gpx']=$path.'leaflet-gpx/gpx.js';
 
-							$jsMarker .= 'var track_' .$item['uid'] .' = new L.GPX(';
-							$jsMarker .= '"' .$GLOBALS['TSFE']->absRefPrefix .'uploads/tx_odsosm/' .$item['file'] .'"';
-							$jsMarker .= ", { color: '" .$item['color'] ."', clickable: false";
-							$jsMarker .= ", marker_options: { startIconUrl: '" .$path ."leaflet-gpx/pin-icon-start.png'";
-							$jsMarker .= ", endIconUrl: '" .$path ."leaflet-gpx/pin-icon-end.png'";
-							$jsMarker .= ", shadowUrl: '" .$path ."leaflet-gpx/pin-shadow.png'}";
-							$jsMarker .= "});\n";
-							break;
-					}
-					$jsMarker .= $this->config['id'] .".addLayer(track_" .$item['uid'] .");\n";
+						$jsMarker .= 'var track_' .$item['uid'] .' = new L.GPX(';
+						$jsMarker .= '"' .$GLOBALS['TSFE']->absRefPrefix .'uploads/tx_odsosm/' .$item['file'] .'"';
+						$jsMarker .= ", { color: '" .$item['color'] ."', clickable: false";
+						$jsMarker .= ", marker_options: { startIconUrl: '" .$path ."leaflet-gpx/pin-icon-start.png'";
+						$jsMarker .= ", endIconUrl: '" .$path ."leaflet-gpx/pin-icon-end.png'";
+						$jsMarker .= ", shadowUrl: '" .$path ."leaflet-gpx/pin-shadow.png'}";
+						$jsMarker .= "});\n";
+						break;
+				}
+				$addLayer = 'track_'.$item['uid'];
 				break;
-				case 'tx_odsosm_vector':
-					$jsMarker .= 'vector_' . $item['uid'] . ' = new L.geoJson(' . $item['data'] . ');';
-					$jsMarker .= $this->config['id'] . '.addLayer(vector_' . $item['uid'] .");\n";
+			case 'tx_odsosm_vector':
+				$jsMarker .= 'var vector_' . $item['uid'] . ' = new L.geoJson(' . $item['data'] . ');';
+				$addLayer = 'vector_' . $item['uid'];
 				break;
 		}
+
+		if($addLayer) $jsMarker .= $this->config['id'] . ($this->config['cluster'] ? '_c':'') . '.addLayer(' . $addLayer . ');' . "\n";
+
 		return $jsMarker;
 	}
 }

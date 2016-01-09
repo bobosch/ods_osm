@@ -9,6 +9,7 @@
 			<label index="tt_address_group.tx_odsosm_marker">Marker</label>
 			<label index="tt_content.list_type_pi1">Openstreetmap</label>
 			<label index="tt_content.pi_flexform.sheet_sDEF">Default</label>
+			<label index="tt_content.pi_flexform.cluster">Cluster markers</label>
 			<label index="tt_content.pi_flexform.marker">Marker to show</label>
 			<label index="tt_content.pi_flexform.marker_popup_intial">Show this marker's popup intially</label>
 			<label index="tt_content.pi_flexform.width">Width</label>
@@ -82,6 +83,7 @@
 			<label index="tt_address_group.tx_odsosm_marker">Marker</label>
 			<label index="tt_content.list_type_pi1">Openstreetmap</label>
 			<label index="tt_content.pi_flexform.sheet_sDEF">Standard</label>
+			<label index="tt_content.pi_flexform.cluster">Markierungen bündeln</label>
 			<label index="tt_content.pi_flexform.marker">Markierungen anzeigen</label>
 			<label index="tt_content.pi_flexform.marker_popup_intial">Markierungspopup anfangs anzeigen</label>
 			<label index="tt_content.pi_flexform.width">Breite</label>
