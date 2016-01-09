@@ -96,7 +96,7 @@ class tx_odsosm_pi1 extends tslib_pibase {
 			foreach($conf['marker.'] as $name=>$value){
 				if(!empty($value)){
 					if(!is_array($this->config['marker'][$name])) $this->config['marker'][$name]=array();
-					$this->config['marker'][$name]=$this->config['marker'][$name]+explode(',',$value);
+					$this->config['marker'][$name]=array_merge($this->config['marker'][$name],explode(',',$value));
 				}
 			}
 		}

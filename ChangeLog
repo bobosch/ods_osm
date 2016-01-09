@@ -1,3 +1,6 @@
+2016-01-09 Robert Heel <typo3@bobosch.de>
+	* Bugfix: Unsupported operand types in class.tx_odsosm_pi1.php on line 99
+
 2015-12-14 Robert Heel <typo3@bobosch.de>
 	* Bug 72208: Invalid argument supplied for foreach() in class.tx_odsosm_leaflet.php line 17
 
