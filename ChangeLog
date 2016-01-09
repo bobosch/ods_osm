@@ -1,4 +1,5 @@
 2016-01-09 Robert Heel <typo3@bobosch.de>
+	* Change: New version of update script.
 	* Change: Use leaflet geoJson object for vector elements.
 	* Bugfix: Unsupported operand types in class.tx_odsosm_pi1.php on line 99
 
