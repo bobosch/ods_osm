@@ -87,8 +87,9 @@ class tx_odsosm_leaflet extends tx_odsosm_common {
 	}
 
 	protected function getMarker($item,$table){
-		$jsMarker='';
-		$addLayer='';
+		$jsMarker = '';
+		$jsElementVar = $table . '_' . $item['uid'];
+		$jsLayerVar = $jsElementVar;
 		switch($table){
 			case 'fe_users':
 			case 'tt_address':
@@ -106,38 +107,30 @@ class tx_odsosm_leaflet extends tx_odsosm_common {
 				}else{
 					$icon=$GLOBALS['TSFE']->absRefPrefix.t3lib_extMgm::siteRelPath('ods_osm').'res/leaflet/images/marker-icon.png';
 				}
-				$jsMarker.='var marker=new L.Marker(['.$item['tx_odsosm_lat'].', '.$item['tx_odsosm_lon'].'], {' . implode(',', $markerOptions) . "});\n";
-				if($item['popup']) {
-					$jsMarker.='marker.bindPopup("'.strtr($item['popup'],$this->escape_js)."\");\n";
-					if ($item['initial_popup']) {
-						$jsMarker.="marker.openPopup();\n";
-					}
-				}
+				$jsMarker.='var ' . $jsElementVar . ' = new L.Marker([' . $item['tx_odsosm_lat'] . ', ' . $item['tx_odsosm_lon'] . '], {' . implode(',', $markerOptions) . "});\n";
 				// Add group to layer switch
-				if($item['group_title']){
+				if($item['group_title']) {
 					if(!in_array($item['group_uid'], $this->layers[1])) {
-						$this->layers[1]['<img src="'.$icon.'"> '.$item['group_title']] = $item['group_uid'];
-						$jsMarker.='var '.$item['group_uid']." = L.layerGroup([marker]);\n";
-						$addLayer=$item['group_uid'];
-					}else{
-						$jsMarker.=$item['group_uid'].".addLayer(marker);\n";
+						$this->layers[1]['<img src="'.$icon.'"> ' . $item['group_title']] = $item['group_uid'];
+						$jsMarker .= 'var '.$item['group_uid'].' = L.layerGroup([' . $jsElementVar . "]);\n";
+						$jsLayerVar = $item['group_uid'];
+					} else {
+						$jsMarker .= $item['group_uid'].'.addLayer(' . $jsElementVar . ");\n";
+						$jsLayerVar = false;
 					}
-				}else{
-					$addLayer = 'marker';
 				}
 				break;
 			case 'tx_odsosm_track':
-				$jsMarker = '';
 				$path = t3lib_extMgm::siteRelPath('ods_osm') .'res/';
 				// Add tracks to layerswitcher
-				$this->layers[1][$item['title']] = 'track_' .$item['uid'];
+				$this->layers[1][$item['title']] = $jsElementVar;
 
 				switch(strtolower(pathinfo($item['file'], PATHINFO_EXTENSION))){
 					case 'kml':
 						// include javascript file for KML support
 						$this->scripts['leaflet-plugins']=$path .'leaflet-plugins/layer/vector/KML.js';
 
-						$jsMarker .= 'var track_' .$item['uid'] .' = new L.KML(';
+						$jsMarker .= 'var ' . $jsElementVar .' = new L.KML(';
 						$jsMarker .= '"' .$GLOBALS['TSFE']->absRefPrefix .'uploads/tx_odsosm/' .$item['file'] .'"';
 						$jsMarker .= ");\n";
 						break;
@@ -145,7 +138,7 @@ class tx_odsosm_leaflet extends tx_odsosm_common {
 						// include javascript file for GPX support
 						$this->scripts['leaflet-gpx']=$path.'leaflet-gpx/gpx.js';
 
-						$jsMarker .= 'var track_' .$item['uid'] .' = new L.GPX(';
+						$jsMarker .= 'var ' . $jsElementVar .' = new L.GPX(';
 						$jsMarker .= '"' .$GLOBALS['TSFE']->absRefPrefix .'uploads/tx_odsosm/' .$item['file'] .'"';
 						$jsMarker .= ", { color: '" .$item['color'] ."', clickable: false";
 						$jsMarker .= ", marker_options: { startIconUrl: '" .$path ."leaflet-gpx/pin-icon-start.png'";
@@ -154,16 +147,28 @@ class tx_odsosm_leaflet extends tx_odsosm_common {
 						$jsMarker .= "});\n";
 						break;
 				}
-				$addLayer = 'track_'.$item['uid'];
 				break;
 			case 'tx_odsosm_vector':
-				$jsMarker .= 'var vector_' . $item['uid'] . ' = new L.geoJson(' . $item['data'] . ');';
-				$addLayer = 'vector_' . $item['uid'];
+				$jsMarker .= 'var ' . $jsElementVar . ' = new L.geoJson(' . $item['data'] . ');' . "\n";
+				break;
+			default:
+				$jsElementVar = false;
 				break;
 		}
 
-		if($addLayer) $jsMarker .= $this->config['id'] . ($this->config['cluster'] ? '_c':'') . '.addLayer(' . $addLayer . ');' . "\n";
+		if($jsElementVar) {
+			if($item['popup']) {
+				$jsMarker .= $jsElementVar . '.bindPopup("'.strtr($item['popup'], $this->escape_js)."\");\n";
+				if ($item['initial_popup']) {
+					$jsMarker .= $jsElementVar . ".openPopup();\n";
+				}
+			}
 
+			if($jsLayerVar) {
+				$jsMarker .= $this->config['id'] . ($this->config['cluster'] ? '_c':'') . '.addLayer(' . $jsLayerVar . ');' . "\n";
+			}
+		}
+		
 		return $jsMarker;
 	}
 }
