@@ -78,6 +78,10 @@ class tx_odsosm_pi1 extends tslib_pibase {
 			$value=$this->pi_getFFvalue($this->cObj->data['pi_flexform'],$option,'sDEF');
 			if($value){
 				switch($option){
+					case 'lat':
+					case 'lon':
+						if($value!=0) $flex[$option]=$value;
+						break;
 					case 'marker':
 					case 'marker_popup_initial':
 						$flex[$option]=$this->splitGroup($value,'tt_address');
