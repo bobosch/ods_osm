@@ -4,7 +4,7 @@ class tx_odsosm_openlayers extends tx_odsosm_common {
 	public $P;
 
 	public function getMapCore($backpath=''){
-		$path=($backpath ? $backpath : $GLOBALS['TSFE']->absRefPrefix).t3lib_extMgm::siteRelPath('ods_osm').'res/';
+		$path=($backpath ? $backpath : $GLOBALS['TSFE']->absRefPrefix) . \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::siteRelPath('ods_osm') . 'res/';
 		$this->scripts=array(
 			($this->config['path_openlayers'] ? $this->config['path_openlayers'] : ($this->config['local_js'] ? $path.'OpenLayers' : 'http://openlayers.org/api')).'/OpenLayers.js',
 			$path.'tx_odsosm_openlayers.js',
@@ -113,7 +113,7 @@ class tx_odsosm_openlayers extends tx_odsosm_common {
 					$icon=$GLOBALS['TSFE']->absRefPrefix.'uploads/tx_odsosm/'.$marker['icon'];
 				}else{
 					$marker=array('size_x'=>21,'size_y'=>25,'offset_x'=>-11,'offset_y'=>-25);
-					$icon=$GLOBALS['TSFE']->absRefPrefix.t3lib_extMgm::siteRelPath('ods_osm').'res/marker.png';
+					$icon=$GLOBALS['TSFE']->absRefPrefix . \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::siteRelPath('ods_osm') . 'res/marker.png';
 				}
 				// Add group to layer switch
 				if(!in_array($item['group_title'], $this->group_titles)) {
@@ -207,12 +207,9 @@ class tx_odsosm_openlayers extends tx_odsosm_common {
 		var pixel = new OpenLayers.Pixel(evt.xy.x,evt.xy.y);
 		var lonlat = map.getLonLatFromPixel(pixel);
 		var lonlatGCS = OpenLayers.Layer.SphericalMercator.inverseMercator(lonlat.lon, lonlat.lat);
-		".$this->getJSsetField('lonlatGCS.lon').'
-		'.$this->getJSsetField('lonlatGCS.lat',array('lon'=>'lat')).'
-		window.opener.focus();
-		close();
+		setBEcoordinates(lonlatGCS.lon,lonlatGCS.lat);
 	}
-';
+";
 	}
 
 	function getJSvectors(){
@@ -237,20 +234,9 @@ class tx_odsosm_openlayers extends tx_odsosm_common {
 			'externalProjection': new OpenLayers.Projection('EPSG:4326')
 		});
 		var str = format.write(feature);
-		".$this->getJSsetField('str').'
-		window.opener.focus();
-		close();
+		setBEfield(str);
 	}
-';
+";
 	}
-
-	function getJSsetField($valueString,$replace=array()){
-		$replace_hr=$replace;
-		$replace_hr['_hr']='';
-		return "
-		window.opener.document.editform['".strtr($this->P['itemName'],$replace_hr)."'].value=".$valueString.";
-		window.opener.document.editform['".strtr($this->P['itemName'],$replace)."'].value=".$valueString.";
-		window.opener.".strtr($this->P['fieldChangeFunc']['TBE_EDITOR_fieldChanged'],$replace);
-	}	
 }
 ?>

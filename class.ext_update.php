@@ -26,7 +26,7 @@ class ext_update {
 	protected $messageArray = array();
 
 	public function access() {
-		return t3lib_div::compat_version('6.0');
+		return \TYPO3\CMS\Core\Utility\GeneralUtility::compat_version('6.0');
 	}
 
 	/**
@@ -47,11 +47,11 @@ class ext_update {
 	protected function generateOutput() {
 		$output = '';
 		foreach ($this->messageArray as $messageItem) {
-			$flashMessage = t3lib_div::makeInstance(
-					't3lib_FlashMessage',
-					$messageItem[2],
-					$messageItem[1],
-					$messageItem[0]);
+			$flashMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
+				'TYPO3\CMS\Core\Messaging\FlashMessage',
+				$messageItem[2],
+				$messageItem[1],
+				$messageItem[0]);
 			$output .= $flashMessage->render();
 		}
 
@@ -65,8 +65,49 @@ class ext_update {
 	 */
 	protected function processUpdates() {
 		$this->importStaticData();
+		$this->moveField('tt_address','tx_odsosm_lon','longitude');
+		$this->moveField('tt_address','tx_odsosm_lat','latitude');
 	}
 	
+	/**
+	 * Import static data
+	 *
+	 * @return int
+	 */
+	protected function moveField($table,$from,$to) {
+		$title = 'Update table "' . $table . '": Move field from "' . $from . '" to "' . $to . '"';
+		$message = 'Move data in item ';
+		$status = \TYPO3\CMS\Core\Messaging\FlashMessage::OK;
+
+		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
+			'*',
+			$table,
+			$from . '>""'
+		);
+
+		if ($res) {
+			while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
+				$message.= $row['uid'] . ', ';
+				$UPDATEres = $GLOBALS['TYPO3_DB']->exec_UPDATEquery(
+					$table,
+					'uid=' . $row['uid'],
+					array(
+						$from => null,
+						$to => $row[$from]
+					)
+				);
+				if (!$UPDATEres) {
+					$status = \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR;
+				}
+			}
+		} else {
+			$message = 'No data to move.';
+		}
+
+		$this->messageArray[] = array($status, $title, $message);
+		return $status;
+	}
+
 	/**
 	 * Import static data
 	 *
@@ -84,11 +125,11 @@ class ext_update {
 			$line = trim($line);
 			if ($line && preg_match('#^INSERT#i', $line)) {
 				if($GLOBALS['TYPO3_DB']->sql_query($line) === false) {
-					$message = ' SQL ERROR: ' .  $GLOBALS['TYPO3_DB']->sql_error();
-					$status = t3lib_FlashMessage::ERROR;
+					$message = 'SQL ERROR:' .  $GLOBALS['TYPO3_DB']->sql_error();
+					$status = \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR;
 				} else {
 					$message = 'OK!';
-					$status = t3lib_FlashMessage::OK;
+					$status = \TYPO3\CMS\Core\Messaging\FlashMessage::OK;
 				}
 			}
 		}

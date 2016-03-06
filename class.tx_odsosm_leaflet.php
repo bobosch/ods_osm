@@ -5,7 +5,7 @@ class tx_odsosm_leaflet extends tx_odsosm_common {
 	protected $path_leaflet;
 
 	public function getMapCore($backpath=''){
-		$this->path_res=($backpath ? $backpath : $GLOBALS['TSFE']->absRefPrefix).t3lib_extMgm::siteRelPath('ods_osm').'res/';
+		$this->path_res=($backpath ? $backpath : $GLOBALS['TSFE']->absRefPrefix) . \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::siteRelPath('ods_osm') . 'res/';
 		$this->path_leaflet=($this->config['local_js'] ? $this->path_res.'leaflet/' : 'http://cdn.leafletjs.com/leaflet-0.7.3/');
 		$GLOBALS['TSFE']->getPageRenderer()->addCssFile($this->path_leaflet.'leaflet.css');
 		$this->scripts=array($this->path_leaflet.'leaflet.js');
@@ -105,7 +105,7 @@ class tx_odsosm_leaflet extends tx_odsosm_common {
 					);
 					$markerOptions['icon'] = 'icon: new L.Icon(' . json_encode($iconOptions) . ')';
 				}else{
-					$icon=$GLOBALS['TSFE']->absRefPrefix.t3lib_extMgm::siteRelPath('ods_osm').'res/leaflet/images/marker-icon.png';
+					$icon=$GLOBALS['TSFE']->absRefPrefix . \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::siteRelPath('ods_osm') . 'res/leaflet/images/marker-icon.png';
 				}
 				$jsMarker.='var ' . $jsElementVar . ' = new L.Marker([' . $item['tx_odsosm_lat'] . ', ' . $item['tx_odsosm_lon'] . '], {' . implode(',', $markerOptions) . "});\n";
 				// Add group to layer switch
@@ -121,7 +121,7 @@ class tx_odsosm_leaflet extends tx_odsosm_common {
 				}
 				break;
 			case 'tx_odsosm_track':
-				$path = t3lib_extMgm::siteRelPath('ods_osm') .'res/';
+				$path = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::siteRelPath('ods_osm') .'res/';
 				// Add tracks to layerswitcher
 				$this->layers[1][$item['title']] = $jsElementVar;
 

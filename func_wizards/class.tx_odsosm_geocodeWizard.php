@@ -1,12 +1,12 @@
 <?php
-require_once t3lib_extMgm::extPath('ods_osm') . 'class.tx_odsosm_div.php';
+require_once \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('ods_osm') . 'class.tx_odsosm_div.php';
 
 /**
  * Mass-update geo coordinates in address records
  *
  * @author Christian Weiske <cweiske@cweiske.de>
  */
-class tx_odsosm_geocodeWizard extends t3lib_extobjbase {
+class tx_odsosm_geocodeWizard extends \TYPO3\CMS\Backend\Module\AbstractFunctionModule {
 	/**
 	 * Main function
 	 *
@@ -35,14 +35,17 @@ class tx_odsosm_geocodeWizard extends t3lib_extobjbase {
 	protected function geocode($mode) {
 		if ($mode != 'all' && $mode != 'missing') {
 			//wrong mode
-			$message = new t3lib_FlashMessage(
-				'Invalid geocoding mode', '', t3lib_FlashMessage::ERROR
+			$message = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
+				'TYPO3\CMS\Core\Messaging\FlashMessage',
+				'Invalid geocoding mode',
+				'',
+				\TYPO3\CMS\Core\Messaging\FlashMessage::ERROR
 			);
 			return $message->render();
 		}
 
 		if ($mode == 'missing') {
-			$where = 'tx_odsosm_lon = 0 AND tx_odsosm_lat = 0';
+			$where = 'longitude = 0 AND latitude = 0';
 		} else {
 			$where = '1';
 		}
@@ -65,16 +68,18 @@ class tx_odsosm_geocodeWizard extends t3lib_extobjbase {
 			$GLOBALS['TYPO3_DB']->exec_UPDATEquery(
 				'tt_address', 'uid = ' . intval($row['uid']),
 				array(
-					'tx_odsosm_lat' => $row['lat'],
-					'tx_odsosm_lon' => $row['lon']
+					'latitude' => $row['lat'],
+					'longitude' => $row['lon']
 				)
 			);
 
 			$err = $GLOBALS['TYPO3_DB']->sql_error();
 			if ($err) {
-				$message = new t3lib_FlashMessage(
-					'SQL error: ' . htmlspecialchars($err), '',
-					t3lib_FlashMessage::ERROR
+				$message = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
+					'TYPO3\CMS\Core\Messaging\FlashMessage',
+					'SQL error: ' . htmlspecialchars($err),
+					'',
+					\TYPO3\CMS\Core\Messaging\FlashMessage::ERROR
 				);
 				$html .= $message->render();
 			}
@@ -82,12 +87,11 @@ class tx_odsosm_geocodeWizard extends t3lib_extobjbase {
 			++$updated;
 		}
 
-		$message = new t3lib_FlashMessage(
+		$message = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
+			'TYPO3\CMS\Core\Messaging\FlashMessage',
 			'Updated ' . $updated . ' of ' . $count . ' address records',
 			'',
-			$updated == $count
-			? t3lib_FlashMessage::OK
-			: t3lib_FlashMessage::WARNING
+			$updated == $count ? \TYPO3\CMS\Core\Messaging\FlashMessage::OK : \TYPO3\CMS\Core\Messaging\FlashMessage::WARNING
 		);
 		$html .= $message->render();
 
@@ -104,7 +108,7 @@ class tx_odsosm_geocodeWizard extends t3lib_extobjbase {
 
 		$num = $TYPO3_DB->exec_SELECTcountRows(
 			'uid', 'tt_address',
-			'tx_odsosm_lon = 0 AND tx_odsosm_lat = 0 AND pid = ' . $this->pObj->id
+			'longitude = 0 AND latitude = 0 AND pid = ' . $this->pObj->id
 		);
 		$numAll = $TYPO3_DB->exec_SELECTcountRows(
 			'uid', 'tt_address', 'pid = ' . $this->pObj->id
@@ -137,7 +141,7 @@ class tx_odsosm_geocodeWizard extends t3lib_extobjbase {
 	protected function getFormUrl() {
 		$urlParams = $this->pObj->MOD_SETTINGS;
 		$urlParams['id'] = $this->pObj->id;
-		return $this->pObj->doc->scriptID . '?' . t3lib_div::implodeArrayForUrl(
+		return $this->pObj->doc->scriptID . '?' . \TYPO3\CMS\Core\Utility\GeneralUtility::implodeArrayForUrl(
 			'',
 			$urlParams
 		);

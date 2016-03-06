@@ -19,14 +19,14 @@ class tx_odsosm_div {
 		return $where;
 	}
 
-	function getOverlay($table,$row){
+	public static function getOverlay($table,$row){
 		if(is_string($table) && is_array($row)){
 			$ctrl=$GLOBALS['TCA'][$table]['ctrl'];
 			// Version
 			// - Table has versioning
 			// - Current user is in workspace
 			// - Versioning is enabled
-			if($ctrl['versioningWS'] && $GLOBALS['BE_USER']->workspace && t3lib_extMgm::isLoaded('version')){
+			if($ctrl['versioningWS'] && $GLOBALS['BE_USER']->workspace && \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('version')){
 				$GLOBALS['TSFE']->sys_page->versionOL($table,$row);
 			}
 			// Translation
@@ -40,7 +40,7 @@ class tx_odsosm_div {
 		return $row;
 	}
 
-	function addJsFiles($scripts){
+	public function addJsFiles($scripts){
 		if(TYPO3_MODE=='BE'){
 // 			$pagerender=$this->doc->getPageRenderer();
 			foreach($scripts as $script){
@@ -51,7 +51,7 @@ class tx_odsosm_div {
 			foreach($scripts as $script){
 				$pagerender->addJsFile($script,'text/javascript',false);
 			}
-		}
+ 		}
 	}
 
 	/**
@@ -65,19 +65,19 @@ class tx_odsosm_div {
 	 *
 	 * @uses searchAddress()
 	 */
-	function updateAddress(&$address){
-		$config=tx_odsosm_div::getConfig(array('cache_enabled','geo_service'));
+	public function updateAddress(&$address){
+		$config=self::getConfig(array('cache_enabled','geo_service'));
 
-		tx_odsosm_div::splitAddressField($address);
+		self::splitAddressField($address);
 
 		// Use cache only when enabled
-		if($config['cache_enabled']==1) $ll=tx_odsosm_div::searchAddress($address,0);
+		if($config['cache_enabled']==1) $ll=self::searchAddress($address,0);
 
 		if(!$ll){
 			$search=$address;
-			$ll=tx_odsosm_div::searchAddress($address,$config['geo_service']);
+			$ll=self::searchAddress($address,$config['geo_service']);
 			// Update cache when enabled or needed for statistic
-			if($ll && $config['cache_enabled']) tx_odsosm_div::updateCache($address,$search);
+			if($ll && $config['cache_enabled']) self::updateCache($address,$search);
 		}
 		return $ll;
 	}
@@ -97,15 +97,15 @@ class tx_odsosm_div {
 	 * @return boolean True if the address got updated, false if not.
 	 */
 	function searchAddress(&$address,$service=0){
-		$config=tx_odsosm_div::getConfig(array('default_country','geo_service_email','geo_service_user'));
+		$config=self::getConfig(array('default_country','geo_service_email','geo_service_user'));
 		$ll=false;
 
 		$country=strtoupper(strlen($address['country'])==2 ? $address['country'] : $config['default_country']);
-		$email=t3lib_div::validEmail($config['geo_service_email']) ? $config['geo_service_email'] : $_SERVER['SERVER_ADMIN'];
+		$email=\TYPO3\CMS\Core\Utility\GeneralUtility::validEmail($config['geo_service_email']) ? $config['geo_service_email'] : $_SERVER['SERVER_ADMIN'];
 
 		if(TYPO3_DLOG){
 			$service_names=array(0=>'cache',1=>'geonames',2=>'nominatim');
-			t3lib_div::devLog('Search address using '.$service_names[$service],'ods_osm',0,$address);
+			\TYPO3\CMS\Core\Utility\GeneralUtility::devLog('Search address using '.$service_names[$service],'ods_osm',0,$address);
 		}
 		
 		switch($service){
@@ -153,24 +153,17 @@ class tx_odsosm_div {
 					$query['maxRows']=1;
 					$query['username']=$config['geo_service_user'];
 
-					$xml=t3lib_div::getURL(
-						'http://api.geonames.org/postalCodeSearch?'.http_build_query($query,'','&'),
-						false,
-						'User-Agent: TYPO3 extension ods_osm/'.t3lib_extMgm::getExtensionVersion('ods_osm')
-					);
-					if(TYPO3_DLOG && $xml===false) t3lib_div::devLog('t3lib_div::getURL failed', "ods_osm", 3);
+					$xml=self::getURL('http://api.geonames.org/postalCodeSearch?'.http_build_query($query,'','&'));
 
 					if($xml){
 						$xmlobj=new SimpleXMLElement($xml);
 						if($xmlobj->status){
-							if(TYPO3_DLOG) t3lib_div::devLog('GeoNames message','ods_osm',2,(array)$xmlobj->status->attributes());
-							$o_flashMessage = t3lib_div::makeInstance(
-								't3lib_FlashMessage',
+							if(TYPO3_DLOG) \TYPO3\CMS\Core\Utility\GeneralUtility::devLog('GeoNames message','ods_osm',2,(array)$xmlobj->status->attributes());
+							self::flashMessage(
 								(string)$xmlobj->status->attributes()->message,
 								'GeoNames message',
-								t3lib_FlashMessage::WARNING
+								\TYPO3\CMS\Core\Messaging\FlashMessage::WARNING
 							);
-							t3lib_FlashMessageQueue::addMessage($o_flashMessage);
 						}
 						
 						if($xmlobj->code){
@@ -197,43 +190,38 @@ class tx_odsosm_div {
 					if($address['street']) $query['street']=$address['street'];
 					if($address['housenumber']) $query['street']=$address['housenumber'].' '.$query['street'];
 
-					if(TYPO3_DLOG) t3lib_div::devLog('Nominatim structured', 'ods_osm', -1, $query);
-					$ll=tx_odsosm_div::searchAddressNominatim($query,$address);
+					if(TYPO3_DLOG) \TYPO3\CMS\Core\Utility\GeneralUtility::devLog('Nominatim structured', 'ods_osm', -1, $query);
+					$ll=self::searchAddressNominatim($query,$address);
 					
 					if(!$ll && $query['postalcode']){
 						unset($query['postalcode']);
 
-						if(TYPO3_DLOG) t3lib_div::devLog('Nominatim retrying without zip', 'ods_osm', -1, $query);
-						$ll=tx_odsosm_div::searchAddressNominatim($query,$address);
+						if(TYPO3_DLOG) \TYPO3\CMS\Core\Utility\GeneralUtility::devLog('Nominatim retrying without zip', 'ods_osm', -1, $query);
+						$ll=self::searchAddressNominatim($query,$address);
 					}
 				}
 
 				if($this->address_type=='unstructured'){
 					$query['q']=$address['address'];
 
-					if(TYPO3_DLOG) t3lib_div::devLog('Nominatim unstructured', 'ods_osm', -1, $query);
-					$ll=tx_odsosm_div::searchAddressNominatim($query,$address);
+					if(TYPO3_DLOG) \TYPO3\CMS\Core\Utility\GeneralUtility::devLog('Nominatim unstructured', 'ods_osm', -1, $query);
+					$ll=self::searchAddressNominatim($query,$address);
 				}
 			break;
 		}
 
 		if(TYPO3_DLOG){
-			if($ll)	t3lib_div::devLog('Return address','ods_osm',0,$address);
-			else t3lib_div::devLog('No address found','ods_osm',0);
+			if($ll)	\TYPO3\CMS\Core\Utility\GeneralUtility::devLog('Return address','ods_osm',0,$address);
+			else \TYPO3\CMS\Core\Utility\GeneralUtility::devLog('No address found','ods_osm',0);
 		}
 
 		return $ll;
 	}
 	
-	function searchAddressNominatim($query,&$address){
+	protected static function searchAddressNominatim($query,&$address){
 		$ll=false;
 	
-		$xml=t3lib_div::getURL(
-			'http://nominatim.openstreetmap.org/search?'.http_build_query($query,'','&'),
-			false,
-			'User-Agent: TYPO3 extension ods_osm/'.t3lib_extMgm::getExtensionVersion('ods_osm')
-		);
-		if(TYPO3_DLOG && $xml===false) t3lib_div::devLog('t3lib_div::getURL failed', 'ods_osm', 3);
+		$xml=self::getURL('http://nominatim.openstreetmap.org/search?'.http_build_query($query,'','&'));
 
 		if($xml){
 			$xmlobj=new SimpleXMLElement($xml);
@@ -252,8 +240,38 @@ class tx_odsosm_div {
 		
 		return $ll;
 	}
+	
+	public static function getURL($url) {
+		$ret=\TYPO3\CMS\Core\Utility\GeneralUtility::getURL(
+			$url,
+			false,
+			'User-Agent: TYPO3 extension ods_osm/' . \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::getExtensionVersion('ods_osm')
+		);
+		if($ret===false) {
+			if(TYPO3_DLOG) \TYPO3\CMS\Core\Utility\GeneralUtility::devLog('\TYPO3\CMS\Core\Utility\GeneralUtility::getURL failed', 'ods_osm', 3, $url);
+			self::flashMessage(
+				'Server connection error.',
+				'ods_osm',
+				\TYPO3\CMS\Core\Messaging\FlashMessage::ERROR
+			);
+		}
+		
+		return $ret;
+	}
+	
+	public static function flashMessage($message,$title,$status) {
+		$flashMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
+			'TYPO3\CMS\Core\Messaging\FlashMessage',
+			$message,
+			$title,
+			$status
+		);
+		$flashMessageService = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Messaging\FlashMessageService::class);
+		$flashMessageQueue = $flashMessageService->getMessageQueueByIdentifier();
+		$flashMessageQueue->addMessage($flashMessage);
+	}
 
-	function updateCache($address,$search=array()){
+	public static function updateCache($address,$search=array()){
 		$set=array(
 			'search_city'=>$search['city'],
 			'country'=>$address['country'],
@@ -267,7 +285,7 @@ class tx_odsosm_div {
 		$res=$GLOBALS['TYPO3_DB']->exec_SELECTquery(
 			'*',
 			'tx_odsosm_geocache',
-			implode(' AND ',tx_odsosm_div::getSet($set,'tx_odsosm_geocache'))
+			implode(' AND ',self::getSet($set,'tx_odsosm_geocache'))
 		);
 		$row=$GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
 		if($row){
@@ -305,7 +323,7 @@ class tx_odsosm_div {
 		}
 	}
 
-	function getSet($data,$table){
+	public static function getSet($data,$table){
 		$set=array();
 		foreach($data as $field=>$value){
 			$set[$field]='`'.$field.'`='.$GLOBALS['TYPO3_DB']->fullQuoteStr($value,$table);
@@ -314,7 +332,7 @@ class tx_odsosm_div {
 	}
 	
 	/* Get extension configuration, and if not available use default configuration. Optional parameter checks if single value is available. */
-	static function getConfig($values=array()){
+	public static function getConfig($values=array()){
 		$config=unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['ods_osm']);
 		$getDefault=array();
 		
@@ -325,7 +343,7 @@ class tx_odsosm_div {
 		}
 		
 		if($config===false || count($getDefault)){
-			$default=parse_ini_file(t3lib_extMgm::extPath('ods_osm').'ext_conf_template.txt');
+			$default=parse_ini_file(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('ods_osm') . 'ext_conf_template.txt');
 			if($config===false){
 				return $default;
 			}else{
@@ -334,6 +352,24 @@ class tx_odsosm_div {
 				}
 			}
 		}
+
+		$config['fieldnames'] = array(
+			'fe_users'=>array(
+				'lon'=>'tx_odsosm_lon',
+				'lat'=>'tx_odsosm_lat',
+				'format'=>'%01.6f'
+			),
+			'tt_address'=>array(
+				'lon'=>'longitude',
+				'lat'=>'latitude',
+				'format'=>'%01.11f'
+			),
+			'tt_content'=>array(
+				'lon'=>'lon',
+				'lat'=>'lat',
+				'format'=>'%01.6f'
+			)
+		);
 
 		return $config;
 	}

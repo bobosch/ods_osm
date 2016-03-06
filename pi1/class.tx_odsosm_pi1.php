@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2010 Robert Heel <rheel@1drop.de>
+*  (c) 2010 Robert Heel <typo3@bobosch.de>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -27,18 +27,18 @@
  * Hint: use extdeveval to insert/update function index above.
  */
 
-require_once(t3lib_extMgm::extPath('ods_osm').'class.tx_odsosm_common.php');
-require_once(t3lib_extMgm::extPath('ods_osm').'class.tx_odsosm_div.php');
+require_once(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('ods_osm').'class.tx_odsosm_common.php');
+require_once(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('ods_osm').'class.tx_odsosm_div.php');
 
 
 /**
  * Plugin 'Openstreetmap' for the 'ods_osm' extension.
  *
- * @author	Robert Heel <rheel@1drop.de>
+ * @author	Robert Heel <typo3@bobosch.de>
  * @package	TYPO3
  * @subpackage	tx_odsosm
  */
-class tx_odsosm_pi1 extends tslib_pibase {
+class tx_odsosm_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 	var $prefixId      = 'tx_odsosm_pi1';		// Same as class name
 	var $scriptRelPath = 'pi1/class.tx_odsosm_pi1.php';	// Path to this script relative to the extension dir.
 	var $extKey        = 'ods_osm';	// The extension key.
@@ -61,7 +61,7 @@ class tx_odsosm_pi1 extends tslib_pibase {
 		$this->hooks=array();
 		if(is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ods_osm']['class.tx_odsosm_pi1.php'])){
 			foreach($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ods_osm']['class.tx_odsosm_pi1.php'] as $classRef){
-				$this->hooks[]=&t3lib_div::getUserObj($classRef);
+				$this->hooks[]=&\TYPO3\CMS\Core\Utility\GeneralUtility::getUserObj($classRef);
 			}
 		}
 
@@ -117,11 +117,11 @@ class tx_odsosm_pi1 extends tslib_pibase {
 		}
 
 		if($this->config['external_control']){
-			if(t3lib_div::_GP('lon')) $this->config['lon']=t3lib_div::_GP('lon');
-			if(t3lib_div::_GP('lat')) $this->config['lat']=t3lib_div::_GP('lat');
-			if(t3lib_div::_GP('zoom')) $this->config['zoom']=t3lib_div::_GP('zoom');
-			if(t3lib_div::_GP('layers')) $this->config['layers_visible']=explode(',',t3lib_div::_GP('layers'));
-			if(t3lib_div::_GP('records')) $this->config['marker']=$this->splitGroup(t3lib_div::_GP('records'),'tt_address');
+			if(\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('lon')) $this->config['lon']=\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('lon');
+			if(\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('lat')) $this->config['lat']=\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('lat');
+			if(\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('zoom')) $this->config['zoom']=\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('zoom');
+			if(\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('layers')) $this->config['layers_visible']=explode(',',\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('layers'));
+			if(\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('records')) $this->config['marker']=$this->splitGroup(\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('records'),'tt_address');
 		}
 
 		$this->config['id']='osm_'.$this->cObj->data['uid'];
@@ -140,8 +140,8 @@ class tx_odsosm_pi1 extends tslib_pibase {
 
 		// Library
 		if(empty($this->config['library'])) $this->config['library']='leaflet';
-		require_once(t3lib_extMgm::extPath('ods_osm').'class.tx_odsosm_'.$this->config['library'].'.php');
-		$this->library=t3lib_div::makeInstance('tx_odsosm_'.$this->config['library']);
+		require_once(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('ods_osm').'class.tx_odsosm_'.$this->config['library'].'.php');
+		$this->library=\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_odsosm_'.$this->config['library']);
 		$this->library->init($this->config);
 		$this->library->cObj=$this->cObj;
 
@@ -169,7 +169,7 @@ class tx_odsosm_pi1 extends tslib_pibase {
 	function splitGroup($group,$default=''){
 		$groups=explode(',',$group);
 		foreach($groups as $group){
-			$item=t3lib_div::revExplode('_',$group,2);
+			$item=\TYPO3\CMS\Core\Utility\GeneralUtility::revExplode('_',$group,2);
 			if(count($item)==1){
 				$record_ids[$default][]=$item[0];
 			}else{
@@ -197,41 +197,40 @@ class tx_odsosm_pi1 extends tslib_pibase {
 		foreach($record_ids as $table=>$items){
 			foreach($items as $item){
 				$item=intval($item);
-				switch($table){
-					case 'fe_groups':
-						$res=$GLOBALS['TYPO3_DB']->exec_SELECTquery('*','fe_groups','uid='.$item.$this->cObj->enableFields('fe_groups'));
-						$group=$GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
-						if($group){
+				$res=$GLOBALS['TYPO3_DB']->exec_SELECTquery('*',$table,'uid=' . $item . tx_odsosm_div::getWhere($table));
+				$row=$GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
+				$row=tx_odsosm_div::getOverlay($table,$row);
+				if($row) {
+					switch($table) {
+						case 'fe_groups':
 							$res=$GLOBALS['TYPO3_DB']->exec_SELECTquery('*','fe_users','FIND_IN_SET("'.$item.'",usergroup)'.$this->cObj->enableFields('fe_users'));
-							while($row=$GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)){
-								$records['fe_users'][$row['uid']]=$row;
-								$records['fe_users'][$row['uid']]['group_uid']='fe_groups_'.$group['uid'];
-								$records['fe_users'][$row['uid']]['group_title']=$group['title'];
-								$records['fe_users'][$row['uid']]['group_description']=$group['description'];
-								$records['fe_users'][$row['uid']]['tx_odsosm_marker']=$group['tx_odsosm_marker'];
+							while($row2=$GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)){
+								$records['fe_users'][$row2['uid']]=$row2;
+								$records['fe_users'][$row2['uid']]['group_uid']='fe_groups_'.$row['uid'];
+								$records['fe_users'][$row2['uid']]['group_title']=$row['title'];
+								$records['fe_users'][$row2['uid']]['group_description']=$row['description'];
+								$records['fe_users'][$row2['uid']]['tx_odsosm_marker']=$row['tx_odsosm_marker'];
 							}
-						}
-					break;
-					case 'tt_address_group':
-						$res=$GLOBALS['TYPO3_DB']->exec_SELECTquery('*','tt_address_group','uid='.$item.tx_odsosm_div::getWhere('tt_address_group'));
-						$row=$GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
-						$group=tx_odsosm_div::getOverlay('tt_address_group',$row);
-						if($group){
-							$res=$GLOBALS['TYPO3_DB']->exec_SELECT_mm_query('tt_address.*','tt_address','tt_address_group_mm','tt_address_group','AND tt_address_group.uid='.intval($group['uid']).$this->cObj->enableFields('tt_address'));
-							while($row=$GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)){
-								$records['tt_address'][$row['uid']]=$row;
-								$records['tt_address'][$row['uid']]['group_uid']='tt_address_group_'.$group['uid'];
-								$records['tt_address'][$row['uid']]['group_title']=$group['title'];
-								$records['tt_address'][$row['uid']]['group_description']=$group['description'];
-								$records['tt_address'][$row['uid']]['tx_odsosm_marker']=$group['tx_odsosm_marker'];
+							break;
+						case 'sys_category':
+							$res=$GLOBALS['TYPO3_DB']->exec_SELECT_mm_query('tt_address.*','tt_address','sys_category_record_mm','sys_category','AND sys_category.uid=' . $item . $this->cObj->enableFields('tt_address'));
+							while($row2=$GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)){
+								$records['tt_address'][$row2['uid']]=$row2;
+								$records['tt_address'][$row2['uid']]['group_uid']='sys_category_'.$row['uid'];
+								$records['tt_address'][$row2['uid']]['group_title']=$row['title'];
+								$records['tt_address'][$row2['uid']]['group_description']=$row['description'];
+								$records['tt_address'][$row2['uid']]['tx_odsosm_marker']=$row['tx_odsosm_marker'];
 							}
-						}
-					break;
-					default:
-						$res=$GLOBALS['TYPO3_DB']->exec_SELECTquery('*',$table,'uid='.$item.$this->cObj->enableFields($table));
-						$row=$GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
-						if($row) $records[$table][$item]=$row;
-					break;
+							break;
+						case 'tt_address':
+							$records['tt_address'][$item]=$row;
+							$records['tt_address'][$item]['tx_odsosm_lon']=$row['longitude'];
+							$records['tt_address'][$item]['tx_odsosm_lat']=$row['latitude'];
+							break;
+						default:
+							$records[$table][$item]=$row;
+							break;
+					}
 				}
 			}
 		}
@@ -248,14 +247,21 @@ class tx_odsosm_pi1 extends tslib_pibase {
 			foreach($items as $uid=>$row){
 				switch($table){
 					case 'fe_users':
-					case 'tt_address':
 						if($row['tx_odsosm_lon']){
 							$this->lons[]=floatval($row['tx_odsosm_lon']);
 							$this->lats[]=floatval($row['tx_odsosm_lat']);
 						}else{
 							unset($records[$table][$uid]);
 						}
-					break;
+						break;
+					case 'tt_address':
+						if($row['longitude']){
+							$this->lons[]=floatval($row['longitude']);
+							$this->lats[]=floatval($row['latitude']);
+						}else{
+							unset($records[$table][$uid]);
+						}
+						break;
 					case 'tx_odsosm_track':
 					case 'tx_odsosm_vector':
 						if($row['min_lon']){
@@ -266,7 +272,7 @@ class tx_odsosm_pi1 extends tslib_pibase {
 						}else{
 							unset($records[$table][$uid]);
 						}
-					break;
+						break;
 				}
 			}
 		}
@@ -287,7 +293,7 @@ class tx_odsosm_pi1 extends tslib_pibase {
 			Marker
 		================================================== */
 		$markers=$this->config['marker'];
-		$local_cObj = t3lib_div::makeInstance('tslib_cObj');
+		$local_cObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer');
 		foreach($markers as $table=>$items){
 			foreach($items as $key=>$item){
 				if($this->config['show_popups'] && $this->config['popup.'][$table]){

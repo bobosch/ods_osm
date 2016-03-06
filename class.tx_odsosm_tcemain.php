@@ -1,5 +1,5 @@
 <?php
-require_once(t3lib_extMgm::extPath('ods_osm').'class.tx_odsosm_div.php');
+require_once(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('ods_osm') . 'class.tx_odsosm_div.php');
 
 class tx_odsosm_tcemain {
 	var $lon=array();
@@ -15,15 +15,16 @@ class tx_odsosm_tcemain {
 			case 'fe_users':
 			case 'tt_address':
 				$config=tx_odsosm_div::getConfig(array('autocomplete'));
+				$field=$config['fieldnames'][$table];
 
 				// Search coordinates
 				if($config['autocomplete'] && ($fieldArray['zip'] || $fieldArray['city'] || $fieldArray['address'])){
 					$address=$obj->datamap[$table][$id];
-					if($config['autocomplete']==2 || floatval($address['tx_odsosm_lon'])==0){
+					if($config['autocomplete']==2 || floatval($address[$field['lon']])==0){
 						$ll=tx_odsosm_div::updateAddress($address);
 						if($ll){
-							$fieldArray['tx_odsosm_lon']=sprintf('%01.6f',$address['lon']);
-							$fieldArray['tx_odsosm_lat']=sprintf('%01.6f',$address['lat']);
+							$fieldArray[$field['lon']]=sprintf($field['format'],$address['lon']);
+							$fieldArray[$field['lat']]=sprintf($field['format'],$address['lat']);
 							if($address['street']){
 								$fieldArray['address']=$address['street'];
 								if($address['housenumber']) $fieldArray['address'].=' '.$address['housenumber'];
@@ -35,12 +36,12 @@ class tx_odsosm_tcemain {
 						}
 					}
 				}
-			break;
+				break;
 
 			case 'tx_odsosm_track':
 				$filename=PATH_site.'uploads/tx_odsosm/'.$fieldArray['file'];
 				if($fieldArray['file'] && file_exists($filename)){
-					require_once t3lib_extMgm::extPath('ods_osm','res/geoPHP/geoPHP.inc');
+					require_once \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('ods_osm','res/geoPHP/geoPHP.inc');
 					$polygon = geoPHP::load(file_get_contents($filename),pathinfo($filename,PATHINFO_EXTENSION));
 					$box = $polygon->getBBox();
 					$fieldArray['min_lon']=sprintf('%01.6f',$box['minx']);
@@ -48,7 +49,7 @@ class tx_odsosm_tcemain {
 					$fieldArray['max_lon']=sprintf('%01.6f',$box['maxx']);
 					$fieldArray['max_lat']=sprintf('%01.6f',$box['maxy']);
 				}
-			break;
+				break;
 
 			case 'tx_odsosm_marker':
 				if($fieldArray['icon'] && file_exists(PATH_site.'uploads/tx_odsosm/'.$fieldArray['icon'])){
@@ -58,7 +59,7 @@ class tx_odsosm_tcemain {
 					$fieldArray['offset_x']=-round($size[0]/2);
 					$fieldArray['offset_y']=-$size[1];
 				}
-			break;
+				break;
 
 			case 'tx_odsosm_vector':
 				if($fieldArray['data']){
@@ -75,7 +76,7 @@ class tx_odsosm_tcemain {
 				$fieldArray['min_lat']=sprintf('%01.6f',min($this->lat));
 				$fieldArray['max_lon']=sprintf('%01.6f',max($this->lon));
 				$fieldArray['max_lat']=sprintf('%01.6f',max($this->lat));
-			break;
+				break;
 		}
 	}
 }

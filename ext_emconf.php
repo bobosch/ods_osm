@@ -23,15 +23,15 @@ $EM_CONF[$_EXTKEY] = array(
 	'internal' => '',
 	'uploadfolder' => 1,
 	'createDirs' => 'uploads/tx_odsosm/map',
-	'modify_tables' => 'fe_groups,fe_users,tt_address,tt_address_group',
+	'modify_tables' => 'fe_groups,fe_users',
 	'clearCacheOnLoad' => 0,
 	'lockType' => '',
 	'author_company' => '',
-	'version' => '1.11.7',
+	'version' => '1.12.0',
 	'constraints' => array(
 		'depends' => array(
-			'tt_address' => '',
-			'typo3' => '4.5.0-6.2.99',
+			'tt_address' => '3.0.0-',
+			'typo3' => '6.2.0-7.99.99',
 		),
 		'conflicts' => array(
 		),

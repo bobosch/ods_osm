@@ -1,3 +1,7 @@
+2016-03-01 Robert Heel <typo3@bobosch.de>
+	* Bugfix: Compatibility to TYPO3 7 and tt_address 3.
+	* Change: Use tt_address longitude and latitude (Import old data with update function).
+
 2016-02-08 Robert Heel <typo3@bobosch.de>
 	* Bugfix: Not possible to center a map via TS.
 
@@ -31,7 +35,7 @@
 	* Add: KML support when using Leaflet library.
 
 2015-01-11 Robert Heel <typo3@bobosch.de>
-	* Bug #64119: Import ext_tables_static+adt.sql on extension update.
+	* Bug #64119: Import ext_tables_static+adt.sql with update function.
 
 2014-12-19 Robert Heel <typo3@bobosch.de>
 	* Bug #63990: Replace mysql function with TYPO3 function.

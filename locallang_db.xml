@@ -6,6 +6,7 @@
 	</meta>
 	<data type="array">
 		<languageKey index="default" type="array">
+			<label index="coordinatepicker.search_coordinates">Search coordinates</label>
 			<label index="tt_address_group.tx_odsosm_marker">Marker</label>
 			<label index="tt_content.list_type_pi1">Openstreetmap</label>
 			<label index="tt_content.pi_flexform.sheet_sDEF">Default</label>
@@ -80,6 +81,7 @@
 			<label index="tx_odsosm_vector.data">GeoJSON</label>
 		</languageKey>
 		<languageKey index="de" type="array">
+			<label index="coordinatepicker.search_coordinates">Suche Koordinaten</label>
 			<label index="tt_address_group.tx_odsosm_marker">Marker</label>
 			<label index="tt_content.list_type_pi1">Openstreetmap</label>
 			<label index="tt_content.pi_flexform.sheet_sDEF">Standard</label>
