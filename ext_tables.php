@@ -74,4 +74,11 @@ if (TYPO3_MODE == 'BE') {
 		'LLL:EXT:ods_osm/locallang.xml:wiz_geocode'
 	);
 }
+
+// TYPO3 6.2 compatibility
+// Register colorpicker wizard
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModulePath(
+		'wizard_coordinatepicker',
+		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'wizard/'
+);
 ?>

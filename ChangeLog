@@ -1,3 +1,6 @@
+2016-03-07 Robert Heel <typo3@bobosch.de>
+	* Bug #21: Coordinatepicker Wizard error in TYPO3 6.2.
+
 2016-03-01 Robert Heel <typo3@bobosch.de>
 	* Bugfix: Compatibility to TYPO3 7 and tt_address 3.
 	* Change: Use tt_address longitude and latitude (Import old data with update function).
@@ -15,7 +18,7 @@
 	* Bugfix: Unsupported operand types in class.tx_odsosm_pi1.php on line 99
 
 2015-12-14 Robert Heel <typo3@bobosch.de>
-	* Bug 72208: Invalid argument supplied for foreach() in class.tx_odsosm_leaflet.php line 17
+	* Bug #72208: Invalid argument supplied for foreach() in class.tx_odsosm_leaflet.php line 17
 
 2015-06-12 dawnbreak
 	* Change: Add scalebar to leaflet map.
