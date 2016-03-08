@@ -185,7 +185,7 @@ class tx_odsosm_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 			$tables=array('fe_users','fe_groups','tt_address','sys_category','tx_odsosm_track');
 			$pids=implode(',',$record_ids['pages']);
 			foreach($tables as $table){
-				$res=$GLOBALS['TYPO3_DB']->exec_SELECTquery('uid',$table,'pid IN ('.$pids.')'.$this->cObj->enableFields($table));
+				$res=$GLOBALS['TYPO3_DB']->exec_SELECTquery('uid', $table, 'pid IN ('.$pids.')' . tx_odsosm_div::getWhere($table,$this->cObj));
 				while($row=$GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)){
 					$record_ids[$table][]=$row['uid'];
 				}
@@ -197,13 +197,13 @@ class tx_odsosm_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 		foreach($record_ids as $table=>$items){
 			foreach($items as $item){
 				$item=intval($item);
-				$res=$GLOBALS['TYPO3_DB']->exec_SELECTquery('*',$table,'uid=' . $item . tx_odsosm_div::getWhere($table));
+				$res=$GLOBALS['TYPO3_DB']->exec_SELECTquery('*', $table, 'uid=' . $item . tx_odsosm_div::getWhere($table,$this->cObj));
 				$row=$GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
 				$row=tx_odsosm_div::getOverlay($table,$row);
 				if($row) {
 					switch($table) {
 						case 'fe_groups':
-							$res=$GLOBALS['TYPO3_DB']->exec_SELECTquery('*','fe_users','FIND_IN_SET("'.$item.'",usergroup)'.$this->cObj->enableFields('fe_users'));
+							$res=$GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'fe_users', 'FIND_IN_SET("'.$item.'",usergroup)' . tx_odsosm_div::getWhere('fe_users',$this->cObj));
 							while($row2=$GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)){
 								$records['fe_users'][$row2['uid']]=$row2;
 								$records['fe_users'][$row2['uid']]['group_uid']='fe_groups_'.$row['uid'];
@@ -213,7 +213,7 @@ class tx_odsosm_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 							}
 							break;
 						case 'sys_category':
-							$res=$GLOBALS['TYPO3_DB']->exec_SELECT_mm_query('tt_address.*','tt_address','sys_category_record_mm','sys_category','AND sys_category.uid=' . $item . $this->cObj->enableFields('tt_address'));
+							$res=$GLOBALS['TYPO3_DB']->exec_SELECT_mm_query('tt_address.*', 'tt_address', 'sys_category_record_mm', 'sys_category', 'AND sys_category.uid=' . $item . tx_odsosm_div::getWhere('tt_address',$this->cObj));
 							while($row2=$GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)){
 								$records['tt_address'][$row2['uid']]=$row2;
 								$records['tt_address'][$row2['uid']]['group_uid']='sys_category_'.$row['uid'];

@@ -1,10 +1,10 @@
 <?php
 class tx_odsosm_div {
-	function getWhere($table){
+	public static function getWhere($table,$cObj){
 		if(is_string($table)){
 			$ctrl=$GLOBALS['TCA'][$table]['ctrl'];
 			// Enable fields
-			$where=$this->cObj->enableFields($table);
+			$where=$cObj->enableFields($table);
 			// Version
 			$where.=' AND '.$table.'.pid>=0';
 			// Translation
@@ -40,11 +40,10 @@ class tx_odsosm_div {
 		return $row;
 	}
 
-	public function addJsFiles($scripts){
+	public static function addJsFiles($scripts,$doc=false){
 		if(TYPO3_MODE=='BE'){
-// 			$pagerender=$this->doc->getPageRenderer();
 			foreach($scripts as $script){
-				$this->doc->JScode.='<script src="'.$script.'" type="text/javascript"></script>';
+				$doc->JScode.='<script src="'.$script.'" type="text/javascript"></script>';
 			}
 		}else{
 			$pagerender=$GLOBALS['TSFE']->getPageRenderer();
@@ -65,7 +64,7 @@ class tx_odsosm_div {
 	 *
 	 * @uses searchAddress()
 	 */
-	public function updateAddress(&$address){
+	public static function updateAddress(&$address){
 		$config=self::getConfig(array('cache_enabled','geo_service'));
 
 		self::splitAddressField($address);
@@ -96,7 +95,7 @@ class tx_odsosm_div {
 	 *
 	 * @return boolean True if the address got updated, false if not.
 	 */
-	function searchAddress(&$address,$service=0){
+	public static function searchAddress(&$address,$service=0){
 		$config=self::getConfig(array('default_country','geo_service_email','geo_service_user'));
 		$ll=false;
 
@@ -184,7 +183,7 @@ class tx_odsosm_div {
 				$query['addressdetails']=1;
 				$query['format']='xml';
 
-				if($this->address_type=='structured'){
+				if($address['type']=='structured'){
 					if($address['city']) $query['city']=$address['city'];
 					if($address['zip']) $query['postalcode']=$address['zip'];
 					if($address['street']) $query['street']=$address['street'];
@@ -201,7 +200,7 @@ class tx_odsosm_div {
 					}
 				}
 
-				if($this->address_type=='unstructured'){
+				if($address['type']=='unstructured'){
 					$query['q']=$address['address'];
 
 					if(TYPO3_DLOG) \TYPO3\CMS\Core\Utility\GeneralUtility::devLog('Nominatim unstructured', 'ods_osm', -1, $query);
@@ -304,10 +303,10 @@ class tx_odsosm_div {
 		}
 	}
 	
-	function splitAddressField(&$address){
+	public static function splitAddressField(&$address){
 		// Address field contains street if country, city or zip is set
 		if($address['country'] || $address['city'] || $address['zip']){
-			$this->address_type='structured';
+			$address['type']='structured';
 			// Split street and house number
 			preg_match('/^(.+)\s(\d+(\s*[^\d\s]+)*)$/',$address['address'],$matches);
 			if($matches){
@@ -317,9 +316,9 @@ class tx_odsosm_div {
 				$address['street']=$address['address'];
 			}
 		}elseif($address['address']){
-			$this->address_type='unstructured';
+			$address['type']='unstructured';
 		}else{
-			$this->address_type='empty';
+			$address['type']='empty';
 		}
 	}
 
@@ -328,7 +327,7 @@ class tx_odsosm_div {
 		foreach($data as $field=>$value){
 			$set[$field]='`'.$field.'`='.$GLOBALS['TYPO3_DB']->fullQuoteStr($value,$table);
 		}
-		return($set);
+		return $set;
 	}
 	
 	/* Get extension configuration, and if not available use default configuration. Optional parameter checks if single value is available. */

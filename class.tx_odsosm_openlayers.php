@@ -137,12 +137,12 @@ class tx_odsosm_openlayers extends tx_odsosm_common {
 		Backend include
 	******************** */
 	
-	public function getMapBE($layers,$mode,$lat,$lon,$zoom){
+	public function getMapBE($layers,$mode,$lat,$lon,$zoom,$doc){
 		$jsMainLayer=$this->getMainLayers($layers,$GLOBALS['BACK_PATH'].'../');
 
 		// Include JS
 		$this->getMapCore($GLOBALS['BACK_PATH'].'../');
-		tx_odsosm_div::addJsFiles($this->scripts);
+		tx_odsosm_div::addJsFiles($this->scripts,$doc);
 
 		// Action
 		switch($mode){

@@ -185,7 +185,7 @@ class Coordinatepicker extends \TYPO3\CMS\Backend\Controller\Wizard\AbstractWiza
 
 		$this->doc->JScode.='
 			<script type="text/javascript">
-				'.$library->getMapBE($layers,$this->P['params']['mode'],$row['lat'],$row['lon'],$row['zoom']).'
+				'.$library->getMapBE($layers,$this->P['params']['mode'],$row['lat'],$row['lon'],$row['zoom'],$this->doc).'
 				'.$js.'
 			</script>
 		';
