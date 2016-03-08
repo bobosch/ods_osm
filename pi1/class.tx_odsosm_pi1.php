@@ -182,7 +182,7 @@ class tx_odsosm_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 	function extractGroup($record_ids){
 		// get pages
 		if(!empty($record_ids['pages'])){
-			$tables=array('fe_users','fe_groups','tt_address','tt_address_group','tx_odsosm_track');
+			$tables=array('fe_users','fe_groups','tt_address','sys_category','tx_odsosm_track');
 			$pids=implode(',',$record_ids['pages']);
 			foreach($tables as $table){
 				$res=$GLOBALS['TYPO3_DB']->exec_SELECTquery('uid',$table,'pid IN ('.$pids.')'.$this->cObj->enableFields($table));
@@ -220,6 +220,8 @@ class tx_odsosm_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 								$records['tt_address'][$row2['uid']]['group_title']=$row['title'];
 								$records['tt_address'][$row2['uid']]['group_description']=$row['description'];
 								$records['tt_address'][$row2['uid']]['tx_odsosm_marker']=$row['tx_odsosm_marker'];
+								$records['tt_address'][$row2['uid']]['tx_odsosm_lon']=$row2['longitude'];
+								$records['tt_address'][$row2['uid']]['tx_odsosm_lat']=$row2['latitude'];
 							}
 							break;
 						case 'tt_address':
