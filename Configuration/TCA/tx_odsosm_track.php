@@ -50,15 +50,14 @@ return array (
 				'max' => 10,
 				'default' => '#37b7ff',
 				'eval' => 'nospace,trim',
-				'wizards' => array (
-					'colorpick' => array (
+				'wizards' => array(
+					'colorpicker' => array(
 						'type' => 'colorbox',
 						'title' => 'LLL:EXT:lang/locallang_wizards.xml:colorpicker_title',
-						'script' => 'wizard_colorpicker.php',
-						'dim' => '20x20',
-						'tableStyle' => 'border: solid 1px black; margin-left: 10px;',
-						'JSopenParams' => 'height=550,width=370,status=0,menubar=0,scrollbars=1',
-						'exampleImg' => 'gfx/wizard_colorpickerex.jpg',
+						'module' => array(
+							'name' => 'wizard_colorpicker',
+						),
+						'JSopenParams' => 'height=600,width=380,status=0,menubar=0,scrollbars=1',
 					)
 				)
 			)
