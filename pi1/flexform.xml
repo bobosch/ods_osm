@@ -70,6 +70,9 @@
 										<module>
 											<name>wizard_coordinatepicker</name>
 										</module>
+										<params>
+											<mode>point</mode>
+										</params>
 										<JSopenParams>height=600,width=800,status=0,menubar=0,scrollbars=0</JSopenParams>
 									</coordinatepicker>
 								</wizards>

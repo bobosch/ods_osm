@@ -20,6 +20,9 @@ $tempColumns = array (
 					'module' => array(
 							'name' => 'wizard_coordinatepicker',
 					),
+					'params' => array(
+						'mode' => 'point',
+					),
 					'JSopenParams' => 'height=600,width=800,status=0,menubar=0,scrollbars=0',
 				)
 			)
