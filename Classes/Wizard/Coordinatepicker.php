@@ -147,19 +147,41 @@ class Coordinatepicker extends \TYPO3\CMS\Backend\Controller\Wizard\AbstractWiza
 		$field=$config['fieldnames'][$this->P['table']];
 
 		switch($this->P['table']){
-			case 'tx_odsosm_vector':
-				$res=$GLOBALS['TYPO3_DB']->exec_SELECTquery('(max_lat+min_lat)/2 AS lat,(max_lon+min_lon)/2 AS lon',$this->P['table'],'uid='.intval($this->P['uid']));
+			case 'tt_content':
+				$res=$GLOBALS['TYPO3_DB']->exec_SELECTquery(
+					'ExtractValue(pi_flexform,\'/T3FlexForms[1]/data[1]/sheet[@index="sDEF"]/language[@index="lDEF"]/field[@index="' . $field['lon'] . '"]/value[@index="vDEF"]\') as lon, ' .
+					'ExtractValue(pi_flexform,\'/T3FlexForms[1]/data[1]/sheet[@index="sDEF"]/language[@index="lDEF"]/field[@index="' . $field['lat'] . '"]/value[@index="vDEF"]\') as lat',
+					$this->P['table'],
+					'uid=' . intval($this->P['uid'])
+				);
 				$row=$GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
-				$row['zoom']=15;
+				$js='function setBEcoordinates(lon,lat) {
+					'.$this->getJSsetField($this->P,'lon').'
+					'.$this->getJSsetField($this->P,'lat',array($field['lon']=>$field['lat'])).'
+					close();
+				}';
+				break;
+			case 'tx_odsosm_vector':
+				$res=$GLOBALS['TYPO3_DB']->exec_SELECTquery(
+					'(max_lon+min_lon)/2 AS lon, ' .
+					'(max_lat+min_lat)/2 AS lat',
+					$this->P['table'],
+					'uid='.intval($this->P['uid'])
+				);
+				$row=$GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
 				$js='function setBEfield(data) {
 					'.$this->getJSsetField($this->P,'data').'
 					close();
 				}';
 				break;
 			default:
-				$res=$GLOBALS['TYPO3_DB']->exec_SELECTquery($field['lon'] . ' AS lon, ' . $field['lat'] . ' AS lat', $this->P['table'], 'uid=' . intval($this->P['uid']));
+				$res=$GLOBALS['TYPO3_DB']->exec_SELECTquery(
+					$field['lon'] . ' AS lon, ' .
+					$field['lat'] . ' AS lat',
+					$this->P['table'],
+					'uid=' . intval($this->P['uid'])
+				);
 				$row=$GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
-				$row['zoom']=15;
 				$js='function setBEcoordinates(lon,lat) {
 					'.$this->getJSsetField($this->P,'lon').'
 					'.$this->getJSsetField($this->P,'lat',array($field['lon']=>$field['lat'])).'
@@ -167,6 +189,8 @@ class Coordinatepicker extends \TYPO3\CMS\Backend\Controller\Wizard\AbstractWiza
 				}';
 				break;
 		}
+
+		$row['zoom']=15;
 
 		if(floatval($row['lon'])==0){
 			$row['lon']=$config['default_lon'];

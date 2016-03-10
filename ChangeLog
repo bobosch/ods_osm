@@ -1,3 +1,6 @@
+2016-03-10 Robert Heel <typo3@bobosch.de>
+	* Bugfix: Show tt_content lon and lat in coordinate picker.
+
 2016-03-08 Robert Heel <typo3@bobosch.de>
 	* Bugfix: Show tt_address records in sys_category.
 	* Bugfix: Fix static functions.
