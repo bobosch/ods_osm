@@ -137,14 +137,19 @@ class tx_odsosm_leaflet extends tx_odsosm_common {
 					case 'gpx':
 						// include javascript file for GPX support
 						$this->scripts['leaflet-gpx']=$path.'leaflet-gpx/gpx.js';
-
-						$jsMarker .= 'var ' . $jsElementVar .' = new L.GPX(';
-						$jsMarker .= '"' .$GLOBALS['TSFE']->absRefPrefix .'uploads/tx_odsosm/' .$item['file'] .'"';
-						$jsMarker .= ", { color: '" .$item['color'] ."', clickable: false";
-						$jsMarker .= ", marker_options: { startIconUrl: '" .$path ."leaflet-gpx/pin-icon-start.png'";
-						$jsMarker .= ", endIconUrl: '" .$path ."leaflet-gpx/pin-icon-end.png'";
-						$jsMarker .= ", shadowUrl: '" .$path ."leaflet-gpx/pin-shadow.png'}";
-						$jsMarker .= "});\n";
+						$options = array(
+							'clickable'=>'false',
+							'polyline_options' => array(
+								'color' => $item['color'],
+							),
+							'marker_options' => array(
+								'startIconUrl' => $path . 'leaflet-gpx/pin-icon-start.png',
+								'endIconUrl' => $path . 'leaflet-gpx/pin-icon-end.png',
+								'shadowUrl' => $path . 'leaflet-gpx/pin-shadow.png',
+							),
+						);
+						$jsMarker .= 'var ' . $jsElementVar .' = new L.GPX("' .$GLOBALS['TSFE']->absRefPrefix .'uploads/tx_odsosm/' .$item['file'] .'",';
+						$jsMarker .= json_encode($options) . ");\n";
 						break;
 				}
 				break;

@@ -213,7 +213,7 @@ class tx_odsosm_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 							}
 							break;
 						case 'sys_category':
-							$res=$GLOBALS['TYPO3_DB']->exec_SELECT_mm_query('tt_address.*', 'tt_address', 'sys_category_record_mm', 'sys_category', 'AND sys_category.uid=' . $item . tx_odsosm_div::getWhere('tt_address',$this->cObj));
+							$res=$GLOBALS['TYPO3_DB']->exec_SELECT_mm_query('tt_address.*', 'sys_category', 'sys_category_record_mm', 'tt_address', 'AND sys_category.uid=' . $item . tx_odsosm_div::getWhere('tt_address',$this->cObj));
 							while($row2=$GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)){
 								$records['tt_address'][$row2['uid']]=$row2;
 								$records['tt_address'][$row2['uid']]['group_uid']='sys_category_'.$row['uid'];
