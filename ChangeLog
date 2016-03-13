@@ -1,5 +1,6 @@
 2016-03-13 Robert Heel <typo3@bobosch.de>
 	* Update: Documentation.
+	* Change: Remove unused "Visible in map" switch on tracks.
 
 2016-03-11 Robert Heel <typo3@bobosch.de>
 	* Bugfix: Correct mm relation for sys_category.
