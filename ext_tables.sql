@@ -107,7 +107,6 @@ CREATE TABLE tx_odsosm_track (
 	cruser_id int(10) unsigned NOT NULL DEFAULT '0',
 	deleted tinyint(1) unsigned NOT NULL DEFAULT '0',
 	hidden tinyint(1) unsigned NOT NULL DEFAULT '0',
-	visible tinyint(1) unsigned NOT NULL DEFAULT '1',
 	title tinytext NOT NULL,
 	color varchar(10) NOT NULL DEFAULT '#37b7ff',
 	width tinyint(3) unsigned NOT NULL DEFAULT '5',

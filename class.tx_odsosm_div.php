@@ -265,7 +265,7 @@ class tx_odsosm_div {
 			$title,
 			$status
 		);
-		$flashMessageService = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Messaging\FlashMessageService::class);
+		$flashMessageService = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Core\Messaging\FlashMessageService');
 		$flashMessageQueue = $flashMessageService->getMessageQueueByIdentifier();
 		$flashMessageQueue->addMessage($flashMessage);
 	}
