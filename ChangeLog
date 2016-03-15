@@ -1,3 +1,6 @@
+2016-03-15 Robert Heel <typo3@bobosch.de>
+	* Change: Add php 5.4 compatibility to class.tx_odsosm_div.php (Thanks to Daniel Minder).
+
 2016-03-13 Robert Heel <typo3@bobosch.de>
 	* Update: Documentation.
 	* Change: Remove unused "Visible in map" switch on tracks.
