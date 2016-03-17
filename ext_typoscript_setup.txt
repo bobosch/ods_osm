@@ -1,4 +1,5 @@
 plugin.tx_odsosm_pi1 {
+	JSlibrary = {$plugin.tx_odsosm_pi1.JSlibrary}
 	library = {$plugin.tx_odsosm_pi1.library}
 
 	marker {

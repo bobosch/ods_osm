@@ -1,4 +1,7 @@
 plugin.tx_odsosm_pi1 {
+	# cat=OpenStreetMap//0001; type=options[none,jquery]; label=Use JavaScript library
+	JSlibrary = none
+
 	# cat=OpenStreetMap//0005; type=options[Leaflet=leaflet,Openlayers=openlayers,Static=static]; label= Use Library: Choose between http://openlayers.org/ , http://leaflet.cloudmade.com/ or a static map without javascript.
 	library = openlayers
 
