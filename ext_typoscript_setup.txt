@@ -22,6 +22,11 @@ plugin.tx_odsosm_pi1 {
 	no_marker = {$plugin.tx_odsosm_pi1.no_marker}
 
 	_CSS_DEFAULT_STYLE = .olControlAttribution{bottom:0px!important;}
+
+	icon {
+		fe_users = IMAGE
+	}
+
 	popup {
 		fe_users = COA
 		fe_users {

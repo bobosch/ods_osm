@@ -312,6 +312,19 @@ class tx_odsosm_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 				if($item['tx_odsosm_marker']) {
 					$item['tx_odsosm_marker'] = $icons[$item['tx_odsosm_marker']];
 					$item['tx_odsosm_marker']['icon'] = 'uploads/tx_odsosm/' . $item['tx_odsosm_marker']['icon'];
+				}elseif(is_string($this->config['icon.'][$table]) && is_array($this->config['icon.'][$table.'.'])) {
+					$local_cObj->start($item,$table);
+					$html = $local_cObj->cObjGetSingle($this->config['icon.'][$table],$this->config['icon.'][$table.'.']);
+					if($this->config['icon.'][$table] == 'IMAGE') {
+						$info = $GLOBALS['TSFE']->lastImageInfo;
+						$item['tx_odsosm_marker'] = array(
+							'icon' => $info['origFile'],
+							'size_x' => $info[0],
+							'size_y' => $info[1],
+							'offset_x' => -$info[0]/2,
+							'offset_y' => -$info[1],
+						);
+					}
 				}
 			}
 		}
