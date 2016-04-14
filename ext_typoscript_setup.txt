@@ -6,8 +6,6 @@ plugin.tx_odsosm_pi1 {
 		pages =
 		fe_users =
 		fe_groups =
-		tt_address =
-		tt_address_group =
 		tx_odsosm_track =
 	}
 	width = {$plugin.tx_odsosm_pi1.width}
@@ -27,15 +25,6 @@ plugin.tx_odsosm_pi1 {
 	popup {
 		fe_users = COA
 		fe_users {
-			10 = TEXT
-			10.field = name
-			10.wrap = <h2>|</h2>
-			20 = TEXT
-			20.field = description
-			20.htmlSpecialChars = 1
-		}
-		tt_address = COA
-		tt_address {
 			10 = TEXT
 			10.field = name
 			10.wrap = <h2>|</h2>

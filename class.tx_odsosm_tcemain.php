@@ -12,32 +12,6 @@ class tx_odsosm_tcemain {
 	// ['t3lib/class.t3lib_tcemain.php']['processDatamapClass']
 	function processDatamap_postProcessFieldArray($status, $table, $id, &$fieldArray, $obj) {
 		switch($table){
-			case 'fe_users':
-			case 'tt_address':
-				$config=tx_odsosm_div::getConfig(array('autocomplete'));
-				$field=$config['fieldnames'][$table];
-
-				// Search coordinates
-				if($config['autocomplete'] && ($fieldArray['zip'] || $fieldArray['city'] || $fieldArray['address'])){
-					$address=$obj->datamap[$table][$id];
-					if($config['autocomplete']==2 || floatval($address[$field['lon']])==0){
-						$ll=tx_odsosm_div::updateAddress($address);
-						if($ll){
-							$fieldArray[$field['lon']]=sprintf($field['format'],$address['lon']);
-							$fieldArray[$field['lat']]=sprintf($field['format'],$address['lat']);
-							if($address['street']){
-								$fieldArray['address']=$address['street'];
-								if($address['housenumber']) $fieldArray['address'].=' '.$address['housenumber'];
-							}
-							if($address['zip']) $fieldArray['zip']=$address['zip'];
-							if($address['city']) $fieldArray['city']=$address['city'];
-							if($address['state'] && $table=='tt_address') $fieldArray['region']=$address['state'];
-							if($address['country']) $fieldArray['country']=$address['country'];
-						}
-					}
-				}
-				break;
-
 			case 'tx_odsosm_track':
 				$filename=PATH_site.'uploads/tx_odsosm/'.$fieldArray['file'];
 				if($fieldArray['file'] && file_exists($filename)){
@@ -76,6 +50,50 @@ class tx_odsosm_tcemain {
 				$fieldArray['min_lat']=sprintf('%01.6f',min($this->lat));
 				$fieldArray['max_lon']=sprintf('%01.6f',max($this->lon));
 				$fieldArray['max_lat']=sprintf('%01.6f',max($this->lat));
+				break;
+			default:
+				$tc=tx_odsosm_div::getTableConfig($table);
+				if(isset($tc['lon'])){
+					if(
+						(isset($tc['address']) && $fieldArray[$tc['address']]) ||
+						(isset($tc['street']) && $fieldArray[$tc['street']]) ||
+						(isset($tc['zip']) && $fieldArray[$tc['zip']]) ||
+						(isset($tc['city']) && $fieldArray[$tc['city']])
+					){
+						$config=tx_odsosm_div::getConfig(array('autocomplete'));
+						// Search coordinates
+						if($config['autocomplete']){
+							// Generate address array with standard keys
+							$address=array();
+							foreach($tc as $def=>$field){
+								if($def==strtolower($def)){
+									$address[$def]=$obj->datamap[$table][$id][$field];
+								}
+							}
+							if($config['autocomplete']==2 || floatval($address['longitude'])==0){
+								$ll=tx_odsosm_div::updateAddress($address);
+								if($ll){
+									// Optimize address
+									$address['lon']=sprintf($tc['FORMAT'],$address['lon']);
+									$address['lat']=sprintf($tc['FORMAT'],$address['lat']);
+									if(isset($tc['address']) && !isset($tc['street'])){
+										if($address['street']){
+											$address['address']=$address['street'];
+											if($address['housenumber']) $address['address'].=' '.$address['housenumber'];
+										}
+									}
+								
+									// Update fieldArray if address is set
+									foreach($tc as $def=>$field){
+										if($def==strtolower($def)){
+											if($address[$def]) $fieldArray[$field]=$address[$def];
+										}
+									}
+								}
+							}
+						}
+					}
+				}
 				break;
 		}
 	}

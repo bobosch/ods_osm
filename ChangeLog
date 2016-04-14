@@ -1,3 +1,9 @@
+2016-03-19 Robert Heel <typo3@bobosch.de>
+	* Change: Transfered tt_address marker into extension "ods_osm_tt_address". Install it if you use tt_address records!
+	* Add: Extension ods_osm_tt_address 2.0.0 for tt_address 2.x
+	* Add: Extension ods_osm_tt_address 3.0.0 for tt_address 3.x
+	* Add: Extension ods_osm_tt_cal 1.0.0 for cal 1.x
+
 2016-03-17 Robert Heel <typo3@bobosch.de>
 	* Feature #48742: Allow jQuery usage.
 

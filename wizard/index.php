@@ -53,7 +53,7 @@ class tx_odsosm_wizard extends t3lib_SCbase {
 		$config['mouse_navigation']=true;
 		$config['show_pan_zoom']=1;
 
-		$field=$config['fieldnames'][$this->P['table']];
+		$field=\tx_odsosm_div::getTableConfig($this->P['table']);
 
 		switch($this->P['table']){
 			case 'tt_content':

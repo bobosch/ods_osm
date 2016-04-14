@@ -91,35 +91,6 @@ class tx_odsosm_leaflet extends tx_odsosm_common {
 		$jsElementVar = $table . '_' . $item['uid'];
 		$jsLayerVar = $jsElementVar;
 		switch($table){
-			case 'fe_users':
-			case 'tt_address':
-				$markerOptions = array();
-				if($item['tx_odsosm_marker'] && is_array($this->markers[$item['tx_odsosm_marker']])){
-					$marker=$this->markers[$item['tx_odsosm_marker']];
-					$icon=$GLOBALS['TSFE']->absRefPrefix.'uploads/tx_odsosm/'.$marker['icon'];
-					$iconOptions = (object) array(
-						'iconUrl' => $GLOBALS['TSFE']->absRefPrefix.'uploads/tx_odsosm/'.$marker['icon'],
-						'iconSize' => array((int)$marker['size_x'], (int)$marker['size_y']),
-						'iconAnchor' => array(-(int)$marker['offset_x'], -(int)$marker['offset_y']),
-						'popupAnchor' => array(0, (int)$marker['offset_y'])
-					);
-					$markerOptions['icon'] = 'icon: new L.Icon(' . json_encode($iconOptions) . ')';
-				}else{
-					$icon=$GLOBALS['TSFE']->absRefPrefix . \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::siteRelPath('ods_osm') . 'res/leaflet/images/marker-icon.png';
-				}
-				$jsMarker.='var ' . $jsElementVar . ' = new L.Marker([' . $item['tx_odsosm_lat'] . ', ' . $item['tx_odsosm_lon'] . '], {' . implode(',', $markerOptions) . "});\n";
-				// Add group to layer switch
-				if($item['group_title']) {
-					if(!in_array($item['group_uid'], $this->layers[1])) {
-						$this->layers[1]['<img src="'.$icon.'"> ' . $item['group_title']] = $item['group_uid'];
-						$jsMarker .= 'var '.$item['group_uid'].' = L.layerGroup([' . $jsElementVar . "]);\n";
-						$jsLayerVar = $item['group_uid'];
-					} else {
-						$jsMarker .= $item['group_uid'].'.addLayer(' . $jsElementVar . ");\n";
-						$jsLayerVar = false;
-					}
-				}
-				break;
 			case 'tx_odsosm_track':
 				$path = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::siteRelPath('ods_osm') .'res/';
 				// Add tracks to layerswitcher
@@ -157,7 +128,32 @@ class tx_odsosm_leaflet extends tx_odsosm_common {
 				$jsMarker .= 'var ' . $jsElementVar . ' = new L.geoJson(' . $item['data'] . ');' . "\n";
 				break;
 			default:
-				$jsElementVar = false;
+				$markerOptions = array();
+				if($item['tx_odsosm_marker'] && is_array($this->markers[$item['tx_odsosm_marker']])){
+					$marker=$this->markers[$item['tx_odsosm_marker']];
+					$icon=$GLOBALS['TSFE']->absRefPrefix.'uploads/tx_odsosm/'.$marker['icon'];
+					$iconOptions = (object) array(
+						'iconUrl' => $GLOBALS['TSFE']->absRefPrefix.'uploads/tx_odsosm/'.$marker['icon'],
+						'iconSize' => array((int)$marker['size_x'], (int)$marker['size_y']),
+						'iconAnchor' => array(-(int)$marker['offset_x'], -(int)$marker['offset_y']),
+						'popupAnchor' => array(0, (int)$marker['offset_y'])
+					);
+					$markerOptions['icon'] = 'icon: new L.Icon(' . json_encode($iconOptions) . ')';
+				}else{
+					$icon=$GLOBALS['TSFE']->absRefPrefix . \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::siteRelPath('ods_osm') . 'res/leaflet/images/marker-icon.png';
+				}
+				$jsMarker.='var ' . $jsElementVar . ' = new L.Marker([' . $item['latitude'] . ', ' . $item['longitude'] . '], {' . implode(',', $markerOptions) . "});\n";
+				// Add group to layer switch
+				if($item['group_title']) {
+					if(!in_array($item['group_uid'], $this->layers[1])) {
+						$this->layers[1]['<img src="'.$icon.'"> ' . $item['group_title']] = $item['group_uid'];
+						$jsMarker .= 'var '.$item['group_uid'].' = L.layerGroup([' . $jsElementVar . "]);\n";
+						$jsLayerVar = $item['group_uid'];
+					} else {
+						$jsMarker .= $item['group_uid'].'.addLayer(' . $jsElementVar . ");\n";
+						$jsLayerVar = false;
+					}
+				}
 				break;
 		}
 

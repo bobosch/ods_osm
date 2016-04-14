@@ -65,49 +65,8 @@ class ext_update {
 	 */
 	protected function processUpdates() {
 		$this->importStaticData();
-		$this->moveField('tt_address','tx_odsosm_lon','longitude');
-		$this->moveField('tt_address','tx_odsosm_lat','latitude');
 	}
 	
-	/**
-	 * Import static data
-	 *
-	 * @return int
-	 */
-	protected function moveField($table,$from,$to) {
-		$title = 'Update table "' . $table . '": Move field from "' . $from . '" to "' . $to . '"';
-		$message = 'Move data in item ';
-		$status = \TYPO3\CMS\Core\Messaging\FlashMessage::OK;
-
-		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
-			'*',
-			$table,
-			$from . '>""'
-		);
-
-		if ($res) {
-			while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
-				$message.= $row['uid'] . ', ';
-				$UPDATEres = $GLOBALS['TYPO3_DB']->exec_UPDATEquery(
-					$table,
-					'uid=' . $row['uid'],
-					array(
-						$from => null,
-						$to => $row[$from]
-					)
-				);
-				if (!$UPDATEres) {
-					$status = \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR;
-				}
-			}
-		} else {
-			$message = 'No data to move.';
-		}
-
-		$this->messageArray[] = array($status, $title, $message);
-		return $status;
-	}
-
 	/**
 	 * Import static data
 	 *

@@ -6,8 +6,12 @@ class tx_odsosm_static extends tx_odsosm_common {
 		foreach($markers as $table=>$items){
 			foreach($items as $item){
 				switch($table){
-					case 'fe_users':
-					case 'tt_address':
+					case 'tx_odsosm_track':
+					case 'tx_odsosm_vector':
+						break;
+					default:
+						$lon = $item['longitude'];
+						$lat = $item['latitude'];
 						if($item['tx_odsosm_marker'] && is_array($this->markers[$item['tx_odsosm_marker']])){
 							$marker=$this->markers[$item['tx_odsosm_marker']];
 							$icon='uploads/tx_odsosm/'.$marker['icon'];
@@ -15,7 +19,7 @@ class tx_odsosm_static extends tx_odsosm_common {
 							$marker=array('size_x'=>21,'size_y'=>25,'offset_x'=>-11,'offset_y'=>-25);
 							$icon='EXT:ods_osm/res/marker.png';
 						}
-					break 3;
+						break 3;
 				}
 			}
 		}

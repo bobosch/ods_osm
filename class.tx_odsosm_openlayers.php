@@ -106,8 +106,13 @@ class tx_odsosm_openlayers extends tx_odsosm_common {
 	protected function getMarker($item,$table){
 		$jsMarker='';
 		switch($table){
-			case 'fe_users':
-			case 'tt_address':
+			case 'tx_odsosm_track':
+				$jsMarker.="mapGpx(" . $this->config['id'] . ",'" . $GLOBALS['TSFE']->absRefPrefix . 'uploads/tx_odsosm/' . $item['file'] . "','" . $item['title'] . "','" . $item['color'] . "'," . $item['width'] . ");\n";
+				break;
+			case 'tx_odsosm_vector':
+				$jsMarker.="mapVector(".$this->config['id'].",'".$item['title']."',".$item['data'].");\n";
+				break;
+			default:
 				if($item['tx_odsosm_marker'] && is_array($this->markers[$item['tx_odsosm_marker']])){
 					$marker=$this->markers[$item['tx_odsosm_marker']];
 					$icon=$GLOBALS['TSFE']->absRefPrefix.'uploads/tx_odsosm/'.$marker['icon'];
@@ -121,14 +126,8 @@ class tx_odsosm_openlayers extends tx_odsosm_common {
 					$jsMarker.="var layerMarkers_".$item['group_uid']."=new OpenLayers.Layer.Markers('<img src=\"".$icon."\" /> ".$item['group_title']."');\n";
 					$jsMarker.=$this->config['id'].'.addLayer(layerMarkers_'.$item['group_uid'].');';
 				}
-				$jsMarker.="mapMarker(".$this->config['id'].",layerMarkers_".$item['group_uid'].",".$item['tx_odsosm_lat'].",".$item['tx_odsosm_lon'].",'".$icon."',".$marker['size_x'].",".$marker['size_y'].",".$marker['offset_x'].",".$marker['offset_y'].",'".strtr($item['popup'],$this->escape_js)."',".intval($this->config['show_popups']).",".intval($item['initial_popup']).");\n";
-			break;
-			case 'tx_odsosm_track':
-				$jsMarker.="mapGpx(" . $this->config['id'] . ",'" . $GLOBALS['TSFE']->absRefPrefix . 'uploads/tx_odsosm/' . $item['file'] . "','" . $item['title'] . "','" . $item['color'] . "'," . $item['width'] . ");\n";
-			break;
-			case 'tx_odsosm_vector':
-				$jsMarker.="mapVector(".$this->config['id'].",'".$item['title']."',".$item['data'].");\n";
-			break;
+				$jsMarker.="mapMarker(".$this->config['id'].",layerMarkers_".$item['group_uid'].",".$item['latitude'].",".$item['longitude'].",'".$icon."',".$marker['size_x'].",".$marker['size_y'].",".$marker['offset_x'].",".$marker['offset_y'].",'".strtr($item['popup'],$this->escape_js)."',".intval($this->config['show_popups']).",".intval($item['initial_popup']).");\n";
+				break;
 		}
 		return $jsMarker;
 	}

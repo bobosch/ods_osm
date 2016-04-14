@@ -307,13 +307,14 @@ class tx_odsosm_div {
 		// Address field contains street if country, city or zip is set
 		if($address['country'] || $address['city'] || $address['zip']){
 			$address['type']='structured';
-			// Split street and house number
-			preg_match('/^(.+)\s(\d+(\s*[^\d\s]+)*)$/',$address['address'],$matches);
-			if($matches){
-				$address['street']=$matches[1];
-				$address['housenumber']=$matches[2];
-			}else{
-				$address['street']=$address['address'];
+			if($address['address'] && !$address['street']) $address['street']=$address['address'];
+			if(!$address['housenumber']) {
+				// Split street and house number
+				preg_match('/^(.+)\s(\d+(\s*[^\d\s]+)*)$/',$address['street'],$matches);
+				if($matches){
+					$address['street']=$matches[1];
+					$address['housenumber']=$matches[2];
+				}
 			}
 		}elseif($address['address']){
 			$address['type']='unstructured';
@@ -352,25 +353,39 @@ class tx_odsosm_div {
 			}
 		}
 
-		$config['fieldnames'] = array(
-			'fe_users'=>array(
-				'lon'=>'tx_odsosm_lon',
-				'lat'=>'tx_odsosm_lat',
-				'format'=>'%01.6f'
+		return $config;
+	}
+
+	public static function getTableConfig($table=false){
+		$tables = array(
+			'fe_groups' => array(
+				'FIND_IN_SET' => array(
+					'fe_users' => 'usergroup',
+				),
 			),
-			'tt_address'=>array(
-				'lon'=>'longitude',
-				'lat'=>'latitude',
-				'format'=>'%01.11f'
+			'fe_users' => array(
+				'FORMAT' => '%01.6f',
+				'lon' => 'tx_odsosm_lon',
+				'lat' => 'tx_odsosm_lat',
+				'address' => 'address',
+				'zip' => 'zip',
+				'city' => 'city',
+				'country' => 'country',
 			),
 			'tt_content'=>array(
-				'lon'=>'lon',
-				'lat'=>'lat',
-				'format'=>'%01.6f'
-			)
+				'FORMAT' => '%01.6f',
+				'lon' => 'lon',
+				'lat' => 'lat',
+			),
+			'tx_odsosm_track' => true,
+			'tx_odsosm_vector' => true,
 		);
 
-		return $config;
+		if(is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ods_osm']['tables'])){
+			$tables = array_merge($tables, $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ods_osm']['tables']);
+		}
+		
+		return $table ? $tables[$table] : $tables;
 	}
 }
 ?>

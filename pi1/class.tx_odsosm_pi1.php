@@ -180,14 +180,17 @@ class tx_odsosm_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 	}
 
 	function extractGroup($record_ids){
+		$tables = tx_odsosm_div::getTableConfig();
+	
 		// get pages
 		if(!empty($record_ids['pages'])){
-			$tables=array('fe_users','fe_groups','tt_address','sys_category','tx_odsosm_track');
 			$pids=implode(',',$record_ids['pages']);
-			foreach($tables as $table){
-				$res=$GLOBALS['TYPO3_DB']->exec_SELECTquery('uid', $table, 'pid IN ('.$pids.')' . tx_odsosm_div::getWhere($table,$this->cObj));
-				while($row=$GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)){
-					$record_ids[$table][]=$row['uid'];
+			foreach(array_keys($tables) as $table){
+				if($table != 'tt_content') {
+					$res=$GLOBALS['TYPO3_DB']->exec_SELECTquery('uid', $table, 'pid IN (' . $pids . ')' . tx_odsosm_div::getWhere($table,$this->cObj));
+					while($row=$GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)){
+						$record_ids[$table][]=$row['uid'];
+					}
 				}
 			}
 		}
@@ -195,43 +198,55 @@ class tx_odsosm_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 		// get records
 		$records=array();
 		foreach($record_ids as $table=>$items){
+			$tc = $tables[$table];
 			foreach($items as $item){
 				$item=intval($item);
 				$res=$GLOBALS['TYPO3_DB']->exec_SELECTquery('*', $table, 'uid=' . $item . tx_odsosm_div::getWhere($table,$this->cObj));
 				$row=$GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
 				$row=tx_odsosm_div::getOverlay($table,$row);
 				if($row) {
-					switch($table) {
-						case 'fe_groups':
-							$res=$GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'fe_users', 'FIND_IN_SET("'.$item.'",usergroup)' . tx_odsosm_div::getWhere('fe_users',$this->cObj));
-							while($row2=$GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)){
-								$records['fe_users'][$row2['uid']]=$row2;
-								$records['fe_users'][$row2['uid']]['group_uid']='fe_groups_'.$row['uid'];
-								$records['fe_users'][$row2['uid']]['group_title']=$row['title'];
-								$records['fe_users'][$row2['uid']]['group_description']=$row['description'];
-								$records['fe_users'][$row2['uid']]['tx_odsosm_marker']=$row['tx_odsosm_marker'];
+					// Group with relation to a field
+					if(is_array($tc['FIND_IN_SET'])) {
+						foreach($tc['FIND_IN_SET'] as $t => $f) {
+							$res=$GLOBALS['TYPO3_DB']->exec_SELECTquery('*', $t, 'FIND_IN_SET("' . $item . '",' . $f . ')' . tx_odsosm_div::getWhere($t, $this->cObj));
+							while($r=$GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)){
+								$records[$t][$r['uid']]=$r;
+								$records[$t][$r['uid']]['group_uid']=$table . '_' . $row['uid'];
+								$records[$t][$r['uid']]['group_title']=$row['title'];
+								$records[$t][$r['uid']]['group_description']=$row['description'];
+								$records[$t][$r['uid']]['tx_odsosm_marker']=$row['tx_odsosm_marker'];
+								$records[$t][$r['uid']]['longitude']=$r[$tables[$t]['lon']];
+								$records[$t][$r['uid']]['latitude']=$r[$tables[$t]['lat']];
 							}
-							break;
-						case 'sys_category':
-							$res=$GLOBALS['TYPO3_DB']->exec_SELECT_mm_query('tt_address.*', 'sys_category', 'sys_category_record_mm', 'tt_address', 'AND sys_category.uid=' . $item . tx_odsosm_div::getWhere('tt_address',$this->cObj));
-							while($row2=$GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)){
-								$records['tt_address'][$row2['uid']]=$row2;
-								$records['tt_address'][$row2['uid']]['group_uid']='sys_category_'.$row['uid'];
-								$records['tt_address'][$row2['uid']]['group_title']=$row['title'];
-								$records['tt_address'][$row2['uid']]['group_description']=$row['description'];
-								$records['tt_address'][$row2['uid']]['tx_odsosm_marker']=$row['tx_odsosm_marker'];
-								$records['tt_address'][$row2['uid']]['tx_odsosm_lon']=$row2['longitude'];
-								$records['tt_address'][$row2['uid']]['tx_odsosm_lat']=$row2['latitude'];
+						}
+					}
+
+					// Group with mm relation
+					if(is_array($tc['MM'])) {
+						foreach($tc['MM'] as $t => $f) {
+							$res=$GLOBALS['TYPO3_DB']->exec_SELECT_mm_query($t . '.*', $f['local'], $f['mm'], $f['foreign'], 'AND ' . $table . '.uid=' . $item . tx_odsosm_div::getWhere($t,$this->cObj));
+							while($r=$GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)){
+								$records[$t][$r['uid']]=$r;
+								$records[$t][$r['uid']]['group_uid']=$table . '_' . $row['uid'];
+								$records[$t][$r['uid']]['group_title']=$row['title'];
+								$records[$t][$r['uid']]['group_description']=$row['description'];
+								$records[$t][$r['uid']]['tx_odsosm_marker']=$row['tx_odsosm_marker'];
+								$records[$t][$r['uid']]['longitude']=$r[$tables[$t]['lon']];
+								$records[$t][$r['uid']]['latitude']=$r[$tables[$t]['lat']];
 							}
-							break;
-						case 'tt_address':
-							$records['tt_address'][$item]=$row;
-							$records['tt_address'][$item]['tx_odsosm_lon']=$row['longitude'];
-							$records['tt_address'][$item]['tx_odsosm_lat']=$row['latitude'];
-							break;
-						default:
-							$records[$table][$item]=$row;
-							break;
+						}
+					}
+
+					// Marker
+					if(isset($tc['lon'])) {
+						$records[$table][$item]=$row;
+						$records[$table][$item]['longitude']=$row[$tc['lon']];
+						$records[$table][$item]['latitude']=$row[$tc['lat']];
+					}
+
+					// Special element
+					if($tc===true) {
+						$records[$table][$item]=$row;
 					}
 				}
 			}
@@ -248,22 +263,6 @@ class tx_odsosm_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 		foreach($records as $table=>$items){
 			foreach($items as $uid=>$row){
 				switch($table){
-					case 'fe_users':
-						if($row['tx_odsosm_lon']){
-							$this->lons[]=floatval($row['tx_odsosm_lon']);
-							$this->lats[]=floatval($row['tx_odsosm_lat']);
-						}else{
-							unset($records[$table][$uid]);
-						}
-						break;
-					case 'tt_address':
-						if($row['longitude']){
-							$this->lons[]=floatval($row['longitude']);
-							$this->lats[]=floatval($row['latitude']);
-						}else{
-							unset($records[$table][$uid]);
-						}
-						break;
 					case 'tx_odsosm_track':
 					case 'tx_odsosm_vector':
 						if($row['min_lon']){
@@ -274,6 +273,10 @@ class tx_odsosm_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 						}else{
 							unset($records[$table][$uid]);
 						}
+						break;
+					default:
+						$this->lons[]=floatval($row['longitude']);
+						$this->lats[]=floatval($row['latitude']);
 						break;
 				}
 			}

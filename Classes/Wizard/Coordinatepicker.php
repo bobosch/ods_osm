@@ -144,7 +144,7 @@ class Coordinatepicker extends \TYPO3\CMS\Backend\Controller\Wizard\AbstractWiza
 		$config['mouse_navigation']=true;
 		$config['show_pan_zoom']=1;
 
-		$field=$config['fieldnames'][$this->P['table']];
+		$field=\tx_odsosm_div::getTableConfig($this->P['table']);
 
 		switch($this->P['table']){
 			case 'tt_content':
