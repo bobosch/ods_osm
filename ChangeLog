@@ -1,3 +1,6 @@
+2016-04-14 Robert Heel <typo3@bobosch.de>
+	* Change: Centralize marker icon information.
+
 2016-03-19 Robert Heel <typo3@bobosch.de>
 	* Change: Transfered tt_address marker into extension "ods_osm_tt_address". Install it if you use tt_address records!
 	* Add: Extension ods_osm_tt_address 2.0.0 for tt_address 2.x

@@ -1,7 +1,6 @@
 <?php
 class tx_odsosm_common {
 	public $cObj; // Must set from instantiating class
-	public $markers;
 
 	protected $config;
 	protected $escape_js=array(

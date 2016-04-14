@@ -129,11 +129,11 @@ class tx_odsosm_leaflet extends tx_odsosm_common {
 				break;
 			default:
 				$markerOptions = array();
-				if($item['tx_odsosm_marker'] && is_array($this->markers[$item['tx_odsosm_marker']])){
-					$marker=$this->markers[$item['tx_odsosm_marker']];
-					$icon=$GLOBALS['TSFE']->absRefPrefix.'uploads/tx_odsosm/'.$marker['icon'];
+				if(is_array($item['tx_odsosm_marker'])){
+					$marker=$item['tx_odsosm_marker'];
+					$icon=$GLOBALS['TSFE']->absRefPrefix . $marker['icon'];
 					$iconOptions = (object) array(
-						'iconUrl' => $GLOBALS['TSFE']->absRefPrefix.'uploads/tx_odsosm/'.$marker['icon'],
+						'iconUrl' => $icon,
 						'iconSize' => array((int)$marker['size_x'], (int)$marker['size_y']),
 						'iconAnchor' => array(-(int)$marker['offset_x'], -(int)$marker['offset_y']),
 						'popupAnchor' => array(0, (int)$marker['offset_y'])

@@ -113,12 +113,12 @@ class tx_odsosm_openlayers extends tx_odsosm_common {
 				$jsMarker.="mapVector(".$this->config['id'].",'".$item['title']."',".$item['data'].");\n";
 				break;
 			default:
-				if($item['tx_odsosm_marker'] && is_array($this->markers[$item['tx_odsosm_marker']])){
-					$marker=$this->markers[$item['tx_odsosm_marker']];
-					$icon=$GLOBALS['TSFE']->absRefPrefix.'uploads/tx_odsosm/'.$marker['icon'];
+				if(is_array($item['tx_odsosm_marker'])){
+					$marker=$item['tx_odsosm_marker'];
+					$icon=$GLOBALS['TSFE']->absRefPrefix . $marker['icon'];
 				}else{
 					$marker=array('size_x'=>21,'size_y'=>25,'offset_x'=>-11,'offset_y'=>-25);
-					$icon=$GLOBALS['TSFE']->absRefPrefix . \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::siteRelPath('ods_osm') . 'res/marker.png';
+					$icon=$GLOBALS['TSFE']->absRefPrefix . \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::siteRelPath('ods_osm') . 'res/OpenLayers/img/marker.png';
 				}
 				// Add group to layer switch
 				if(!in_array($item['group_title'], $this->group_titles)) {

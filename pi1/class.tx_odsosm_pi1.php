@@ -144,9 +144,6 @@ class tx_odsosm_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 		$this->library=\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_odsosm_'.$this->config['library']);
 		$this->library->init($this->config);
 		$this->library->cObj=$this->cObj;
-
-		// Get marker records
-		$this->library->markers=$GLOBALS['TYPO3_DB']->exec_SELECTgetRows('*','tx_odsosm_marker','1'.$this->cObj->enableFields('tx_odsosm_marker'),'','','','uid');
 	}
 
 	/**
@@ -297,13 +294,24 @@ class tx_odsosm_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 		/* ==================================================
 			Marker
 		================================================== */
+		// Get icon records
+		$icons = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('*', 'tx_odsosm_marker', '1' . tx_odsosm_div::getWhere('tx_odsosm_marker',$this->cObj), '', '', '', 'uid');
+
+		// Prepare markers
 		$markers=$this->config['marker'];
 		$local_cObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer');
-		foreach($markers as $table=>$items){
-			foreach($items as $key=>$item){
-				if($this->config['show_popups'] && $this->config['popup.'][$table]){
+		foreach($markers as $table=>&$items){
+			foreach($items as $key=>&$item){
+				// Add popup information
+				if($this->config['show_popups'] && is_string($this->config['popup.'][$table]) && is_array($this->config['popup.'][$table.'.'])){
 					$local_cObj->start($item,$table);
-					$markers[$table][$key]['popup']=$local_cObj->cObjGetSingle($this->config['popup.'][$table],$this->config['popup.'][$table.'.']);
+					$item['popup']=$local_cObj->cObjGetSingle($this->config['popup.'][$table],$this->config['popup.'][$table.'.']);
+				}
+				
+				// Add icon information
+				if($item['tx_odsosm_marker']) {
+					$item['tx_odsosm_marker'] = $icons[$item['tx_odsosm_marker']];
+					$item['tx_odsosm_marker']['icon'] = 'uploads/tx_odsosm/' . $item['tx_odsosm_marker']['icon'];
 				}
 			}
 		}

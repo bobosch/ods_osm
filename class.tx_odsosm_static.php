@@ -12,12 +12,12 @@ class tx_odsosm_static extends tx_odsosm_common {
 					default:
 						$lon = $item['longitude'];
 						$lat = $item['latitude'];
-						if($item['tx_odsosm_marker'] && is_array($this->markers[$item['tx_odsosm_marker']])){
-							$marker=$this->markers[$item['tx_odsosm_marker']];
-							$icon='uploads/tx_odsosm/'.$marker['icon'];
+						if(is_array($item['tx_odsosm_marker'])){
+							$marker=$item['tx_odsosm_marker'];
+							$icon = $marker['icon'];
 						}else{
 							$marker=array('size_x'=>21,'size_y'=>25,'offset_x'=>-11,'offset_y'=>-25);
-							$icon='EXT:ods_osm/res/marker.png';
+							$icon='EXT:ods_osm/res/OpenLayers/img/marker.png';
 						}
 						break 3;
 				}
