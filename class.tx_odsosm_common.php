@@ -3,14 +3,6 @@ class tx_odsosm_common {
 	public $cObj; // Must set from instantiating class
 
 	protected $config;
-	protected $escape_js=array(
-		"\r\n"=>"<br />",
-		"\n"=>"<br />",
-		"\r"=>"<br />",
-		"'"=>"\'",
-		'"'=>'\"',
-		'/'=>'\/',
-	);
 	protected $script;
 	protected $scripts=array();
 

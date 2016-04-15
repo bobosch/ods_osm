@@ -1,3 +1,6 @@
+2016-04-15 Robert Heel <typo3@bobosch.de>
+	* Bugfix: Using json_encode to encode all javascript parameters with floatval (issue with '.' and ',') or escaped strings. 
+
 2016-04-14 Robert Heel <typo3@bobosch.de>
 	* Change: Centralize marker icon information.
 	* Add: Define marker icon with TS IMAGE object.

@@ -36,7 +36,11 @@ class tx_odsosm_openlayers extends tx_odsosm_common {
 	}
 	
 	public function getMapCenter($lat,$lon,$zoom){
-		return "mapCenter(".$this->config['id'].",".floatval($lat).",".floatval($lon).",".intval($zoom).");";
+		return 'mapCenter(' . $this->config['id'] . ',' . substr(json_encode(array(
+			$lat,
+			$lon,
+			$zoom
+		)),1,-1) . ');';
 	}
 
 	protected function getLayerSwitcher(){
@@ -126,7 +130,18 @@ class tx_odsosm_openlayers extends tx_odsosm_common {
 					$jsMarker.="var layerMarkers_".$item['group_uid']."=new OpenLayers.Layer.Markers('<img src=\"".$icon."\" /> ".$item['group_title']."');\n";
 					$jsMarker.=$this->config['id'].'.addLayer(layerMarkers_'.$item['group_uid'].');';
 				}
-				$jsMarker.="mapMarker(".$this->config['id'].",layerMarkers_".$item['group_uid'].",".$item['latitude'].",".$item['longitude'].",'".$icon."',".$marker['size_x'].",".$marker['size_y'].",".$marker['offset_x'].",".$marker['offset_y'].",'".strtr($item['popup'],$this->escape_js)."',".intval($this->config['show_popups']).",".intval($item['initial_popup']).");\n";
+				$jsMarker .= 'mapMarker(' . $this->config['id'] . ',' . 'layerMarkers_' . $item['group_uid'] . ',' . json_encode(array(
+					'longitude' => $item['longitude'],
+					'latitude' => $item['latitude'],
+					'icon' => $icon,
+					'size_x' => $marker['size_x'],
+					'size_y' => $marker['size_y'],
+					'offset_x' => $marker['offset_x'],
+					'offset_y' => $marker['offset_y'],
+					'popup' => $item['popup'],
+					'show_popups' => intval($this->config['show_popups']),
+					'initial_popup' => intval($item['initial_popup']),
+				)) . ");\n";
 				break;
 		}
 		return $jsMarker;

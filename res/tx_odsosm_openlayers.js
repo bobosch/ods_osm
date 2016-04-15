@@ -3,14 +3,14 @@ function mapCenter(oMap,fLat,fLon,iZoom){
 	oMap.setCenter(oLonLat,iZoom);
 }
 
-function mapMarker(oMap,oLayer,fLat,fLon,sIcon,iSizeX,iSizeY,iOffsetX,iOffsetY,sText,iPopup,initialPopup){
-	var oLonLat = new OpenLayers.LonLat(fLon,fLat).transform(new OpenLayers.Projection('EPSG:4326'), oMap.getProjectionObject());
-	var oSize = new OpenLayers.Size(iSizeX,iSizeY);
-	var oOffset = new OpenLayers.Pixel(iOffsetX,iOffsetY);
-	var oIcon = new OpenLayers.Icon(sIcon,oSize,oOffset);
-	var oMarker = new OpenLayers.Marker(oLonLat,oIcon);
+function mapMarker(oMap, oLayer, a){
+	var oLonLat = new OpenLayers.LonLat(a['longitude'], a['latitude']).transform(new OpenLayers.Projection('EPSG:4326'), oMap.getProjectionObject());
+	var oSize = new OpenLayers.Size(a['size_x'], a['size_y']);
+	var oOffset = new OpenLayers.Pixel(a['offset_x'], a['offset_y']);
+	var oIcon = new OpenLayers.Icon(a['icon'], oSize, oOffset);
+	var oMarker = new OpenLayers.Marker(oLonLat, oIcon);
 
-	if(sText){
+	if(a['popup']){
 		var AutoSizeFramedCloud = OpenLayers.Class(OpenLayers.Popup.FramedCloud, {
 			'autoSize': true
 		});
@@ -18,13 +18,13 @@ function mapMarker(oMap,oLayer,fLat,fLon,sIcon,iSizeX,iSizeY,iOffsetX,iOffsetY,s
 		var feature = new OpenLayers.Feature(oLayer, oLonLat);
 		feature.closeBox = true;
 		feature.popupClass = AutoSizeFramedCloud;
-		feature.data.popupContentHTML = sText;
+		feature.data.popupContentHTML = a['popup'];
 		feature.data.overflow = 'auto';
 		oMarker.feature = feature;
 
-		if (initialPopup) {
+		if (a['initial_popup']) {
 			var popup = new OpenLayers.Popup.FramedCloud(
-				"popup", oLonLat, null, sText, null, true
+				"popup", oLonLat, null, a['popup'], null, true
 			);
 			oMap.addPopup(popup);
 			popup.show();
@@ -32,12 +32,12 @@ function mapMarker(oMap,oLayer,fLat,fLon,sIcon,iSizeX,iSizeY,iOffsetX,iOffsetY,s
 
 		var mouseAction = function (evt) {
 			if (this.popup == null) {
-				if(iPopup==2) {
+				if(a['show_popups']==2) {
 					this.popup = this.createPopup();
 					oMap.addPopup(this.popup);
 				} else {
 					this.popup = this.createPopup(this.closeBox);
-					if (iPopup==3)
+					if (a['show_popups']==3)
 						oMap.addPopup(this.popup,true);
 					else
 						oMap.addPopup(this.popup);
@@ -46,7 +46,7 @@ function mapMarker(oMap,oLayer,fLat,fLon,sIcon,iSizeX,iSizeY,iOffsetX,iOffsetY,s
 			} else {
 				if(evt.type=='mousedown') {
 					// exclusive uses removePopup(), so need to addPopup() again
-					if (iPopup==3) {
+					if (a['show_popups']==3) {
 						oMap.addPopup(this.popup,true);
 						this.popup.show();
 					} else {
@@ -59,7 +59,7 @@ function mapMarker(oMap,oLayer,fLat,fLon,sIcon,iSizeX,iSizeY,iOffsetX,iOffsetY,s
 			currentPopup = this.popup;
 			OpenLayers.Event.stop(evt);
 		};
-		if(iPopup==2){
+		if(a['show_popups']==2){
 			oMarker.events.register('mouseover', feature, mouseAction);
 			oMarker.events.register('mouseout', feature, mouseAction);
 		}else{

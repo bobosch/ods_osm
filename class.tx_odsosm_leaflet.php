@@ -81,7 +81,7 @@ class tx_odsosm_leaflet extends tx_odsosm_common {
 	}
 
 	public function getMapCenter($lat,$lon,$zoom){
-		$return='var center = new L.LatLng('.floatval($lat).','.floatval($lon).');'.$this->config['id'].'.setView(center,'.intval($zoom).');';
+		$return='var center = new L.LatLng(' . json_encode($lat) . ',' . json_encode($lon) . ');' . $this->config['id'] . '.setView(center,' . $zoom . ');';
 		if($this->config['position']) $return.=$this->config['id'].'.locate();'.$this->config['id'].'.on("locationfound",function(e){var radius=e.accuracy/2;L.circle(e.latlng,radius).addTo('.$this->config['id'].');});';
 		return $return;
 	}
@@ -159,7 +159,7 @@ class tx_odsosm_leaflet extends tx_odsosm_common {
 
 		if($jsElementVar) {
 			if($item['popup']) {
-				$jsMarker .= $jsElementVar . '.bindPopup("'.strtr($item['popup'], $this->escape_js)."\");\n";
+				$jsMarker .= $jsElementVar . '.bindPopup(' . json_encode($item['popup']) . ");\n";
 				if ($item['initial_popup']) {
 					$jsMarker .= $jsElementVar . ".openPopup();\n";
 				}
