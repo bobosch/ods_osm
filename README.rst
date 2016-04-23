@@ -271,8 +271,9 @@ Reference
 +-----------------+-----------+-------------------------------------+---------+
 | height          | integer   |                                     | 400     |
 +-----------------+-----------+-------------------------------------+---------+
-| icon            | IMAGE     | Default marker image                | Library |
-|                 | object    |                                     | default |
+| icon            | IMAGE or  | Default marker image                | Library |
+|                 | TEXT      |                                     | default |
+|                 | object    |                                     |         |
 +-----------------+-----------+-------------------------------------+---------+
 | JSlibrary       | string    | JavaScript library: none / jquery   | none    |
 +-----------------+-----------+-------------------------------------+---------+
@@ -391,9 +392,20 @@ Example of icon property
 
 	plugin.tx_odsosm_pi1 {
 		icon {
+			# IMAGE example
 			fe_users = IMAGE
 			fe_users {
 				file = fileadmin/icon.png
+			}
+			
+			# HTML example
+			fe_users = TEXT
+			fe_users {
+				value = <span>X</span>
+				size_x=20
+				size_y=30
+				offset_x=10
+				offset_y=15
 			}
 		}
 	}

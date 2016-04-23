@@ -131,14 +131,19 @@ class tx_odsosm_leaflet extends tx_odsosm_common {
 				$markerOptions = array();
 				if(is_array($item['tx_odsosm_marker'])){
 					$marker=$item['tx_odsosm_marker'];
-					$icon=$GLOBALS['TSFE']->absRefPrefix . $marker['icon'];
-					$iconOptions = (object) array(
-						'iconUrl' => $icon,
+					$iconOptions = array(
 						'iconSize' => array((int)$marker['size_x'], (int)$marker['size_y']),
 						'iconAnchor' => array(-(int)$marker['offset_x'], -(int)$marker['offset_y']),
 						'popupAnchor' => array(0, (int)$marker['offset_y'])
 					);
-					$markerOptions['icon'] = 'icon: new L.Icon(' . json_encode($iconOptions) . ')';
+					if($marker['type']=='html') {
+						$iconOptions['html'] = $marker['icon'];
+						$markerOptions['icon'] = 'icon: new L.divIcon(' . json_encode($iconOptions) . ')';
+					} else {
+						$icon=$GLOBALS['TSFE']->absRefPrefix . $marker['icon'];
+						$iconOptions['iconUrl'] = $icon;
+						$markerOptions['icon'] = 'icon: new L.Icon(' . json_encode($iconOptions) . ')';
+					}
 				}else{
 					$icon=$GLOBALS['TSFE']->absRefPrefix . \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::siteRelPath('ods_osm') . 'res/leaflet/images/marker-icon.png';
 				}
@@ -146,7 +151,7 @@ class tx_odsosm_leaflet extends tx_odsosm_common {
 				// Add group to layer switch
 				if($item['group_title']) {
 					if(!in_array($item['group_uid'], $this->layers[1])) {
-						$this->layers[1]['<img src="'.$icon.'"> ' . $item['group_title']] = $item['group_uid'];
+						$this->layers[1][($marker['type']=='html' ? $marker['icon'] : '<img src="' . $icon . '" />') . ' ' . $item['group_title']] = $item['group_uid'];
 						$jsMarker .= 'var '.$item['group_uid'].' = L.layerGroup([' . $jsElementVar . "]);\n";
 						$jsLayerVar = $item['group_uid'];
 					} else {

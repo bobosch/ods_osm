@@ -118,22 +118,30 @@ class tx_odsosm_openlayers extends tx_odsosm_common {
 				break;
 			default:
 				if(is_array($item['tx_odsosm_marker'])){
-					$marker=$item['tx_odsosm_marker'];
-					$icon=$GLOBALS['TSFE']->absRefPrefix . $marker['icon'];
+					$marker = $item['tx_odsosm_marker'];
 				}else{
-					$marker=array('size_x'=>21,'size_y'=>25,'offset_x'=>-11,'offset_y'=>-25);
-					$icon=$GLOBALS['TSFE']->absRefPrefix . \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::siteRelPath('ods_osm') . 'res/OpenLayers/img/marker.png';
+					$marker=array(
+						'icon' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::siteRelPath('ods_osm') . 'res/OpenLayers/img/marker.png',
+						'type' => 'image',
+						'size_x' => 21,
+						'size_y' => 25,
+						'offset_x' => -11,
+						'offset_y' => -25
+					);
 				}
+				if($marker['type']!='html') $marker['icon'] = $GLOBALS['TSFE']->absRefPrefix . $marker['icon'];
+
 				// Add group to layer switch
 				if(!in_array($item['group_title'], $this->group_titles)) {
 					$this->group_titles[$item['group_uid']]=$item['group_title'];
-					$jsMarker.="var layerMarkers_".$item['group_uid']."=new OpenLayers.Layer.Markers('<img src=\"".$icon."\" /> ".$item['group_title']."');\n";
+					$jsMarker.='var layerMarkers_' . $item['group_uid'] . '=new OpenLayers.Layer.Markers(' . json_encode(($marker['type']=='html' ? $marker['icon'] : '<img src="' . $marker['icon'] . '" />') . ' ' . $item['group_title']) . ");\n";
 					$jsMarker.=$this->config['id'].'.addLayer(layerMarkers_'.$item['group_uid'].');';
 				}
 				$jsMarker .= 'mapMarker(' . $this->config['id'] . ',' . 'layerMarkers_' . $item['group_uid'] . ',' . json_encode(array(
 					'longitude' => $item['longitude'],
 					'latitude' => $item['latitude'],
-					'icon' => $icon,
+					'icon' => $marker['icon'],
+					'type' => $marker['type'],
 					'size_x' => $marker['size_x'],
 					'size_y' => $marker['size_y'],
 					'offset_x' => $marker['offset_x'],

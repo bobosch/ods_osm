@@ -8,6 +8,9 @@ function mapMarker(oMap, oLayer, a){
 	var oSize = new OpenLayers.Size(a['size_x'], a['size_y']);
 	var oOffset = new OpenLayers.Pixel(a['offset_x'], a['offset_y']);
 	var oIcon = new OpenLayers.Icon(a['icon'], oSize, oOffset);
+ 	if(a['type'] == 'html') {
+ 		oIcon.imageDiv.innerHTML = a['icon'];
+ 	}
 	var oMarker = new OpenLayers.Marker(oLonLat, oIcon);
 
 	if(a['popup']){

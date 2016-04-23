@@ -302,9 +302,14 @@ class tx_odsosm_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 		$local_cObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer');
 		foreach($markers as $table=>&$items){
 			foreach($items as $key=>&$item){
-				// Add popup information
-				if($this->config['show_popups'] && is_string($this->config['popup.'][$table]) && is_array($this->config['popup.'][$table.'.'])){
+				$popup = is_string($this->config['popup.'][$table]) && is_array($this->config['popup.'][$table.'.']) && $this->config['show_popups'];
+				$icon = is_string($this->config['icon.'][$table]) && is_array($this->config['icon.'][$table.'.']);
+				if($popup || $icon){
 					$local_cObj->start($item,$table);
+				}
+
+				// Add popup information
+				if($popup){
 					$item['popup']=$local_cObj->cObjGetSingle($this->config['popup.'][$table],$this->config['popup.'][$table.'.']);
 				}
 				
@@ -312,17 +317,28 @@ class tx_odsosm_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 				if($item['tx_odsosm_marker']) {
 					$item['tx_odsosm_marker'] = $icons[$item['tx_odsosm_marker']];
 					$item['tx_odsosm_marker']['icon'] = 'uploads/tx_odsosm/' . $item['tx_odsosm_marker']['icon'];
-				}elseif(is_string($this->config['icon.'][$table]) && is_array($this->config['icon.'][$table.'.'])) {
-					$local_cObj->start($item,$table);
+					$item['tx_odsosm_marker']['type'] = 'image';
+				} elseif($icon) {
+					$conf = $this->config['icon.'][$table.'.'];
 					$html = $local_cObj->cObjGetSingle($this->config['icon.'][$table],$this->config['icon.'][$table.'.']);
 					if($this->config['icon.'][$table] == 'IMAGE') {
 						$info = $GLOBALS['TSFE']->lastImageInfo;
 						$item['tx_odsosm_marker'] = array(
 							'icon' => $info['origFile'],
+							'type' => 'image',
 							'size_x' => $info[0],
 							'size_y' => $info[1],
 							'offset_x' => -$info[0]/2,
 							'offset_y' => -$info[1],
+						);
+					} elseif($this->config['icon.'][$table] == 'TEXT') {
+						$item['tx_odsosm_marker'] = array(
+							'icon' => $html,
+							'type' => 'html',
+							'size_x' => $conf['size_x'],
+							'size_y' => $conf['size_y'],
+							'offset_x' => $conf['offset_x'],
+							'offset_y' => $conf['offset_y'],
 						);
 					}
 				}
