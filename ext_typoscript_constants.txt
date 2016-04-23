@@ -1,37 +1,49 @@
 plugin.tx_odsosm_pi1 {
-	# cat=OpenStreetMap//0001; type=options[none,jquery]; label=Use JavaScript library
+	# cat=OpenStreetMap//0010; type=options[none,jquery]; label=JavaScript library
 	JSlibrary = none
 
-	# cat=OpenStreetMap//0005; type=options[Leaflet=leaflet,Openlayers=openlayers,Static=static]; label= Use Library: Choose between http://openlayers.org/ , http://leaflet.cloudmade.com/ or a static map without javascript.
+	# cat=OpenStreetMap//0020; type=options[Leaflet=leaflet,Openlayers=openlayers,Openlayers 3=openlayers3,Static=static]; label=Library: Choose between http://openlayers.org/ , http://leaflet.cloudmade.com/ or a static map without javascript.
 	library = openlayers
-
-	# cat=OpenStreetMap//0010; type=int; label= Width: Width of the map in pixels.
+	
+	# cat=OpenStreetMap//0030; type=boolean; label=External control: Allow control with GET or POST.
+	external_control = 0
+	
+	# cat=OpenStreetMap//1000; type=int; label=Width: Width of the map in pixels.
 	width = 640
 
-	# cat=OpenStreetMap//0020; type=int; label= Height: Height of the map in pixels.
+	# cat=OpenStreetMap//1010; type=int; label=Height: Height of the map in pixels.
 	height = 400
 
-	# cat=OpenStreetMap//0030; type=options[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18]; label= Zoom: Zoom level.
+	# cat=OpenStreetMap//1020; type=options[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18]; label=Zoom: Zoom level.
 	zoom = 15
 
-	# cat=OpenStreetMap//0050; type=int; label= Base layer ID: Show this map. The user can switch between these base layers if the layerswitcher is enabled.
+	# cat=OpenStreetMap//1030; type=int; label=Base layer ID: Show this map. The user can switch between these base layers if the layerswitcher is enabled.
 	layer = 1
 
-	# cat=OpenStreetMap//0070; type=boolean; label= Mouse navigation: Allow navigation with the mouse.
-	mouse_navigation = 0
+	# cat=OpenStreetMap//1040; type=boolean; label=Cluster: Cluster marker at lower map zoom.
+	cluster = 0
 
-	# cat=OpenStreetMap//0080; type=options[No=0,Bar=1,+/-=2]; label= Show pan/zoom: Show pan/zoom element.
-	show_pan_zoom = 0
-
-	# cat=OpenStreetMap//0090; type=options[No=0,Click=1,Hover=2,Exclusive=3]; label= Show popup: Show popup window with record information.
-	show_popups = 0
-
-	# cat=OpenStreetMap//0100; type=options[No=0,Closed=1,Opened=2]; label= Show layerswitcher: Show layerswitcher which allows the user to hide markers from the same group.
-	show_layerswitcher = 0
-
-	# cat=OpenStreetMap//0110; type=options[Hide map=0,Show map=1]; label= No marker: What to do if no marker is defined.
+	# cat=OpenStreetMap//1050; type=options[Hide map=0,Show map=1]; label=No marker: What to do if no marker is defined.
 	no_marker = 1
 
-	# cat=OpenStreetMap//0120; type=boolean; label= Show ScaleBar: Show a scale line on the map.
+	# cat=OpenStreetMap//1060; type=boolean; label=Use coordinates only if no marker exists: Use the default coordinates only if no marker exists.
+	use_coords_only_nomarker = 0
+	
+	# cat=OpenStreetMap//1060; type=boolean; label=Position: Get current user postion from browser to center the map.
+	position = 0
+
+	# cat=OpenStreetMap//2000; type=boolean; label=Mouse navigation: Allow navigation with the mouse.
+	mouse_navigation = 0
+
+	# cat=OpenStreetMap//2010; type=options[No=0,Bar=1,+/-=2]; label=Show pan/zoom: Show pan/zoom element.
+	show_pan_zoom = 0
+
+	# cat=OpenStreetMap//2020; type=options[No=0,Click=1,Hover=2,Exclusive=3]; label=Show popup: Show popup window with record information.
+	show_popups = 0
+
+	# cat=OpenStreetMap//2030; type=options[No=0,Closed=1,Opened=2]; label=Show layerswitcher: Show layerswitcher which allows the user to hide markers from the same group.
+	show_layerswitcher = 0
+
+	# cat=OpenStreetMap//2050; type=boolean; label=Show ScaleBar: Show a scale line on the map.
 	show_scalebar = 0
 }
