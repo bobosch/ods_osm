@@ -3,6 +3,7 @@
 	* Add: Missing configuration examples in TS setup and TS constants.
 	* Change: Convert manual to REST format.
 	* Add: Define marker icon with TS TEXT object.
+	* Change: Search current page for markers if no marker configured.
 
 2016-04-15 Robert Heel <typo3@bobosch.de>
 	* Bugfix: Using json_encode to encode all javascript parameters with floatval (issue with '.' and ',') or escaped strings. 

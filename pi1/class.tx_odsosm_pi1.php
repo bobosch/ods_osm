@@ -178,6 +178,10 @@ class tx_odsosm_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 
 	function extractGroup($record_ids){
 		$tables = tx_odsosm_div::getTableConfig();
+		
+		if(count($record_ids)==0) {
+			$record_ids['pages']=array($GLOBALS['TSFE']->id);
+		}
 	
 		// get pages
 		if(!empty($record_ids['pages'])){
