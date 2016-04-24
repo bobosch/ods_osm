@@ -1,4 +1,7 @@
 2016-04-23 Robert Heel <typo3@bobosch.de>
+	* Bufix: Ignore wrong TS marker entries.
+
+2016-04-23 Robert Heel <typo3@bobosch.de>
 	* Bugfix: Typo in locallang_db.
 	* Add: Missing configuration examples in TS setup and TS constants.
 	* Change: Convert manual to REST format.

@@ -98,7 +98,7 @@ class tx_odsosm_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 		if(!is_array($this->config['marker'])) $this->config['marker']=array();
 		if(is_array($conf['marker.'])){
 			foreach($conf['marker.'] as $name=>$value){
-				if(!empty($value)){
+				if(is_string($value) && !empty($value)) {
 					if(!is_array($this->config['marker'][$name])) $this->config['marker'][$name]=array();
 					$this->config['marker'][$name]=array_merge($this->config['marker'][$name],explode(',',$value));
 				}
@@ -178,11 +178,11 @@ class tx_odsosm_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 
 	function extractGroup($record_ids){
 		$tables = tx_odsosm_div::getTableConfig();
-		
+
 		if(count($record_ids)==0) {
 			$record_ids['pages']=array($GLOBALS['TSFE']->id);
 		}
-	
+
 		// get pages
 		if(!empty($record_ids['pages'])){
 			$pids=implode(',',$record_ids['pages']);
