@@ -1,3 +1,6 @@
+2016-09-01 Robert Heel <typo3@bobosch.de>
+	* Bufix: Mixed up lat and lon on static map.
+
 2016-04-23 Robert Heel <typo3@bobosch.de>
 	* Bufix: Ignore wrong TS marker entries.
 
