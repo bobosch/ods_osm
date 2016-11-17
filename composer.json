@@ -3,7 +3,10 @@
 	"description": "Add an interactive OpenStreetMap map to your website. Can also show other OpenLayers compatible maps.",
 	"autoload": {
 		"psr-4": {
-		}
+		},
+		"classmap": [
+			"."
+		]
 	},
 	"type": "typo3-cms-extension",
 	"version": "2.1.0",
