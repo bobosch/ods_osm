@@ -66,8 +66,11 @@ if (TYPO3_MODE == 'BE') {
 
 // TYPO3 6.2 compatibility
 // Register colorpicker wizard
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModulePath(
-		'wizard_coordinatepicker',
-		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'wizard/'
-);
+if (TYPO3\CMS\Core\Utility\VersionNumberUtility::convertVersionNumberToInteger(TYPO3\CMS\Core\Utility\VersionNumberUtility::getCurrentTypo3Version()) < 8000000) {
+    // this method does not exist in TYPO3 CMS 8 and 8 has a color picker
+    \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModulePath(
+        'wizard_coordinatepicker',
+        \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'wizard/'
+    );
+}
 ?>

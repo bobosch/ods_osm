@@ -21,6 +21,10 @@
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
+use TYPO3\CMS\Core\Page\PageRenderer;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\VersionNumberUtility;
+
 /**
  * [CLASS/FUNCTION INDEX of SCRIPT]
  *
@@ -376,15 +380,22 @@ class tx_odsosm_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 		$content=$this->library->getMap($layers,$markers,$lon,$lat,$zoom);
 		$script=$this->library->getScript();
 		if($script){
+			/** @var PageRenderer $pageRenderer */
+			$pageRenderer = null;
+			if (VersionNumberUtility::convertVersionNumberToInteger(VersionNumberUtility::getCurrentTypo3Version()) < 8000000) {
+				$pageRenderer = $GLOBALS['TSFE']->getPageRendered();
+			} else {
+				$pageRenderer = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Page\\PageRenderer');
+			}
 			switch ($this->config['JSlibrary']) {
 				case 'jquery':
-					$GLOBALS['TSFE']->getPageRenderer()->addJsInlineCode(
+					$pageRenderer->addJsInlineCode(
 						$this->config['id'],
 						'$(document).ready(function() {' . $script . '});'
 					);
 					break;
 				default:
-					$GLOBALS['TSFE']->getPageRenderer()->addJsInlineCode(
+					$pageRenderer->addJsInlineCode(
 						$this->config['id'],
 						'document.addEventListener("DOMContentLoaded", function(){' . $script . '}, false);'
 					);

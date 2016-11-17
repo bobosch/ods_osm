@@ -1,0 +1,21 @@
+{
+	"name": "bobosch/ods_osm",
+	"description": "Add an interactive OpenStreetMap map to your website. Can also show other OpenLayers compatible maps.",
+	"autoload": {
+		"psr-4": {
+		}
+	},
+	"type": "typo3-cms-extension",
+	"version": "2.1.0",
+	"license": "GPL-3.0",
+	"authors": [
+		{
+			"name": "Robert Heel",
+			"email": "typo3@bobosch.de"
+		}
+	],
+	"require": {
+		"typo3/cms": "^6.2.0 || ^7.6.0 || ^8.4.0"
+	},
+	"minimum-stability": "dev"
+}

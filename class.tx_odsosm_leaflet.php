@@ -1,4 +1,8 @@
 <?php
+use TYPO3\CMS\Core\Page\PageRenderer;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\VersionNumberUtility;
+
 class tx_odsosm_leaflet extends tx_odsosm_common {
 	protected $layers;
 	protected $path_res;
@@ -7,7 +11,14 @@ class tx_odsosm_leaflet extends tx_odsosm_common {
 	public function getMapCore($backpath=''){
 		$this->path_res=($backpath ? $backpath : $GLOBALS['TSFE']->absRefPrefix) . \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::siteRelPath('ods_osm') . 'res/';
 		$this->path_leaflet=($this->config['local_js'] ? $this->path_res.'leaflet/' : 'http://cdn.leafletjs.com/leaflet-0.7.3/');
-		$GLOBALS['TSFE']->getPageRenderer()->addCssFile($this->path_leaflet.'leaflet.css');
+		/** @var PageRenderer $pageRenderer */
+		$pageRenderer = null;
+		if (VersionNumberUtility::convertVersionNumberToInteger(VersionNumberUtility::getCurrentTypo3Version()) < 8000000) {
+			$pageRenderer = $GLOBALS['TSFE']->getPageRendered();
+		} else {
+			$pageRenderer = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Page\\PageRenderer');
+		}
+		$pageRenderer->addCssFile($this->path_leaflet.'leaflet.css');
 		$this->scripts=array($this->path_leaflet.'leaflet.js');
 	}
 
@@ -25,8 +36,15 @@ class tx_odsosm_leaflet extends tx_odsosm_common {
 			L.Icon.Default.imagePath='".$this->path_leaflet."images';"
 			.$vars;
 		if($this->config['cluster']){
-			$GLOBALS['TSFE']->getPageRenderer()->addCssFile($this->path_res.'leaflet-markercluster/MarkerCluster.css');
-			$GLOBALS['TSFE']->getPageRenderer()->addCssFile($this->path_res.'leaflet-markercluster/MarkerCluster.Default.css');
+			/** @var PageRenderer $pageRenderer */
+			$pageRenderer = null;
+			if (VersionNumberUtility::convertVersionNumberToInteger(VersionNumberUtility::getCurrentTypo3Version()) < 8000000) {
+				$pageRenderer = $GLOBALS['TSFE']->getPageRendered();
+			} else {
+				$pageRenderer = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Page\\PageRenderer');
+			}
+			$pageRenderer->addCssFile($this->path_res.'leaflet-markercluster/MarkerCluster.css');
+			$pageRenderer->addCssFile($this->path_res.'leaflet-markercluster/MarkerCluster.Default.css');
 			$this->scripts['leaflet-markercluster']=$this->path_res.'leaflet-markercluster/leaflet.markercluster.js';
 			$jsMain.=$this->config['id'].'_c=new L.MarkerClusterGroup({maxClusterRadius:80});';
 			$jsMain.=$this->config['id'].'.addLayer('.$this->config['id'].'_c);';
