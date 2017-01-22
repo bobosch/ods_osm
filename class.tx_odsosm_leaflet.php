@@ -1,6 +1,6 @@
 <?php
 class tx_odsosm_leaflet extends tx_odsosm_common {
-	protected $layers;
+	protected $layers = array(0 => array(), 1 => array());
 	protected $path_res;
 	protected $path_leaflet;
 
