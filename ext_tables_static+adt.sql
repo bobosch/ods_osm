@@ -24,7 +24,7 @@ CREATE TABLE tx_odsosm_layer (
   javascript_openlayers varchar(1024) NOT NULL default '',
   javascript_openlayers3 varchar(1024) NOT NULL default '',
   static_url varchar(255) NOT NULL default '',
-  tile_url varchar(64) NOT NULL default '',
+  tile_url varchar(225) NOT NULL default '',
   max_zoom tinyint(2) unsigned NOT NULL default '0',
   subdomains varchar(8) NOT NULL default '',
   attribution varchar(300) NOT NULL default '',

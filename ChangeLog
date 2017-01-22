@@ -1,5 +1,8 @@
+2017-01-22 Robert Heel <typo3@bobosch.de>
+	* Change #30: Increase size of tile_url field.
+
 2017-01-14 Robert Heel <typo3@bobosch.de>
-	* Bugfix: Initialize layers array in leaflet library.
+	* Bugfix #28: Initialize layers array in leaflet library.
 
 2016-09-01 Robert Heel <typo3@bobosch.de>
 	* Bufix: Mixed up lat and lon on static map.
