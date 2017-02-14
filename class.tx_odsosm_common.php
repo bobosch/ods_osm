@@ -68,5 +68,13 @@ class tx_odsosm_common {
 	protected function getHtml(){
 		return '<div style="width:'.$this->config['width'].';height:'.$this->config['height'].';" id="'.$this->config['id'].'"></div>';
 	}
+
+	protected function getTileUrl($layer){
+		if(isset($_SERVER['HTTPS']) && $layer['tile_https']==1){
+			return 'https://' . $layer['tile_url'];
+		}else{
+			return 'http://' . $layer['tile_url'];
+		}
+	}
 }
 ?>

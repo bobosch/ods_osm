@@ -15,7 +15,7 @@ return array (
 		'iconfile' => 'EXT:ods_osm/Resources/Public/Icons/icon_tx_odsosm_layer.png',
 	),
 	'interface' => array (
-		'showRecordFieldList' => 'hidden,title,overlay,javascript_include,javascript_leaflet,javascript_openlayers,javascript_openlayers3,static_url,tile_url,min_zoom,max_zoom,subdomains,attribution,homepage'
+		'showRecordFieldList' => 'hidden,title,overlay,javascript_include,javascript_leaflet,javascript_openlayers,javascript_openlayers3,static_url,tile_url,tile_https,min_zoom,max_zoom,subdomains,attribution,homepage'
 	),
 	'columns' => array (
 		'hidden' => array (        
@@ -91,6 +91,14 @@ return array (
 				'size' => '30',
 			)
 		),
+		'tile_https' => array (
+			'exclude' => 0,
+			'label' => 'LLL:EXT:ods_osm/locallang_db.xml:tx_odsosm_layer.tile_https',
+			'config' => array (
+				'type' => 'check',
+				'default' => '0',
+			)
+		),
 		'min_zoom' => array (        
 			'exclude' => 0,        
 			'label' => 'LLL:EXT:ods_osm/locallang_db.xml:tx_odsosm_layer.min_zoom',        
@@ -135,7 +143,7 @@ return array (
 		),
 	),
 	'types' => array (
-		'0' => array('showitem' => 'hidden;;;;1-1-1, title, overlay, javascript_include, javascript_leaflet, javascript_openlayers, javascript_openlayers3, static_url, tile_url, min_zoom, max_zoom, subdomains, attribution, homepage')
+		'0' => array('showitem' => 'hidden;;;;1-1-1, title, overlay, javascript_include, javascript_leaflet, javascript_openlayers, javascript_openlayers3, static_url, tile_url, tile_https, min_zoom, max_zoom, subdomains, attribution, homepage')
 	),
 	'palettes' => array (
 		'1' => array('showitem' => '')

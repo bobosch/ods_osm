@@ -66,6 +66,7 @@ CREATE TABLE tx_odsosm_layer (
 	javascript_openlayers3 varchar(1024) NOT NULL DEFAULT '',
 	static_url varchar(255) NOT NULL DEFAULT '',
 	tile_url varchar(255) NOT NULL DEFAULT '',
+	tile_https tinyint(2) unsigned NOT NULL DEFAULT '0',
 	min_zoom tinyint(2) unsigned NOT NULL DEFAULT '0',
 	max_zoom tinyint(2) unsigned NOT NULL DEFAULT '0',
 	subdomains varchar(8) NOT NULL DEFAULT '',

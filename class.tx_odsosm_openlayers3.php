@@ -22,7 +22,7 @@ class tx_odsosm_openlayers3 extends tx_odsosm_common {
 	protected function getLayer($layer,$i,$backpath=''){
 		if(empty($layer['subdomains'])) $layer['subdomains']='abc';
 		$layer['subdomains']=substr($layer['subdomains'],0,1).'-'.substr($layer['subdomains'],-1,1);
-		$layer['tile_url']=strtr($layer['tile_url'],array('{s}'=>'{'.$layer['subdomains'].'}'));
+		$layer['tile_url']=strtr($this->getTileUrl($layer),array('{s}'=>'{'.$layer['subdomains'].'}'));
 
 		// TODO: Move map code to getMapMain
 		return "

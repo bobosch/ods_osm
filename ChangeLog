@@ -1,5 +1,6 @@
 2017-02-14 Robert Heel <typo3@bobosch.de>
-	* Change #26: Add minimum zoom option.
+	* Issue #26: Add minimum zoom option.
+	* Feature #73131: https option for layer tiles.
 
 2017-01-22 Robert Heel <typo3@bobosch.de>
 	* Change #30: Increase size of tile_url field.

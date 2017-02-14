@@ -70,7 +70,7 @@ class tx_odsosm_openlayers extends tx_odsosm_common {
 			)).");\n";
 		}elseif($layer['tile_url']){
 			// url
-			$layer['tile_url']=strtr($layer['tile_url'],array('{x}'=>'${x}','{y}'=>'${y}','{z}'=>'${z}'));
+			$layer['tile_url']=strtr($this->getTileUrl($layer),array('{x}'=>'${x}','{y}'=>'${y}','{z}'=>'${z}'));
 			if(strpos($layer['tile_url'],'{s}')){
 				if($layer['subdomains']){
 					$subdomains=$layer['subdomains'];

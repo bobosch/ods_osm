@@ -52,7 +52,7 @@ class tx_odsosm_leaflet extends tx_odsosm_common {
 			if($layer['subdomains']) $options['subdomains']=$layer['subdomains'];
 			if($layer['attribution']) $options['attribution']=$layer['attribution'];
 
-			$jsLayer = 'new L.TileLayer(\''.$layer['tile_url'].'\','.json_encode($options).');';
+			$jsLayer = 'new L.TileLayer(\'' . $this->getTileUrl($layer) . '\',' . json_encode($options) . ');';
 		}
 
 		$jsLayer = "\n\t\t\tvar ".$var.' = '.$jsLayer;
