@@ -47,6 +47,7 @@ class tx_odsosm_leaflet extends tx_odsosm_common {
 			)).";\n";
 		}elseif($layer['tile_url']){
 			$options=array();
+			if($layer['min_zoom']) $options['minZoom']=$layer['min_zoom'];
 			if($layer['max_zoom']) $options['maxZoom']=$layer['max_zoom'];
 			if($layer['subdomains']) $options['subdomains']=$layer['subdomains'];
 			if($layer['attribution']) $options['attribution']=$layer['attribution'];

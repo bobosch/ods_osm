@@ -55,6 +55,7 @@
 			<label index="tx_odsosm_layer.javascript_openlayers3">JavaScript for OpenLayers 3</label>
 			<label index="tx_odsosm_layer.static_url">Static map URL</label>
 			<label index="tx_odsosm_layer.tile_url">Tile URL</label>
+			<label index="tx_odsosm_layer.min_zoom">Minimum zoom</label>
 			<label index="tx_odsosm_layer.max_zoom">Maximum zoom</label>
 			<label index="tx_odsosm_layer.subdomains">Subdomains</label>
 			<label index="tx_odsosm_layer.attribution">Attribution</label>
@@ -127,6 +128,7 @@
 			<label index="tx_odsosm_layer.javascript_openlayers3">JavaScript für OpenLayers 3</label>
 			<label index="tx_odsosm_layer.static_url">URL für statische Karte</label>
 			<label index="tx_odsosm_layer.tile_url">Tile URL</label>
+			<label index="tx_odsosm_layer.min_zoom">Minimaler zoom</label>
 			<label index="tx_odsosm_layer.max_zoom">Maximaler Zoom</label>
 			<label index="tx_odsosm_marker">Marker</label>
 			<label index="tx_odsosm_marker.title">Titel</label>
