@@ -153,8 +153,14 @@ class tx_odsosm_leaflet extends tx_odsosm_common {
 				if($item['group_title']) {
 					if(!in_array($item['group_uid'], $this->layers[1])) {
 						$this->layers[1][($marker['type']=='html' ? $marker['icon'] : '<img src="' . $icon . '" />') . ' ' . $item['group_title']] = $item['group_uid'];
-						$jsMarker .= 'var '.$item['group_uid'].' = L.layerGroup([' . $jsElementVar . "]);\n";
 						$jsLayerVar = $item['group_uid'];
+
+						if($this->config['cluster']){
+							$jsMarker .= 'var '.$item['group_uid'].' = new L.MarkerClusterGroup({maxClusterRadius:80});';
+							$jsMarker .= $item['group_uid'] . '.addLayer(' . $jsElementVar . ");\n";
+						} else {
+							$jsMarker .= 'var '.$item['group_uid'].' = L.layerGroup([' . $jsElementVar . "]);\n";
+						}
 					} else {
 						$jsMarker .= $item['group_uid'].'.addLayer(' . $jsElementVar . ");\n";
 						$jsLayerVar = false;
