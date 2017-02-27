@@ -78,13 +78,12 @@ class ext_update {
 		$status = NULL;
 
 		$extPath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('ods_osm');
-		$fileContent = explode(LF, \TYPO3\CMS\Core\Utility\GeneralUtility::getUrl($extPath.'ext_tables_static+adt.sql'));
-		$GLOBALS['TYPO3_DB']->sql_query('TRUNCATE tx_odsosm_layer');
+		$fileContent = explode(';', \TYPO3\CMS\Core\Utility\GeneralUtility::getUrl($extPath . 'ext_tables_static+adt.sql'));
 		foreach ($fileContent as $line) {
 			$line = trim($line);
-			if ($line && preg_match('#^INSERT#i', $line)) {
+			if ($line) {
 				if($GLOBALS['TYPO3_DB']->sql_query($line) === false) {
-					$message = 'SQL ERROR:' .  $GLOBALS['TYPO3_DB']->sql_error();
+					$message = 'SQL ERROR:' . $GLOBALS['TYPO3_DB']->sql_error();
 					$status = \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR;
 				} else {
 					$message = 'OK!';
