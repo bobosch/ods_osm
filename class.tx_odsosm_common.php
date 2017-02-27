@@ -70,6 +70,9 @@ class tx_odsosm_common {
 	}
 
 	protected function getTileUrl($layer){
+		if(strpos($layer['tile_url'],'://') !== false) {
+			return $layer['tile_url'];
+		}
 		if(isset($_SERVER['HTTPS']) && $layer['tile_https']==1){
 			return 'https://' . $layer['tile_url'];
 		}else{
