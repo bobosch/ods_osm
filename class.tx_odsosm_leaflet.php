@@ -77,8 +77,8 @@ class tx_odsosm_leaflet extends tx_odsosm_common {
 				$overlay[]='\''.$title.'\':'.$var;
 			}
 		}
-		return 'var layersControl=new L.Control.Layers({'.implode(',',$base).'},{'.implode(',',$overlay).'});
-			'.$this->config['id'].'.addControl(layersControl);';
+		return 'var layersControl=new L.Control.Layers({' . implode(',',$base) . '},{' . implode(',',$overlay) . '}' . ($this->config['show_layerswitcher']==2 ? ',{collapsed:false}' : '') . ');
+			' . $this->config['id'].'.addControl(layersControl);';
 	}
 
 	public function getMapCenter($lat,$lon,$zoom){
