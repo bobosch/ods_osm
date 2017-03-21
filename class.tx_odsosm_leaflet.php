@@ -1,6 +1,10 @@
 <?php
 class tx_odsosm_leaflet extends tx_odsosm_common {
-	protected $layers = array(0 => array(), 1 => array());
+	protected $layers = array(
+		0 => array(), // Base
+		1 => array(), // Overlay
+		2 => array(), // Marker
+	);
 	protected $path_res;
 	protected $path_leaflet;
 
@@ -28,8 +32,6 @@ class tx_odsosm_leaflet extends tx_odsosm_common {
 			$GLOBALS['TSFE']->getPageRenderer()->addCssFile($this->path_res.'leaflet-markercluster/MarkerCluster.css');
 			$GLOBALS['TSFE']->getPageRenderer()->addCssFile($this->path_res.'leaflet-markercluster/MarkerCluster.Default.css');
 			$this->scripts['leaflet-markercluster']=$this->path_res.'leaflet-markercluster/leaflet.markercluster.js';
-			$jsMain.=$this->config['id'].'_c=new L.MarkerClusterGroup({maxClusterRadius:80});';
-			$jsMain.=$this->config['id'].'.addLayer('.$this->config['id'].'_c);';
 		}
 
 		return $jsMain;
@@ -87,10 +89,27 @@ class tx_odsosm_leaflet extends tx_odsosm_common {
 		return $return;
 	}
 
+	protected function getMarkers($markers) {
+		$jsMarker = parent::getMarkers($markers);
+
+		foreach($this->layers[2] as $group_uid => $group) {
+			if($this->config['cluster']) {
+				$jsMarker .= 'var ' . $group_uid . ' = new L.MarkerClusterGroup({maxClusterRadius:' . $this->config['cluster_radius'] . '});' . "\n";
+				foreach($group as $jsElementVar) {
+					$jsMarker .= $group_uid . '.addLayer(' . $jsElementVar . ');' . "\n";
+				}
+			} else {
+				$jsMarker .= 'var ' . $group_uid. ' = L.layerGroup([' . implode(',', $group) . ']);' . "\n";
+			}
+			$jsMarker .= $this->config['id'] . '.addLayer(' . $group_uid . ');' . "\n";
+		}
+
+		return $jsMarker;
+	}
+
 	protected function getMarker($item,$table){
 		$jsMarker = '';
 		$jsElementVar = $table . '_' . $item['uid'];
-		$jsLayerVar = $jsElementVar;
 		switch($table){
 			case 'tx_odsosm_track':
 				$path = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::siteRelPath('ods_osm') .'res/';
@@ -122,11 +141,13 @@ class tx_odsosm_leaflet extends tx_odsosm_common {
 						);
 						$jsMarker .= 'var ' . $jsElementVar .' = new L.GPX("' .$GLOBALS['TSFE']->absRefPrefix .'uploads/tx_odsosm/' .$item['file'] .'",';
 						$jsMarker .= json_encode($options) . ");\n";
+						$jsMarker .= $this->config['id'] . '.addLayer(' . $jsElementVar . ');' . "\n";
 						break;
 				}
 				break;
 			case 'tx_odsosm_vector':
 				$jsMarker .= 'var ' . $jsElementVar . ' = new L.geoJson(' . $item['data'] . ');' . "\n";
+				$jsMarker .= $this->config['id'] . '.addLayer(' . $jsElementVar . ');' . "\n";
 				break;
 			default:
 				$markerOptions = array();
@@ -151,21 +172,12 @@ class tx_odsosm_leaflet extends tx_odsosm_common {
 				$jsMarker.='var ' . $jsElementVar . ' = new L.Marker([' . $item['latitude'] . ', ' . $item['longitude'] . '], {' . implode(',', $markerOptions) . "});\n";
 				// Add group to layer switch
 				if($item['group_title']) {
-					if(!in_array($item['group_uid'], $this->layers[1])) {
-						$this->layers[1][($marker['type']=='html' ? $marker['icon'] : '<img src="' . $icon . '" />') . ' ' . $item['group_title']] = $item['group_uid'];
-						$jsLayerVar = $item['group_uid'];
-
-						if($this->config['cluster']){
-							$jsMarker .= 'var '.$item['group_uid'].' = new L.MarkerClusterGroup({maxClusterRadius:80});';
-							$jsMarker .= $item['group_uid'] . '.addLayer(' . $jsElementVar . ");\n";
-						} else {
-							$jsMarker .= 'var '.$item['group_uid'].' = L.layerGroup([' . $jsElementVar . "]);\n";
-						}
-					} else {
-						$jsMarker .= $item['group_uid'].'.addLayer(' . $jsElementVar . ");\n";
-						$jsLayerVar = false;
-					}
+					$this->layers[1][($marker['type']=='html' ? $marker['icon'] : '<img src="' . $icon . '" />') . ' ' . $item['group_title']] = $item['group_uid'];
+					$this->layers[2][$item['group_uid']][] = $jsElementVar;
+				} else {
+					$this->layers[2][$this->config['id'] . '_g'][] = $jsElementVar;
 				}
+
 				break;
 		}
 
@@ -177,9 +189,6 @@ class tx_odsosm_leaflet extends tx_odsosm_common {
 				}
 			}
 
-			if($jsLayerVar) {
-				$jsMarker .= $this->config['id'] . ($this->config['cluster'] ? '_c':'') . '.addLayer(' . $jsLayerVar . ');' . "\n";
-			}
 		}
 		
 		return $jsMarker;

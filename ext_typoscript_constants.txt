@@ -23,6 +23,9 @@ plugin.tx_odsosm_pi1 {
 	# cat=OpenStreetMap//1040; type=boolean; label=Cluster: Cluster marker at lower map zoom.
 	cluster = 0
 
+	# cat=OpenStreetMap//1041; type=int; label=Cluster radius: Cluster marker in given radius.
+	cluster_radius = 80
+
 	# cat=OpenStreetMap//1050; type=options[Hide map=0,Show map=1]; label=No marker: What to do if no marker is defined.
 	no_marker = 1
 

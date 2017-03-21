@@ -1,3 +1,6 @@
+2017-03-21 Robert Heel <typo3@bobosch.de>
+	* Bug #80038: Clustered marker categories are not activated by default (Thanks to Volker Burggräf).
+
 2017-02-28 Robert Heel <typo3@bobosch.de>
 	* Bug #80037: Table tx_odsosm_layer not recreated on update.
 	* Bug #80038: Leaflet layer switcher closed even opened is selected.

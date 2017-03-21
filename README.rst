@@ -259,6 +259,8 @@ Reference
 +-----------------+-----------+-------------------------------------+---------+
 | cluster         | boolean   | Cluster marker at lower map zoom.   | 0       |
 +-----------------+-----------+-------------------------------------+---------+
+| cluster_radius  | integer   | Cluster marker in given radius.     | 80      |
++-----------------+-----------+-------------------------------------+---------+
 | external_control| boolean   || Allow control with GET or POST     | 0       |
 |                 |           || lon: Map center longitude          |         |
 |                 |           || lat: Map center latitudezoom: Map  |         |

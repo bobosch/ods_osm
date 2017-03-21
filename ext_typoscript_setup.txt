@@ -41,6 +41,7 @@ plugin.tx_odsosm_pi1 {
 	zoom = {$plugin.tx_odsosm_pi1.zoom}
 	layer = {$plugin.tx_odsosm_pi1.layer}
 	cluster = {$plugin.tx_odsosm_pi1.cluster}
+	cluster_radius = {$plugin.tx_odsosm_pi1.cluster_radius}
 	no_marker = {$plugin.tx_odsosm_pi1.no_marker}
 	use_coords_only_nomarker = {$plugin.tx_odsosm_pi1.use_coords_only_nomarker}
 	position = {$plugin.tx_odsosm_pi1.position}
