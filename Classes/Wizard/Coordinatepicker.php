@@ -17,6 +17,7 @@ namespace Bobosch\ods_osm\Wizard;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Template\DocumentTemplate;
+use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 $path=\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('ods_osm');
@@ -238,6 +239,6 @@ class Coordinatepicker extends \TYPO3\CMS\Backend\Controller\Wizard\AbstractWiza
 	* @return PageRenderer
 	*/
 	protected function getPageRenderer() {
-		return GeneralUtility::makeInstance(PageRenderer::class);
+		return GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Page\\PageRenderer');
 	}
 }

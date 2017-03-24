@@ -1,4 +1,8 @@
 <?php
+use TYPO3\CMS\Core\Page\PageRenderer;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\VersionNumberUtility;
+
 class tx_odsosm_div {
 	public static function getWhere($table,$cObj){
 		if(is_string($table)){
@@ -46,9 +50,15 @@ class tx_odsosm_div {
 				$doc->JScode.='<script src="'.$script.'" type="text/javascript"></script>';
 			}
 		}else{
-			$pagerender=$GLOBALS['TSFE']->getPageRenderer();
+            /** @var PageRenderer $pageRenderer */
+			$pageRenderer = null;
+			if (VersionNumberUtility::convertVersionNumberToInteger(VersionNumberUtility::getCurrentTypo3Version()) < 8000000) {
+				$pageRenderer = $GLOBALS['TSFE']->getPageRendered();
+			} else {
+				$pageRenderer = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Page\\PageRenderer');
+			}
 			foreach($scripts as $script){
-				$pagerender->addJsFile($script,'text/javascript',false);
+				$pageRenderer->addJsFile($script,'text/javascript',false);
 			}
  		}
 	}
@@ -377,6 +387,10 @@ class tx_odsosm_div {
 				'lon' => 'lon',
 				'lat' => 'lat',
 			),
+            'tt_address' => array(
+                'lat' => 'latitude',
+                'lon' => 'longitude'
+            ),
 			'tx_odsosm_track' => true,
 			'tx_odsosm_vector' => true,
 		);

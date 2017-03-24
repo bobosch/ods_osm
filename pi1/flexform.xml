@@ -55,7 +55,6 @@
 					<lon>
 						<TCEforms>
 							<label>LLL:EXT:ods_osm/locallang_db.xml:tx_odsosm_lon</label>
-							<displayCond>FIELD:static:REQ:false</displayCond>
 							<config>
 								<type>input</type>
 								<size>11</size>
@@ -82,7 +81,6 @@
 					<lat>
 						<TCEforms>
 							<label>LLL:EXT:ods_osm/locallang_db.xml:tx_odsosm_lat</label>
-							<displayCond>FIELD:static:REQ:false</displayCond>
 							<config>
 								<type>input</type>
 								<size>10</size>
