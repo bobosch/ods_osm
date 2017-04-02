@@ -238,6 +238,6 @@ class Coordinatepicker extends \TYPO3\CMS\Backend\Controller\Wizard\AbstractWiza
 	* @return PageRenderer
 	*/
 	protected function getPageRenderer() {
-		return GeneralUtility::makeInstance(PageRenderer::class);
+		return GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Page\\PageRenderer');
 	}
 }

@@ -375,16 +375,17 @@ class tx_odsosm_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 		================================================== */
 		$content=$this->library->getMap($layers,$markers,$lon,$lat,$zoom);
 		$script=$this->library->getScript();
+		$pageRenderer = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Page\\PageRenderer');
 		if($script){
 			switch ($this->config['JSlibrary']) {
 				case 'jquery':
-					$GLOBALS['TSFE']->getPageRenderer()->addJsInlineCode(
+					$pageRenderer->addJsInlineCode(
 						$this->config['id'],
 						'$(document).ready(function() {' . $script . '});'
 					);
 					break;
 				default:
-					$GLOBALS['TSFE']->getPageRenderer()->addJsInlineCode(
+					$pageRenderer->addJsInlineCode(
 						$this->config['id'],
 						'document.addEventListener("DOMContentLoaded", function(){' . $script . '}, false);'
 					);

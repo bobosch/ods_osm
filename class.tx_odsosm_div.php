@@ -46,9 +46,9 @@ class tx_odsosm_div {
 				$doc->JScode.='<script src="'.$script.'" type="text/javascript"></script>';
 			}
 		}else{
-			$pagerender=$GLOBALS['TSFE']->getPageRenderer();
+			$pageRenderer = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Page\\PageRenderer');
 			foreach($scripts as $script){
-				$pagerender->addJsFile($script,'text/javascript',false);
+				$pageRenderer->addJsFile($script,'text/javascript',false);
 			}
  		}
 	}

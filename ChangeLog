@@ -1,3 +1,6 @@
+2017-04-02 Robert Heel <typo3@bobosch.de>
+	* Request #27: 8.x compatibility (Thanks to Thorben Nissen).
+
 2017-03-21 Robert Heel <typo3@bobosch.de>
 	* Bug #80038: Clustered marker categories are not activated by default (Thanks to Volker Burggräf).
 
