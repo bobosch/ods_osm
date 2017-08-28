@@ -33,6 +33,10 @@ class tx_odsosm_geocodeWizard extends \TYPO3\CMS\Backend\Module\AbstractFunction
 	 * @return string HTML code with geocoding results
 	 */
 	protected function geocode($mode) {
+	  $flashMessageService = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Messaging\FlashMessageService::class);
+    $defaultFlashMessageQueue = $flashMessageService->getMessageQueueByIdentifier();
+    
+	
 		if ($mode != 'all' && $mode != 'missing') {
 			//wrong mode
 			$message = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
@@ -41,7 +45,8 @@ class tx_odsosm_geocodeWizard extends \TYPO3\CMS\Backend\Module\AbstractFunction
 				'',
 				\TYPO3\CMS\Core\Messaging\FlashMessage::ERROR
 			);
-			return $message->render();
+			$defaultFlashMessageQueue->enqueue($message);
+			return $defaultFlashMessageQueue->renderFlashMessages();
 		}
 
 		if ($mode == 'missing') {
@@ -81,7 +86,8 @@ class tx_odsosm_geocodeWizard extends \TYPO3\CMS\Backend\Module\AbstractFunction
 					'',
 					\TYPO3\CMS\Core\Messaging\FlashMessage::ERROR
 				);
-				$html .= $message->render();
+				$defaultFlashMessageQueue->enqueue($message);
+				$html .= $defaultFlashMessageQueue->renderFlashMessages();
 			}
 
 			++$updated;
@@ -93,7 +99,9 @@ class tx_odsosm_geocodeWizard extends \TYPO3\CMS\Backend\Module\AbstractFunction
 			'',
 			$updated == $count ? \TYPO3\CMS\Core\Messaging\FlashMessage::OK : \TYPO3\CMS\Core\Messaging\FlashMessage::WARNING
 		);
-		$html .= $message->render();
+		
+    $defaultFlashMessageQueue->enqueue($message);
+		$html .= $defaultFlashMessageQueue->renderFlashMessages();
 
 		return $html . '<br/><br/>';
 	}
