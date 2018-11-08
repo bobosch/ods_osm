@@ -10,6 +10,10 @@ use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 
+if (!defined('TYPO3_DLOG')) {
+    define('TYPO3_DLOG', 0);
+}
+
 class Div
 {
     public static function getWhere($table, ContentObjectRenderer $cObj)
@@ -164,11 +168,13 @@ class Div
 
                     if ($row) {
                         $ll = true;
+
                         $set = array(
                             'tstamp' => time(),
                             'cache_hit' => $row['cache_hit'] + 1,
                         );
                         $connection->update('tx_odsosm_geocache', $set, ['uid' => intval($row['uid'])]);
+
                         $address['lat'] = $row['lat'];
                         $address['lon'] = $row['lon'];
                         if ($row['zip']) {
@@ -205,7 +211,7 @@ class Div
                     $xml = self::getURL('http://api.geonames.org/postalCodeSearch?' . http_build_query($query, '', '&'));
 
                     if ($xml) {
-                        $xmlobj = new SimpleXMLElement($xml);
+                        $xmlobj = new \SimpleXMLElement($xml);
                         if ($xmlobj->status) {
                             if (TYPO3_DLOG) {
                                 \TYPO3\CMS\Core\Utility\GeneralUtility::devLog('GeoNames message', 'ods_osm', 2, (array)$xmlobj->status->attributes());
@@ -296,10 +302,10 @@ class Div
     {
         $ll = false;
 
-        $xml = self::getURL('http://nominatim.openstreetmap.org/search?' . http_build_query($query, '', '&'));
+        $xml = self::getURL('https://nominatim.openstreetmap.org/search?' . http_build_query($query, '', '&'));
 
         if ($xml) {
-            $xmlobj = new SimpleXMLElement($xml);
+            $xmlobj = new \SimpleXMLElement($xml);
             if ($xmlobj->place) {
                 $ll = true;
                 $address['lat'] = (string)$xmlobj->place['lat'];
@@ -381,7 +387,7 @@ class Div
         $connection = $connectionPool->getConnectionForTable('tx_odsosm_geocache');
 
         $res = $connection->select(
-            '*', 'tx_odsosm_geocache', $set
+            ['*'], 'tx_odsosm_geocache', $set
         );
         $row = $res->fetch(FetchMode::ASSOCIATIVE);
         if ($row) {

@@ -3,8 +3,11 @@
 namespace Bobosch\OdsOsm\FuncWizards;
 
 use Bobosch\OdsOsm\Div;
+use Doctrine\DBAL\FetchMode;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Messaging\FlashMessage;
+use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -17,7 +20,8 @@ class GeocodeWizard extends \TYPO3\CMS\Backend\Module\AbstractFunctionModule
     /**
      * Main function
      *
-     * @returnstring Output HTML for the module
+     * @return string Output HTML for the module
+     * @throws \TYPO3\CMS\Core\Exception
      */
     public function main()
     {
@@ -35,19 +39,21 @@ class GeocodeWizard extends \TYPO3\CMS\Backend\Module\AbstractFunctionModule
      * Run the geocoding process.
      *
      * @param string Geocoding mode: "missing" or "all"
-     *
      * @return string HTML code with geocoding results
+     * @throws \TYPO3\CMS\Core\Exception
      */
     protected function geocode($mode)
     {
+        /** @var FlashMessageService $flashMessageService */
         $flashMessageService = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Messaging\FlashMessageService::class);
         $defaultFlashMessageQueue = $flashMessageService->getMessageQueueByIdentifier();
 
 
         if ($mode != 'all' && $mode != 'missing') {
             //wrong mode
+            /** @var FlashMessage $message */
             $message = GeneralUtility::makeInstance(
-                'TYPO3\CMS\Core\Messaging\FlashMessage',
+                \TYPO3\CMS\Core\Messaging\FlashMessage::class,
                 'Invalid geocoding mode',
                 '',
                 \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR
@@ -56,52 +62,51 @@ class GeocodeWizard extends \TYPO3\CMS\Backend\Module\AbstractFunctionModule
             return $defaultFlashMessageQueue->renderFlashMessages();
         }
 
+
+        /** @var ConnectionPool $pool */
+        $pool = GeneralUtility::makeInstance(ConnectionPool::class);
+
+        $builder = $pool->getQueryBuilderForTable('tt_address');
+        $query = $builder->select('*')->from('tt_address')
+            ->where('pid = ' . $this->pObj->id);
+
         if ($mode == 'missing') {
-            $where = 'longitude = 0 AND latitude = 0';
-        } else {
-            $where = '1';
+            $query->andWhere('longitude=0 OR longitude IS NULL', 'latitude=0 OR latitude IS NULL');
+            print_r($query->getSQL());
         }
 
-        $res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
-            '*', 'tt_address', $where . ' AND pid = ' . $this->pObj->id
-        );
+        $res = $query->execute();
 
         $count = 0;
         $updated = 0;
         $html = '';
-        while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
-            $oldRow = $row;
+        while ($row = $res->fetch(FetchMode::ASSOCIATIVE)) {
             ++$count;
+
             if (!Div::updateAddress($row)) {
                 //not updated
                 continue;
             }
 
-            $GLOBALS['TYPO3_DB']->exec_UPDATEquery(
-                'tt_address', 'uid = ' . intval($row['uid']),
+            $num = $builder->getConnection()->update(
+                'tt_address',
                 array(
                     'latitude' => $row['lat'],
                     'longitude' => $row['lon']
-                )
+                ),
+                ['uid' => intval($row['uid'])]
             );
 
-            $err = $GLOBALS['TYPO3_DB']->sql_error();
-            if ($err) {
-                $message = GeneralUtility::makeInstance(
-                    'TYPO3\CMS\Core\Messaging\FlashMessage',
-                    'SQL error: ' . htmlspecialchars($err),
-                    '',
-                    \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR
-                );
-                $defaultFlashMessageQueue->enqueue($message);
-                $html .= $defaultFlashMessageQueue->renderFlashMessages();
+            if ($num == 0) {
+                continue;
             }
 
             ++$updated;
         }
 
+        /** @var FlashMessage $message */
         $message = GeneralUtility::makeInstance(
-            'TYPO3\CMS\Core\Messaging\FlashMessage',
+            \TYPO3\CMS\Core\Messaging\FlashMessage::class,
             'Updated ' . $updated . ' of ' . $count . ' address records',
             '',
             $updated == $count ? \TYPO3\CMS\Core\Messaging\FlashMessage::OK : \TYPO3\CMS\Core\Messaging\FlashMessage::WARNING
@@ -110,7 +115,7 @@ class GeocodeWizard extends \TYPO3\CMS\Backend\Module\AbstractFunctionModule
         $defaultFlashMessageQueue->enqueue($message);
         $html .= $defaultFlashMessageQueue->renderFlashMessages();
 
-        return $html . '<br/><br/>';
+        return $html . ' <br /><br />';
     }
 
     /**
@@ -127,31 +132,33 @@ class GeocodeWizard extends \TYPO3\CMS\Backend\Module\AbstractFunctionModule
 
         $num = $builder->count('uid')
             ->from('tt_address')
-            ->where('longitude = 0')
-            ->andWhere('latitude = 0')
-            ->andWhere('pid = ' . $this->pObj->id)->execute()->fetch();
+            ->where('pid = ' . $this->pObj->id)
+            ->andWhere('latitude = 0 OR latitude IS NULL')
+            ->andWhere('longitude = 0 OR longitude IS NULL')
+            ->execute()->fetch(FetchMode::NUMERIC);
 
         $numAll = $builder->count('uid')
             ->from('tt_address')
-            ->andWhere('pid = ' . $this->pObj->id)->execute()->fetch();
+            ->where('pid = ' . $this->pObj->id)
+            ->execute()->fetch(FetchMode::NUMERIC);
 
-        $html = '<p>'
-            . '<b>' . $num . '</b> addresses without coordinates on this page'
-            . '</p>';
-        $html .= '<p>'
-            . '<b>' . $numAll . '</b> addresses in total on this page'
-            . '</p>';
+        $html = ' <p>'
+            . ' <b>' . $num[0] . ' </b > addresses without coordinates on this page'
+            . ' </p > ';
+        $html .= '<p> '
+            . '<b> ' . $numAll[0] . '</b > addresses in total on this page'
+            . ' </p> ';
 
-        $html .= '<br/>'
-            . '<form action="' . $this->getFormUrl() . '" method="post">'
-            . '<input type="radio" name="geocode" id="geocode-missing" value="missing" checked="checked"/>'
-            . '<label for="geocode-missing">Update <b>missing</b> coordinates only</label>'
-            . '<br/>'
-            . '<input type="radio" name="geocode" id="geocode-all" value="all"/>'
-            . '<label for="geocode-all">Update coordinates of <b>all</b> addresses</label>'
-            . '<br/>'
-            . '<br/>'
-            . '<input type="submit" name="start" value="Start geocoding" />';
+        $html .= '<br />'
+            . '<form action = "' . $this->getFormUrl() . '" method = "post" > '
+            . '<input type = "radio" name = "geocode" id = "geocode-missing" value = "missing" checked = "checked" />'
+            . '<label for="geocode-missing" > Update <b> missing</b> coordinates only </label> '
+            . '<br />'
+            . '<input type = "radio" name = "geocode" id = "geocode-all" value = "all" />'
+            . '<label for="geocode-all" > Update coordinates of <b> all </b> addresses</label> '
+            . '<br />'
+            . '<br />'
+            . '<input type = "submit" name = "start" value = "Start geocoding" />';
 
         return $html;
     }
@@ -163,7 +170,7 @@ class GeocodeWizard extends \TYPO3\CMS\Backend\Module\AbstractFunctionModule
     {
         $urlParams = $this->pObj->MOD_SETTINGS;
         $urlParams['id'] = $this->pObj->id;
-        return $this->pObj->doc->scriptID . '?' . GeneralUtility::implodeArrayForUrl(
+        return $this->pObj->doc->scriptID . ' ? ' . GeneralUtility::implodeArrayForUrl(
                 '',
                 $urlParams
             );

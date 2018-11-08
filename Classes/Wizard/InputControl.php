@@ -27,15 +27,13 @@ class InputControl extends AbstractNode
         $windowOpenParameters = $options['windowOpenParameters'] ?? 'height=800,width=1000,status=0,menubar=0,scrollbars=1';
 
         $linkBrowserArguments = [];
-        if (isset($options['blindLinkOptions'])) {
-            $linkBrowserArguments['blindLinkOptions'] = $options['blindLinkOptions'];
+
+        if ($this->data['tableName'] === 'tx_odsosm_vector') {
+            $linkBrowserArguments['mode'] = 'vector';
+        } else {
+            $linkBrowserArguments['mode'] = 'point';
         }
-        if (isset($options['blindLinkFields'])) {
-            $linkBrowserArguments['blindLinkFields'] = $options['blindLinkFields'];
-        }
-        if (isset($options['allowedExtensions'])) {
-            $linkBrowserArguments['allowedExtensions'] = $options['allowedExtensions'];
-        }
+
         $urlParameters = [
             'P' => [
                 'params' => $linkBrowserArguments,
@@ -77,7 +75,6 @@ class InputControl extends AbstractNode
                 'data-id' => $this->data['databaseRow']['uid'],
                 'onClick' => implode('', $onClick),
             ],
-//            'requireJsModules' => ['TYPO3/CMS/OdsOsm/CoordinatePicker'],
         ];
 
     }

@@ -159,13 +159,12 @@ class Coordinatepicker extends \TYPO3\CMS\Backend\Controller\Wizard\AbstractWiza
 
         switch ($this->P['table']) {
             case 'tt_content':
-                $res = $connection->select(
-                    [
-                        'ExtractValue(pi_flexform,\'/T3FlexForms[1]/data[1]/sheet[@index="sDEF"]/language[@index="lDEF"]/field[@index="' . $field['lon'] . '"]/value[@index="vDEF"]\') as lon',
-                        'ExtractValue(pi_flexform,\'/T3FlexForms[1]/data[1]/sheet[@index="sDEF"]/language[@index="lDEF"]/field[@index="' . $field['lat'] . '"]/value[@index="vDEF"]\') as lat'
-                    ],
-                    $this->P['table'],
-                    ['uid' => intval($this->P['uid'])]
+                $res = $connection->executeQuery(
+                    'SELECT ' .
+                    'ExtractValue(pi_flexform,\'/T3FlexForms[1]/data[1]/sheet[@index="sDEF"]/language[@index="lDEF"]/field[@index="' . $field['lon'] . '"]/value[@index="vDEF"]\') AS lon, ' .
+                    'ExtractValue(pi_flexform,\'/T3FlexForms[1]/data[1]/sheet[@index="sDEF"]/language[@index="lDEF"]/field[@index="' . $field['lat'] . '"]/value[@index="vDEF"]\') AS lat ' .
+                    'FROM ' . $this->P['table'] . ' ' .
+                    'WHERE uid = ' . intval($this->P['uid'])
                 );
                 $row = $res->fetch(FetchMode::ASSOCIATIVE);
                 $js = 'function setBEcoordinates(lon,lat) {
@@ -175,13 +174,12 @@ class Coordinatepicker extends \TYPO3\CMS\Backend\Controller\Wizard\AbstractWiza
 				}';
                 break;
             case 'tx_odsosm_vector':
-                $res = $connection->select(
-                    [
-                        '(max_lon+min_lon)/2 AS lon',
-                        '(max_lat+min_lat)/2 AS lat'
-                    ],
-                    $this->P['table'],
-                    ['uid' => intval($this->P['uid'])]
+                $res = $connection->executeQuery(
+                    'SELECT ' .
+                    '(max_lon+min_lon)/2 AS lon, ' .
+                    '(max_lat+min_lat)/2 AS lat ' .
+                    'FROM ' . $this->P['table'] . ' ' .
+                    'WHERE uid = ' . intval($this->P['uid'])
                 );
                 $row = $res->fetch(FetchMode::ASSOCIATIVE);
                 $js = 'function setBEfield(data) {
@@ -243,7 +241,7 @@ class Coordinatepicker extends \TYPO3\CMS\Backend\Controller\Wizard\AbstractWiza
 		if(typeof f.onchange === "function") {
 		    f.onchange();
         }
-//		window.opener.document.' . strtr($P['fieldChangeFunc']['TBE_EDITOR_fieldChanged'], $replace);
+		window.opener.' . strtr($P['fieldChangeFunc']['TBE_EDITOR_fieldChanged'], $replace);
     }
 
 

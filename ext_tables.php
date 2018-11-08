@@ -31,7 +31,7 @@ $iconRegistry->registerIcon(
 );
 
 if ( TYPO3_MODE == 'BE' ) {
-	if ( \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded( 'ods_osm_tt_address' ) ) {
+	if ( \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded( 'tt_address' ) ) {
 		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::insertModuleFunction(
 			'web_func',
 			\Bobosch\OdsOsm\FuncWizards\GeocodeWizard::class,

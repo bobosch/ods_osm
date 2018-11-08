@@ -40,7 +40,7 @@ class TceMain
                 break;
 
             case 'tx_odsosm_vector':
-                if ($fieldArray['data']) {
+                if (!empty($fieldArray['data'])) {
                     $this->lon = array();
                     $this->lat = array();
 
@@ -49,11 +49,12 @@ class TceMain
                         $this->lon[] = $coordinates[0];
                         $this->lat[] = $coordinates[1];
                     }
+
+                    $fieldArray['min_lon'] = sprintf('%01.6f', min($this->lon));
+                    $fieldArray['min_lat'] = sprintf('%01.6f', min($this->lat));
+                    $fieldArray['max_lon'] = sprintf('%01.6f', max($this->lon));
+                    $fieldArray['max_lat'] = sprintf('%01.6f', max($this->lat));
                 }
-                $fieldArray['min_lon'] = sprintf('%01.6f', min($this->lon));
-                $fieldArray['min_lat'] = sprintf('%01.6f', min($this->lat));
-                $fieldArray['max_lon'] = sprintf('%01.6f', max($this->lon));
-                $fieldArray['max_lat'] = sprintf('%01.6f', max($this->lat));
                 break;
             default:
                 $tc = Div::getTableConfig($table);
