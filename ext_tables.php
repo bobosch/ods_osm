@@ -29,6 +29,11 @@ $iconRegistry->registerIcon(
 	\TYPO3\CMS\Core\Imaging\IconProvider\BitmapIconProvider::class,
 	[ 'source' => 'EXT:ods_osm/Resources/Public/Icons/osm.png' ]
 );
+$iconRegistry->registerIcon(
+	'ods_osm_wizard',
+	\TYPO3\CMS\Core\Imaging\IconProvider\BitmapIconProvider::class,
+	[ 'source' => 'EXT:ods_osm/Resources/Private/Images/ce_wiz.png' ]
+);
 
 if ( TYPO3_MODE == 'BE' ) {
 	if ( \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded( 'tt_address' ) ) {

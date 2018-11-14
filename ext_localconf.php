@@ -11,7 +11,7 @@ if (!defined('TYPO3_MODE')) die ('Access denied.');
 
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPageTSConfig('
 mod.wizards.newContentElement.wizardItems.plugins.elements.odsosm {
-    icon = EXT:ods_osm/Resources/Private/Images/ce_wiz.png
+    iconIdentifier = ods_osm_wizard
     title = LLL:EXT:ods_osm/Resources/Private/Language/locallang.xml:pi1_title
     description = LLL:EXT:ods_osm/Resources/Private/Language/locallang.xml:pi1_plus_wiz_description
     tt_content_defValues {
