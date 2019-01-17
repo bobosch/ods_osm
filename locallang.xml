@@ -15,5 +15,10 @@
 			<label index="pi1_plus_wiz_description">Interaktive Karte zur Website hinzufügen.</label>
 			<label index="wiz_geocode">Adressen geokodieren</label>
 		</languageKey>
+		<languageKey index="it" type="array">
+			<label index="pi1_title">Openstreetmap</label>
+			<label index="pi1_plus_wiz_description">Aggiungi una mappa interattiva al tuo sito web.</label>
+			<label index="wiz_geocode">Indirizzi Geocode</label>
+		</languageKey>
 	</data>
 </T3locallang>
