@@ -242,6 +242,8 @@ In the extension configuration
 |                            | versions in ods_osm/res/.                      |
 +----------------------------+------------------------------------------------+
 
+There is a function to mass gecode addresses in the functions menu.
+
 Configuration
 =============
 
