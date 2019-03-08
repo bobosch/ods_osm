@@ -22,78 +22,94 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-class ext_update {
-	protected $messageArray = array();
+use TYPO3\CMS\Core\Utility\VersionNumberUtility;
+use TYPO3\CMS\Core\Database\ConnectionPool;
 
-	public function access() {
-		return \TYPO3\CMS\Core\Utility\GeneralUtility::compat_version('6.0');
-	}
+class ext_update
+{
+    protected $messageArray = array();
 
-	/**
-	 * Main update function called by the extension manager.
-	 *
-	 * @return string
-	 */
-	public function main() {
-		$this->processUpdates();
-		return $this->generateOutput();
-	}
+    public function access()
+    {
+        return VersionNumberUtility::convertVersionNumberToInteger(TYPO3_branch) >= VersionNumberUtility::convertVersionNumberToInteger('6.0');
+    }
 
-	/**
-	 * Generates output by using flash messages
-	 *
-	 * @return string
-	 */
-	protected function generateOutput() {
-		$output = '';
-		foreach ($this->messageArray as $messageItem) {
-			$flashMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
-				'TYPO3\CMS\Core\Messaging\FlashMessage',
-				$messageItem[2],
-				$messageItem[1],
-				$messageItem[0]);
-			$output .= $flashMessage->render();
-		}
+    /**
+     * Main update function called by the extension manager.
+     *
+     * @return string
+     */
+    public function main()
+    {
+        $this->processUpdates();
+        return $this->generateOutput();
+    }
 
-		return $output;
-	}
-	
-	/**
-	 * The actual update function. Add your update task in here.
-	 *
-	 * @return void
-	 */
-	protected function processUpdates() {
-		$this->importStaticData();
-	}
-	
-	/**
-	 * Import static data
-	 *
-	 * @return int
-	 */
-	protected function importStaticData() {
-		$title = 'Import static data';
-		$message = '';
-		$status = NULL;
+    /**
+     * Generates output by using flash messages
+     *
+     * @return string
+     */
+    protected function generateOutput()
+    {
+        $output = '';
+        foreach ($this->messageArray as $messageItem) {
+            /** @var \TYPO3\CMS\Core\Messaging\FlashMessage $flashMessage */
+            $flashMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
+                \TYPO3\CMS\Core\Messaging\FlashMessage::class,
+                $messageItem[2],
+                $messageItem[1],
+                $messageItem[0]);
+            $output .= $flashMessage->getMessage();
+        }
 
-		$extPath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('ods_osm');
-		$fileContent = explode(';', \TYPO3\CMS\Core\Utility\GeneralUtility::getUrl($extPath . 'ext_tables_static+adt.sql'));
-		foreach ($fileContent as $line) {
-			$line = trim($line);
-			if ($line) {
-				if($GLOBALS['TYPO3_DB']->sql_query($line) === false) {
-					$message = 'SQL ERROR:' . $GLOBALS['TYPO3_DB']->sql_error();
-					$status = \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR;
-				} else {
-					$message = 'OK!';
-					$status = \TYPO3\CMS\Core\Messaging\FlashMessage::OK;
-				}
-			}
-		}
+        return $output;
+    }
 
-		$this->messageArray[] = array($status, $title, $message);
-		return $status;
-	}
+    /**
+     * The actual update function. Add your update task in here.
+     *
+     * @return void
+     */
+    protected function processUpdates()
+    {
+        $this->importStaticData();
+    }
+
+    /**
+     * Import static data
+     *
+     * @return int
+     */
+    protected function importStaticData()
+    {
+        $title = 'Import static data';
+        $message = '';
+        $status = NULL;
+
+        $extPath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('ods_osm');
+        $fileContent = explode(');', \TYPO3\CMS\Core\Utility\GeneralUtility::getUrl($extPath . 'ext_tables_static+adt.sql'));
+        $connectionPool = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(ConnectionPool::class);
+        /** @var \TYPO3\CMS\Core\Database\Connection $connection */
+        $connection = $connectionPool->getConnectionForTable('tx_odsosm_layer');
+        foreach ($fileContent as $line) {
+            $line = trim($line);
+            if ($line) {
+                try {
+                    $connection->executeQuery($line . ')');
+
+                    $message = 'OK!';
+                    $status = \TYPO3\CMS\Core\Messaging\FlashMessage::OK;
+                } catch (\Doctrine\DBAL\DBALException $e) {
+                    $message = 'SQL ERROR:' . $connection->errorCode();
+                    $status = \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR;
+                }
+            }
+        }
+
+        $this->messageArray[] = array($status, $title, $message);
+        return $status;
+    }
 }
+
 ?>

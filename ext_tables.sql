@@ -1,28 +1,28 @@
-#
-# Table structure for table 'fe_users'
-#
+--
+-- Table structure for table 'fe_users'
+--
 CREATE TABLE fe_users (
 	tx_odsosm_lon decimal(9,6) NOT NULL DEFAULT '0.000000',
 	tx_odsosm_lat decimal(8,6) NOT NULL DEFAULT '0.000000'
 );
 
-#
-# Table structure for table 'fe_groups'
-#
+--
+-- Table structure for table 'fe_groups'
+--
 CREATE TABLE fe_groups (
 	tx_odsosm_marker int(10) unsigned NOT NULL DEFAULT '0'
 );
 
-#
-# Table structure for table 'sys_category'
-#
+--
+-- Table structure for table 'sys_category'
+--
 CREATE TABLE sys_category (
 	tx_odsosm_marker int(10) unsigned NOT NULL DEFAULT '0'
 );
 
-#
-# Table structure for table 'tx_odsosm_geocache'
-#
+--
+-- Table structure for table 'tx_odsosm_geocache'
+--
 CREATE TABLE tx_odsosm_geocache (
 	uid int(10) unsigned NOT NULL auto_increment,
 	pid int(10) unsigned NOT NULL DEFAULT '0',
@@ -46,9 +46,9 @@ CREATE TABLE tx_odsosm_geocache (
 	KEY zip (zip)
 );
 
-#
-# Table structure for table 'tx_odsosm_layer'
-#
+--
+-- Table structure for table 'tx_odsosm_layer'
+--
 CREATE TABLE tx_odsosm_layer (
 	uid int(10) unsigned NOT NULL auto_increment,
 	pid int(10) unsigned NOT NULL DEFAULT '0',
@@ -77,9 +77,9 @@ CREATE TABLE tx_odsosm_layer (
 	KEY parent (pid)
 );
 
-#
-# Table structure for table 'tx_odsosm_marker'
-#
+--
+-- Table structure for table 'tx_odsosm_marker'
+--
 CREATE TABLE tx_odsosm_marker (
 	uid int(10) unsigned NOT NULL auto_increment,
 	pid int(10) unsigned NOT NULL DEFAULT '0',
@@ -98,9 +98,9 @@ CREATE TABLE tx_odsosm_marker (
 	KEY parent (pid)
 );
 
-#
-# Table structure for table 'tx_odsosm_track'
-#
+--
+-- Table structure for table 'tx_odsosm_track'
+--
 CREATE TABLE tx_odsosm_track (
 	uid int(10) unsigned NOT NULL auto_increment,
 	pid int(10) unsigned NOT NULL DEFAULT '0',
@@ -122,9 +122,9 @@ CREATE TABLE tx_odsosm_track (
 	KEY parent (pid)
 );
 
-#
-# Table structure for table 'tx_odsosm_vector'
-#
+--
+-- Table structure for table 'tx_odsosm_vector'
+--
 CREATE TABLE tx_odsosm_vector (
 	uid int(10) unsigned NOT NULL auto_increment,
 	pid int(10) unsigned NOT NULL DEFAULT '0',
