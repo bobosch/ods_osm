@@ -239,7 +239,7 @@ In the extension configuration
 | images                     | javascript files from                          | 
 |                            | http://www.openlayers.org/ and                 |
 |                            | http://www.openstreetmap.org/ to use the local |
-|                            | versions in ods_osm/res/.                      |
+|                            | versions in ods_osm/Resources/.                |
 +----------------------------+------------------------------------------------+
 
 There is a function to mass gecode addresses in the functions menu.
