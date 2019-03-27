@@ -8,7 +8,6 @@ $EM_CONF[$_EXTKEY] = array(
     'constraints' => array(
         'depends' => array(
             'typo3' => '9.5.0-9.99.99',
-            'func' => '9.5.0-9.99.99',
         ),
         'conflicts' => array(),
         'suggests' => array(
