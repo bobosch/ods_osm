@@ -284,10 +284,38 @@ class PluginController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
                     // Group with mm relation
                     if (is_array($tc['MM'])) {
                         foreach ($tc['MM'] as $t => $f) {
-                            $connection2 = $this->connectionPool->getConnectionForTable($t);
-                            // fixme
-                            $res2 = $connection2->exec_SELECT_mm_query($t . '.*', $f['local'], $f['mm'], $f['foreign'], 'AND ' . $table . '.uid=' . $item . Div::getWhere($t, $this->cObj));
-                            while ($r = $res->fetch(FetchMode::ASSOCIATIVE)) {
+                            $local = $f['local'];
+                            $mm = $f['mm'];
+                            $foreign = $f['foreign'];
+
+                            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($foreign);
+                            $constraints = Div::getConstraintsForQueryBuilder($foreign,$this->cObj,
+                                $queryBuilder);
+
+                            // set uid
+                            $constraints[] = $queryBuilder->expr()->eq($local . '.uid', $queryBuilder->createNamedParameter($item, \PDO::PARAM_INT));
+
+                            $rows = $queryBuilder
+                                ->select($foreign . '.*')
+                                ->from($foreign)
+                                ->join(
+                                    $foreign,
+                                    $mm,
+                                    $mm,
+                                    $queryBuilder->expr()->eq($foreign . '.uid', $queryBuilder->quoteIdentifier($mm . '.uid_foreign'))
+                                )
+                                ->join(
+                                    $mm,
+                                    $local,
+                                    $local,
+                                    $queryBuilder->expr()->eq($local . '.uid', $queryBuilder->quoteIdentifier($mm . '.uid_local'))
+                                )
+
+                                ->where(...$constraints)
+                                ->execute()
+                                ->fetchAll();
+
+                            foreach($rows as $r) {
                                 $records[$t][$r['uid']] = $r;
                                 $records[$t][$r['uid']]['group_uid'] = $table . '_' . $row['uid'];
                                 $records[$t][$r['uid']]['group_title'] = $row['title'];

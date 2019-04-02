@@ -5,10 +5,12 @@ namespace Bobosch\OdsOsm;
 use Doctrine\DBAL\FetchMode;
 use Doctrine\DBAL\ParameterType;
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\Query\Restriction\FrontendRestrictionContainer;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
+
 
 if (!defined('TYPO3_DLOG')) {
     define('TYPO3_DLOG', 0);
@@ -16,6 +18,7 @@ if (!defined('TYPO3_DLOG')) {
 
 class Div
 {
+
     public static function getWhere($table, ContentObjectRenderer $cObj)
     {
         if (is_string($table)) {
@@ -35,6 +38,42 @@ class Div
         }
 
         return $where;
+    }
+
+    public static function getConstraintsForQueryBuilder($table, ContentObjectRenderer $cObj,
+        \TYPO3\CMS\Core\Database\Query\QueryBuilder $queryBuilder) : array
+    {
+        $constraints = [];
+
+        if (is_string($table)) {
+            $ctrl = $GLOBALS['TCA'][$table]['ctrl'];
+            // Enable fields
+            $queryBuilder->setRestrictions(GeneralUtility::makeInstance(FrontendRestrictionContainer::class));
+
+            // Version
+            $constraints[] =
+                $queryBuilder->expr()->gte($table . '.pid', $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT));
+
+            // Translation
+            if ($ctrl['languageField']) {
+                $orConstraints = [
+                        $queryBuilder->expr()->eq($table . '.' . $ctrl['languageField'], $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)),
+                        $queryBuilder->expr()->eq($table . '.' . $ctrl['languageField'], $queryBuilder->createNamedParameter(-1, \PDO::PARAM_INT))
+                    ];
+
+
+                if ($GLOBALS['TSFE']->sys_language_content && $ctrl['transOrigPointerField']) {
+                    $orConstraints[] = $queryBuilder->expr()->andX(
+                        $queryBuilder->expr()->eq($table . '.' . $ctrl['languageField'],
+                            $queryBuilder->createNamedParameter((int) ($GLOBALS['TSFE']->sys_language_content), \PDO::PARAM_INT)),
+                        $queryBuilder->expr()->eq($table . '.' . $ctrl['transOrigPointerField'],
+                            $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT))
+                    );
+                }
+                $constraints[] = $queryBuilder->expr()->orX(...$orConstraints);
+            }
+        }
+        return $constraints;
     }
 
     public static function getOverlay($table, $row)
