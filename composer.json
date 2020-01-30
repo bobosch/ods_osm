@@ -1,5 +1,5 @@
 {
-  "name": "bobosch/ods_osm",
+  "name": "bobosch/ods-osm",
   "description": "Add an interactive OpenStreetMap map to your website. Can also show other OpenLayers compatible maps.",
   "type": "typo3-cms-extension",
   "keywords": [
@@ -7,9 +7,9 @@
     "OSM",
     "OpenStreetMap"
   ],
-  "homepage": "https://forge.typo3.org/projects/extension-ods_osm",
+  "homepage": "https://github.com/bobosch/ods_osm",
   "support": {
-    "issues": "https://forge.typo3.org/projects/extension-ods_osm/issues"
+    "issues": "https://github.com/bobosch/ods_osm/issues"
   },
   "authors": [
     {
@@ -20,7 +20,7 @@
   ],
   "license": "GPL-2.0-or-later",
   "require": {
-    "php": "~7.2.0",
+    "php": "^7.2.0",
     "typo3/cms-core": "^9.5.0"
   },
   "autoload": {
