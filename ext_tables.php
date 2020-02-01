@@ -32,7 +32,7 @@ $iconRegistry->registerIcon(
 $iconRegistry->registerIcon(
 	'ods_osm_wizard',
 	\TYPO3\CMS\Core\Imaging\IconProvider\BitmapIconProvider::class,
-	[ 'source' => 'EXT:ods_osm/Resources/Private/Images/ce_wiz.png' ]
+	[ 'source' => 'EXT:ods_osm/Resources/Public/Icons/ce_wiz.png' ]
 );
 
 if ( TYPO3_MODE == 'BE' ) {
