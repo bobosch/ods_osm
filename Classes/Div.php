@@ -69,7 +69,7 @@ class Div
         } else {
             $pageRenderer = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Page\PageRenderer::class);
             foreach ($scripts as $script) {
-                $pageRenderer->addJsFile($script, 'text/javascript', false);
+                $pageRenderer->addJsFooterFile($script);
             }
         }
     }
