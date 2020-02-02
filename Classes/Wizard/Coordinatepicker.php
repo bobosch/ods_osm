@@ -22,6 +22,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Template\DocumentTemplate;
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Http\Response;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -125,16 +126,18 @@ class Coordinatepicker extends \TYPO3\CMS\Backend\Controller\Wizard\AbstractWiza
      * As this controller goes only through the main() method, it is rather simple for now
      *
      * @param ServerRequestInterface $request
-     * @param ResponseInterface $response
      * @return ResponseInterface
      */
-    public function mainAction(ServerRequestInterface $request, ResponseInterface $response)
+    public function mainAction(ServerRequestInterface $request)
     {
         $this->main();
 
         $this->content .= $this->doc->endPage();
         $this->content = $this->doc->insertStylesAndJS($this->content);
 
+        // create response object
+        /** @var Response $response */
+        $response = GeneralUtility::makeInstance(Response::class);
         $response->getBody()->write($this->content);
         return $response;
     }
