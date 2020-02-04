@@ -2,6 +2,8 @@
 
 namespace Bobosch\OdsOsm;
 
+use \geoPHP;
+
 class TceMain
 {
     var $lon = array();
@@ -19,7 +21,11 @@ class TceMain
             case 'tx_odsosm_track':
                 $filename = PATH_site . 'uploads/tx_odsosm/' . $fieldArray['file'];
                 if ($fieldArray['file'] && file_exists($filename)) {
-                    require_once \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('ods_osm', 'Resources/Public/geoPHP/geoPHP.inc');
+                    // If extension is installed via composer, the class geoPHP is already known.
+                    // Otherwise we use the (older) copy out of the extension folder.
+                    if (!class_exists(geoPHP::class)) {
+                        require_once \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('ods_osm', 'Resources/Public/geoPHP/geoPHP.inc');
+                    }
                     $polygon = geoPHP::load(file_get_contents($filename), pathinfo($filename, PATHINFO_EXTENSION));
                     $box = $polygon->getBBox();
                     $fieldArray['min_lon'] = sprintf('%01.6f', $box['minx']);
