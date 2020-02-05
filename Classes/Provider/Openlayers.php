@@ -51,15 +51,6 @@ class Openlayers extends BaseProvider
         );
     }
 
-    public function getMapCenter($lat, $lon, $zoom)
-    {
-        return 'mapCenter(' . $this->config['id'] . ',' . substr(json_encode(array(
-                $lat,
-                $lon,
-                $zoom
-            )), 1, -1) . ');';
-    }
-
     protected function getLayerSwitcher()
     {
         if ($this->config['layerswitcher.']['div']) {
@@ -209,22 +200,77 @@ class Openlayers extends BaseProvider
                 break;
         }
 
-        return 'var map; //complex object of type OpenLayers.Map
+        return "var map; //complex object of type OpenLayers.Map
 
-' . $action . '
+" . $action . "
 
 	function map(){
-		' . $this->getMapMain() . '
-		' . $jsMainLayer . '
-		' . $this->getMapCenter($lat, $lon, $zoom) . '
+        var lat = " . json_encode($lat) . ";
+		var lon = " . json_encode($lon) . ";
+        var zoom = " . json_encode($zoom) . ";
+        if (typeof " . $this->getJSfieldVariable('lat') . " != 'undefined') {
+			lat = " . $this->getJSfieldVariable('lat') . ".value;
+			zoom = 14;
+		}
+		if (typeof " . $this->getJSfieldVariable('lon') . " != 'undefined') {
+			lon = " . $this->getJSfieldVariable('lon') . ".value;
+			zoom = 14;
+		}
+		" . $this->getMapMain() . "
+		" . $jsMainLayer . "
+        mapCenter(" . $this->config['id'] . ", lat, lon, zoom);
+        var markers = new OpenLayers.Layer.Markers('Position');
+		map.addLayer(markers);
+		var size = new OpenLayers.Size(21,25);
+		var offset = new OpenLayers.Pixel(-(size.w/2), -size.h);
+		var icon = new OpenLayers.Icon('/typo3conf/ext/ods_osm/Resources/Public/Icons/icon_tx_odsosm_marker.png', size, offset);
+		markers.addMarker(new OpenLayers.Marker(
+			new OpenLayers.LonLat(lon, lat).transform(new OpenLayers.Projection('EPSG:4326'), map.getProjectionObject()),
+			icon)
+		);
 		mapAction();
-	}';
+	}";
     }
+
+
+    /**
+	 * Get Javascript variable of edit form field of the given name
+	 *
+	 * @param string $name Field name, e.g. "lat" or "lon"
+	 *
+	 * @return string Javascript variable for the field
+	 */
+	protected function getJSfieldVariable($name)
+	{
+        /**
+         * The button for the coordinatpicker is placed to the
+         * longitute field. That's why we have in $this->P['itemName']
+         * always "data[tt_address][1][longitude]" --> replacment is
+         * necessary in case of latitude setting.
+         * possible (known) values of $this->P['itemName]
+         *
+         * data[fe_users][1][tx_odsosm_lon]
+         * data[tt_address][1][longitude]
+         */
+
+        $replacements = [];
+        if ($name === 'lat') {
+            if (stripos($this->P['itemName'], 'fe_users') > 0) {
+                $replacements['lon'] = $name;
+            } else if (stripos($this->P['itemName'], 'tt_address') > 0) {
+                $replacements['long'] = $name;
+            }
+        }
+		return 'window.opener.document.editform["'
+			. strtr($this->P['itemName'], $replacements)
+            . '"]';
+	}
+
 
     function getJScoordinates()
     {
         return "
-	OpenLayers.Control.Click = OpenLayers.Class(OpenLayers.Control, {                
+	OpenLayers.Control.Click = OpenLayers.Class(OpenLayers.Control, {
 		defaultHandlerOptions: {
 			'single': true,
 			'double': false,
@@ -238,13 +284,13 @@ class Openlayers extends BaseProvider
 			);
 			OpenLayers.Control.prototype.initialize.apply(
 				this, arguments
-			); 
+			);
 			this.handler = new OpenLayers.Handler.Click(
 				this, {
 					'click': this.onClick
 				}, this.handlerOptions
 			);
-		}, 
+		},
 		onClick: getCoordinates
 	});
 
