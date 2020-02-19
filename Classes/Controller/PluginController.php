@@ -97,7 +97,7 @@ class PluginController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
             'show_scalebar',
             'show_pan_zoom',
             'show_popups',
-            'static_layer',
+            'staticmap_layer',
             'use_coords_only_nomarker',
             'width',
             'zoom'
@@ -448,7 +448,6 @@ class PluginController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
         /* ==================================================
             Layers
         ================================================== */
-
         $connection = $this->connectionPool->getConnectionForTable('tx_odsosm_layer');
         $layers_res = $connection->fetchAll('SELECT * FROM tx_odsosm_layer WHERE uid IN (' . implode(',', $this->config['layer']) . ')' .
             $this->cObj->enableFields('tx_odsosm_layer') . ' ORDER BY FIELD(uid,' . implode(',', $this->config['layer']) . ')');
@@ -464,7 +463,6 @@ class PluginController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
                 $layers[$key]['visible'] = true;
             }
         }
-
         /* ==================================================
             Map center
         ================================================== */

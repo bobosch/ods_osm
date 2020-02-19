@@ -47,7 +47,14 @@ class Staticmap extends BaseProvider
             $cache = filectime($filename) > time() - 7 * 24 * 60 * 60;
         }
         if (!$cache) {
-            $image = file_get_contents($url);
+            $referer = $_SERVER['HTTP_REFERER'];
+            $opts = array(
+                'http'=>array(
+                    'header'=>array("Referer: $referer\r\n")
+                )
+            );
+            $context = stream_context_create($opts);
+            $image = file_get_contents($url, false, $context);
             if ($image) {
                 file_put_contents($filename, $image);
             }

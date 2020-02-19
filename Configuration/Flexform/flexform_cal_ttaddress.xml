@@ -278,7 +278,7 @@
                             </config>
                         </TCEforms>
                     </openlayers3_layer>
-                    <static_layer>
+                    <staticmap_layer>
                         <TCEforms>
                             <label>LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xml:tt_content.pi_flexform.layer</label>
                             <displayCond>FIELD:library:=:staticmap</displayCond>
@@ -297,7 +297,7 @@
                                 </items>
                             </config>
                         </TCEforms>
-                    </static_layer>
+                    </staticmap_layer>
                     <mouse_navigation>
                         <TCEforms>
                             <label>LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xml:tt_content.pi_flexform.mouse_navigation</label>
