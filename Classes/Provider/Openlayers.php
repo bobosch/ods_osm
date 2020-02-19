@@ -216,6 +216,9 @@ class Openlayers extends BaseProvider
 			lon = " . $this->getJSfieldVariable('lon') . ".value;
 			zoom = 14;
 		}
+		if (typeof " . $this->getJSfieldVariable('zoom') . " != 'undefined') {
+			zoom = " . $this->getJSfieldVariable('zoom') . ".value;
+		}
 		" . $this->getMapMain() . "
 		" . $jsMainLayer . "
         mapCenter(" . $this->config['id'] . ", lat, lon, zoom);
@@ -251,11 +254,13 @@ class Openlayers extends BaseProvider
          *
          * data[fe_users][1][tx_odsosm_lon]
          * data[tt_address][1][longitude]
+         * data[tt_content][1][pi_flexform][data][sDEF][lDEF][lon][vDEF]
          */
 
         $replacements = [];
-        if ($name === 'lat') {
-            if (stripos($this->P['itemName'], 'fe_users') > 0) {
+        if ($name === 'lat' || $name='zoom') {
+            if (stripos($this->P['itemName'], 'fe_users') > 0 |
+                stripos($this->P['itemName'], 'tt_content') > 0) {
                 $replacements['lon'] = $name;
             } else if (stripos($this->P['itemName'], 'tt_address') > 0) {
                 $replacements['long'] = $name;
