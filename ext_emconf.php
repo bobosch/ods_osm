@@ -20,4 +20,3 @@ $EM_CONF[$_EXTKEY] = array(
     'uploadfolder' => 1,
     'version' => '3.0.0',
 );
-?>
