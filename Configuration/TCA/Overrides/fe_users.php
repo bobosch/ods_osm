@@ -16,7 +16,8 @@ $tempColumns = array(
 	            'coordinatepickerControl' => [
 		            'renderType' => 'coordinatepickerControl'
 	            ]
-            ]
+            ],
+            'default' => 0.000000,
         )
     ),
     'tx_odsosm_lat' => array( // DECIMAL(8,6)
@@ -27,6 +28,7 @@ $tempColumns = array(
             'size' => 10,
             'max' => 10,
             'eval' => 'Bobosch\\OdsOsm\\Evaluation\\LonLat',
+            'default' => 0.000000,
         )
     ),
 );
