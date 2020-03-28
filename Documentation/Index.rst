@@ -21,4 +21,4 @@ EXT: OpenStreetMap
    Introduction/Index
    Editors/Index
    Administrators/Index
-   Changelog/Index
+   Tutorial/Index
