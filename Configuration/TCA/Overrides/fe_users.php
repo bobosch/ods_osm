@@ -10,7 +10,6 @@ $tempColumns = array(
             'size' => 11,
             'max' => 11,
             'checkbox' => '0.000000',
-            'default' => '0.000000',
             'eval' => 'Bobosch\\OdsOsm\\Evaluation\\LonLat',
             'fieldControl' => [
 	            'coordinatepickerControl' => [
