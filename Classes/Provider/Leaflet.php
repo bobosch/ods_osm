@@ -3,6 +3,9 @@
 namespace Bobosch\OdsOsm\Provider;
 
 use TYPO3\CMS\Core\Page\PageRenderer;
+use TYPO3\CMS\Core\Utility\PathUtility;
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+
 
 class Leaflet extends BaseProvider
 {
@@ -16,7 +19,7 @@ class Leaflet extends BaseProvider
 
     public function getMapCore($backpath = '')
     {
-        $this->path_res = ($backpath ? $backpath : $GLOBALS['TSFE']->absRefPrefix) . \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::siteRelPath('ods_osm') . 'Resources/Public/';
+        $this->path_res = ($backpath ? $backpath : $GLOBALS['TSFE']->absRefPrefix) . PathUtility::stripPathSitePrefix(ExtensionManagementUtility::extPath('ods_osm')) . 'Resources/Public/';
         $this->path_leaflet = ($this->config['local_js'] ? $this->path_res . 'leaflet/' : 'https://cdn.leafletjs.com/leaflet-0.7.3/');
         $pageRenderer = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(PageRenderer::class);
         $pageRenderer->addCssFile($this->path_leaflet . 'leaflet.css');
@@ -142,7 +145,7 @@ class Leaflet extends BaseProvider
         $jsElementVar = $table . '_' . $item['uid'];
         switch ($table) {
             case 'tx_odsosm_track':
-                $path = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::siteRelPath('ods_osm') . 'Resources/Public/';
+                $path = PathUtility::stripPathSitePrefix(ExtensionManagementUtility::extPath('ods_osm')) . 'Resources/Public/';
                 // Add tracks to layerswitcher
                 $this->layers[1][$item['title']] = $jsElementVar;
 
@@ -197,7 +200,7 @@ class Leaflet extends BaseProvider
                         $markerOptions['icon'] = 'icon: new L.Icon(' . json_encode($iconOptions) . ')';
                     }
                 } else {
-                    $icon = $GLOBALS['TSFE']->absRefPrefix . \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::siteRelPath('ods_osm') . 'Resources/Public/leaflet/images/marker-icon.png';
+                    $icon = $GLOBALS['TSFE']->absRefPrefix . PathUtility::stripPathSitePrefix(ExtensionManagementUtility::extPath('ods_osm')) . 'Resources/Public/leaflet/images/marker-icon.png';
                 }
                 $jsMarker .= 'var ' . $jsElementVar . ' = new L.Marker([' . $item['latitude'] . ', ' . $item['longitude'] . '], {' . implode(',', $markerOptions) . "});\n";
                 // Add group to layer switch
