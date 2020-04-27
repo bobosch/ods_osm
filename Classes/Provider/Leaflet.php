@@ -145,7 +145,7 @@ class Leaflet extends BaseProvider
         $jsElementVar = $table . '_' . $item['uid'];
         switch ($table) {
             case 'tx_odsosm_track':
-                $path = PathUtility::stripPathSitePrefix(ExtensionManagementUtility::extPath('ods_osm')) . 'Resources/Public/';
+                $path = $GLOBALS['TSFE']->absRefPrefix . PathUtility::stripPathSitePrefix(ExtensionManagementUtility::extPath('ods_osm')) . 'Resources/Public/';
                 // Add tracks to layerswitcher
                 $this->layers[1][$item['title']] = $jsElementVar;
 
@@ -226,5 +226,3 @@ class Leaflet extends BaseProvider
         return $jsMarker;
     }
 }
-
-?>

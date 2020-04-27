@@ -349,5 +349,3 @@ class Openlayers extends BaseProvider
 ";
     }
 }
-
-?>

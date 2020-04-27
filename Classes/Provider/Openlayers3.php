@@ -74,5 +74,3 @@ class Openlayers3 extends BaseProvider
     {
     }
 }
-
-?>
