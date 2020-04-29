@@ -3,6 +3,8 @@
 namespace Bobosch\OdsOsm\Provider;
 
 use Bobosch\OdsOsm\Div;
+use TYPO3\CMS\Core\Utility\PathUtility;
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 
 class Openlayers extends BaseProvider
 {
@@ -11,7 +13,7 @@ class Openlayers extends BaseProvider
 
     public function getMapCore($backpath = '')
     {
-        $path = ($backpath ? $backpath : $GLOBALS['TSFE']->absRefPrefix) . \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::siteRelPath('ods_osm') . 'Resources/Public/';
+        $path = ($backpath ? $backpath : $GLOBALS['TSFE']->absRefPrefix) . PathUtility::stripPathSitePrefix(ExtensionManagementUtility::extPath('ods_osm')) . 'Resources/Public/';
         $this->scripts = array(
             ($this->config['path_openlayers'] ? $this->config['path_openlayers'] : ($this->config['local_js'] ? $path . 'OpenLayers' : 'https://openlayers.org/api')) . '/OpenLayers.js',
             $path . 'tx_odsosm_openlayers.js',
@@ -141,7 +143,7 @@ class Openlayers extends BaseProvider
                     $marker = $item['tx_odsosm_marker'];
                 } else {
                     $marker = array(
-                        'icon' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::siteRelPath('ods_osm') . 'Resources/Public/OpenLayers/img/marker.png',
+                        'icon' => PathUtility::stripPathSitePrefix(ExtensionManagementUtility::extPath('ods_osm')) . 'Resources/Public/OpenLayers/img/marker.png',
                         'type' => 'image',
                         'size_x' => 21,
                         'size_y' => 25,
@@ -347,5 +349,3 @@ class Openlayers extends BaseProvider
 ";
     }
 }
-
-?>

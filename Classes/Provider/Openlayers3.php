@@ -3,6 +3,8 @@
 namespace Bobosch\OdsOsm\Provider;
 
 use TYPO3\CMS\Core\Page\PageRenderer;
+use TYPO3\CMS\Core\Utility\PathUtility;
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 
 class Openlayers3 extends BaseProvider
 {
@@ -10,7 +12,7 @@ class Openlayers3 extends BaseProvider
 
     public function getMapCore($backpath = '')
     {
-        $path = ($backpath ? $backpath : $GLOBALS['TSFE']->absRefPrefix) . \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::siteRelPath('ods_osm') . 'Resources/Public/';
+        $path = ($backpath ? $backpath : $GLOBALS['TSFE']->absRefPrefix) . PathUtility::stripPathSitePrefix(ExtensionManagementUtility::extPath('ods_osm')) . 'Resources/Public/';
         $path = ($this->config['local_js'] ? $path . 'OpenLayers3/' : 'http://ol3js.org/en/master/');
         $pageRenderer = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(PageRenderer::class);
         $pageRenderer->addCssFile($path . 'css/ol.css');
@@ -72,5 +74,3 @@ class Openlayers3 extends BaseProvider
     {
     }
 }
-
-?>

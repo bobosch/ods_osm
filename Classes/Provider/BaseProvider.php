@@ -138,5 +138,3 @@ abstract class BaseProvider
         }
     }
 }
-
-?>
