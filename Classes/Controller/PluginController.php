@@ -268,7 +268,7 @@ class PluginController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
                     if (is_array($tc['FIND_IN_SET'])) {
                         foreach ($tc['FIND_IN_SET'] as $t => $f) {
                             $connection2 = $this->connectionPool->getConnectionForTable($t);
-                            $res2 = $connection2->executeQuery('SELECT * FROM ' . $connection2->quoteIdentifier($t) . ' FIND_IN_SET("' . $item . '",' . $f . ')' . Div::getWhere($t, $this->cObj));
+                            $res2 = $connection2->executeQuery('SELECT * FROM ' . $connection2->quoteIdentifier($t) . ' WHERE FIND_IN_SET("' . $item . '",' . $f . ')' . Div::getWhere($t, $this->cObj));
                             while ($r = $res2->fetch(FetchMode::ASSOCIATIVE)) {
                                 $records[$t][$r['uid']] = $r;
                                 $records[$t][$r['uid']]['group_uid'] = $table . '_' . $row['uid'];
