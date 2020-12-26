@@ -448,19 +448,35 @@ class PluginController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
         /* ==================================================
             Layers
         ================================================== */
-        $connection = $this->connectionPool->getConnectionForTable('tx_odsosm_layer');
-        $layers_res = $connection->fetchAll('SELECT * FROM tx_odsosm_layer WHERE uid IN (' . implode(',', $this->config['layer']) . ')' .
-            $this->cObj->enableFields('tx_odsosm_layer') . ' ORDER BY FIELD(uid,' . implode(',', $this->config['layer']) . ')');
+        $layers = [];
+        if (!empty(implode(',', $this->config['layer']))) {
+            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+                ->getQueryBuilderForTable('tx_odsosm_layer');
 
-        $layers = array();
-        foreach ($layers_res as $l) {
-            $layers[$l['uid']] = $l;
-        }
+            $result = $queryBuilder
+                ->select('*')
+                ->from('tx_odsosm_layer')
+                ->where(
+                    $queryBuilder->expr()->in(
+                        'tx_odsosm_layer.uid',
+                        $queryBuilder->createNamedParameter(
+                            $this->config['layer'],
+                            \TYPO3\CMS\Core\Database\Connection::PARAM_INT_ARRAY
+                        )
+                    )
+                )
+                ->add('orderBy', 'FIELD(uid, ' . implode(',', $this->config['layer']) . ')', true)
+                ->execute();
 
-        // set visible flag
-        foreach ($this->config['layers_visible'] as $key) {
-            if ($layers[$key]) {
-                $layers[$key]['visible'] = true;
+            while ($resArray = $result->fetch()) {
+                $layers[$resArray['uid']] =  $resArray;
+            }
+
+            // set visible flag
+            foreach ($this->config['layers_visible'] as $key) {
+                if ($layers[$key]) {
+                    $layers[$key]['visible'] = true;
+                }
             }
         }
         /* ==================================================
@@ -501,5 +517,3 @@ class PluginController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
         return ($content);
     }
 }
-
-?>
