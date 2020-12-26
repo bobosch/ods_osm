@@ -3,6 +3,8 @@
 namespace Bobosch\OdsOsm;
 
 use \geoPHP;
+use TYPO3\CMS\Core\Core\Environment;
+
 
 class TceMain
 {
@@ -19,7 +21,7 @@ class TceMain
     {
         switch ($table) {
             case 'tx_odsosm_track':
-                $filename = PATH_site . 'uploads/tx_odsosm/' . $fieldArray['file'];
+                $filename = Environment::getPublicPath() . '/' . 'uploads/tx_odsosm/' . $fieldArray['file'];
                 if ($fieldArray['file'] && file_exists($filename)) {
                     // If extension is installed via composer, the class geoPHP is already known.
                     // Otherwise we use the (older) copy out of the extension folder.
@@ -36,8 +38,8 @@ class TceMain
                 break;
 
             case 'tx_odsosm_marker':
-                if ($fieldArray['icon'] && file_exists(PATH_site . 'uploads/tx_odsosm/' . $fieldArray['icon'])) {
-                    $size = getimagesize(PATH_site . 'uploads/tx_odsosm/' . $fieldArray['icon']);
+                if ($fieldArray['icon'] && file_exists(Environment::getPublicPath() . '/' . 'uploads/tx_odsosm/' . $fieldArray['icon'])) {
+                    $size = getimagesize(Environment::getPublicPath() . '/' . 'uploads/tx_odsosm/' . $fieldArray['icon']);
                     $fieldArray['size_x'] = $size[0];
                     $fieldArray['size_y'] = $size[1];
                     $fieldArray['offset_x'] = -round($size[0] / 2);
@@ -113,5 +115,3 @@ class TceMain
         }
     }
 }
-
-?>
