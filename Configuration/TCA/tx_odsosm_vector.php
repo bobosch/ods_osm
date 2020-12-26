@@ -81,7 +81,7 @@ return array(
         ),
     ),
     'types' => array(
-        '0' => array('showitem' => 'hidden;;;;1-1-1, title;;;;2-2-2, data;;1;;3-3-3')
+        '0' => array('showitem' => 'hidden, title, data')
     ),
     'palettes' => array(
         '1' => array(
@@ -90,4 +90,3 @@ return array(
         )
     )
 );
-?>

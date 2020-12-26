@@ -45,5 +45,3 @@ if ( \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded( 'cal' ) && \T
 
 $GLOBALS['TCA']['tt_content']['types']['list']['subtypes_addlist']['ods_osm_pi1']     = 'pi_flexform';
 $GLOBALS['TCA']['tt_content']['types']['list']['subtypes_excludelist']['ods_osm_pi1'] = 'layout,select_key,pages,recursive';
-
-?>

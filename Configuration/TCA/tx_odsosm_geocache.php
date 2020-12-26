@@ -120,7 +120,7 @@ return array(
         ),
     ),
     'types' => array(
-        '0' => array('showitem' => 'cache_hit,service_hit,search_city,country,state,city,zip,street,housenumber,lon;;1;;1-1-1')
+        '0' => array('showitem' => 'cache_hit,service_hit,search_city,country,state,city,zip,street,housenumber,lon')
     ),
     'palettes' => array(
         '1' => array(
@@ -129,4 +129,3 @@ return array(
         )
     )
 );
-?>

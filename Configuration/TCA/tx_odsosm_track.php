@@ -63,16 +63,21 @@ return array(
         'file' => array(
             'exclude' => 0,
             'label' => 'LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xml:tx_odsosm_track.file',
-            'config' => array(
-                'type' => 'group',
-                'internal_type' => 'file',
-                'allowed' => 'gpx,json,kml,wkt',
-                // fixme
-                'max_size' => $GLOBALS['TYPO3_CONF_VARS']['BE']['maxFileSize'],
-                'uploadfolder' => 'uploads/tx_odsosm',
-                'size' => 1,
-                'minitems' => 0,
-                'maxitems' => 1,
+            'config' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::getFileFieldTCAConfig(
+                'file',
+                [
+                    'maxitems' => 1,
+                    'appearance' => [
+                        'createNewRelationLinkTitle' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:images.addFileReference'
+                    ],
+                    'foreign_match_fields' => [
+                        'fieldname' => 'file',
+                        'tablenames' => 'tx_odsosm_track',
+                        'table_local' => 'sys_file',
+                    ],
+                    'default' => 0,
+                ],
+                'gpx,json,kml,wkt'
             )
         ),
         'min_lon' => array(
@@ -109,7 +114,7 @@ return array(
         ),
     ),
     'types' => array(
-        '0' => array('showitem' => 'hidden;;;;1-1-1, title;;;;2-2-2, color, width, file;;1;;3-3-3')
+        '0' => array('showitem' => 'hidden, title, color, width, file')
     ),
     'palettes' => array(
         '1' => array(
@@ -118,4 +123,3 @@ return array(
         )
     )
 );
-?>

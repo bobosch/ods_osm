@@ -143,10 +143,9 @@ return array(
         ),
     ),
     'types' => array(
-        '0' => array('showitem' => 'hidden;;;;1-1-1, title, overlay, javascript_include, javascript_leaflet, javascript_openlayers, javascript_openlayers3, static_url, tile_url, tile_https, min_zoom, max_zoom, subdomains, attribution, homepage')
+        '0' => array('showitem' => 'hidden, title, overlay, javascript_include, javascript_leaflet, javascript_openlayers, javascript_openlayers3, static_url, tile_url, tile_https, min_zoom, max_zoom, subdomains, attribution, homepage')
     ),
     'palettes' => array(
         '1' => array('showitem' => '')
     )
 );
-?>
