@@ -15,27 +15,6 @@ use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 class Div
 {
 
-    public static function getWhere($table, ContentObjectRenderer $cObj)
-    {
-        if (is_string($table)) {
-            $ctrl = $GLOBALS['TCA'][$table]['ctrl'];
-            // Enable fields
-            $where = $cObj->enableFields($table);
-            // Version
-            $where .= ' AND ' . $table . '.pid>=0';
-            // Translation
-            if ($ctrl['languageField']) {
-                $where .= ' AND (' . $table . '.' . $ctrl['languageField'] . ' IN (-1,0)';
-                if ($GLOBALS['TSFE']->sys_language_content && $ctrl['transOrigPointerField']) {
-                    $where .= ' OR (' . $table . '.' . $ctrl['languageField'] . '=' . intval($GLOBALS['TSFE']->sys_language_content) . ' AND ' . $table . '.' . $ctrl['transOrigPointerField'] . '=0)';
-                }
-                $where .= ')';
-            }
-        }
-
-        return $where;
-    }
-
     public static function getConstraintsForQueryBuilder($table, ContentObjectRenderer $cObj,
         \TYPO3\CMS\Core\Database\Query\QueryBuilder $queryBuilder) : array
     {
@@ -70,29 +49,6 @@ class Div
             }
         }
         return $constraints;
-    }
-
-    public static function getOverlay($table, $row)
-    {
-        if (is_string($table) && is_array($row)) {
-            $ctrl = $GLOBALS['TCA'][$table]['ctrl'];
-            // Version
-            // - Table has versioning
-            // - Current user is in workspace
-            // - Versioning is enabled
-            if ($ctrl['versioningWS'] && $GLOBALS['BE_USER']->workspace && \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('version')) {
-                $GLOBALS['TSFE']->sys_page->versionOL($table, $row);
-            }
-            // Translation
-            // - Table has translation
-            // - Current language is not default
-            // - Translation is enabled
-            if ($ctrl['languageField'] && $GLOBALS['TSFE']->sys_language_content) {
-                $row = $GLOBALS['TSFE']->sys_page->getRecordOverlay($table, $row, $GLOBALS['TSFE']->sys_language_content, $GLOBALS['TSFE']->sys_language_contentOL);
-            }
-        }
-
-        return $row;
     }
 
     public static function addJsFiles($scripts, $doc)
@@ -464,15 +420,6 @@ class Div
         }
     }
 
-//	public static function getSet( $data, $table ) {
-//		$set = array();
-//		foreach ( $data as $field => $value ) {
-//			$set[ $field ] = '`' . $field . '`=' . $GLOBALS['TYPO3_DB']->fullQuoteStr( $value, $table );
-//		}
-//
-//		return $set;
-//	}
-
     /* Get extension configuration, and if not available use default configuration. Optional parameter checks if single value is available. */
     public static function getConfig($values = array())
     {
@@ -503,13 +450,13 @@ class Div
 
     public static function getTableConfig($table = false)
     {
-        $tables = array(
-            'fe_groups' => array(
-                'FIND_IN_SET' => array(
+        $tables = [
+            'fe_groups' => [
+                'FIND_IN_SET' => [
                     'fe_users' => 'usergroup',
-                ),
-            ),
-            'fe_users' => array(
+                ],
+            ],
+            'fe_users' => [
                 'FORMAT' => '%01.6f',
                 'lon' => 'tx_odsosm_lon',
                 'lat' => 'tx_odsosm_lat',
@@ -517,15 +464,34 @@ class Div
                 'zip' => 'zip',
                 'city' => 'city',
                 'country' => 'country',
-            ),
-            'tt_content' => array(
+            ],
+            'tt_content' => [
                 'FORMAT' => '%01.6f',
                 'lon' => 'lon',
                 'lat' => 'lat',
-            ),
+            ],
             'tx_odsosm_track' => true,
             'tx_odsosm_vector' => true,
-        );
+            'tt_address' => [
+                'FORMAT' => '%01.11f',
+                'lon' => 'longitude',
+                'lat' => 'latitude',
+                'address' => 'address',
+                'zip' => 'zip',
+                'city' => 'city',
+                'state' => 'region',
+                'country' => 'country',
+            ],
+            'sys_category' => [
+                'MM' => [
+                    'tt_address' => [
+                        'local' => 'sys_category',
+                        'mm' => 'sys_category_record_mm',
+                        'foreign' => 'tt_address'
+                    ]
+                ]
+            ]
+        ];
 
         if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ods_osm']['tables'])) {
             $tables = array_merge($tables, $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ods_osm']['tables']);
@@ -534,5 +500,3 @@ class Div
         return $table ? $tables[$table] : $tables;
     }
 }
-
-?>

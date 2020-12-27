@@ -28,6 +28,7 @@ use Bobosch\OdsOsm\Div;
 use Bobosch\OdsOsm\Provider\BaseProvider;
 use Doctrine\DBAL\FetchMode;
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Page\PageRepository;
@@ -41,11 +42,6 @@ use TYPO3\CMS\Frontend\Page\PageRepository;
  */
 class PluginController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
 {
-    var $prefixId = 'tx_odsosm_pi1';        // Same as class name
-    var $scriptRelPath = 'pi1/class.tx_odsosm_pi1.php';    // Path to this script relative to the extension dir.
-    var $extKey = 'ods_osm';    // The extension key.
-    var $uploadPath = 'uploads/tx_odsosm/';
-    var $pi_checkCHash = true;
     var $config;
     var $hooks;
     var $lats = array();
@@ -205,7 +201,7 @@ class PluginController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
      *
      * @return   string The content that is displayed on the website
      */
-    function main($content, $conf)
+    public function main($content, $conf)
     {
         $this->init($conf);
 
@@ -231,52 +227,98 @@ class PluginController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
         return ($record_ids);
     }
 
-    function extractGroup($record_ids)
+    private function extractGroup($record_ids)
     {
         $tables = Div::getTableConfig();
 
+        // if no markers are set, select current page to find records on it
         if (count($record_ids) == 0) {
             $record_ids['pages'] = array($GLOBALS['TSFE']->id);
         }
 
-        // get pages
+        // get all marker records on configured page.
         if (!empty($record_ids['pages'])) {
-            $pids = implode(',', $record_ids['pages']);
             foreach (array_keys($tables) as $table) {
                 if ($table != 'tt_content') {
-                    $connection = $this->connectionPool->getConnectionForTable($table);
-                    $res = $connection->executeQuery('SELECT uid FROM ' . $connection->quoteIdentifier($table) . ' WHERE pid IN (' . $pids . ')' . Div::getWhere($table, $this->cObj));
-                    while ($row = $res->fetch(FetchMode::ASSOCIATIVE)) {
-                        $record_ids[$table][] = $row['uid'];
+                    $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+                        ->getQueryBuilderForTable($table);
+
+                    $result = $queryBuilder
+                        ->select($table . '.uid')
+                        ->from($table)
+                        ->where(
+                            $queryBuilder->expr()->in(
+                                $table . '.pid',
+                                $queryBuilder->createNamedParameter(
+                                    $record_ids['pages'],
+                                    Connection::PARAM_INT_ARRAY
+                                )
+                            )
+                        )
+                        ->execute();
+
+                    while ($resArray = $result->fetch()) {
+                        if (!in_array($resArray['uid'],  $record_ids[$table])) {
+                            $record_ids[$table][] =  $resArray['uid'];
+                        }
                     }
                 }
             }
         }
 
-        // get records
+        // get marker records from db
         $records = array();
         foreach ($record_ids as $table => $items) {
             $tc = $tables[$table];
             $connection = $this->connectionPool->getConnectionForTable($table);
             foreach ($items as $item) {
                 $item = intval($item);
-                $res = $connection->executeQuery('SELECT * FROM ' . $connection->quoteIdentifier($table) . ' WHERE uid=' . intval($item) . Div::getWhere($table, $this->cObj));
-                $row = $res->fetch(FetchMode::ASSOCIATIVE);
-                $row = Div::getOverlay($table, $row);
-                if ($row) {
+
+                $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+                ->getQueryBuilderForTable($table);
+
+                // hint: language overlay e.g. of tt_address records is done automatically
+                $result = $queryBuilder
+                    ->select('*')
+                    ->from($table)
+                    ->where(
+                        $queryBuilder->expr()->eq(
+                            $table . '.uid',
+                            $queryBuilder->createNamedParameter((int) $item, Connection::PARAM_INT)
+                        )
+                    )
+                    ->setMaxResults(1)
+                    ->execute();
+
+                if ($row = $result->fetch()) {
                     // Group with relation to a field
                     if (is_array($tc['FIND_IN_SET'])) {
                         foreach ($tc['FIND_IN_SET'] as $t => $f) {
-                            $connection2 = $this->connectionPool->getConnectionForTable($t);
-                            $res2 = $connection2->executeQuery('SELECT * FROM ' . $connection2->quoteIdentifier($t) . ' WHERE FIND_IN_SET("' . $item . '",' . $f . ')' . Div::getWhere($t, $this->cObj));
-                            while ($r = $res2->fetch(FetchMode::ASSOCIATIVE)) {
-                                $records[$t][$r['uid']] = $r;
+                            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+                            ->getQueryBuilderForTable($table);
+
+                            $result = $queryBuilder
+                                ->select('*')
+                                ->from($t)
+                                ->where(
+                                    $queryBuilder->expr()->inSet(
+                                        $f,
+                                        $queryBuilder->createNamedParameter(
+                                            (int) $item,
+                                            Connection::PARAM_INT
+                                        )
+                                    )
+                                )
+                                ->execute();
+
+                            while ($resArray = $result->fetch()) {
+                                $records[$t][$r['uid']] = $resArray;
                                 $records[$t][$r['uid']]['group_uid'] = $table . '_' . $row['uid'];
                                 $records[$t][$r['uid']]['group_title'] = $row['title'];
                                 $records[$t][$r['uid']]['group_description'] = $row['description'];
                                 $records[$t][$r['uid']]['tx_odsosm_marker'] = $row['tx_odsosm_marker'];
-                                $records[$t][$r['uid']]['longitude'] = $r[$tables[$t]['lon']];
-                                $records[$t][$r['uid']]['latitude'] = $r[$tables[$t]['lat']];
+                                $records[$t][$r['uid']]['longitude'] = $resArray[$tables[$t]['lon']];
+                                $records[$t][$r['uid']]['latitude'] = $resArray[$tables[$t]['lat']];
                             }
                         }
                     }
@@ -389,12 +431,18 @@ class PluginController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
             Marker
         ================================================== */
         // Get icon records
-        $connection = $this->connectionPool->getConnectionForTable('tx_odsosm_marker');
-        $icons_res = $connection->fetchAll('SELECT * FROM tx_odsosm_marker WHERE 1=1 ' . Div::getWhere('tx_odsosm_marker', $this->cObj));
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getQueryBuilderForTable('tx_odsosm_marker');
 
-        $icons = array();
-        foreach ($icons_res as $i) {
-            $icons[$i['uid']] = $i;
+        $result = $queryBuilder
+            ->select('*')
+            ->from('tx_odsosm_marker')
+            ->where(1)
+            ->execute();
+
+        $icons = [];
+        while ($resArray = $result->fetch()) {
+            $icons[$resArray['uid']] =  $resArray;
         }
 
         // Prepare markers
@@ -461,7 +509,7 @@ class PluginController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
                         'tx_odsosm_layer.uid',
                         $queryBuilder->createNamedParameter(
                             $this->config['layer'],
-                            \TYPO3\CMS\Core\Database\Connection::PARAM_INT_ARRAY
+                            Connection::PARAM_INT_ARRAY
                         )
                     )
                 )

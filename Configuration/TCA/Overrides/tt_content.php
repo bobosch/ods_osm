@@ -22,7 +22,7 @@ if ( ! defined( 'TYPO3_MODE' ) ) {
 	'FILE:EXT:ods_osm/Configuration/Flexform/flexform_basic.xml'
 );
 
-if ( \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded( 'cal' ) ) {
+if ( \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('cal') ) {
 	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPiFlexFormValue(
 		'ods_osm_pi1',
 		'FILE:EXT:ods_osm/Configuration/Flexform/flexform_cal.xml'
