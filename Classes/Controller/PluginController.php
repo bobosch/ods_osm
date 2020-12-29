@@ -467,8 +467,6 @@ class PluginController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
                     $item['tx_odsosm_marker']['icon'] = 'uploads/tx_odsosm/' . $item['tx_odsosm_marker']['icon'];
                     $item['tx_odsosm_marker']['type'] = 'image';
                 } elseif ($icon) {
-                    $conf = $this->config['icon.'][$table . '.'];
-                    $html = $local_cObj->cObjGetSingle($this->config['icon.'][$table], $this->config['icon.'][$table . '.']);
                     if ($this->config['icon.'][$table] == 'IMAGE') {
                         $info = $GLOBALS['TSFE']->lastImageInfo;
                         $item['tx_odsosm_marker'] = array(
@@ -480,6 +478,8 @@ class PluginController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
                             'offset_y' => -$info[1],
                         );
                     } elseif ($this->config['icon.'][$table] == 'TEXT') {
+                        $conf = $this->config['icon.'][$table . '.'];
+                        $html = $local_cObj->cObjGetSingle($this->config['icon.'][$table], $this->config['icon.'][$table . '.']);
                         $item['tx_odsosm_marker'] = array(
                             'icon' => $html,
                             'type' => 'html',

@@ -36,7 +36,6 @@ class Div
                         $queryBuilder->expr()->eq($table . '.' . $ctrl['languageField'], $queryBuilder->createNamedParameter(-1, \PDO::PARAM_INT))
                     ];
 
-
                 if ($GLOBALS['TSFE']->sys_language_content && $ctrl['transOrigPointerField']) {
                     $orConstraints[] = $queryBuilder->expr()->andX(
                         $queryBuilder->expr()->eq($table . '.' . $ctrl['languageField'],
