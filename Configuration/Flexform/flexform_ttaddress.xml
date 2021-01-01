@@ -92,7 +92,7 @@
 							<label>LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xml:tt_content.pi_flexform.zoom</label>
 							<config>
 								<type>select</type>
-								<size>1</size>
+                                <renderType>selectSingle</renderType>
 								<items type="array">
 									<numIndex index="0" type="array">
 										<numIndex index="0"></numIndex>
@@ -180,7 +180,7 @@
 							<onChange>reload</onChange>
 							<config>
 								<type>select</type>
-								<size>1</size>
+                                <renderType>selectSingle</renderType>
 								<items type="array">
 									<numIndex index="0" type="array">
 										<numIndex index="0"></numIndex>
@@ -212,6 +212,7 @@
 							<displayCond>FIELD:library:=:</displayCond>
 							<config>
 								<type>select</type>
+                                <renderType>selectMultipleSideBySide</renderType>
 								<size>3</size>
 								<minitems>0</minitems>
 								<maxitems>99</maxitems>
@@ -227,6 +228,7 @@
 							<displayCond>FIELD:library:=:leaflet</displayCond>
 							<config>
 								<type>select</type>
+                                <renderType>selectMultipleSideBySide</renderType>
 								<size>3</size>
 								<minitems>0</minitems>
 								<maxitems>99</maxitems>
@@ -242,6 +244,7 @@
 							<displayCond>FIELD:library:=:openlayers</displayCond>
 							<config>
 								<type>select</type>
+                                <renderType>selectMultipleSideBySide</renderType>
 								<size>3</size>
 								<minitems>0</minitems>
 								<maxitems>99</maxitems>
@@ -257,7 +260,7 @@
 							<displayCond>FIELD:library:=:openlayers3</displayCond>
 							<config>
 								<type>select</type>
-								<size>1</size>
+                                <renderType>selectSingle</renderType>
 								<foreign_table>tx_odsosm_layer</foreign_table>
 								<foreign_table_where>AND tx_odsosm_layer.hidden=0 AND tx_odsosm_layer.tile_url!="" ORDER BY tx_odsosm_layer.sorting</foreign_table_where>
 								<items type="array">
@@ -275,7 +278,7 @@
 							<displayCond>FIELD:library:=:staticmap</displayCond>
 							<config>
 								<type>select</type>
-								<size>1</size>
+                                <renderType>selectSingle</renderType>
 								<foreign_table>tx_odsosm_layer</foreign_table>
 								<foreign_table_where>AND tx_odsosm_layer.hidden=0 AND tx_odsosm_layer.static_url!="" ORDER BY tx_odsosm_layer.sorting</foreign_table_where>
 								<items type="array">
@@ -302,7 +305,7 @@
 							<displayCond>FIELD:library:=:openlayers</displayCond>
 							<config>
 								<type>select</type>
-								<size>1</size>
+                                <renderType>selectSingle</renderType>
 								<items type="array">
 									<numIndex index="0" type="array">
 										<numIndex index="0"></numIndex>
@@ -327,7 +330,7 @@
 							<onChange>reload</onChange>
 							<config>
 								<type>select</type>
-								<size>1</size>
+                                <renderType>selectSingle</renderType>
 								<items type="array">
 									<numIndex index="0" type="array">
 										<numIndex index="0"></numIndex>
@@ -370,7 +373,7 @@
 							<displayCond>FIELD:library:IN:leaflet,openlayers</displayCond>
 							<config>
 								<type>select</type>
-								<size>1</size>
+                                <renderType>selectSingle</renderType>
 								<items type="array">
 									<numIndex index="1" type="array">
 										<numIndex index="0">LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xml:tt_content.pi_flexform.show_layerswitcher.I.0</numIndex>

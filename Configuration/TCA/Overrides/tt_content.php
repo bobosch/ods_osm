@@ -29,14 +29,14 @@ if ( \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('cal') ) {
 	);
 }
 
-if ( \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded( 'tt_address' ) ) {
+if ( \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('tt_address') ) {
 	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPiFlexFormValue(
 		'ods_osm_pi1',
 		'FILE:EXT:ods_osm/Configuration/Flexform/flexform_ttaddress.xml'
 	);
 }
 
-if ( \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded( 'cal' ) && \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded( 'tt_address' ) ) {
+if ( \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('cal') && \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('tt_address') ) {
 	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPiFlexFormValue(
 		'ods_osm_pi1',
 		'FILE:EXT:ods_osm/Configuration/Flexform/flexform_cal_ttaddress.xml'
