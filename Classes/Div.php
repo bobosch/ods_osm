@@ -8,9 +8,9 @@ use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\FrontendRestrictionContainer;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
-
 
 class Div
 {
@@ -471,16 +471,6 @@ class Div
             ],
             'tx_odsosm_track' => true,
             'tx_odsosm_vector' => true,
-            'tt_address' => [
-                'FORMAT' => '%01.11f',
-                'lon' => 'longitude',
-                'lat' => 'latitude',
-                'address' => 'address',
-                'zip' => 'zip',
-                'city' => 'city',
-                'state' => 'region',
-                'country' => 'country',
-            ],
             'sys_category' => [
                 'MM' => [
                     'tt_address' => [
@@ -491,6 +481,19 @@ class Div
                 ]
             ]
         ];
+
+        if (ExtensionManagementUtility::isLoaded('tt_address')) {
+            $tables['tt_address'] = [
+                'FORMAT' => '%01.11f',
+                'lon' => 'longitude',
+                'lat' => 'latitude',
+                'address' => 'address',
+                'zip' => 'zip',
+                'city' => 'city',
+                'state' => 'region',
+                'country' => 'country',
+            ];
+        }
 
         if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ods_osm']['tables'])) {
             $tables = array_merge($tables, $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ods_osm']['tables']);
