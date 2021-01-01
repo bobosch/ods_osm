@@ -3,7 +3,7 @@
 if (!defined('TYPO3_MODE')) die ('Access denied.');
 
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPItoST43(
-    'odsosm',
+    'ods_osm',
     null,
     '_pi1',
     'list_type',
