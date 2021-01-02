@@ -20,10 +20,10 @@ cache_enabled = 1
 local_js = 1
 
 # cat=BE; type=string; label=Default longitude: Default longitude for BE-maps
-default_lon = 0
+default_lon = 13
 
 # cat=BE; type=string; label=Default latitude: Default latitude for BE-maps
 default_lat = 45
 
-# cat=BE; type=integer; label=Default zoom: Default zoom for BE-maps 
-default_zoom = 1
+# cat=BE; type=integer; label=Default zoom: Default zoom for BE-maps
+default_zoom = 10
