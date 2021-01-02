@@ -186,10 +186,10 @@ class Openlayers extends BaseProvider
 
     public function getMapBE($layers, $mode, $lat, $lon, $zoom, $doc)
     {
-        $jsMainLayer = $this->getMainLayers($layers, $GLOBALS['BACK_PATH'] . '../');
+        $jsMainLayer = $this->getMainLayers($layers, '../');
 
         // Include JS
-        $this->getMapCore($GLOBALS['BACK_PATH'] . '../');
+        $this->getMapCore('../');
         Div::addJsFiles($this->scripts, $doc);
 
         // Action
