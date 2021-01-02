@@ -422,7 +422,7 @@ class Div
     /* Get extension configuration, and if not available use default configuration. Optional parameter checks if single value is available. */
     public static function getConfig($values = array())
     {
-        $config = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['ods_osm']);
+        $config = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['ods_osm']);
         $getDefault = array();
 
         if ($config && is_array($values) && count($values)) {
@@ -482,6 +482,7 @@ class Div
             ]
         ];
 
+        // load configuration for tt_address only if extension is loaded
         if (ExtensionManagementUtility::isLoaded('tt_address')) {
             $tables['tt_address'] = [
                 'FORMAT' => '%01.11f',
