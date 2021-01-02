@@ -32,7 +32,7 @@ CREATE TABLE tx_odsosm_geocache (
 	cache_hit int(10) unsigned NOT NULL DEFAULT '0',
 	service_hit int(10) unsigned NOT NULL DEFAULT '0',
 	search_city varchar(255) NOT NULL DEFAULT '',
-	country char(2) NOT NULL DEFAULT '',
+	country char(128) NOT NULL DEFAULT '',
 	state varchar(255) NOT NULL DEFAULT '',
 	city varchar(255) NOT NULL DEFAULT '',
 	zip char(5) NOT NULL DEFAULT '',
@@ -40,7 +40,7 @@ CREATE TABLE tx_odsosm_geocache (
 	housenumber varchar(5) NOT NULL DEFAULT '',
 	lon decimal(9,6) NOT NULL DEFAULT '0.000000',
 	lat decimal(8,6) NOT NULL DEFAULT '0.000000',
-	
+
 	PRIMARY KEY (uid),
 	KEY parent (pid),
 	KEY zip (zip)
@@ -72,7 +72,7 @@ CREATE TABLE tx_odsosm_layer (
 	subdomains varchar(8) NOT NULL DEFAULT '',
 	attribution varchar(300) NOT NULL default '',
 	homepage varchar(255) NOT NULL DEFAULT '',
-	
+
 	PRIMARY KEY (uid),
 	KEY parent (pid)
 );
@@ -93,7 +93,7 @@ CREATE TABLE tx_odsosm_marker (
 	size_y smallint(10) unsigned NOT NULL DEFAULT '0',
 	offset_x smallint(11) NOT NULL DEFAULT '0',
 	offset_y smallint(11) NOT NULL DEFAULT '0',
-	
+
 	PRIMARY KEY (uid),
 	KEY parent (pid)
 );
@@ -117,7 +117,7 @@ CREATE TABLE tx_odsosm_track (
 	min_lat decimal(8,6) NOT NULL DEFAULT '0.000000',
 	max_lon decimal(9,6) NOT NULL DEFAULT '0.000000',
 	max_lat decimal(8,6) NOT NULL DEFAULT '0.000000',
-	
+
 	PRIMARY KEY (uid),
 	KEY parent (pid)
 );
@@ -139,7 +139,7 @@ CREATE TABLE tx_odsosm_vector (
 	min_lat decimal(8,6) NOT NULL DEFAULT '0.000000',
 	max_lon decimal(9,6) NOT NULL DEFAULT '0.000000',
 	max_lat decimal(8,6) NOT NULL DEFAULT '0.000000',
-	
+
 	PRIMARY KEY (uid),
 	KEY parent (pid)
 );
