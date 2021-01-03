@@ -85,7 +85,7 @@ return array(
                     ],
                     'default' => 0,
                 ],
-                'gpx,json,kml,wkt'
+                'gpx,kml'
             )
         ),
         'min_lon' => array(
