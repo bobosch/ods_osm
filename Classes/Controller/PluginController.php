@@ -32,6 +32,8 @@ use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Page\PageRepository;
+use TYPO3\CMS\Core\Resource\FileRepository;
+
 
 /**
  * Plugin 'Openstreetmap' for the 'ods_osm' extension.
@@ -463,9 +465,18 @@ class PluginController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
 
                 // Add icon information
                 if ($item['tx_odsosm_marker']) {
+                    $fileRepository = GeneralUtility::makeInstance(FileRepository::class);
+                    $fileObjects = $fileRepository->findByRelation('tx_odsosm_marker', 'icon', $item['tx_odsosm_marker']);
+                    if ($fileObjects) {
+                        $file = $fileObjects[0];
+                    } else {
+                        continue;
+                    }
                     $item['tx_odsosm_marker'] = $icons[$item['tx_odsosm_marker']];
-                    $item['tx_odsosm_marker']['icon'] = 'uploads/tx_odsosm/' . $item['tx_odsosm_marker']['icon'];
+                    $item['tx_odsosm_marker']['icon'] = $file->getPublicUrl();
                     $item['tx_odsosm_marker']['type'] = 'image';
+                    $item['tx_odsosm_marker']['size_x'] = '60';
+                    $item['tx_odsosm_marker']['size_y'] = '60';
                 } elseif ($icon) {
                     if ($this->config['icon.'][$table] == 'IMAGE') {
                         $info = $GLOBALS['TSFE']->lastImageInfo;

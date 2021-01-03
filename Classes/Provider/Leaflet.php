@@ -3,10 +3,7 @@
 namespace Bobosch\OdsOsm\Provider;
 
 use TYPO3\CMS\Core\Page\PageRenderer;
-use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\FileRepository;
-use TYPO3\CMS\Core\Resource\ResourceFactory;
-use TYPO3\CMS\Core\Resource\ResourceStorage;
 use TYPO3\CMS\Core\Resource\StorageRepository;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
@@ -169,7 +166,7 @@ class Leaflet extends BaseProvider
                         $this->scripts['leaflet-plugins'] = $path . 'leaflet-plugins/layer/vector/KML.js';
 
                         $jsMarker .= 'var ' . $jsElementVar . ' = new L.KML(';
-                        $jsMarker .= '"' . $file->getPublicUrl() . '"';
+                        $jsMarker .= '"/' . $file->getPublicUrl() . '"';
                         $jsMarker .= ");\n";
                         break;
                     case 'gpx':
@@ -186,7 +183,7 @@ class Leaflet extends BaseProvider
                                 'shadowUrl' => $path . 'leaflet-gpx/pin-shadow.png',
                             ),
                         );
-                        $jsMarker .= 'var ' . $jsElementVar . ' = new L.GPX("' . $file->getPublicUrl() . '",';
+                        $jsMarker .= 'var ' . $jsElementVar . ' = new L.GPX("/' . $file->getPublicUrl() . '",';
                         $jsMarker .= json_encode($options) . ");\n";
                         $jsMarker .= $this->config['id'] . '.addLayer(' . $jsElementVar . ');' . "\n";
                         break;

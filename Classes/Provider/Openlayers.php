@@ -3,8 +3,10 @@
 namespace Bobosch\OdsOsm\Provider;
 
 use Bobosch\OdsOsm\Div;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+use TYPO3\CMS\Core\Resource\FileRepository;
 
 class Openlayers extends BaseProvider
 {
@@ -133,7 +135,14 @@ class Openlayers extends BaseProvider
         $jsMarker = '';
         switch ($table) {
             case 'tx_odsosm_track':
-                $jsMarker .= "mapGpx(" . $this->config['id'] . ",'" . $GLOBALS['TSFE']->absRefPrefix . 'uploads/tx_odsosm/' . $item['file'] . "','" . $item['title'] . "','" . $item['color'] . "'," . $item['width'] . ");\n";
+                $fileRepository = GeneralUtility::makeInstance(FileRepository::class);
+                $fileObjects = $fileRepository->findByRelation('tx_odsosm_track', 'file', $item['uid']);
+                if ($fileObjects) {
+                    $file = $fileObjects[0];
+                } else {
+                    break;
+                }
+                $jsMarker .= "mapGpx(" . $this->config['id'] . ",'/" .  $file->getPublicUrl() . "','" . $item['title'] . "','" . $item['color'] . "'," . $item['width'] . ");\n";
                 break;
             case 'tx_odsosm_vector':
                 $jsMarker .= "mapVector(" . $this->config['id'] . ",'" . $item['title'] . "'," . $item['data'] . ");\n";
