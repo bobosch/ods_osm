@@ -18,14 +18,22 @@ return array(
         'showRecordFieldList' => 'hidden,title,overlay,javascript_include,javascript_leaflet,javascript_openlayers,javascript_openlayers3,static_url,tile_url,tile_https,min_zoom,max_zoom,subdomains,attribution,homepage'
     ),
     'columns' => array(
-        'hidden' => array(
-            'exclude' => 0,
-            'label' => 'LLL:EXT:lang/locallang_general.xml:LGL.hidden',
-            'config' => array(
+        'hidden' => [
+            'exclude' => true,
+            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.enabled',
+            'config' => [
                 'type' => 'check',
-                'default' => '0'
-            )
-        ),
+                'renderType' => 'checkboxToggle',
+                'default' => 0,
+                'items' => [
+                    [
+                        0 => '',
+                        1 => '',
+                        'invertStateDisplay' => true
+                    ]
+                ],
+            ]
+        ],
         'title' => array(
             'exclude' => 0,
             'label' => 'LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xml:tx_odsosm_layer.title',

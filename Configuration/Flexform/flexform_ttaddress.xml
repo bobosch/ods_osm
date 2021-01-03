@@ -212,8 +212,8 @@
 							<displayCond>FIELD:library:=:</displayCond>
 							<config>
 								<type>select</type>
-                                <renderType>selectMultipleSideBySide</renderType>
 								<size>3</size>
+                                <renderType>selectMultipleSideBySide</renderType>
 								<minitems>0</minitems>
 								<maxitems>99</maxitems>
 								<autoSizeMax>20</autoSizeMax>
@@ -228,8 +228,8 @@
 							<displayCond>FIELD:library:=:leaflet</displayCond>
 							<config>
 								<type>select</type>
-                                <renderType>selectMultipleSideBySide</renderType>
 								<size>3</size>
+                                <renderType>selectMultipleSideBySide</renderType>
 								<minitems>0</minitems>
 								<maxitems>99</maxitems>
 								<autoSizeMax>20</autoSizeMax>
@@ -244,8 +244,8 @@
 							<displayCond>FIELD:library:=:openlayers</displayCond>
 							<config>
 								<type>select</type>
-                                <renderType>selectMultipleSideBySide</renderType>
 								<size>3</size>
+                                <renderType>selectMultipleSideBySide</renderType>
 								<minitems>0</minitems>
 								<maxitems>99</maxitems>
 								<autoSizeMax>20</autoSizeMax>

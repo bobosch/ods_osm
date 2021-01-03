@@ -17,14 +17,22 @@ return array(
         'showRecordFieldList' => 'hidden,title,data,min_lat,min_lon,max_lat,max_lon'
     ),
     'columns' => array(
-        'hidden' => array(
-            'exclude' => 0,
-            'label' => 'LLL:EXT:lang/locallang_general.xml:LGL.hidden',
-            'config' => array(
+        'hidden' => [
+            'exclude' => true,
+            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.enabled',
+            'config' => [
                 'type' => 'check',
-                'default' => 0
-            )
-        ),
+                'renderType' => 'checkboxToggle',
+                'default' => 0,
+                'items' => [
+                    [
+                        0 => '',
+                        1 => '',
+                        'invertStateDisplay' => true
+                    ]
+                ],
+            ]
+        ],
         'title' => array(
             'exclude' => 0,
             'label' => 'LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xml:tx_odsosm_vector.title',
