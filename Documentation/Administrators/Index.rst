@@ -71,26 +71,23 @@ Reference
 | layer           | integer   || Comma separated list of            | 1       |
 |                 | list      | tx_odsosm_layer uid's.              |         |
 |                 |           || 1: Mapnik                          |         |
+|                 |           || 2: SLUB Renderer                   |         |
 |                 |           || 3: CycleMap                        |         |
-|                 |           || 4: Seamarks                        |         |
-|                 |           || 5: OpenPisteMap                    |         |
 |                 |           || 13: ÖPNV Deutschland               |         |
 |                 |           || 14: Hike & Bike Map                |         |
 |                 |           || 15: Hillshading (NASA SRTM3 v2)    |         |
-|                 |           || 16: By Night                       |         |
 |                 |           || 17: Hiking routes                  |         |
 |                 |           || 18: Mapnik BW                      |         |
 |                 |           || 19: MapSurfer.Net Road             |         |
 |                 |           || 20: MapSurfer.Net Topographic      |         |
 |                 |           || 21: MapSurfer.Net Hybrid           |         |
 |                 |           || 25: TransportMap                   |         |
-|                 |           || 26: MapQuest                       |         |
-|                 |           || 27: MapQuest Open Aerial           |         |
 |                 |           || 28: Cycling routes                 |         |
 |                 |           || 29: Stamen Toner                   |         |
 |                 |           || 30: Stamen Watercolor              |         |
 |                 |           || 31: Public Transport Lines         |         |
 |                 |           || 32: Stamen Terrain Labels          |         |
+|                 |           || 33: Railway Infrastructure         |         |
 +-----------------+-----------+-------------------------------------+---------+
 | layerswitcher.  | boolean   | Use extra div for the layerswitcher.| 0       |
 | div             |           |                                     |         |

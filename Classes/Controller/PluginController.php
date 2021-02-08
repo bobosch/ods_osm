@@ -34,7 +34,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Page\PageRepository;
 use TYPO3\CMS\Core\Resource\FileRepository;
 
-
 /**
  * Plugin 'Openstreetmap' for the 'ods_osm' extension.
  *
@@ -479,6 +478,8 @@ class PluginController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
                     $item['tx_odsosm_marker']['size_y'] = '60';
                 } elseif ($icon) {
                     if ($this->config['icon.'][$table] == 'IMAGE') {
+                        // dummy rendering is necessary to have image information in $GLOBALS['TSFE']->lastImageInfo
+                        $imageDummy = $local_cObj->cObjGetSingle($this->config['icon.'][$table], $this->config['icon.'][$table . '.']);
                         $info = $GLOBALS['TSFE']->lastImageInfo;
                         $item['tx_odsosm_marker'] = array(
                             'icon' => $info['origFile'],
