@@ -16,6 +16,11 @@
       "name": "Robert Heel",
       "email": "typo3@bobosch.de",
       "role": "Developer"
+    },
+    {
+      "name": "Alexander Bigga",
+      "email": "alexander@bigga.de",
+      "role": "Developer"
     }
   ],
   "license": "GPL-2.0-or-later",
