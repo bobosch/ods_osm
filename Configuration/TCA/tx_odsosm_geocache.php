@@ -121,7 +121,7 @@ return array(
     ),
     'types' => [
         '0' => [
-            'showitem' => 'cache_hit,service_hit,search_city,country,state,city,zip,street,housenumber,lon
+            'showitem' => 'cache_hit,service_hit,search_city,country,state,city,zip,street,housenumber,lon,
             --palette--;;latinfo'
         ]
     ],

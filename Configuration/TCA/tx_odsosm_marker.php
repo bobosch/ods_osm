@@ -109,7 +109,7 @@ return array(
     ),
     'types' => [
         '0' => [
-            'showitem' => 'title, icon
+            'showitem' => 'title, icon,
             --palette--;;sizeinfo'
         ]
     ],
