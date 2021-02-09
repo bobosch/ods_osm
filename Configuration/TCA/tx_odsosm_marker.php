@@ -112,7 +112,6 @@ return array(
     ),
     'palettes' => array(
         '1' => array(
-            'canNotCollapse' => true,
             'showitem' => 'size_x, size_y, offset_x, offset_y'
         )
     )

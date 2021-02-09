@@ -126,7 +126,6 @@ return array(
     ),
     'palettes' => array(
         '1' => array(
-            'canNotCollapse' => true,
             'showitem' => 'min_lon, min_lat, max_lon, max_lat'
         )
     )

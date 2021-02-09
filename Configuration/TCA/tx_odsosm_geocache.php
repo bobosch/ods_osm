@@ -124,7 +124,6 @@ return array(
     ),
     'palettes' => array(
         '1' => array(
-            'canNotCollapse' => true,
             'showitem' => 'lat'
         )
     )
