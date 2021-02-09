@@ -119,12 +119,15 @@ return array(
             )
         ),
     ),
-    'types' => array(
-        '0' => array('showitem' => 'cache_hit,service_hit,search_city,country,state,city,zip,street,housenumber,lon')
-    ),
-    'palettes' => array(
-        '1' => array(
+    'types' => [
+        '0' => [
+            'showitem' => 'cache_hit,service_hit,search_city,country,state,city,zip,street,housenumber,lon
+            --palette--;;latinfo'
+        ]
+    ],
+    'palettes' => [
+        'latinfo' => [
             'showitem' => 'lat'
-        )
-    )
+        ]
+    ]
 );

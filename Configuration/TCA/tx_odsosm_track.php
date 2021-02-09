@@ -121,12 +121,15 @@ return array(
             )
         ),
     ),
-    'types' => array(
-        '0' => array('showitem' => 'hidden, title, color, width, file')
-    ),
-    'palettes' => array(
-        '1' => array(
+    'types' => [
+        '0' => [
+            'showitem' => 'hidden, title, color, width, file,
+                            --palette--;;lonlatinfo'
+        ]
+    ],
+    'palettes' => [
+        'lonlatinfo' => [
             'showitem' => 'min_lon, min_lat, max_lon, max_lat'
-        )
-    )
+        ]
+    ]
 );

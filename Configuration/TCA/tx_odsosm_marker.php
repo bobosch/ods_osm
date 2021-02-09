@@ -107,12 +107,15 @@ return array(
             )
         ),
     ),
-    'types' => array(
-        '0' => array('showitem' => 'title, icon')
-    ),
-    'palettes' => array(
-        '1' => array(
+    'types' => [
+        '0' => [
+            'showitem' => 'title, icon
+            --palette--;;sizeinfo'
+        ]
+    ],
+    'palettes' => [
+        'sizeinfo' => [
             'showitem' => 'size_x, size_y, offset_x, offset_y'
-        )
-    )
+        ]
+    ]
 );

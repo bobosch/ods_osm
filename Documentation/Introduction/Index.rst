@@ -3,7 +3,7 @@ Introduction
 
 What does it do?
 ----------------
-- Show an interactive OpenStreetMap map.
+- Show an interactive OpenStreetMap map with Openlayers or Leaflet.
 - Store coordinates in fe_users and tt_address tables and show as markers in the map.
 - Show record information in popup window.
 - Display gps tracks.

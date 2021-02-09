@@ -88,12 +88,15 @@ return array(
             )
         ),
     ),
-    'types' => array(
-        '0' => array('showitem' => 'hidden, title, data')
-    ),
-    'palettes' => array(
-        '1' => array(
+    'types' => [
+        '0' => [
+            'showitem' => 'hidden, title, data,
+            --palette--;;lonlatinfo'
+        ]
+    ],
+    'palettes' => [
+        'lonlatinfo' => [
             'showitem' => 'min_lon, min_lat, max_lon, max_lat'
-        )
-    )
+        ]
+    ]
 );
