@@ -1,8 +1,8 @@
 # cat=basic; type=options[Never=0,If no coordinates are set=1,On every address change=2]; label=Autocomplete longitude and latitude: Choose service below (curl required)
-autocomplete = 0
+autocomplete = 1
 
 # cat=basic; type=options[Only cache=0,http://www.geonames.org/=1,http://nominatim.openstreetmap.org/=2]; label=Use service to find coordinates: Please donate the service you use!
-geo_service = 1
+geo_service = 2
 
 # cat=basic; type=string; label=Geo service contact email: Enter a contact email address for the service provider here. If not specified, email address of server admin is used.
 geo_service_email =
@@ -11,7 +11,7 @@ geo_service_email =
 geo_service_user =
 
 # cat=basic; type=string; label=Default country: Two letter countrycode used in search if no country is specified.
-default_country =
+default_country = DE
 
 # cat=basic; type=options[Off=0,On=1,Statistic only=2]; label=Enable address search cache: Cache is also needed for statistics.
 cache_enabled = 1
