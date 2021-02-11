@@ -12,6 +12,12 @@ Screenshots
 -----------
 Frontend plugin
 
+The example shows the output of the frontend plugin with the following settings:
+
+* Leaflet JavaScript
+* address of "Max Mustermann" as tt_address record with default marker, clickt on the  marker
+* GPX track with start and stop marker
+
 .. image:: ../Images/FrontendExample.png
 
 Donation

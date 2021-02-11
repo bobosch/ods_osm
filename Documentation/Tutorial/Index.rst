@@ -1,6 +1,22 @@
 Tutorial
 ========
 
+Install Extensions via Composer
+-------------------------------
+The following steps are tested with TYPO3 10.4 LTS.
+
+1. Install ods_osm
+
+   ``composer require bobosch/ods-osm:^3.1``
+
+2. Install tt_address
+
+   ``composer req friendsoftypo3/tt-address``
+
+
+Configure Extensions
+--------------------
+
 1. Include static template "OpenStreetMap" into your root-Template
 2. Open or create an fe_users or tt_address record.
 3. Enter zipcode or city and save the record (without closing it).
