@@ -16,10 +16,13 @@ plugin.tx_odsosm_pi1 {
 		fe_users =
 		fe_groups =
 		tx_odsosm_track =
+		tt_address =
+		sys_category =
 	}
 
 	icon {
 		fe_users = IMAGE
+		tt_address = IMAGE
 	}
 
 	popup {
@@ -31,6 +34,15 @@ plugin.tx_odsosm_pi1 {
 			20 = TEXT
 			20.field = description
 			20.htmlSpecialChars = 1
+		}
+		tt_address = COA
+		tt_address {
+			10 = TEXT
+			10.field = name
+			10.wrap = <h2>|</h2>
+			20 = TEXT
+			20.field = description
+			20.htmlSpecialChars = 0
 		}
 	}
 

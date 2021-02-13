@@ -25,17 +25,21 @@ return array(
         'icon' => array(
             'exclude' => 0,
             'label' => 'LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xml:tx_odsosm_marker.icon',
-            'config' => array(
-                'type' => 'group',
-                'internal_type' => 'file',
-                'allowed' => 'gif,png,jpeg,jpg',
-                // fixme
-                'max_size' => $GLOBALS['TYPO3_CONF_VARS']['BE']['maxFileSize'],
-                'uploadfolder' => 'uploads/tx_odsosm',
-                'show_thumbs' => 1,
-                'size' => 1,
-                'minitems' => 0,
-                'maxitems' => 1,
+            'config' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::getFileFieldTCAConfig(
+                'icon',
+                [
+                    'maxitems' => 1,
+                    'appearance' => [
+                        'createNewRelationLinkTitle' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:images.addFileReference'
+                    ],
+                    'foreign_match_fields' => [
+                        'fieldname' => 'icon',
+                        'tablenames' => 'tx_odsosm_marker',
+                        'table_local' => 'sys_file',
+                    ],
+                    'default' => 0,
+                ],
+                $GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext']
             )
         ),
         'size_x' => array(
@@ -103,14 +107,15 @@ return array(
             )
         ),
     ),
-    'types' => array(
-        '0' => array('showitem' => 'title;;;;1-1-1, icon;;1;;2-2-2')
-    ),
-    'palettes' => array(
-        '1' => array(
-            'canNotCollapse' => true,
+    'types' => [
+        '0' => [
+            'showitem' => 'title, icon,
+            --palette--;;sizeinfo'
+        ]
+    ],
+    'palettes' => [
+        'sizeinfo' => [
             'showitem' => 'size_x, size_y, offset_x, offset_y'
-        )
-    )
+        ]
+    ]
 );
-?>

@@ -8,37 +8,12 @@ use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\FrontendRestrictionContainer;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 
-
-if (!defined('TYPO3_DLOG')) {
-    define('TYPO3_DLOG', 0);
-}
-
 class Div
 {
-
-    public static function getWhere($table, ContentObjectRenderer $cObj)
-    {
-        if (is_string($table)) {
-            $ctrl = $GLOBALS['TCA'][$table]['ctrl'];
-            // Enable fields
-            $where = $cObj->enableFields($table);
-            // Version
-            $where .= ' AND ' . $table . '.pid>=0';
-            // Translation
-            if ($ctrl['languageField']) {
-                $where .= ' AND (' . $table . '.' . $ctrl['languageField'] . ' IN (-1,0)';
-                if ($GLOBALS['TSFE']->sys_language_content && $ctrl['transOrigPointerField']) {
-                    $where .= ' OR (' . $table . '.' . $ctrl['languageField'] . '=' . intval($GLOBALS['TSFE']->sys_language_content) . ' AND ' . $table . '.' . $ctrl['transOrigPointerField'] . '=0)';
-                }
-                $where .= ')';
-            }
-        }
-
-        return $where;
-    }
 
     public static function getConstraintsForQueryBuilder($table, ContentObjectRenderer $cObj,
         \TYPO3\CMS\Core\Database\Query\QueryBuilder $queryBuilder) : array
@@ -61,7 +36,6 @@ class Div
                         $queryBuilder->expr()->eq($table . '.' . $ctrl['languageField'], $queryBuilder->createNamedParameter(-1, \PDO::PARAM_INT))
                     ];
 
-
                 if ($GLOBALS['TSFE']->sys_language_content && $ctrl['transOrigPointerField']) {
                     $orConstraints[] = $queryBuilder->expr()->andX(
                         $queryBuilder->expr()->eq($table . '.' . $ctrl['languageField'],
@@ -76,29 +50,6 @@ class Div
         return $constraints;
     }
 
-    public static function getOverlay($table, $row)
-    {
-        if (is_string($table) && is_array($row)) {
-            $ctrl = $GLOBALS['TCA'][$table]['ctrl'];
-            // Version
-            // - Table has versioning
-            // - Current user is in workspace
-            // - Versioning is enabled
-            if ($ctrl['versioningWS'] && $GLOBALS['BE_USER']->workspace && \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('version')) {
-                $GLOBALS['TSFE']->sys_page->versionOL($table, $row);
-            }
-            // Translation
-            // - Table has translation
-            // - Current language is not default
-            // - Translation is enabled
-            if ($ctrl['languageField'] && $GLOBALS['TSFE']->sys_language_content) {
-                $row = $GLOBALS['TSFE']->sys_page->getRecordOverlay($table, $row, $GLOBALS['TSFE']->sys_language_content, $GLOBALS['TSFE']->sys_language_contentOL);
-            }
-        }
-
-        return $row;
-    }
-
     public static function addJsFiles($scripts, $doc)
     {
         if (TYPO3_MODE == 'BE') {
@@ -106,7 +57,7 @@ class Div
                 $doc->JScode .= '<script src="' . $script . '" type="text/javascript"></script>';
             }
         } else {
-            $pageRenderer = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Page\PageRenderer::class);
+            $pageRenderer = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Page\PageRenderer::class);
             foreach ($scripts as $script) {
                 $pageRenderer->addJsFooterFile($script);
             }
@@ -167,11 +118,11 @@ class Div
         $ll = false;
 
         $country = strtoupper(strlen($address['country']) == 2 ? $address['country'] : $config['default_country']);
-        $email = \TYPO3\CMS\Core\Utility\GeneralUtility::validEmail($config['geo_service_email']) ? $config['geo_service_email'] : $_SERVER['SERVER_ADMIN'];
+        $email = GeneralUtility::validEmail($config['geo_service_email']) ? $config['geo_service_email'] : $_SERVER['SERVER_ADMIN'];
 
-        if (TYPO3_DLOG) {
+        if ($GLOBALS['TYPO3_CONF_VARS']['FE']['debug']) {
             $service_names = array(0 => 'cache', 1 => 'geonames', 2 => 'nominatim');
-            \TYPO3\CMS\Core\Utility\GeneralUtility::devLog('Search address using ' . $service_names[$service], 'ods_osm', 0, $address);
+            GeneralUtility::devLog('Search address using ' . $service_names[$service], 'ods_osm', 0, $address);
         }
 
         /** @var ConnectionPool $connectionPool */
@@ -252,8 +203,8 @@ class Div
                     if ($xml) {
                         $xmlobj = new \SimpleXMLElement($xml);
                         if ($xmlobj->status) {
-                            if (TYPO3_DLOG) {
-                                \TYPO3\CMS\Core\Utility\GeneralUtility::devLog('GeoNames message', 'ods_osm', 2, (array)$xmlobj->status->attributes());
+                            if ($GLOBALS['TYPO3_CONF_VARS']['FE']['debug']) {
+                                GeneralUtility::devLog('GeoNames message', 'ods_osm', 2, (array)$xmlobj->status->attributes());
                             }
                             self::flashMessage(
                                 (string)$xmlobj->status->attributes()->message,
@@ -300,16 +251,16 @@ class Div
                         $query['street'] = $address['housenumber'] . ' ' . $query['street'];
                     }
 
-                    if (TYPO3_DLOG) {
-                        \TYPO3\CMS\Core\Utility\GeneralUtility::devLog('Nominatim structured', 'ods_osm', -1, $query);
+                    if ($GLOBALS['TYPO3_CONF_VARS']['FE']['debug']) {
+                        GeneralUtility::devLog('Nominatim structured', 'ods_osm', -1, $query);
                     }
                     $ll = self::searchAddressNominatim($query, $address);
 
                     if (!$ll && $query['postalcode']) {
                         unset($query['postalcode']);
 
-                        if (TYPO3_DLOG) {
-                            \TYPO3\CMS\Core\Utility\GeneralUtility::devLog('Nominatim retrying without zip', 'ods_osm', -1, $query);
+                        if ($GLOBALS['TYPO3_CONF_VARS']['FE']['debug']) {
+                            GeneralUtility::devLog('Nominatim retrying without zip', 'ods_osm', -1, $query);
                         }
                         $ll = self::searchAddressNominatim($query, $address);
                     }
@@ -318,19 +269,19 @@ class Div
                 if ($address['type'] == 'unstructured') {
                     $query['q'] = $address['address'];
 
-                    if (TYPO3_DLOG) {
-                        \TYPO3\CMS\Core\Utility\GeneralUtility::devLog('Nominatim unstructured', 'ods_osm', -1, $query);
+                    if ($GLOBALS['TYPO3_CONF_VARS']['FE']['debug']) {
+                        GeneralUtility::devLog('Nominatim unstructured', 'ods_osm', -1, $query);
                     }
                     $ll = self::searchAddressNominatim($query, $address);
                 }
                 break;
         }
 
-        if (TYPO3_DLOG) {
+        if ($GLOBALS['TYPO3_CONF_VARS']['FE']['debug']) {
             if ($ll) {
-                \TYPO3\CMS\Core\Utility\GeneralUtility::devLog('Return address', 'ods_osm', 0, $address);
+                GeneralUtility::devLog('Return address', 'ods_osm', 0, $address);
             } else {
-                \TYPO3\CMS\Core\Utility\GeneralUtility::devLog('No address found', 'ods_osm', 0);
+                GeneralUtility::devLog('No address found', 'ods_osm', 0);
             }
         }
 
@@ -375,14 +326,14 @@ class Div
 
     public static function getURL($url)
     {
-        $ret = \TYPO3\CMS\Core\Utility\GeneralUtility::getURL(
+        $ret = GeneralUtility::getURL(
             $url,
             false,
             'User-Agent: TYPO3 extension ods_osm/' . \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::getExtensionVersion('ods_osm')
         );
         if ($ret === false) {
-            if (TYPO3_DLOG) {
-                \TYPO3\CMS\Core\Utility\GeneralUtility::devLog('\TYPO3\CMS\Core\Utility\GeneralUtility::getURL failed', 'ods_osm', 3, $url);
+            if ($GLOBALS['TYPO3_CONF_VARS']['FE']['debug']) {
+                GeneralUtility::devLog('GeneralUtility::getURL failed', 'ods_osm', 3, $url);
             }
             self::flashMessage(
                 'Server connection error.',
@@ -397,14 +348,14 @@ class Div
     public static function flashMessage($message, $title, $status)
     {
         /** @var FlashMessage $flashMessage */
-        $flashMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
+        $flashMessage = GeneralUtility::makeInstance(
             \TYPO3\CMS\Core\Messaging\FlashMessage::class,
             $message,
             $title,
             $status
         );
         /** @var FlashMessageService $flashMessageService */
-        $flashMessageService = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(FlashMessageService::class);
+        $flashMessageService = GeneralUtility::makeInstance(FlashMessageService::class);
         $flashMessageQueue = $flashMessageService->getMessageQueueByIdentifier();
         $flashMessageQueue->addMessage($flashMessage);
     }
@@ -468,19 +419,10 @@ class Div
         }
     }
 
-//	public static function getSet( $data, $table ) {
-//		$set = array();
-//		foreach ( $data as $field => $value ) {
-//			$set[ $field ] = '`' . $field . '`=' . $GLOBALS['TYPO3_DB']->fullQuoteStr( $value, $table );
-//		}
-//
-//		return $set;
-//	}
-
     /* Get extension configuration, and if not available use default configuration. Optional parameter checks if single value is available. */
     public static function getConfig($values = array())
     {
-        $config = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['ods_osm']);
+        $config = $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['ods_osm'];
         $getDefault = array();
 
         if ($config && is_array($values) && count($values)) {
@@ -507,13 +449,13 @@ class Div
 
     public static function getTableConfig($table = false)
     {
-        $tables = array(
-            'fe_groups' => array(
-                'FIND_IN_SET' => array(
+        $tables = [
+            'fe_groups' => [
+                'FIND_IN_SET' => [
                     'fe_users' => 'usergroup',
-                ),
-            ),
-            'fe_users' => array(
+                ],
+            ],
+            'fe_users' => [
                 'FORMAT' => '%01.6f',
                 'lon' => 'tx_odsosm_lon',
                 'lat' => 'tx_odsosm_lat',
@@ -521,15 +463,38 @@ class Div
                 'zip' => 'zip',
                 'city' => 'city',
                 'country' => 'country',
-            ),
-            'tt_content' => array(
+            ],
+            'tt_content' => [
                 'FORMAT' => '%01.6f',
                 'lon' => 'lon',
                 'lat' => 'lat',
-            ),
+            ],
             'tx_odsosm_track' => true,
             'tx_odsosm_vector' => true,
-        );
+            'sys_category' => [
+                'MM' => [
+                    'tt_address' => [
+                        'local' => 'sys_category',
+                        'mm' => 'sys_category_record_mm',
+                        'foreign' => 'tt_address'
+                    ]
+                ]
+            ]
+        ];
+
+        // load configuration for tt_address only if extension is loaded
+        if (ExtensionManagementUtility::isLoaded('tt_address')) {
+            $tables['tt_address'] = [
+                'FORMAT' => '%01.11f',
+                'lon' => 'longitude',
+                'lat' => 'latitude',
+                'address' => 'address',
+                'zip' => 'zip',
+                'city' => 'city',
+                'state' => 'region',
+                'country' => 'country',
+            ];
+        }
 
         if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ods_osm']['tables'])) {
             $tables = array_merge($tables, $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ods_osm']['tables']);
@@ -538,5 +503,3 @@ class Div
         return $table ? $tables[$table] : $tables;
     }
 }
-
-?>

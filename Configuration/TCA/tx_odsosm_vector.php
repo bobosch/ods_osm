@@ -17,14 +17,22 @@ return array(
         'showRecordFieldList' => 'hidden,title,data,min_lat,min_lon,max_lat,max_lon'
     ),
     'columns' => array(
-        'hidden' => array(
-            'exclude' => 0,
-            'label' => 'LLL:EXT:lang/locallang_general.xml:LGL.hidden',
-            'config' => array(
+        'hidden' => [
+            'exclude' => true,
+            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.enabled',
+            'config' => [
                 'type' => 'check',
-                'default' => 0
-            )
-        ),
+                'renderType' => 'checkboxToggle',
+                'default' => 0,
+                'items' => [
+                    [
+                        0 => '',
+                        1 => '',
+                        'invertStateDisplay' => true
+                    ]
+                ],
+            ]
+        ],
         'title' => array(
             'exclude' => 0,
             'label' => 'LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xml:tx_odsosm_vector.title',
@@ -80,14 +88,15 @@ return array(
             )
         ),
     ),
-    'types' => array(
-        '0' => array('showitem' => 'hidden;;;;1-1-1, title;;;;2-2-2, data;;1;;3-3-3')
-    ),
-    'palettes' => array(
-        '1' => array(
-            'canNotCollapse' => true,
+    'types' => [
+        '0' => [
+            'showitem' => 'hidden, title, data,
+            --palette--;;lonlatinfo'
+        ]
+    ],
+    'palettes' => [
+        'lonlatinfo' => [
             'showitem' => 'min_lon, min_lat, max_lon, max_lat'
-        )
-    )
+        ]
+    ]
 );
-?>

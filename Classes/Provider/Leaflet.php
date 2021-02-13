@@ -3,9 +3,11 @@
 namespace Bobosch\OdsOsm\Provider;
 
 use TYPO3\CMS\Core\Page\PageRenderer;
+use TYPO3\CMS\Core\Resource\FileRepository;
+use TYPO3\CMS\Core\Resource\StorageRepository;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
-
 
 class Leaflet extends BaseProvider
 {
@@ -143,19 +145,28 @@ class Leaflet extends BaseProvider
     {
         $jsMarker = '';
         $jsElementVar = $table . '_' . $item['uid'];
+
         switch ($table) {
             case 'tx_odsosm_track':
+                $fileRepository = GeneralUtility::makeInstance(FileRepository::class);
+                $fileObjects = $fileRepository->findByRelation('tx_odsosm_track', 'file', $item['uid']);
+                if ($fileObjects) {
+                    $file = $fileObjects[0];
+                } else {
+                    break;
+                }
+
                 $path = $GLOBALS['TSFE']->absRefPrefix . PathUtility::stripPathSitePrefix(ExtensionManagementUtility::extPath('ods_osm')) . 'Resources/Public/';
                 // Add tracks to layerswitcher
                 $this->layers[1][$item['title']] = $jsElementVar;
 
-                switch (strtolower(pathinfo($item['file'], PATHINFO_EXTENSION))) {
+                switch (strtolower(pathinfo($file->getName(), PATHINFO_EXTENSION))) {
                     case 'kml':
                         // include javascript file for KML support
                         $this->scripts['leaflet-plugins'] = $path . 'leaflet-plugins/layer/vector/KML.js';
 
                         $jsMarker .= 'var ' . $jsElementVar . ' = new L.KML(';
-                        $jsMarker .= '"' . $GLOBALS['TSFE']->absRefPrefix . 'uploads/tx_odsosm/' . $item['file'] . '"';
+                        $jsMarker .= '"/' . $file->getPublicUrl() . '"';
                         $jsMarker .= ");\n";
                         break;
                     case 'gpx':
@@ -172,7 +183,7 @@ class Leaflet extends BaseProvider
                                 'shadowUrl' => $path . 'leaflet-gpx/pin-shadow.png',
                             ),
                         );
-                        $jsMarker .= 'var ' . $jsElementVar . ' = new L.GPX("' . $GLOBALS['TSFE']->absRefPrefix . 'uploads/tx_odsosm/' . $item['file'] . '",';
+                        $jsMarker .= 'var ' . $jsElementVar . ' = new L.GPX("/' . $file->getPublicUrl() . '",';
                         $jsMarker .= json_encode($options) . ");\n";
                         $jsMarker .= $this->config['id'] . '.addLayer(' . $jsElementVar . ');' . "\n";
                         break;

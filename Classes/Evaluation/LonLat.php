@@ -14,5 +14,3 @@ class LonLat
         return (sprintf('%01.6f', $value));
     }
 }
-
-?>

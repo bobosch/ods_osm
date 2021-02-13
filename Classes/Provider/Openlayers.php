@@ -3,8 +3,10 @@
 namespace Bobosch\OdsOsm\Provider;
 
 use Bobosch\OdsOsm\Div;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+use TYPO3\CMS\Core\Resource\FileRepository;
 
 class Openlayers extends BaseProvider
 {
@@ -133,7 +135,14 @@ class Openlayers extends BaseProvider
         $jsMarker = '';
         switch ($table) {
             case 'tx_odsosm_track':
-                $jsMarker .= "mapGpx(" . $this->config['id'] . ",'" . $GLOBALS['TSFE']->absRefPrefix . 'uploads/tx_odsosm/' . $item['file'] . "','" . $item['title'] . "','" . $item['color'] . "'," . $item['width'] . ");\n";
+                $fileRepository = GeneralUtility::makeInstance(FileRepository::class);
+                $fileObjects = $fileRepository->findByRelation('tx_odsosm_track', 'file', $item['uid']);
+                if ($fileObjects) {
+                    $file = $fileObjects[0];
+                } else {
+                    break;
+                }
+                $jsMarker .= "mapGpx(" . $this->config['id'] . ",'/" .  $file->getPublicUrl() . "','" . $item['title'] . "','" . $item['color'] . "'," . $item['width'] . ");\n";
                 break;
             case 'tx_odsosm_vector':
                 $jsMarker .= "mapVector(" . $this->config['id'] . ",'" . $item['title'] . "'," . $item['data'] . ");\n";
@@ -186,10 +195,10 @@ class Openlayers extends BaseProvider
 
     public function getMapBE($layers, $mode, $lat, $lon, $zoom, $doc)
     {
-        $jsMainLayer = $this->getMainLayers($layers, $GLOBALS['BACK_PATH'] . '../');
+        $jsMainLayer = $this->getMainLayers($layers, '../');
 
         // Include JS
-        $this->getMapCore($GLOBALS['BACK_PATH'] . '../');
+        $this->getMapCore('../');
         Div::addJsFiles($this->scripts, $doc);
 
         // Action
@@ -202,6 +211,11 @@ class Openlayers extends BaseProvider
                 break;
         }
 
+        // just geht these values once:
+        $latVar = $this->getJSfieldVariable('lat');
+        $lonVar = $this->getJSfieldVariable('lon');
+        $zoomVar = $this->getJSfieldVariable('zoom');
+
         return "var map; //complex object of type OpenLayers.Map
 
 " . $action . "
@@ -210,17 +224,17 @@ class Openlayers extends BaseProvider
         var lat = " . json_encode($lat) . ";
 		var lon = " . json_encode($lon) . ";
         var zoom = " . json_encode($zoom) . ";
-        if (typeof " . $this->getJSfieldVariable('lat') . " != 'undefined') {
-			lat = " . $this->getJSfieldVariable('lat') . ".value;
-			zoom = 14;
+        if (typeof " . $latVar . " != 'undefined') {
+			lat = " . $latVar . ".value;
 		}
-		if (typeof " . $this->getJSfieldVariable('lon') . " != 'undefined') {
-			lon = " . $this->getJSfieldVariable('lon') . ".value;
-			zoom = 14;
+		if (typeof " . $lonVar . " != 'undefined') {
+			lon = " . $lonVar . ".value;
 		}
-		if (typeof " . $this->getJSfieldVariable('zoom') . " != 'undefined') {
-			zoom = " . $this->getJSfieldVariable('zoom') . ".value;
-		}
+		if (typeof " . $zoomVar . " != 'undefined') {
+            if (" . $zoomVar . ".value) {
+                zoom = " . $zoomVar . ".value;
+            }
+        }
 		" . $this->getMapMain() . "
 		" . $jsMainLayer . "
         mapCenter(" . $this->config['id'] . ", lat, lon, zoom);
@@ -251,8 +265,8 @@ class Openlayers extends BaseProvider
          * The button for the coordinatpicker is placed to the
          * longitute field. That's why we have in $this->P['itemName']
          * always "data[tt_address][1][longitude]" --> replacment is
-         * necessary in case of latitude setting.
-         * possible (known) values of $this->P['itemName]
+         * necessary in case of latitude and zoom setting.
+         * possible (known) values of $this->P['itemName']
          *
          * data[fe_users][1][tx_odsosm_lon]
          * data[tt_address][1][longitude]
@@ -260,7 +274,7 @@ class Openlayers extends BaseProvider
          */
 
         $replacements = [];
-        if ($name === 'lat' || $name='zoom') {
+        if ($name === 'lat' || $name === 'zoom') {
             if (stripos($this->P['itemName'], 'fe_users') > 0 |
                 stripos($this->P['itemName'], 'tt_content') > 0) {
                 $replacements['lon'] = $name;

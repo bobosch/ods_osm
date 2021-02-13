@@ -17,14 +17,22 @@ return array(
         'showRecordFieldList' => 'hidden,title,color,width,file,min_lat,min_lon,max_lat,max_lon'
     ),
     'columns' => array(
-        'hidden' => array(
-            'exclude' => 0,
-            'label' => 'LLL:EXT:lang/locallang_general.xml:LGL.hidden',
-            'config' => array(
+        'hidden' => [
+            'exclude' => true,
+            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.enabled',
+            'config' => [
                 'type' => 'check',
-                'default' => 0
-            )
-        ),
+                'renderType' => 'checkboxToggle',
+                'default' => 0,
+                'items' => [
+                    [
+                        0 => '',
+                        1 => '',
+                        'invertStateDisplay' => true
+                    ]
+                ],
+            ]
+        ],
         'title' => array(
             'exclude' => 0,
             'label' => 'LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xml:tx_odsosm_track.title',
@@ -63,16 +71,21 @@ return array(
         'file' => array(
             'exclude' => 0,
             'label' => 'LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xml:tx_odsosm_track.file',
-            'config' => array(
-                'type' => 'group',
-                'internal_type' => 'file',
-                'allowed' => 'gpx,json,kml,wkt',
-                // fixme
-                'max_size' => $GLOBALS['TYPO3_CONF_VARS']['BE']['maxFileSize'],
-                'uploadfolder' => 'uploads/tx_odsosm',
-                'size' => 1,
-                'minitems' => 0,
-                'maxitems' => 1,
+            'config' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::getFileFieldTCAConfig(
+                'file',
+                [
+                    'maxitems' => 1,
+                    'appearance' => [
+                        'createNewRelationLinkTitle' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:images.addFileReference'
+                    ],
+                    'foreign_match_fields' => [
+                        'fieldname' => 'file',
+                        'tablenames' => 'tx_odsosm_track',
+                        'table_local' => 'sys_file',
+                    ],
+                    'default' => 0,
+                ],
+                'gpx,kml'
             )
         ),
         'min_lon' => array(
@@ -108,14 +121,15 @@ return array(
             )
         ),
     ),
-    'types' => array(
-        '0' => array('showitem' => 'hidden;;;;1-1-1, title;;;;2-2-2, color, width, file;;1;;3-3-3')
-    ),
-    'palettes' => array(
-        '1' => array(
-            'canNotCollapse' => true,
+    'types' => [
+        '0' => [
+            'showitem' => 'hidden, title, color, width, file,
+                            --palette--;;lonlatinfo'
+        ]
+    ],
+    'palettes' => [
+        'lonlatinfo' => [
             'showitem' => 'min_lon, min_lat, max_lon, max_lat'
-        )
-    )
+        ]
+    ]
 );
-?>

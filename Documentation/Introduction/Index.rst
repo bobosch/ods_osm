@@ -3,7 +3,7 @@ Introduction
 
 What does it do?
 ----------------
-- Show an interactive OpenStreetMap map.
+- Show an interactive OpenStreetMap map with Openlayers or Leaflet.
 - Store coordinates in fe_users and tt_address tables and show as markers in the map.
 - Show record information in popup window.
 - Display gps tracks.
@@ -11,6 +11,12 @@ What does it do?
 Screenshots
 -----------
 Frontend plugin
+
+The example shows the output of the frontend plugin with the following settings:
+
+* Leaflet JavaScript
+* address of "Max Mustermann" as tt_address record with default marker, clickt on the  marker
+* GPX track with start and stop marker
 
 .. image:: ../Images/FrontendExample.png
 
