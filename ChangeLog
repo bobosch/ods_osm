@@ -1,3 +1,12 @@
+2021-02-13 Alexander Bigga <alexander@bigga.de>
+	* Compatibility with TYPO3 10.4 LTS and TYPO3 9.5 LTS
+	* Update list of initial layer records. All active records support HTTPS now.
+	* Update: Documentation
+
+2020-04-13 Alexander Bigga <alexander@bigga.de>
+	* Compatibility TYPO3 9.5 LTS
+	* Update: Documentation
+
 2019-01-17 Robert Heel <typo3@bobosch.de>
 	* Add: Italian translation (Thanks to Claudio Strizzolo)
 	* Update: Documentation
@@ -40,7 +49,7 @@
 	* Change: Search current page for markers if no marker configured.
 
 2016-04-15 Robert Heel <typo3@bobosch.de>
-	* Bugfix: Using json_encode to encode all javascript parameters with floatval (issue with '.' and ',') or escaped strings. 
+	* Bugfix: Using json_encode to encode all javascript parameters with floatval (issue with '.' and ',') or escaped strings.
 
 2016-04-14 Robert Heel <typo3@bobosch.de>
 	* Change: Centralize marker icon information.
@@ -106,7 +115,7 @@
 
 2015-06-02 dawnbreak
 	* Update: leaflet-plugins to 1.3.3.
-	* Bugfix: Bug with base layers and leaflet. 
+	* Bugfix: Bug with base layers and leaflet.
 
 2015-02-08 Robert Heel <typo3@bobosch.de>
 	* Update: geoPHP to version 1.0

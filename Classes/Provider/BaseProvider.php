@@ -131,7 +131,8 @@ abstract class BaseProvider
         if (strpos($layer['tile_url'], '://') !== false) {
             return $layer['tile_url'];
         }
-        if (isset($_SERVER['HTTPS']) && $layer['tile_https'] == 1) {
+        // if protocoll is missing, we add http:// or https://
+        if ($layer['tile_https'] == 1) {
             return 'https://' . $layer['tile_url'];
         } else {
             return 'http://' . $layer['tile_url'];
