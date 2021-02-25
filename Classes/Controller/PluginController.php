@@ -259,7 +259,7 @@ class PluginController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
                         ->execute();
 
                     while ($resArray = $result->fetch()) {
-                        if (!in_array($resArray['uid'],  $record_ids[$table])) {
+                        if (!in_array($resArray['uid'],  $record_ids[$table] ?? [])) {
                             $record_ids[$table][] =  $resArray['uid'];
                         }
                     }
