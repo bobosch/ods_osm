@@ -6,6 +6,7 @@ use Doctrine\DBAL\FetchMode;
 use Doctrine\DBAL\ParameterType;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\FrontendRestrictionContainer;
+use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
@@ -122,7 +123,7 @@ class Div
 
         if ($GLOBALS['TYPO3_CONF_VARS']['FE']['debug']) {
             $service_names = array(0 => 'cache', 1 => 'geonames', 2 => 'nominatim');
-            GeneralUtility::devLog('Search address using ' . $service_names[$service], 'ods_osm', 0, $address);
+            self::getLogger()->debug('Search address using ' . $service_names[$service], $address);
         }
 
         /** @var ConnectionPool $connectionPool */
@@ -204,7 +205,7 @@ class Div
                         $xmlobj = new \SimpleXMLElement($xml);
                         if ($xmlobj->status) {
                             if ($GLOBALS['TYPO3_CONF_VARS']['FE']['debug']) {
-                                GeneralUtility::devLog('GeoNames message', 'ods_osm', 2, (array)$xmlobj->status->attributes());
+                                self::getLogger()->debug('GeoNames message', (array)$xmlobj->status->attributes());
                             }
                             self::flashMessage(
                                 (string)$xmlobj->status->attributes()->message,
@@ -252,7 +253,7 @@ class Div
                     }
 
                     if ($GLOBALS['TYPO3_CONF_VARS']['FE']['debug']) {
-                        GeneralUtility::devLog('Nominatim structured', 'ods_osm', -1, $query);
+                        self::getLogger()->debug('Nominatim structured', $query);
                     }
                     $ll = self::searchAddressNominatim($query, $address);
 
@@ -260,7 +261,7 @@ class Div
                         unset($query['postalcode']);
 
                         if ($GLOBALS['TYPO3_CONF_VARS']['FE']['debug']) {
-                            GeneralUtility::devLog('Nominatim retrying without zip', 'ods_osm', -1, $query);
+                            self::getLogger()->debug('Nominatim retrying without zip', $query);
                         }
                         $ll = self::searchAddressNominatim($query, $address);
                     }
@@ -270,7 +271,7 @@ class Div
                     $query['q'] = $address['address'];
 
                     if ($GLOBALS['TYPO3_CONF_VARS']['FE']['debug']) {
-                        GeneralUtility::devLog('Nominatim unstructured', 'ods_osm', -1, $query);
+                        self::getLogger()->debug('Nominatim unstructured', $query);
                     }
                     $ll = self::searchAddressNominatim($query, $address);
                 }
@@ -279,9 +280,9 @@ class Div
 
         if ($GLOBALS['TYPO3_CONF_VARS']['FE']['debug']) {
             if ($ll) {
-                GeneralUtility::devLog('Return address', 'ods_osm', 0, $address);
+                self::getLogger()->debug('Return address', $address);
             } else {
-                GeneralUtility::devLog('No address found', 'ods_osm', 0);
+                self::getLogger()->debug('No address found.');
             }
         }
 
@@ -333,7 +334,7 @@ class Div
         );
         if ($ret === false) {
             if ($GLOBALS['TYPO3_CONF_VARS']['FE']['debug']) {
-                GeneralUtility::devLog('GeneralUtility::getURL failed', 'ods_osm', 3, $url);
+                self::getLogger()->error('GeneralUtility::getURL failed', $url);
             }
             self::flashMessage(
                 'Server connection error.',
@@ -363,13 +364,13 @@ class Div
     public static function updateCache($address, $search = array())
     {
         $set = array(
-            'search_city' => $search['city'],
-            'country' => $address['country'],
-            'state' => $address['state'],
-            'city' => $address['city'],
-            'zip' => $address['zip'],
-            'street' => $address['street'],
-            'housenumber' => $address['housenumber'],
+            'search_city' => $search['city'] ?? '',
+            'country' => $address['country'] ?? '',
+            'state' => $address['state'] ?? '',
+            'city' => $address['city'] ?? '',
+            'zip' => $address['zip'] ?? '',
+            'street' => $address['street'] ?? '',
+            'housenumber' => $address['housenumber'] ?? '',
         );
 
         /** @var ConnectionPool $connectionPool */
@@ -501,5 +502,16 @@ class Div
         }
 
         return $table ? $tables[$table] : $tables;
+    }
+
+    /**
+     * @return \TYPO3\CMS\Core\Log\Logger
+     */
+    protected static function getLogger()
+    {
+        /** @var $loggerManager LogManager */
+        $loggerManager = GeneralUtility::makeInstance(LogManager::class);
+
+        return $loggerManager->getLogger(static::class);
     }
 }
