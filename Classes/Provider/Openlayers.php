@@ -3,6 +3,7 @@
 namespace Bobosch\OdsOsm\Provider;
 
 use Bobosch\OdsOsm\Div;
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
@@ -145,7 +146,16 @@ class Openlayers extends BaseProvider
                 $jsMarker .= "mapGpx(" . $this->config['id'] . ",'/" .  $file->getPublicUrl() . "','" . $item['title'] . "','" . $item['color'] . "'," . $item['width'] . ");\n";
                 break;
             case 'tx_odsosm_vector':
-                $jsMarker .= "mapVector(" . $this->config['id'] . ",'" . $item['title'] . "'," . $item['data'] . ");\n";
+                $fileRepository = GeneralUtility::makeInstance(FileRepository::class);
+                $fileObjects = $fileRepository->findByRelation('tx_odsosm_vector', 'file', $item['uid']);
+                if ($fileObjects) {
+                    $file = $fileObjects[0];
+                    $filename = Environment::getPublicPath() . '/' . $file->getPublicUrl();
+                    $jsMarker .= "mapVector(" . $this->config['id'] . ",'" . $item['title'] . " (File)'," . file_get_contents($filename) . ");\n";
+                }
+                if ($item['data']) {
+                    $jsMarker .= "mapVector(" . $this->config['id'] . ",'" . $item['title'] . "'," . $item['data'] . ");\n";
+                }
                 break;
             default:
                 if (is_array($item['tx_odsosm_marker'])) {
