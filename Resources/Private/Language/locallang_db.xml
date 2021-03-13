@@ -80,6 +80,7 @@
 			<label index="tx_odsosm_vector">Vector</label>
 			<label index="tx_odsosm_vector.title">Title</label>
 			<label index="tx_odsosm_vector.data">GeoJSON</label>
+			<label index="tx_odsosm_vector.file">File</label>
 		</languageKey>
 		<languageKey index="de" type="array">
 			<label index="coordinatepicker.search_coordinates">Suche Koordinaten</label>
@@ -151,6 +152,7 @@
 			<label index="tx_odsosm_vector">Vektor</label>
 			<label index="tx_odsosm_vector.title">Titel</label>
 			<label index="tx_odsosm_vector.data">GeoJSON</label>
+			<label index="tx_odsosm_vector.file">Datei</label>
 		</languageKey>
 		<languageKey index="it" type="array">
 			<label index="coordinatepicker.search_coordinates">Cerca coordinate</label>

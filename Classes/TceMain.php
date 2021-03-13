@@ -134,7 +134,40 @@ class TceMain
                     }
                 }
                 break;
-        }
+            case 'tx_odsosm_vector':
+                if (is_int($id)) {
+                    $fileRepository = GeneralUtility::makeInstance(FileRepository::class);
+                    $fileObjects = $fileRepository->findByRelation('tx_odsosm_vector', 'file', $id);
+                }
+                if ($fileObjects) {
+                    $file = $fileObjects[0];
+                } else {
+                    break;
+                }
+
+                $filename = Environment::getPublicPath() . '/' . $file->getPublicUrl();
+                if (file_exists($filename)) {
+
+                    $polygon = geoPHP::load(file_get_contents($filename), pathinfo($filename, PATHINFO_EXTENSION));
+                    $box = $polygon->getBBox();
+                    if ($box) {
+                        // unfortunately we cannot pass the new values by reference in this hook, because the database operation is already done.
+                        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+                            ->getQueryBuilderForTable($table);
+                        $queryBuilder
+                            ->update('tx_odsosm_vector')
+                            ->where(
+                                $queryBuilder->expr()->eq('uid', $id)
+                            )
+                            ->set('min_lon', sprintf('%01.6f', $box['minx']))
+                            ->set('min_lat', sprintf('%01.6f', $box['miny']))
+                            ->set('max_lon', sprintf('%01.6f', $box['maxx']))
+                            ->set('max_lat', sprintf('%01.6f', $box['maxy']))
+                            ->execute();
+                    }
+                }
+                break;
+            }
     }
 
     // ['t3lib/class.t3lib_tcemain.php']['processDatamapClass']
@@ -147,17 +180,14 @@ class TceMain
                     $this->lon = array();
                     $this->lat = array();
 
-                    $vector = json_decode($fieldArray['data']);
-                    foreach ($vector->geometry->coordinates[0] as $coordinates) {
-                        $this->lon[] = $coordinates[0];
-                        $this->lat[] = $coordinates[1];
-                    }
+                    $polygon = geoPHP::load(($fieldArray['data']));
+                    $box = $polygon->getBBox();
 
-                    $fieldArray['min_lon'] = sprintf('%01.6f', min($this->lon));
-                    $fieldArray['min_lat'] = sprintf('%01.6f', min($this->lat));
-                    $fieldArray['max_lon'] = sprintf('%01.6f', max($this->lon));
-                    $fieldArray['max_lat'] = sprintf('%01.6f', max($this->lat));
-                }
+                    $fieldArray['min_lon'] = sprintf('%01.6f', $box['minx']);
+                    $fieldArray['min_lat'] = sprintf('%01.6f', $box['miny']);
+                    $fieldArray['max_lon'] = sprintf('%01.6f', $box['maxx']);
+                    $fieldArray['max_lat'] = sprintf('%01.6f', $box['maxy']);
+               }
                 break;
             default:
                 $tc = Div::getTableConfig($table);

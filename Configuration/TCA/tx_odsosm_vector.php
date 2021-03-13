@@ -45,14 +45,35 @@ return array(
             'exclude' => 0,
             'label' => 'LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xml:tx_odsosm_vector.data',
             'config' => array(
-                'type' => 'input',
-                'size' => 30,
-                'max' => 10000,
+                'type' => 'text',
+                'rows' => 10,
+                'cols' => 60,
+                'max' => 20000,
                 'fieldControl' => [
                     'coordinatepickerControl' => [
                         'renderType' => 'coordinatepickerControl'
                     ]
                 ]
+            )
+        ),
+        'file' => array(
+            'exclude' => 0,
+            'label' => 'LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xml:tx_odsosm_vector.file',
+            'config' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::getFileFieldTCAConfig(
+                'file',
+                [
+                    'maxitems' => 1,
+                    'appearance' => [
+                        'createNewRelationLinkTitle' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:images.addFileReference'
+                    ],
+                    'foreign_match_fields' => [
+                        'fieldname' => 'file',
+                        'tablenames' => 'tx_odsosm_vector',
+                        'table_local' => 'sys_file',
+                    ],
+                    'default' => 0,
+                ],
+                'geojson,json'
             )
         ),
         'min_lon' => array(
@@ -90,7 +111,7 @@ return array(
     ),
     'types' => [
         '0' => [
-            'showitem' => 'hidden, title, data,
+            'showitem' => 'hidden, title, data, file,
             --palette--;;lonlatinfo'
         ]
     ],
