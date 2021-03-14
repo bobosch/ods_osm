@@ -6,7 +6,6 @@ plugin.tx_odsosm_pi1 {
 	JSlibrary = {$plugin.tx_odsosm_pi1.JSlibrary}
 	library = {$plugin.tx_odsosm_pi1.library}
 	external_control = {$plugin.tx_odsosm_pi1.external_control}
-	path_openlayers =
 	static_script =
 
 	# Marker
@@ -71,5 +70,5 @@ plugin.tx_odsosm_pi1 {
 	layerswitcher.div = 0
 	layerswitcher.options =
 
-	_CSS_DEFAULT_STYLE = .olControlAttribution{bottom:0px!important;}
+#	_CSS_DEFAULT_STYLE = .olControlAttribution{bottom:0px!important;}
 }

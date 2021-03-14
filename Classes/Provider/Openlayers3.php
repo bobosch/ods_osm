@@ -13,10 +13,10 @@ class Openlayers3 extends BaseProvider
     public function getMapCore($backpath = '')
     {
         $path = ($backpath ? $backpath : $GLOBALS['TSFE']->absRefPrefix) . PathUtility::stripPathSitePrefix(ExtensionManagementUtility::extPath('ods_osm')) . 'Resources/Public/';
-        $path = ($this->config['local_js'] ? $path . 'OpenLayers3/' : 'http://ol3js.org/en/master/');
+        $path = ($this->config['local_js'] ? $path . 'OpenLayers3/' : 'https://cdnjs.cloudflare.com/ajax/libs/openlayers/3.20.1/');
         $pageRenderer = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(PageRenderer::class);
-        $pageRenderer->addCssFile($path . 'css/ol.css');
-        $this->scripts = array($path . 'build/ol.js');
+        $pageRenderer->addCssFile($path . 'ol.css');
+        $this->scripts['OpenLayers3'] = ['src' => $path . 'ol.js', 'sri' => 'sha512-G8flMLjEED1YvplN22AOjkWS+k7d3rqz9CP1n3Pv4qaaNCByNPrB+OhkTZqGuzI3xJeEH4mcDKsms2vOz90+FQ=='];
     }
 
     public function getMapMain()

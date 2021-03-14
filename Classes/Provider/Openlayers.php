@@ -17,10 +17,12 @@ class Openlayers extends BaseProvider
     public function getMapCore($backpath = '')
     {
         $path = ($backpath ? $backpath : $GLOBALS['TSFE']->absRefPrefix) . PathUtility::stripPathSitePrefix(ExtensionManagementUtility::extPath('ods_osm')) . 'Resources/Public/';
-        $this->scripts = array(
-            ($this->config['path_openlayers'] ? $this->config['path_openlayers'] : ($this->config['local_js'] ? $path . 'OpenLayers' : 'https://openlayers.org/api')) . '/OpenLayers.js',
-            $path . 'tx_odsosm_openlayers.js',
-        );
+        if ($this->config['local_js']) {
+            $this->scripts['Openlayers'] = ['src' => 'https://cdnjs.cloudflare.com/ajax/libs/openlayers/2.13.1/OpenLayers.js', 'sri' => 'sha384-1sdAnHpdcrkXIg3U6pRKfecnhahCO+SvNlpRoBSQ9qxY1LwSesu+L25qR9ceYg9V']
+        } else {
+            $this->scripts['Openlayers'] = ['src' => $path . 'OpenLayers/OpenLayers.js'];
+        }
+        $this->scripts['OpenlayersOds'] = ['src' => $path . 'tx_odsosm_openlayers.js'];
     }
 
     public function getMapMain()
@@ -77,7 +79,7 @@ class Openlayers extends BaseProvider
                 $script = $GLOBALS['TSFE']->absRefPrefix . $backpath . $javascript_include;
             }
             // Include javascript only once if different layers use the same javascript
-            $this->scripts[$filename] = $script;
+            $this->scripts[$filename] = [ 'src' => $script];
         }
         if ($layer['javascript_openlayers']) {
             $jsMainLayer = $this->config['id'] . ".addLayer(" . strtr($layer['javascript_openlayers'], array(

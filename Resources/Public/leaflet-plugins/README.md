@@ -1,5 +1,5 @@
 Leaflet plugins
-============
+===============
 
 What ?
 ------
@@ -26,7 +26,7 @@ Also there are some useful control plugins (`control/`):
  * Distance - simple tool to measure distances on maps
 
 Where ?
-------
+-------
 
 Homepage : https://github.com/shramov/leaflet-plugins
 
