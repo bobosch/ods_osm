@@ -61,7 +61,7 @@ abstract class BaseProvider
 			" . $this->getMarkers($markers);
 
         if ($this->config['show_layerswitcher']) {
-            $this->script .= $this->getLayerSwitcher();
+            $this->script .= $this->getLayerSwitcher() . "\n";
         }
 
         Div::addJsFiles($this->scripts, null);

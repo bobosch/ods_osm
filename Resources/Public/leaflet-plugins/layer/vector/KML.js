@@ -3,7 +3,7 @@ L.KML = L.FeatureGroup.extend({
 		async: true
 	},
 
-	initialize: function(kml, options) {
+	initialize: function (kml, options) {
 		L.Util.setOptions(this, options);
 		this._kml = kml;
 		this._layers = {};
@@ -13,29 +13,48 @@ L.KML = L.FeatureGroup.extend({
 		}
 	},
 
-	loadXML: function(url, cb, options, async) {
+	loadXML: function (url, cb, options, async) {
 		if (async === undefined) async = this.options.async;
 		if (options === undefined) options = this.options;
 
 		var req = new window.XMLHttpRequest();
-		req.open('GET', url, async);
-		try {
-			req.overrideMimeType('text/xml'); // unsupported by IE
-		} catch(e) {}
-		req.onreadystatechange = function() {
-			if (req.readyState !== 4) return;
-			if (req.status === 200) cb(req.responseXML, options);
-		};
-		req.send(null);
+		
+		// Check for IE8 and IE9 Fix Cors for those browsers
+		if (req.withCredentials === undefined && typeof window.XDomainRequest !== 'undefined') {
+			var xdr = new window.XDomainRequest();
+			xdr.open('GET', url, async);
+			xdr.onprogress = function () { };
+			xdr.ontimeout = function () { };
+			xdr.onerror = function () { };
+			xdr.onload = function () {
+				if (xdr.responseText) {
+					var xml = new window.ActiveXObject('Microsoft.XMLDOM');
+					xml.loadXML(xdr.responseText);
+					cb(xml, options);
+				}
+			};
+			setTimeout(function () { xdr.send(); }, 0);
+		} else {
+			req.open('GET', url, async);
+			req.setRequestHeader('Accept', 'application/vnd.google-earth.kml+xml');
+			try {
+				req.overrideMimeType('text/xml'); // unsupported by IE
+			} catch (e) { }
+			req.onreadystatechange = function () {
+				if (req.readyState !== 4) return;
+				if (req.status === 200) cb(req.responseXML, options);
+			};
+			req.send(null);
+		}
 	},
 
-	addKML: function(url, options, async) {
+	addKML: function (url, options, async) {
 		var _this = this;
-		var cb = function(gpx, options) { _this._addKML(gpx, options); };
+		var cb = function (kml) { _this._addKML(kml); };
 		this.loadXML(url, cb, options, async);
 	},
 
-	_addKML: function(xml, options) {
+	_addKML: function (xml) {
 		var layers = L.KML.parseKML(xml);
 		if (!layers || !layers.length) return;
 		for (var i = 0; i < layers.length; i++) {
@@ -54,7 +73,7 @@ L.KML = L.FeatureGroup.extend({
 L.Util.extend(L.KML, {
 
 	parseKML: function (xml) {
-		var style = this.parseStyle(xml);
+		var style = this.parseStyles(xml);
 		this.parseStyleMap(xml, style);
 		var el = xml.getElementsByTagName('Folder');
 		var layers = [], l;
@@ -88,13 +107,25 @@ L.Util.extend(L.KML, {
 		return !e || e === folder;
 	},
 
-	parseStyle: function (xml) {
-		var style = {};
+	parseStyles: function (xml) {
+		var styles = {};
 		var sl = xml.getElementsByTagName('Style');
+		for (var i=0, len=sl.length; i<len; i++) {
+			var style = this.parseStyle(sl[i]);
+			if (style) {
+				var styleName = '#' + style.id;
+				styles[styleName] = style;
+			}
+		}
+		return styles;
+	},
 
-		var attributes = { color: true, width: true, Icon: true, href: true, hotSpot: true };
+	parseStyle: function (xml) {
+		var style = {}, poptions = {}, ioptions = {}, el, id;
 
-		function _parse(xml) {
+		var attributes = {color: true, width: true, Icon: true, href: true, hotSpot: true};
+
+		function _parse (xml) {
 			var options = {};
 			for (var i = 0; i < xml.childNodes.length; i++) {
 				var e = xml.childNodes[i];
@@ -123,28 +154,28 @@ L.Util.extend(L.KML, {
 			return options;
 		}
 
-		for (var i = 0; i < sl.length; i++) {
-			var e = sl[i], el;
-			var options = {}, poptions = {}, ioptions = {};
-			el = e.getElementsByTagName('LineStyle');
-			if (el && el[0]) { options = _parse(el[0]); }
-			el = e.getElementsByTagName('PolyStyle');
-			if (el && el[0]) { poptions = _parse(el[0]); }
-			if (poptions.color) { options.fillColor = poptions.color; }
-			if (poptions.opacity) { options.fillOpacity = poptions.opacity; }
-			el = e.getElementsByTagName('IconStyle');
-			if (el && el[0]) { ioptions = _parse(el[0]); }
-			if (ioptions.href) {
-				// save anchor info until the image is loaded
-				options.icon = new L.KMLIcon({
-					iconUrl: ioptions.href,
-					shadowUrl: null,
-					iconAnchorRef: {x: ioptions.x, y: ioptions.y},
-					iconAnchorType:	{x: ioptions.xunits, y: ioptions.yunits}
-				});
-			}
-			style['#' + e.getAttribute('id')] = options;
+		el = xml.getElementsByTagName('LineStyle');
+		if (el && el[0]) { style = _parse(el[0]); }
+		el = xml.getElementsByTagName('PolyStyle');
+		if (el && el[0]) { poptions = _parse(el[0]); }
+		if (poptions.color) { style.fillColor = poptions.color; }
+		if (poptions.opacity) { style.fillOpacity = poptions.opacity; }
+		el = xml.getElementsByTagName('IconStyle');
+		if (el && el[0]) { ioptions = _parse(el[0]); }
+		if (ioptions.href) {
+			style.icon = new L.KMLIcon({
+				iconUrl: ioptions.href,
+				shadowUrl: null,
+				anchorRef: {x: ioptions.x, y: ioptions.y},
+				anchorType:	{x: ioptions.xunits, y: ioptions.yunits}
+			});
 		}
+		
+		id = xml.getAttribute('id');
+		if (id && style) {
+			style.id = id;
+		}
+		
 		return style;
 	},
 	
@@ -194,24 +225,35 @@ L.Util.extend(L.KML, {
 		return new L.FeatureGroup(layers);
 	},
 
-	parsePlacemark: function (place, xml, style) {
-		var h, i, j, el, options = {};
-
-		var multi = ['MultiGeometry', 'MultiTrack', 'gx:MultiTrack'];
-		for (h in multi) {
-			el = place.getElementsByTagName(multi[h]);
-			for (i = 0; i < el.length; i++) {
-				return this.parsePlacemark(el[i], xml, style);
-			}
-		}
+	parsePlacemark: function (place, xml, style, options) {
+		var h, i, j, k, el, il, opts = options || {};
 
 		el = place.getElementsByTagName('styleUrl');
 		for (i = 0; i < el.length; i++) {
 			var url = el[i].childNodes[0].nodeValue;
 			for (var a in style[url]) {
-				options[a] = style[url][a];
+				opts[a] = style[url][a];
 			}
 		}
+		
+		il = place.getElementsByTagName('Style')[0];
+		if (il) {
+			var inlineStyle = this.parseStyle(place);
+			if (inlineStyle) {
+				for (k in inlineStyle) {
+					opts[k] = inlineStyle[k];
+				}
+			}
+		}
+
+		var multi = ['MultiGeometry', 'MultiTrack', 'gx:MultiTrack'];
+		for (h in multi) {
+			el = place.getElementsByTagName(multi[h]);
+			for (i = 0; i < el.length; i++) {
+				return this.parsePlacemark(el[i], xml, style, opts);
+			}
+		}
+		
 		var layers = [];
 
 		var parse = ['LineString', 'Polygon', 'Point', 'Track', 'gx:Track'];
@@ -219,7 +261,7 @@ L.Util.extend(L.KML, {
 			var tag = parse[j];
 			el = place.getElementsByTagName(tag);
 			for (i = 0; i < el.length; i++) {
-				var l = this['parse' + tag.replace(/gx:/, '')](el[i], xml, options);
+				var l = this['parse' + tag.replace(/gx:/, '')](el[i], xml, opts);
 				if (l) { layers.push(l); }
 			}
 		}
@@ -245,7 +287,9 @@ L.Util.extend(L.KML, {
 		}
 
 		if (name) {
-			layer.bindPopup('<h2>' + name + '</h2>' + descr);
+			layer.on('add', function () {
+				layer.bindPopup('<h2>' + name + '</h2>' + descr);
+			});
 		}
 
 		return layer;
@@ -356,7 +400,7 @@ L.Util.extend(L.KML, {
 			]
 		);
 		var attributes = {Icon: true, href: true, color: true};
-		function _parse(xml) {
+		function _parse (xml) {
 			var options = {}, ioptions = {};
 			for (var i = 0; i < xml.childNodes.length; i++) {
 				var e = xml.childNodes[i];
@@ -387,32 +431,18 @@ L.Util.extend(L.KML, {
 });
 
 L.KMLIcon = L.Icon.extend({
-
-	createIcon: function () {
-		var img = this._createIcon('icon');
-		img.onload = function () {
-			var i = img;
-			this.style.width = i.width + 'px';
-			this.style.height = i.height + 'px';
-
-			if (this.anchorType.x === 'fraction' && this.anchorType.y === 'fraction') {
-				img.style.marginLeft = (-this.anchor.x * i.width) + 'px';
-				img.style.marginTop  = (-(1 - this.anchor.y) * i.height) + 'px';
-			}
-			if (this.anchorType.x === 'pixels' && this.anchorType.y === 'pixels') {
-				img.style.marginLeft = (-this.anchor.x) + 'px';
-				img.style.marginTop  = (this.anchor.y - i.height + 1) + 'px';
-			}
-			this.style.display = '';
-		};
-		return img;
-	},
-
 	_setIconStyles: function (img, name) {
 		L.Icon.prototype._setIconStyles.apply(this, [img, name]);
-		// save anchor information to the image
-		img.anchor = this.options.iconAnchorRef;
-		img.anchorType = this.options.iconAnchorType;
+		var options = this.options;
+		this.options.popupAnchor = [0,(-0.83*img.height)];
+		if (options.anchorType.x === 'fraction')
+			img.style.marginLeft = (-options.anchorRef.x * img.width) + 'px';
+		if (options.anchorType.y === 'fraction')
+			img.style.marginTop  = ((-(1 - options.anchorRef.y) * img.height) + 1) + 'px';
+		if (options.anchorType.x === 'pixels')
+			img.style.marginLeft = (-options.anchorRef.x) + 'px';
+		if (options.anchorType.y === 'pixels')
+			img.style.marginTop  = (options.anchorRef.y - img.height + 1) + 'px';
 	}
 });
 
@@ -440,7 +470,7 @@ L.RotatedImageOverlay = L.ImageOverlay.extend({
         if (L.DomUtil.TRANSFORM) {
             // use the CSS transform rule if available
             this._image.style[L.DomUtil.TRANSFORM] += ' rotate(' + this.options.angle + 'deg)';
-        } else if(L.Browser.ie) {
+        } else if (L.Browser.ie) {
             // fallback for IE6, IE7, IE8
             var rad = this.options.angle * (Math.PI / 180),
                 costheta = Math.cos(rad),
@@ -449,7 +479,7 @@ L.RotatedImageOverlay = L.ImageOverlay.extend({
                 costheta + ', M12=' + (-sintheta) + ', M21=' + sintheta + ', M22=' + costheta + ')';                
         }
 	},
-	getBounds: function() {
+	getBounds: function () {
 		return this._bounds;
 	}
 });

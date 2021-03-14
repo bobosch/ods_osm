@@ -1,0 +1,63 @@
+<html>
+<head>
+	<title>Leaflet</title>
+	<link rel="stylesheet" href="https://unpkg.com/leaflet@1.5.1/dist/leaflet.css" />
+	<script src="https://unpkg.com/leaflet@1.5.1/dist/leaflet.js"></script>
+	<!--script src="https://api-maps.yandex.ru/2.1/?lang=en_RU&amp;apikey=<your API-key>" type="text/javascript"></script-->
+	<script src="../layer/Layer.Deferred.js"></script>
+	<!--<script src="../layer/tile/Yandex.js"></script>-->
+</head>
+<body>
+
+<div style="width:100%; height:100%" id="map"></div>
+<script>
+	var map = L.map('map', {center: [67.6755, 33.936], zoom: 10});
+
+	map.attributionControl
+		.setPosition('bottomleft')
+		.setPrefix('');
+
+	function traffic () {
+		// https://tech.yandex.ru/maps/jsbox/2.1/traffic_provider
+		var actualProvider = new ymaps.traffic.provider.Actual({}, { infoLayerShown: true });
+		actualProvider.setMap(this._yandex);
+	}
+	var ymapsAPI = 'https://api-maps.yandex.ru/2.1/?lang=en_RU&apikey=<your API-key>';
+	var mapsurferUrl = 'https://maps.heigit.org/openmapsurfer/tiles/hybrid/webmercator/{z}/{x}/{y}.png';
+
+	var layerdefs = {
+		ysat: {
+			name: 'Yandex',
+			js: ['../layer/tile/Yandex.js', ymapsAPI],
+			init: function () { return L.yandex('satellite'); }
+		},
+		traffic: {
+			name: 'Traffic',
+			js: ['../layer/tile/Yandex.js', ymapsAPI],
+			init: function () { return L.yandex('overlay').on('load',traffic); }
+		},
+		mso: {
+			name: 'Mapsurfer',
+			js: [], overlay: true,
+			init: function() { return L.tileLayer(mapsurferUrl, {pane:'overlayPane'}); }
+		}
+	};
+
+	var baseLayers = {
+		'OSM': L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png')
+			.addTo(map),
+		'Yandex': new L.DeferredLayer(layerdefs.ysat)
+	};
+
+	var overlays = {
+		'Traffic': new L.DeferredLayer(layerdefs.traffic),
+		'OpenMapSurfer': new L.DeferredLayer(layerdefs.mso)
+	};
+
+	L.control.layers(baseLayers,overlays).addTo(map);
+
+	map.locate({ setView: true, maxZoom: 14 });
+</script>
+
+</body>
+</html>
