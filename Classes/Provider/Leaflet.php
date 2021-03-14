@@ -198,12 +198,18 @@ class Leaflet extends BaseProvider
                     $filename = Environment::getPublicPath() . '/' . $file->getPublicUrl();
                     $jsMarker .= 'var ' . $jsElementVar . '_file = new L.geoJson(' . file_get_contents($filename) . ');' . "\n";
                     $jsMarker .= $this->config['id'] . '.addLayer(' . $jsElementVar . '_file);' . "\n";
+
+                    // Add vector file to layerswitcher
+                    $this->layers[1][$item['title'] . ' (File)'] = $jsElementVar . '_file';
                 }
 
                 // add geojson from data field as well
                 if ($item['data']) {
                     $jsMarker .= 'var ' . $jsElementVar . '_data = new L.geoJson(' . $item['data'] . ');' . "\n";
                     $jsMarker .= $this->config['id'] . '.addLayer(' . $jsElementVar . '_data);' . "\n";
+
+                    // Add vector data to layerswitcher
+                    $this->layers[1][$item['title']] = $jsElementVar . '_data';
                 }
 
                 break;
