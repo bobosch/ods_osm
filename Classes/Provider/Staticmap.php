@@ -84,5 +84,3 @@ class Staticmap extends BaseProvider
         return ($content);
     }
 }
-
-?>

@@ -2,6 +2,7 @@
 
 namespace Bobosch\OdsOsm\Provider;
 
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Resource\FileRepository;
 use TYPO3\CMS\Core\Resource\StorageRepository;
@@ -190,8 +191,21 @@ class Leaflet extends BaseProvider
                 }
                 break;
             case 'tx_odsosm_vector':
-                $jsMarker .= 'var ' . $jsElementVar . ' = new L.geoJson(' . $item['data'] . ');' . "\n";
-                $jsMarker .= $this->config['id'] . '.addLayer(' . $jsElementVar . ');' . "\n";
+                $fileRepository = GeneralUtility::makeInstance(FileRepository::class);
+                $fileObjects = $fileRepository->findByRelation('tx_odsosm_vector', 'file', $item['uid']);
+                if ($fileObjects) {
+                    $file = $fileObjects[0];
+                    $filename = Environment::getPublicPath() . '/' . $file->getPublicUrl();
+                    $jsMarker .= 'var ' . $jsElementVar . '_file = new L.geoJson(' . file_get_contents($filename) . ');' . "\n";
+                    $jsMarker .= $this->config['id'] . '.addLayer(' . $jsElementVar . '_file);' . "\n";
+                }
+
+                // add geojson from data field as well
+                if ($item['data']) {
+                    $jsMarker .= 'var ' . $jsElementVar . '_data = new L.geoJson(' . $item['data'] . ');' . "\n";
+                    $jsMarker .= $this->config['id'] . '.addLayer(' . $jsElementVar . '_data);' . "\n";
+                }
+
                 break;
             default:
                 $markerOptions = array();

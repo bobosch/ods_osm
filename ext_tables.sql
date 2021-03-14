@@ -135,6 +135,7 @@ CREATE TABLE tx_odsosm_vector (
 	hidden tinyint(1) unsigned NOT NULL DEFAULT '0',
 	title tinytext NOT NULL,
 	data text NOT NULL,
+	file text NOT NULL,
 	min_lon decimal(9,6) NOT NULL DEFAULT '0.000000',
 	min_lat decimal(8,6) NOT NULL DEFAULT '0.000000',
 	max_lon decimal(9,6) NOT NULL DEFAULT '0.000000',
