@@ -269,6 +269,7 @@
 										<numIndex index="1"></numIndex>
 									</numIndex>
 								</items>
+								<eval>required</eval>
 							</config>
 						</TCEforms>
 					</openlayers3_layer>
@@ -287,6 +288,7 @@
 										<numIndex index="1"></numIndex>
 									</numIndex>
 								</items>
+								<eval>required</eval>
 							</config>
 						</TCEforms>
 					</staticmap_layer>

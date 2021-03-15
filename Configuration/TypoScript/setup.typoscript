@@ -6,7 +6,6 @@ plugin.tx_odsosm_pi1 {
 	JSlibrary = {$plugin.tx_odsosm_pi1.JSlibrary}
 	library = {$plugin.tx_odsosm_pi1.library}
 	external_control = {$plugin.tx_odsosm_pi1.external_control}
-	path_openlayers =
 	static_script =
 
 	# Marker

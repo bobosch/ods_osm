@@ -11,19 +11,24 @@ Currently it consists of:
  - Vector layers (`layer/vector/`):
    * GPX
    * KML
+   * TOPOJSON
 
- - Providers (`layer/tile`):
-   * Google - using Google Maps API v3;
-   * Yandex - using Yandex Maps API v2;
-   * Bing - with proper attribution.
+ - Providers implemented with respect to terms of use (`layer/tile`):
+   * [Yandex][Yandex.md] - using Yandex Maps API v2;
+   * [Bing][Bing.md] - with proper attribution.
 
-All these providers are implemented with respect to terms of use.
+ - Control (`control/`):
+   * Permalink - OpenLayers compatible permanent link with support for storing location data in hash part (#lat=...);
 
-Also there are some useful control plugins (`control/`):
+[Yandex.md]: https://github.com/shramov/leaflet-plugins/blob/master/layer/tile/Yandex.md
+[Bing.md]: https://github.com/shramov/leaflet-plugins/blob/master/layer/tile/Bing.md
 
- * Permalink - OpenLayers compatible permanent link with support for storing
-   location data in hash part (#lat=...);
- * Distance - simple tool to measure distances on maps
+
+Compatibility
+------
+ - Tested with: Leaflet 1.0.x
+ - For use with Leaflet 0.7.x see `v2` branch
+
 
 Where ?
 ------
@@ -33,3 +38,5 @@ Homepage : https://github.com/shramov/leaflet-plugins
 Downloads : https://github.com/shramov/leaflet-plugins/releases
 
 npm : https://www.npmjs.org/package/leaflet-plugins
+
+cdnjs : https://cdnjs.com/libraries/leaflet-plugins

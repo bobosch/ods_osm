@@ -23,10 +23,10 @@ class Leaflet extends BaseProvider
     public function getMapCore($backpath = '')
     {
         $this->path_res = ($backpath ? $backpath : $GLOBALS['TSFE']->absRefPrefix) . PathUtility::stripPathSitePrefix(ExtensionManagementUtility::extPath('ods_osm')) . 'Resources/Public/';
-        $this->path_leaflet = ($this->config['local_js'] ? $this->path_res . 'leaflet/' : 'https://cdn.leafletjs.com/leaflet-0.7.3/');
+        $this->path_leaflet = ($this->config['local_js'] ? $this->path_res . 'leaflet/' : 'https://unpkg.com/leaflet@1.7.1/dist/');
         $pageRenderer = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(PageRenderer::class);
         $pageRenderer->addCssFile($this->path_leaflet . 'leaflet.css');
-        $this->scripts = array($this->path_leaflet . 'leaflet.js');
+        $this->scripts['leaflet'] = ['src' => $this->path_leaflet . 'leaflet.js', 'sri' => 'sha384-RFZC58YeKApoNsIbBxf4z6JJXmh+geBSgkCQXFyh+4tiFSJmJBt+2FbjxW7Ar16M'];
     }
 
     public function getMapMain()
@@ -43,13 +43,13 @@ class Leaflet extends BaseProvider
 
         $jsMain =
             $this->config['id'] . "=new L.Map('" . $this->config['id'] . "');
-			L.Icon.Default.imagePath='" . $this->path_leaflet . "images';"
+			L.Icon.Default.imagePath='" . $this->path_leaflet . "images/';"
             . $vars;
         if ($this->config['cluster']) {
             $pageRenderer = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Page\\PageRenderer');
             $pageRenderer->addCssFile($this->path_res . 'leaflet-markercluster/MarkerCluster.css');
             $pageRenderer->addCssFile($this->path_res . 'leaflet-markercluster/MarkerCluster.Default.css');
-            $this->scripts['leaflet-markercluster'] = $this->path_res . 'leaflet-markercluster/leaflet.markercluster.js';
+            $this->scripts['leaflet-markercluster'] = ['src' => $this->path_res . 'leaflet-markercluster/leaflet.markercluster.js'];
         }
 
         return $jsMain;
@@ -164,7 +164,7 @@ class Leaflet extends BaseProvider
                 switch (strtolower(pathinfo($file->getName(), PATHINFO_EXTENSION))) {
                     case 'kml':
                         // include javascript file for KML support
-                        $this->scripts['leaflet-plugins'] = $path . 'leaflet-plugins/layer/vector/KML.js';
+                        $this->scripts['leaflet-plugins'] = ['src' => $path . 'leaflet-plugins/layer/vector/KML.js'];
 
                         $jsMarker .= 'var ' . $jsElementVar . ' = new L.KML(';
                         $jsMarker .= '"/' . $file->getPublicUrl() . '"';
@@ -172,7 +172,7 @@ class Leaflet extends BaseProvider
                         break;
                     case 'gpx':
                         // include javascript file for GPX support
-                        $this->scripts['leaflet-gpx'] = $path . 'leaflet-gpx/gpx.js';
+                        $this->scripts['leaflet-gpx'] = ['src' => $path . 'leaflet-gpx/gpx.js'];
                         $options = array(
                             'clickable' => 'false',
                             'polyline_options' => array(
@@ -198,12 +198,18 @@ class Leaflet extends BaseProvider
                     $filename = Environment::getPublicPath() . '/' . $file->getPublicUrl();
                     $jsMarker .= 'var ' . $jsElementVar . '_file = new L.geoJson(' . file_get_contents($filename) . ');' . "\n";
                     $jsMarker .= $this->config['id'] . '.addLayer(' . $jsElementVar . '_file);' . "\n";
+
+                    // Add vector file to layerswitcher
+                    $this->layers[1][$item['title'] . ' (File)'] = $jsElementVar . '_file';
                 }
 
                 // add geojson from data field as well
                 if ($item['data']) {
                     $jsMarker .= 'var ' . $jsElementVar . '_data = new L.geoJson(' . $item['data'] . ');' . "\n";
                     $jsMarker .= $this->config['id'] . '.addLayer(' . $jsElementVar . '_data);' . "\n";
+
+                    // Add vector data to layerswitcher
+                    $this->layers[1][$item['title']] = $jsElementVar . '_data';
                 }
 
                 break;

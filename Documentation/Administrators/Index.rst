@@ -112,8 +112,6 @@ Reference
 |                 |           || 0: Hide map                        |         |
 |                 |           || 1: Show map                        |         |
 +-----------------+-----------+-------------------------------------+---------+
-| path_openlayers | string    | Overwrites the path to OpenLayers.js|         |
-+-----------------+-----------+-------------------------------------+---------+
 | popup           | TS object | There are two additional fields:    | see p   |
 |                 |           | “group_title” and                   |         |
 |                 |           | “group_description” filled with     |         |

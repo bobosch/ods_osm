@@ -60,7 +60,19 @@ class Div
         } else {
             $pageRenderer = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Page\PageRenderer::class);
             foreach ($scripts as $script) {
-                $pageRenderer->addJsFooterFile($script);
+                $pageRenderer->addJsFooterFile(
+                    $script['src'],
+                    'text/javascript',
+                    true,
+                    false,
+                    '',
+                    false,
+                    '|',
+                    false,
+                    $script['sri'],
+                    false,
+                    'anonymous'
+                );
             }
         }
     }

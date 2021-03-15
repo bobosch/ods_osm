@@ -11,7 +11,9 @@ abstract class BaseProvider
     public $cObj; // Must set from instantiating class
     protected $config;
     protected $script;
-    protected $scripts = array();
+
+    /** @var array keeping all JavaScripts to be included */
+    protected $scripts = [];
 
     // Implement these functions
     public function getMapCore($backpath = '')
@@ -59,7 +61,7 @@ abstract class BaseProvider
 			" . $this->getMarkers($markers);
 
         if ($this->config['show_layerswitcher']) {
-            $this->script .= $this->getLayerSwitcher();
+            $this->script .= $this->getLayerSwitcher() . "\n";
         }
 
         Div::addJsFiles($this->scripts, null);
