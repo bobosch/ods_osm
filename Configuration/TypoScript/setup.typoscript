@@ -70,5 +70,5 @@ plugin.tx_odsosm_pi1 {
 	layerswitcher.div = 0
 	layerswitcher.options =
 
-#	_CSS_DEFAULT_STYLE = .olControlAttribution{bottom:0px!important;}
+	_CSS_DEFAULT_STYLE = .olControlAttribution{bottom:0px!important;}
 }
