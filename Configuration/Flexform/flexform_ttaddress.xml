@@ -402,12 +402,33 @@
 							</config>
 						</TCEforms>
 					</show_scalebar>
+					<enable_dragging>
+						<TCEforms>
+							<label>LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xml:tt_content.pi_flexform.enable_dragging</label>
+							<displayCond>FIELD:library:=:leaflet</displayCond>
+							<config>
+								<type>check</type>
+								<default>1</default>
+							</config>
+						</TCEforms>
+					</enable_dragging>
+					<enable_scrollwheelzoom>
+						<TCEforms>
+							<label>LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xml:tt_content.pi_flexform.enable_scrollwheelzoom</label>
+							<displayCond>FIELD:library:=:leaflet</displayCond>
+							<config>
+								<type>check</type>
+								<default>1</default>
+							</config>
+						</TCEforms>
+					</enable_scrollwheelzoom>
 					<position>
 						<TCEforms>
 							<label>LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xml:tt_content.pi_flexform.position_show</label>
 							<displayCond>FIELD:library:=:leaflet</displayCond>
 							<config>
 								<type>check</type>
+								<default>0</default>
 							</config>
 						</TCEforms>
 					</position>

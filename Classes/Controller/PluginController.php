@@ -97,7 +97,9 @@ class PluginController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
             'staticmap_layer',
             'use_coords_only_nomarker',
             'width',
-            'zoom'
+            'zoom',
+            'enable_scrollwheelzoom',
+            'enable_dragging'
         );
         foreach ($options as $option) {
             $value = $this->pi_getFFvalue($this->cObj->data['pi_flexform'], $option, 'sDEF');
