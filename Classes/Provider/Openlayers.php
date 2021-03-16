@@ -18,9 +18,9 @@ class Openlayers extends BaseProvider
     {
         $path = ($backpath ? $backpath : $GLOBALS['TSFE']->absRefPrefix) . PathUtility::stripPathSitePrefix(ExtensionManagementUtility::extPath('ods_osm')) . 'Resources/Public/';
         if ($this->config['local_js']) {
-            $this->scripts['Openlayers'] = ['src' => 'https://cdnjs.cloudflare.com/ajax/libs/openlayers/2.13.1/OpenLayers.js', 'sri' => 'sha384-1sdAnHpdcrkXIg3U6pRKfecnhahCO+SvNlpRoBSQ9qxY1LwSesu+L25qR9ceYg9V']
-        } else {
             $this->scripts['Openlayers'] = ['src' => $path . 'OpenLayers/OpenLayers.js'];
+        } else {
+            $this->scripts['Openlayers'] = ['src' => 'https://cdnjs.cloudflare.com/ajax/libs/openlayers/2.13.1/OpenLayers.js', 'sri' => 'sha384-1sdAnHpdcrkXIg3U6pRKfecnhahCO+SvNlpRoBSQ9qxY1LwSesu+L25qR9ceYg9V'];
         }
         $this->scripts['OpenlayersOds'] = ['src' => $path . 'tx_odsosm_openlayers.js'];
     }
