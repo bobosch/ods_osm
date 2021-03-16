@@ -109,8 +109,13 @@ class Leaflet extends BaseProvider
             }
         }
 
-        return 'var layersControl=new L.Control.Layers({' . implode(',', $base) . '},{' . implode(',', $overlay) . '}' . ($this->config['show_layerswitcher'] == 2 ? ',{collapsed:false}' : '') . ');
+        if (empty($base) && empty($overlay)) {
+            $layerString = '';
+        } else {
+            $layerString = 'var layersControl=new L.Control.Layers({' . implode(',', $base) . '},{' . implode(',', $overlay) . '}' . ($this->config['show_layerswitcher'] == 2 ? ',{collapsed:false}' : '') . ');
 			' . $this->config['id'] . '.addControl(layersControl);';
+        }
+        return $layerString;
     }
 
     public function getMapCenter($lat, $lon, $zoom)
