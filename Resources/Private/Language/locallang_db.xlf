@@ -1,0 +1,239 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+	<file source-language="en" datatype="plaintext" original="messages" date="2021-03-19T20:06:52Z" product-name="ods_osm">
+		<header/>
+		<body>
+			<trans-unit id="coordinatepicker.search_coordinates" xml:space="preserve">
+				<source>Search coordinates</source>
+			</trans-unit>
+			<trans-unit id="tt_address_group.tx_odsosm_marker" xml:space="preserve">
+				<source>Marker</source>
+			</trans-unit>
+			<trans-unit id="tt_content.list_type_pi1" xml:space="preserve">
+				<source>Openstreetmap</source>
+			</trans-unit>
+			<trans-unit id="tt_content.pi_flexform.sheet_sDEF" xml:space="preserve">
+				<source>Default</source>
+			</trans-unit>
+			<trans-unit id="tt_content.pi_flexform.cluster" xml:space="preserve">
+				<source>Cluster markers</source>
+			</trans-unit>
+			<trans-unit id="tt_content.pi_flexform.marker" xml:space="preserve">
+				<source>Marker to show</source>
+			</trans-unit>
+			<trans-unit id="tt_content.pi_flexform.marker_popup_intial" xml:space="preserve">
+				<source>Show this marker's popup initially</source>
+			</trans-unit>
+			<trans-unit id="tt_content.pi_flexform.width" xml:space="preserve">
+				<source>Width</source>
+			</trans-unit>
+			<trans-unit id="tt_content.pi_flexform.height" xml:space="preserve">
+				<source>Height</source>
+			</trans-unit>
+			<trans-unit id="tt_content.pi_flexform.layer" xml:space="preserve">
+				<source>Base layer</source>
+			</trans-unit>
+			<trans-unit id="tt_content.pi_flexform.library" xml:space="preserve">
+				<source>Library</source>
+			</trans-unit>
+			<trans-unit id="tt_content.pi_flexform.mouse_navigation" xml:space="preserve">
+				<source>Mouse navigation</source>
+			</trans-unit>
+			<trans-unit id="tt_content.pi_flexform.position_show" xml:space="preserve">
+				<source>Show current position</source>
+			</trans-unit>
+			<trans-unit id="tt_content.pi_flexform.show_pan_zoom" xml:space="preserve">
+				<source>Show pan/zoom</source>
+			</trans-unit>
+			<trans-unit id="tt_content.pi_flexform.show_pan_zoom.I.1" xml:space="preserve">
+				<source>Bar</source>
+			</trans-unit>
+			<trans-unit id="tt_content.pi_flexform.show_pan_zoom.I.2" xml:space="preserve">
+				<source>+/-</source>
+			</trans-unit>
+			<trans-unit id="tt_content.pi_flexform.show_popups" xml:space="preserve">
+				<source>Show popups</source>
+			</trans-unit>
+			<trans-unit id="tt_content.pi_flexform.show_popups.I.1" xml:space="preserve">
+				<source>Click</source>
+			</trans-unit>
+			<trans-unit id="tt_content.pi_flexform.show_popups.I.2" xml:space="preserve">
+				<source>Hover</source>
+			</trans-unit>
+			<trans-unit id="tt_content.pi_flexform.show_popups.I.3" xml:space="preserve">
+				<source>Exclusive</source>
+			</trans-unit>
+			<trans-unit id="tt_content.pi_flexform.show_layerswitcher" xml:space="preserve">
+				<source>Show layerswitcher</source>
+			</trans-unit>
+			<trans-unit id="tt_content.pi_flexform.show_layerswitcher.I.0" xml:space="preserve">
+				<source>No</source>
+			</trans-unit>
+			<trans-unit id="tt_content.pi_flexform.show_layerswitcher.I.1" xml:space="preserve">
+				<source>Closed</source>
+			</trans-unit>
+			<trans-unit id="tt_content.pi_flexform.show_layerswitcher.I.2" xml:space="preserve">
+				<source>Opened</source>
+			</trans-unit>
+			<trans-unit id="tt_content.pi_flexform.show_scalebar" xml:space="preserve">
+				<source>Show ScaleBar</source>
+			</trans-unit>
+			<trans-unit id="tt_content.pi_flexform.use_coords_only_nomarker" xml:space="preserve">
+				<source>Use this coordinates only if no marker exists</source>
+			</trans-unit>
+			<trans-unit id="tt_content.pi_flexform.zoom" xml:space="preserve">
+				<source>Zoom</source>
+			</trans-unit>
+			<trans-unit id="tt_content.pi_flexform.enable_dragging" xml:space="preserve">
+				<source>Enable dragging with mouse and touch</source>
+			</trans-unit>
+			<trans-unit id="tt_content.pi_flexform.enable_scrollwheelzoom" xml:space="preserve">
+				<source>Enable zooming with mouse scroll wheel</source>
+			</trans-unit>
+			<trans-unit id="tx_odsosm_lon" xml:space="preserve">
+				<source>Longitude</source>
+			</trans-unit>
+			<trans-unit id="tx_odsosm_lat" xml:space="preserve">
+				<source>Latitude</source>
+			</trans-unit>
+			<trans-unit id="tx_odsosm_geocache" xml:space="preserve">
+				<source>Geocache</source>
+			</trans-unit>
+			<trans-unit id="tx_odsosm_geocache.country" xml:space="preserve">
+				<source>Country</source>
+			</trans-unit>
+			<trans-unit id="tx_odsosm_geocache.state" xml:space="preserve">
+				<source>State</source>
+			</trans-unit>
+			<trans-unit id="tx_odsosm_geocache.city" xml:space="preserve">
+				<source>City</source>
+			</trans-unit>
+			<trans-unit id="tx_odsosm_geocache.zip" xml:space="preserve">
+				<source>Zip</source>
+			</trans-unit>
+			<trans-unit id="tx_odsosm_geocache.street" xml:space="preserve">
+				<source>Street</source>
+			</trans-unit>
+			<trans-unit id="tx_odsosm_geocache.housenumber" xml:space="preserve">
+				<source>Housenumber</source>
+			</trans-unit>
+			<trans-unit id="tx_odsosm_geocache.lon" xml:space="preserve">
+				<source>Longitude</source>
+			</trans-unit>
+			<trans-unit id="tx_odsosm_geocache.lat" xml:space="preserve">
+				<source>Latitude</source>
+			</trans-unit>
+			<trans-unit id="tx_odsosm_geocache.cache_hit" xml:space="preserve">
+				<source>Hit from cache</source>
+			</trans-unit>
+			<trans-unit id="tx_odsosm_geocache.service_hit" xml:space="preserve">
+				<source>Hit from location service</source>
+			</trans-unit>
+			<trans-unit id="tx_odsosm_layer" xml:space="preserve">
+				<source>Layer</source>
+			</trans-unit>
+			<trans-unit id="tx_odsosm_layer.title" xml:space="preserve">
+				<source>Title</source>
+			</trans-unit>
+			<trans-unit id="tx_odsosm_layer.overlay" xml:space="preserve">
+				<source>Is overlay</source>
+			</trans-unit>
+			<trans-unit id="tx_odsosm_layer.javascript_include" xml:space="preserve">
+				<source>Include static JavaScript</source>
+			</trans-unit>
+			<trans-unit id="tx_odsosm_layer.javascript_leaflet" xml:space="preserve">
+				<source>JavaScript for Leaflet</source>
+			</trans-unit>
+			<trans-unit id="tx_odsosm_layer.javascript_openlayers" xml:space="preserve">
+				<source>JavaScript for OpenLayers</source>
+			</trans-unit>
+			<trans-unit id="tx_odsosm_layer.javascript_openlayers3" xml:space="preserve">
+				<source>JavaScript for OpenLayers 3</source>
+			</trans-unit>
+			<trans-unit id="tx_odsosm_layer.static_url" xml:space="preserve">
+				<source>Static map URL</source>
+			</trans-unit>
+			<trans-unit id="tx_odsosm_layer.tile_url" xml:space="preserve">
+				<source>Tile URL</source>
+			</trans-unit>
+			<trans-unit id="tx_odsosm_layer.tile_https" xml:space="preserve">
+				<source>Tile URL https available</source>
+			</trans-unit>
+			<trans-unit id="tx_odsosm_layer.min_zoom" xml:space="preserve">
+				<source>Minimum zoom</source>
+			</trans-unit>
+			<trans-unit id="tx_odsosm_layer.max_zoom" xml:space="preserve">
+				<source>Maximum zoom</source>
+			</trans-unit>
+			<trans-unit id="tx_odsosm_layer.subdomains" xml:space="preserve">
+				<source>Subdomains</source>
+			</trans-unit>
+			<trans-unit id="tx_odsosm_layer.attribution" xml:space="preserve">
+				<source>Attribution</source>
+			</trans-unit>
+			<trans-unit id="tx_odsosm_layer.homepage" xml:space="preserve">
+				<source>Homepage</source>
+			</trans-unit>
+			<trans-unit id="tx_odsosm_marker" xml:space="preserve">
+				<source>Marker</source>
+			</trans-unit>
+			<trans-unit id="tx_odsosm_marker.title" xml:space="preserve">
+				<source>Title</source>
+			</trans-unit>
+			<trans-unit id="tx_odsosm_marker.icon" xml:space="preserve">
+				<source>Icon</source>
+			</trans-unit>
+			<trans-unit id="tx_odsosm_marker.size_x" xml:space="preserve">
+				<source>Size X</source>
+			</trans-unit>
+			<trans-unit id="tx_odsosm_marker.size_y" xml:space="preserve">
+				<source>Size Y</source>
+			</trans-unit>
+			<trans-unit id="tx_odsosm_marker.offset_x" xml:space="preserve">
+				<source>Offset X</source>
+			</trans-unit>
+			<trans-unit id="tx_odsosm_marker.offset_y" xml:space="preserve">
+				<source>Offset Y</source>
+			</trans-unit>
+			<trans-unit id="tx_odsosm_track" xml:space="preserve">
+				<source>Track</source>
+			</trans-unit>
+			<trans-unit id="tx_odsosm_track.title" xml:space="preserve">
+				<source>Title</source>
+			</trans-unit>
+			<trans-unit id="tx_odsosm_track.color" xml:space="preserve">
+				<source>Color</source>
+			</trans-unit>
+			<trans-unit id="tx_odsosm_track.width" xml:space="preserve">
+				<source>Width</source>
+			</trans-unit>
+			<trans-unit id="tx_odsosm_track.file" xml:space="preserve">
+				<source>File</source>
+			</trans-unit>
+			<trans-unit id="tx_odsosm_track.min_lon" xml:space="preserve">
+				<source>Minumum Longitude</source>
+			</trans-unit>
+			<trans-unit id="tx_odsosm_track.min_lat" xml:space="preserve">
+				<source>Minimum Latitude</source>
+			</trans-unit>
+			<trans-unit id="tx_odsosm_track.max_lon" xml:space="preserve">
+				<source>Maximum Longitude</source>
+			</trans-unit>
+			<trans-unit id="tx_odsosm_track.max_lat" xml:space="preserve">
+				<source>Maximum Latitude</source>
+			</trans-unit>
+			<trans-unit id="tx_odsosm_vector" xml:space="preserve">
+				<source>Vector</source>
+			</trans-unit>
+			<trans-unit id="tx_odsosm_vector.title" xml:space="preserve">
+				<source>Title</source>
+			</trans-unit>
+			<trans-unit id="tx_odsosm_vector.data" xml:space="preserve">
+				<source>GeoJSON</source>
+			</trans-unit>
+			<trans-unit id="tx_odsosm_vector.file" xml:space="preserve">
+				<source>File</source>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>
