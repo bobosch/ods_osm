@@ -4,7 +4,7 @@ if (!defined('TYPO3_MODE')) die('Access denied.');
 $tempColumns = array(
     'tx_odsosm_lon' => array( // DECIMAL(9,6)
         'exclude' => 1,
-        'label' => 'LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xml:tx_odsosm_lon',
+        'label' => 'LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xlf:tx_odsosm_lon',
         'config' => array(
             'type' => 'input',
             'size' => 11,
@@ -21,7 +21,7 @@ $tempColumns = array(
     ),
     'tx_odsosm_lat' => array( // DECIMAL(8,6)
         'exclude' => 1,
-        'label' => 'LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xml:tx_odsosm_lat',
+        'label' => 'LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xlf:tx_odsosm_lat',
         'config' => array(
             'type' => 'input',
             'size' => 10,

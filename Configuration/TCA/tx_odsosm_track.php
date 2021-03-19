@@ -1,7 +1,7 @@
 <?php
 return array(
     'ctrl' => array(
-        'title' => 'LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xml:tx_odsosm_track',
+        'title' => 'LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xlf:tx_odsosm_track',
         'label' => 'title',
         'tstamp' => 'tstamp',
         'crdate' => 'crdate',
@@ -35,7 +35,7 @@ return array(
         ],
         'title' => array(
             'exclude' => 0,
-            'label' => 'LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xml:tx_odsosm_track.title',
+            'label' => 'LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xlf:tx_odsosm_track.title',
             'config' => array(
                 'type' => 'input',
                 'size' => 30,
@@ -43,7 +43,7 @@ return array(
         ),
         'color' => array(
             'exclude' => 0,
-            'label' => 'LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xml:tx_odsosm_track.color',
+            'label' => 'LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xlf:tx_odsosm_track.color',
             'config' => array(
                 'type' => 'input',
                 'size' => 10,
@@ -55,7 +55,7 @@ return array(
         ),
         'width' => array(
             'exclude' => 0,
-            'label' => 'LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xml:tx_odsosm_track.width',
+            'label' => 'LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xlf:tx_odsosm_track.width',
             'config' => array(
                 'type' => 'input',
                 'size' => 3,
@@ -70,13 +70,13 @@ return array(
         ),
         'file' => array(
             'exclude' => 0,
-            'label' => 'LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xml:tx_odsosm_track.file',
+            'label' => 'LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xlf:tx_odsosm_track.file',
             'config' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::getFileFieldTCAConfig(
                 'file',
                 [
                     'maxitems' => 1,
                     'appearance' => [
-                        'createNewRelationLinkTitle' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:images.addFileReference'
+                        'createNewRelationLinkTitle' => 'LLL:EXT:ods_osm/Resources/Private/Language/locallang_db:tx_odsosm_track.file.add'
                     ],
                     'foreign_match_fields' => [
                         'fieldname' => 'file',
@@ -90,7 +90,7 @@ return array(
         ),
         'min_lon' => array(
             'exclude' => 0,
-            'label' => 'LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xml:tx_odsosm_track.min_lon',
+            'label' => 'LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xlf:tx_odsosm_track.min_lon',
             'config' => array(
                 'type' => 'none',
                 'size' => 8,
@@ -98,7 +98,7 @@ return array(
         ),
         'min_lat' => array(
             'exclude' => 0,
-            'label' => 'LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xml:tx_odsosm_track.min_lat',
+            'label' => 'LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xlf:tx_odsosm_track.min_lat',
             'config' => array(
                 'type' => 'none',
                 'size' => 8,
@@ -106,7 +106,7 @@ return array(
         ),
         'max_lon' => array(
             'exclude' => 0,
-            'label' => 'LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xml:tx_odsosm_track.max_lon',
+            'label' => 'LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xlf:tx_odsosm_track.max_lon',
             'config' => array(
                 'type' => 'none',
                 'size' => 8,
@@ -114,7 +114,7 @@ return array(
         ),
         'max_lat' => array(
             'exclude' => 0,
-            'label' => 'LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xml:tx_odsosm_track.max_lat',
+            'label' => 'LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xlf:tx_odsosm_track.max_lat',
             'config' => array(
                 'type' => 'none',
                 'size' => 8,

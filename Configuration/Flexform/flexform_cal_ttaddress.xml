@@ -6,13 +6,13 @@
         <sDEF>
             <ROOT>
                 <TCEforms>
-                    <sheetTitle>LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xml:tt_content.pi_flexform.sheet_sDEF</sheetTitle>
+                    <sheetTitle>LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xlf:tt_content.pi_flexform.sheet_sDEF</sheetTitle>
                 </TCEforms>
                 <type>array</type>
                 <el>
                     <marker>
                         <TCEforms>
-                            <label>LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xml:tt_content.pi_flexform.marker</label>
+                            <label>LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xlf:tt_content.pi_flexform.marker</label>
                             <config>
                                 <type>group</type>
                                 <internal_type>db</internal_type>
@@ -27,7 +27,7 @@
                     </marker>
                     <cluster>
                         <TCEforms>
-                            <label>LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xml:tt_content.pi_flexform.cluster</label>
+                            <label>LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xlf:tt_content.pi_flexform.cluster</label>
                             <displayCond>FIELD:library:=:leaflet</displayCond>
                             <config>
                                 <type>check</type>
@@ -36,7 +36,7 @@
                     </cluster>
                     <width>
                         <TCEforms>
-                            <label>LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xml:tt_content.pi_flexform.width</label>
+                            <label>LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xlf:tt_content.pi_flexform.width</label>
                             <config>
                                 <type>input</type>
                                 <size>5</size>
@@ -45,7 +45,7 @@
                     </width>
                     <height>
                         <TCEforms>
-                            <label>LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xml:tt_content.pi_flexform.height</label>
+                            <label>LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xlf:tt_content.pi_flexform.height</label>
                             <config>
                                 <type>input</type>
                                 <size>5</size>
@@ -54,7 +54,7 @@
                     </height>
                     <lon>
                         <TCEforms>
-                            <label>LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xml:tx_odsosm_lon</label>
+                            <label>LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xlf:tx_odsosm_lon</label>
                             <config>
                                 <type>input</type>
                                 <size>11</size>
@@ -71,7 +71,7 @@
                     </lon>
                     <lat>
                         <TCEforms>
-                            <label>LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xml:tx_odsosm_lat</label>
+                            <label>LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xlf:tx_odsosm_lat</label>
                             <config>
                                 <type>input</type>
                                 <size>10</size>
@@ -81,7 +81,7 @@
                     </lat>
                     <use_coords_only_nomarker>
                         <TCEforms>
-                            <label>LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xml:tt_content.pi_flexform.use_coords_only_nomarker
+                            <label>LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xlf:tt_content.pi_flexform.use_coords_only_nomarker
                             </label>
                             <config>
                                 <type>check</type>
@@ -90,7 +90,7 @@
                     </use_coords_only_nomarker>
                     <zoom>
                         <TCEforms>
-                            <label>LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xml:tt_content.pi_flexform.zoom</label>
+                            <label>LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xlf:tt_content.pi_flexform.zoom</label>
                             <config>
                                 <type>select</type>
                                 <renderType>selectSingle</renderType>
@@ -177,7 +177,7 @@
                     </zoom>
                     <library>
                         <TCEforms>
-                            <label>LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xml:tt_content.pi_flexform.library</label>
+                            <label>LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xlf:tt_content.pi_flexform.library</label>
                             <onChange>reload</onChange>
                             <config>
                                 <type>select</type>
@@ -209,7 +209,7 @@
                     </library>
                     <layer>
                         <TCEforms>
-                            <label>LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xml:tt_content.pi_flexform.layer</label>
+                            <label>LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xlf:tt_content.pi_flexform.layer</label>
                             <displayCond>FIELD:library:=:</displayCond>
                             <config>
                                 <type>select</type>
@@ -225,7 +225,7 @@
                     </layer>
                     <leaflet_layer>
                         <TCEforms>
-                            <label>LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xml:tt_content.pi_flexform.layer</label>
+                            <label>LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xlf:tt_content.pi_flexform.layer</label>
                             <displayCond>FIELD:library:=:leaflet</displayCond>
                             <config>
                                 <type>select</type>
@@ -244,7 +244,7 @@
                     </leaflet_layer>
                     <openlayers_layer>
                         <TCEforms>
-                            <label>LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xml:tt_content.pi_flexform.layer</label>
+                            <label>LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xlf:tt_content.pi_flexform.layer</label>
                             <displayCond>FIELD:library:=:openlayers</displayCond>
                             <config>
                                 <type>select</type>
@@ -263,7 +263,7 @@
                     </openlayers_layer>
                     <openlayers3_layer>
                         <TCEforms>
-                            <label>LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xml:tt_content.pi_flexform.layer</label>
+                            <label>LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xlf:tt_content.pi_flexform.layer</label>
                             <displayCond>FIELD:library:=:openlayers3</displayCond>
                             <config>
                                 <type>select</type>
@@ -283,7 +283,7 @@
                     </openlayers3_layer>
                     <staticmap_layer>
                         <TCEforms>
-                            <label>LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xml:tt_content.pi_flexform.layer</label>
+                            <label>LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xlf:tt_content.pi_flexform.layer</label>
                             <displayCond>FIELD:library:=:staticmap</displayCond>
                             <config>
                                 <type>select</type>
@@ -303,7 +303,7 @@
                     </staticmap_layer>
                     <mouse_navigation>
                         <TCEforms>
-                            <label>LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xml:tt_content.pi_flexform.mouse_navigation</label>
+                            <label>LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xlf:tt_content.pi_flexform.mouse_navigation</label>
                             <displayCond>FIELD:library:=:openlayers</displayCond>
                             <config>
                                 <type>check</type>
@@ -312,7 +312,7 @@
                     </mouse_navigation>
                     <show_pan_zoom>
                         <TCEforms>
-                            <label>LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xml:tt_content.pi_flexform.show_pan_zoom</label>
+                            <label>LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xlf:tt_content.pi_flexform.show_pan_zoom</label>
                             <displayCond>FIELD:library:=:openlayers</displayCond>
                             <config>
                                 <type>select</type>
@@ -324,13 +324,13 @@
                                     </numIndex>
                                     <numIndex index="1" type="array">
                                         <numIndex index="0">
-                                            LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xml:tt_content.pi_flexform.show_pan_zoom.I.1
+                                            LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xlf:tt_content.pi_flexform.show_pan_zoom.I.1
                                         </numIndex>
                                         <numIndex index="1">1</numIndex>
                                     </numIndex>
                                     <numIndex index="2" type="array">
                                         <numIndex index="0">
-                                            LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xml:tt_content.pi_flexform.show_pan_zoom.I.2
+                                            LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xlf:tt_content.pi_flexform.show_pan_zoom.I.2
                                         </numIndex>
                                         <numIndex index="1">2</numIndex>
                                     </numIndex>
@@ -340,7 +340,7 @@
                     </show_pan_zoom>
                     <show_popups>
                         <TCEforms>
-                            <label>LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xml:tt_content.pi_flexform.show_popups</label>
+                            <label>LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xlf:tt_content.pi_flexform.show_popups</label>
                             <displayCond>FIELD:library:IN:openlayers,leaflet</displayCond>
                             <onChange>reload</onChange>
                             <config>
@@ -353,19 +353,19 @@
                                     </numIndex>
                                     <numIndex index="1" type="array">
                                         <numIndex index="0">
-                                            LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xml:tt_content.pi_flexform.show_popups.I.1
+                                            LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xlf:tt_content.pi_flexform.show_popups.I.1
                                         </numIndex>
                                         <numIndex index="1">1</numIndex>
                                     </numIndex>
                                     <numIndex index="2" type="array">
                                         <numIndex index="0">
-                                            LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xml:tt_content.pi_flexform.show_popups.I.2
+                                            LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xlf:tt_content.pi_flexform.show_popups.I.2
                                         </numIndex>
                                         <numIndex index="1">2</numIndex>
                                     </numIndex>
                                     <numIndex index="3" type="array">
                                         <numIndex index="0">
-                                            LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xml:tt_content.pi_flexform.show_popups.I.3
+                                            LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xlf:tt_content.pi_flexform.show_popups.I.3
                                         </numIndex>
                                         <numIndex index="1">3</numIndex>
                                     </numIndex>
@@ -375,7 +375,7 @@
                     </show_popups>
                     <marker_popup_initial>
                         <TCEforms>
-                            <label>LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xml:tt_content.pi_flexform.marker_popup_intial</label>
+                            <label>LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xlf:tt_content.pi_flexform.marker_popup_intial</label>
                             <displayCond>FIELD:show_popups:IN:1,3</displayCond>
                             <config>
                                 <type>group</type>
@@ -390,7 +390,7 @@
                     </marker_popup_initial>
                     <show_layerswitcher>
                         <TCEforms>
-                            <label>LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xml:tt_content.pi_flexform.show_layerswitcher</label>
+                            <label>LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xlf:tt_content.pi_flexform.show_layerswitcher</label>
                             <displayCond>FIELD:library:IN:leaflet,openlayers</displayCond>
                             <config>
                                 <type>select</type>
@@ -398,19 +398,19 @@
                                 <items type="array">
                                     <numIndex index="1" type="array">
                                         <numIndex index="0">
-                                            LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xml:tt_content.pi_flexform.show_layerswitcher.I.0
+                                            LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xlf:tt_content.pi_flexform.show_layerswitcher.I.0
                                         </numIndex>
                                         <numIndex index="1">0</numIndex>
                                     </numIndex>
                                     <numIndex index="2" type="array">
                                         <numIndex index="0">
-                                            LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xml:tt_content.pi_flexform.show_layerswitcher.I.1
+                                            LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xlf:tt_content.pi_flexform.show_layerswitcher.I.1
                                         </numIndex>
                                         <numIndex index="1">1</numIndex>
                                     </numIndex>
                                     <numIndex index="3" type="array">
                                         <numIndex index="0">
-                                            LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xml:tt_content.pi_flexform.show_layerswitcher.I.2
+                                            LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xlf:tt_content.pi_flexform.show_layerswitcher.I.2
                                         </numIndex>
                                         <numIndex index="1">2</numIndex>
                                     </numIndex>
@@ -420,7 +420,7 @@
                     </show_layerswitcher>
                     <show_scalebar>
                         <TCEforms>
-                            <label>LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xml:tt_content.pi_flexform.show_scalebar</label>
+                            <label>LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xlf:tt_content.pi_flexform.show_scalebar</label>
                             <displayCond>FIELD:library:IN:openlayers,leaflet</displayCond>
                             <config>
                                 <type>check</type>
@@ -429,7 +429,7 @@
                     </show_scalebar>
                     <position>
                         <TCEforms>
-                            <label>LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xml:tt_content.pi_flexform.position_show</label>
+                            <label>LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xlf:tt_content.pi_flexform.position_show</label>
                             <displayCond>FIELD:library:=:leaflet</displayCond>
                             <config>
                                 <type>check</type>

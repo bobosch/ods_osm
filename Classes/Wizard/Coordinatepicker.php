@@ -100,7 +100,7 @@ class Coordinatepicker extends \TYPO3\CMS\Backend\Controller\Wizard\AbstractWiza
      */
     public function __construct()
     {
-        $this->getLanguageService()->includeLLFile('EXT:ods_osm/Resources/Private/Language/locallang_db.xml');
+        $this->getLanguageService()->includeLLFile('EXT:ods_osm/Resources/Private/Language/locallang_db.xlf');
         $GLOBALS['SOBE'] = $this;
 
         $this->init();

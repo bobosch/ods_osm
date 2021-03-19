@@ -1,7 +1,7 @@
 <?php
 return array(
     'ctrl' => array(
-        'title' => 'LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xml:tx_odsosm_marker',
+        'title' => 'LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xlf:tx_odsosm_marker',
         'label' => 'title',
         'tstamp' => 'tstamp',
         'crdate' => 'crdate',
@@ -16,7 +16,7 @@ return array(
     'columns' => array(
         'title' => array(
             'exclude' => 0,
-            'label' => 'LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xml:tx_odsosm_marker.title',
+            'label' => 'LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xlf:tx_odsosm_marker.title',
             'config' => array(
                 'type' => 'input',
                 'size' => '30',
@@ -24,7 +24,7 @@ return array(
         ),
         'icon' => array(
             'exclude' => 0,
-            'label' => 'LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xml:tx_odsosm_marker.icon',
+            'label' => 'LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xlf:tx_odsosm_marker.icon',
             'config' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::getFileFieldTCAConfig(
                 'icon',
                 [
@@ -44,7 +44,7 @@ return array(
         ),
         'size_x' => array(
             'exclude' => 0,
-            'label' => 'LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xml:tx_odsosm_marker.size_x',
+            'label' => 'LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xlf:tx_odsosm_marker.size_x',
             'config' => array(
                 'type' => 'input',
                 'size' => 4,
@@ -60,7 +60,7 @@ return array(
         ),
         'size_y' => array(
             'exclude' => 0,
-            'label' => 'LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xml:tx_odsosm_marker.size_y',
+            'label' => 'LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xlf:tx_odsosm_marker.size_y',
             'config' => array(
                 'type' => 'input',
                 'size' => 4,
@@ -76,7 +76,7 @@ return array(
         ),
         'offset_x' => array(
             'exclude' => 0,
-            'label' => 'LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xml:tx_odsosm_marker.offset_x',
+            'label' => 'LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xlf:tx_odsosm_marker.offset_x',
             'config' => array(
                 'type' => 'input',
                 'size' => 5,
@@ -92,7 +92,7 @@ return array(
         ),
         'offset_y' => array(
             'exclude' => 0,
-            'label' => 'LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xml:tx_odsosm_marker.offset_y',
+            'label' => 'LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xlf:tx_odsosm_marker.offset_y',
             'config' => array(
                 'type' => 'input',
                 'size' => 5,

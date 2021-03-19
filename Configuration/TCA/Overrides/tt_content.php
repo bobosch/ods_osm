@@ -10,7 +10,7 @@ if ( ! defined( 'TYPO3_MODE' ) ) {
 
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPlugin(
 	array(
-		'LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xml:tt_content.list_type_pi1',
+		'LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xlf:tt_content.list_type_pi1',
 		'ods_osm_pi1'
 	),
 	'list_type',
