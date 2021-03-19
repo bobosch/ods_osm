@@ -1,315 +1,325 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
-<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
-	<file source-language="en" target-language="de" datatype="plaintext" original="messages" date="2021-03-19T20:06:52Z" product-name="ods_osm">
-		<header/>
+<xliff version="1.0">
+	<file source-language="en" target-language="de" datatype="plaintext" original="messages" date="2021-03-19T20:18:09Z">
+		<header>
+			<generator>LFEditor</generator>
+		</header>
 		<body>
-			<trans-unit id="coordinatepicker.search_coordinates" xml:space="preserve" approved="yes">
-				<source>Search coordinates</source>
-				<target>Suche Koordinaten</target>
-			</trans-unit>
-			<trans-unit id="tt_address_group.tx_odsosm_marker" xml:space="preserve" approved="yes">
-				<source>Marker</source>
-				<target>Marker</target>
-			</trans-unit>
-			<trans-unit id="tt_content.list_type_pi1" xml:space="preserve" approved="yes">
-				<source>Openstreetmap</source>
-				<target>Openstreetmap</target>
-			</trans-unit>
-			<trans-unit id="tt_content.pi_flexform.sheet_sDEF" xml:space="preserve" approved="yes">
-				<source>Default</source>
-				<target>Standard</target>
-			</trans-unit>
-			<trans-unit id="tt_content.pi_flexform.cluster" xml:space="preserve" approved="yes">
-				<source>Cluster markers</source>
-				<target>Markierungen bündeln</target>
-			</trans-unit>
-			<trans-unit id="tt_content.pi_flexform.marker" xml:space="preserve" approved="yes">
-				<source>Marker to show</source>
-				<target>Markierungen anzeigen</target>
-			</trans-unit>
-			<trans-unit id="tt_content.pi_flexform.marker_popup_intial" xml:space="preserve" approved="yes">
-				<source>Show this marker's popup initially</source>
-				<target>Markierungspopup anfangs anzeigen</target>
-			</trans-unit>
-			<trans-unit id="tt_content.pi_flexform.width" xml:space="preserve" approved="yes">
-				<source>Width</source>
-				<target>Breite</target>
-			</trans-unit>
-			<trans-unit id="tt_content.pi_flexform.height" xml:space="preserve" approved="yes">
-				<source>Height</source>
-				<target>Höhe</target>
-			</trans-unit>
-			<trans-unit id="tt_content.pi_flexform.layer" xml:space="preserve" approved="yes">
-				<source>Base layer</source>
-				<target>Hauptebene</target>
-			</trans-unit>
-			<trans-unit id="tt_content.pi_flexform.library" xml:space="preserve" approved="yes">
-				<source>Library</source>
-				<target>Programm</target>
-			</trans-unit>
-			<trans-unit id="tt_content.pi_flexform.mouse_navigation" xml:space="preserve" approved="yes">
-				<source>Mouse navigation</source>
-				<target>Navigation mit der Maus</target>
-			</trans-unit>
-			<trans-unit id="tt_content.pi_flexform.position_show" xml:space="preserve" approved="yes">
-				<source>Show current position</source>
-				<target>Aktuelle Position anzeigen</target>
-			</trans-unit>
-			<trans-unit id="tt_content.pi_flexform.show_pan_zoom" xml:space="preserve" approved="yes">
-				<source>Show pan/zoom</source>
-				<target>Schwenken/zoomen anzeigen</target>
-			</trans-unit>
-			<trans-unit id="tt_content.pi_flexform.show_pan_zoom.I.1" xml:space="preserve" approved="yes">
-				<source>Bar</source>
-				<target>Balken</target>
-			</trans-unit>
-			<trans-unit id="tt_content.pi_flexform.show_pan_zoom.I.2" xml:space="preserve" approved="yes">
-				<source>+/-</source>
-				<target>+/-</target>
-			</trans-unit>
-			<trans-unit id="tt_content.pi_flexform.show_popups" xml:space="preserve" approved="yes">
-				<source>Show popups</source>
-				<target>Popups anzeigen</target>
-			</trans-unit>
-			<trans-unit id="tt_content.pi_flexform.show_popups.I.1" xml:space="preserve" approved="yes">
-				<source>Click</source>
-				<target>Click</target>
-			</trans-unit>
-			<trans-unit id="tt_content.pi_flexform.show_popups.I.2" xml:space="preserve" approved="yes">
-				<source>Hover</source>
-				<target>Hover</target>
-			</trans-unit>
-			<trans-unit id="tt_content.pi_flexform.show_popups.I.3" xml:space="preserve" approved="yes">
-				<source>Exclusive</source>
-				<target>Exklusiv</target>
-			</trans-unit>
-			<trans-unit id="tt_content.pi_flexform.show_layerswitcher" xml:space="preserve" approved="yes">
-				<source>Show layerswitcher</source>
-				<target>Ebenenumschalter anzeigen</target>
-			</trans-unit>
-			<trans-unit id="tt_content.pi_flexform.show_layerswitcher.I.0" xml:space="preserve" approved="yes">
-				<source>No</source>
-				<target>Nein</target>
-			</trans-unit>
-			<trans-unit id="tt_content.pi_flexform.show_layerswitcher.I.1" xml:space="preserve" approved="yes">
-				<source>Closed</source>
-				<target>Geschlossen</target>
-			</trans-unit>
-			<trans-unit id="tt_content.pi_flexform.show_layerswitcher.I.2" xml:space="preserve" approved="yes">
-				<source>Opened</source>
-				<target>Geöffnet</target>
-			</trans-unit>
-			<trans-unit id="tt_content.pi_flexform.show_scalebar" xml:space="preserve" approved="yes">
-				<source>Show ScaleBar</source>
-				<target>Massstabsanzeige anzeigen</target>
-			</trans-unit>
-			<trans-unit id="tt_content.pi_flexform.use_coords_only_nomarker" xml:space="preserve" approved="yes">
-				<source>Use this coordinates only if no marker exists</source>
-				<target>Diese Koordinaten nur verwenden wenn keine Markierung existiert</target>
-			</trans-unit>
-			<trans-unit id="tt_content.pi_flexform.zoom" xml:space="preserve" approved="yes">
-				<source>Zoom</source>
-				<target>Zoom</target>
-			</trans-unit>
-			<trans-unit id="tt_content.pi_flexform.enable_dragging" xml:space="preserve" approved="yes">
-				<source>Enable dragging with mouse and touch</source>
-				<target>Karte mit Maus bzw. Touch verschieben</target>
-			</trans-unit>
-			<trans-unit id="tt_content.pi_flexform.enable_scrollwheelzoom" xml:space="preserve" approved="yes">
-				<source>Enable zooming with mouse scroll wheel</source>
-				<target>Zoomen mit dem Mausrad</target>
-			</trans-unit>
-			<trans-unit id="tx_odsosm_lon" xml:space="preserve" approved="yes">
-				<source>Longitude</source>
-				<target>Längengrad</target>
-			</trans-unit>
-			<trans-unit id="tx_odsosm_lat" xml:space="preserve" approved="yes">
-				<source>Latitude</source>
-				<target>Breitengrad</target>
-			</trans-unit>
-			<trans-unit id="tx_odsosm_geocache" xml:space="preserve" approved="yes">
-				<source>Geocache</source>
-				<target>Geocache</target>
-			</trans-unit>
-			<trans-unit id="tx_odsosm_geocache.country" xml:space="preserve" approved="yes">
-				<source>Country</source>
-				<target>Land</target>
-			</trans-unit>
-			<trans-unit id="tx_odsosm_geocache.state" xml:space="preserve" approved="yes">
-				<source>State</source>
-				<target>Bundesland</target>
-			</trans-unit>
-			<trans-unit id="tx_odsosm_geocache.city" xml:space="preserve" approved="yes">
-				<source>City</source>
-				<target>Stadt</target>
-			</trans-unit>
-			<trans-unit id="tx_odsosm_geocache.zip" xml:space="preserve" approved="yes">
-				<source>Zip</source>
-				<target>PLZ</target>
-			</trans-unit>
-			<trans-unit id="tx_odsosm_geocache.street" xml:space="preserve" approved="yes">
-				<source>Street</source>
-				<target>Straße</target>
-			</trans-unit>
-			<trans-unit id="tx_odsosm_geocache.housenumber" xml:space="preserve" approved="yes">
-				<source>Housenumber</source>
-				<target>Hausnummer</target>
-			</trans-unit>
-			<trans-unit id="tx_odsosm_geocache.lon" xml:space="preserve" approved="yes">
-				<source>Longitude</source>
-				<target>Längengrad</target>
-			</trans-unit>
-			<trans-unit id="tx_odsosm_geocache.lat" xml:space="preserve" approved="yes">
-				<source>Latitude</source>
-				<target>Breitengrad</target>
-			</trans-unit>
-			<trans-unit id="tx_odsosm_geocache.cache_hit" xml:space="preserve" approved="yes">
-				<source>Hit from cache</source>
-				<target></target>
-			</trans-unit>
-			<trans-unit id="tx_odsosm_geocache.service_hit" xml:space="preserve" approved="yes">
-				<source>Hit from location service</source>
-				<target></target>
-			</trans-unit>
-			<trans-unit id="tx_odsosm_layer" xml:space="preserve" approved="yes">
-				<source>Layer</source>
-				<target>Ebene</target>
-			</trans-unit>
-			<trans-unit id="tx_odsosm_layer.title" xml:space="preserve" approved="yes">
-				<source>Title</source>
-				<target>Titel</target>
-			</trans-unit>
-			<trans-unit id="tx_odsosm_layer.overlay" xml:space="preserve" approved="yes">
-				<source>Is overlay</source>
-				<target>Ist Overlay</target>
-			</trans-unit>
-			<trans-unit id="tx_odsosm_layer.javascript_include" xml:space="preserve" approved="yes">
-				<source>Include static JavaScript</source>
-				<target>Statisches JavaScript einbinden</target>
-			</trans-unit>
-			<trans-unit id="tx_odsosm_layer.javascript_leaflet" xml:space="preserve" approved="yes">
-				<source>JavaScript for Leaflet</source>
-				<target>JavaScript für Leaflet</target>
-			</trans-unit>
-			<trans-unit id="tx_odsosm_layer.javascript_openlayers" xml:space="preserve" approved="yes">
-				<source>JavaScript for OpenLayers</source>
-				<target>JavaScript für OpenLayers</target>
-			</trans-unit>
-			<trans-unit id="tx_odsosm_layer.javascript_openlayers3" xml:space="preserve" approved="yes">
-				<source>JavaScript for OpenLayers 3</source>
-				<target>JavaScript für OpenLayers 3</target>
-			</trans-unit>
-			<trans-unit id="tx_odsosm_layer.static_url" xml:space="preserve" approved="yes">
-				<source>Static map URL</source>
-				<target>URL für statische Karte</target>
-			</trans-unit>
-			<trans-unit id="tx_odsosm_layer.tile_url" xml:space="preserve" approved="yes">
-				<source>Tile URL</source>
-				<target>Tile URL</target>
-			</trans-unit>
-			<trans-unit id="tx_odsosm_layer.tile_https" xml:space="preserve" approved="yes">
-				<source>Tile URL https available</source>
-				<target>Tile URL https verfügbar</target>
-			</trans-unit>
-			<trans-unit id="tx_odsosm_layer.min_zoom" xml:space="preserve" approved="yes">
-				<source>Minimum zoom</source>
-				<target>Minimaler zoom</target>
-			</trans-unit>
-			<trans-unit id="tx_odsosm_layer.max_zoom" xml:space="preserve" approved="yes">
-				<source>Maximum zoom</source>
-				<target>Maximaler Zoom</target>
-			</trans-unit>
-			<trans-unit id="tx_odsosm_layer.subdomains" xml:space="preserve" approved="yes">
-				<source>Subdomains</source>
-				<target></target>
-			</trans-unit>
-			<trans-unit id="tx_odsosm_layer.attribution" xml:space="preserve" approved="yes">
-				<source>Attribution</source>
-				<target></target>
-			</trans-unit>
-			<trans-unit id="tx_odsosm_layer.homepage" xml:space="preserve" approved="yes">
-				<source>Homepage</source>
-				<target></target>
-			</trans-unit>
-			<trans-unit id="tx_odsosm_marker" xml:space="preserve" approved="yes">
-				<source>Marker</source>
-				<target>Marker</target>
-			</trans-unit>
-			<trans-unit id="tx_odsosm_marker.title" xml:space="preserve" approved="yes">
-				<source>Title</source>
-				<target>Titel</target>
-			</trans-unit>
-			<trans-unit id="tx_odsosm_marker.icon" xml:space="preserve" approved="yes">
-				<source>Icon</source>
-				<target>Icon</target>
-			</trans-unit>
-			<trans-unit id="tx_odsosm_marker.size_x" xml:space="preserve" approved="yes">
-				<source>Size X</source>
-				<target>Größe X</target>
-			</trans-unit>
-			<trans-unit id="tx_odsosm_marker.size_y" xml:space="preserve" approved="yes">
-				<source>Size Y</source>
-				<target>Größe Y</target>
-			</trans-unit>
-			<trans-unit id="tx_odsosm_marker.offset_x" xml:space="preserve" approved="yes">
-				<source>Offset X</source>
-				<target>Ausgleich X</target>
-			</trans-unit>
-			<trans-unit id="tx_odsosm_marker.offset_y" xml:space="preserve" approved="yes">
-				<source>Offset Y</source>
-				<target>Ausgleich Y</target>
-			</trans-unit>
-			<trans-unit id="tx_odsosm_track" xml:space="preserve" approved="yes">
-				<source>Track</source>
-				<target>Track</target>
-			</trans-unit>
-			<trans-unit id="tx_odsosm_track.title" xml:space="preserve" approved="yes">
-				<source>Title</source>
-				<target>Titel</target>
-			</trans-unit>
-			<trans-unit id="tx_odsosm_track.color" xml:space="preserve" approved="yes">
-				<source>Color</source>
-				<target>Farbe</target>
-			</trans-unit>
-			<trans-unit id="tx_odsosm_track.width" xml:space="preserve" approved="yes">
-				<source>Width</source>
-				<target>Breite</target>
-			</trans-unit>
-			<trans-unit id="tx_odsosm_track.file" xml:space="preserve" approved="yes">
-				<source>File</source>
-				<target>Datei</target>
-			</trans-unit>
-			<trans-unit id="tx_odsosm_track.min_lon" xml:space="preserve" approved="yes">
-				<source>Minumum Longitude</source>
-				<target>Minimaler Längengrad</target>
-			</trans-unit>
-			<trans-unit id="tx_odsosm_track.min_lat" xml:space="preserve" approved="yes">
-				<source>Minimum Latitude</source>
-				<target>Minimaler Breitengrad</target>
-			</trans-unit>
-			<trans-unit id="tx_odsosm_track.max_lon" xml:space="preserve" approved="yes">
-				<source>Maximum Longitude</source>
-				<target>Maximaler Längengrad</target>
-			</trans-unit>
-			<trans-unit id="tx_odsosm_track.max_lat" xml:space="preserve" approved="yes">
-				<source>Maximum Latitude</source>
-				<target>Maximaler Breitengrad</target>
-			</trans-unit>
-			<trans-unit id="tx_odsosm_vector" xml:space="preserve" approved="yes">
-				<source>Vector</source>
-				<target>Vektor</target>
-			</trans-unit>
-			<trans-unit id="tx_odsosm_vector.title" xml:space="preserve" approved="yes">
-				<source>Title</source>
-				<target>Titel</target>
-			</trans-unit>
-			<trans-unit id="tx_odsosm_vector.data" xml:space="preserve" approved="yes">
-				<source>GeoJSON</source>
-				<target>GeoJSON</target>
-			</trans-unit>
-			<trans-unit id="tx_odsosm_vector.file" xml:space="preserve" approved="yes">
-				<source>File</source>
-				<target>Datei</target>
+			<trans-unit id="coordinatepicker.search_coordinates" approved="yes">
+				<source><![CDATA[Search coordinates]]></source>
+				<target><![CDATA[Suche Koordinaten]]></target>
+			</trans-unit>
+			<trans-unit id="tt_address_group.tx_odsosm_marker" approved="yes">
+				<source><![CDATA[Marker]]></source>
+				<target><![CDATA[Marker]]></target>
+			</trans-unit>
+			<trans-unit id="tt_content.list_type_pi1" approved="yes">
+				<source><![CDATA[Openstreetmap]]></source>
+				<target><![CDATA[Openstreetmap]]></target>
+			</trans-unit>
+			<trans-unit id="tt_content.pi_flexform.cluster" approved="yes">
+				<source><![CDATA[Cluster markers]]></source>
+				<target><![CDATA[Markierungen bündeln]]></target>
+			</trans-unit>
+			<trans-unit id="tt_content.pi_flexform.enable_dragging" approved="yes">
+				<source><![CDATA[Enable dragging with mouse and touch]]></source>
+				<target><![CDATA[Karte mit Maus bzw. Touch verschieben]]></target>
+			</trans-unit>
+			<trans-unit id="tt_content.pi_flexform.enable_scrollwheelzoom" approved="yes">
+				<source><![CDATA[Enable zooming with mouse scroll wheel]]></source>
+				<target><![CDATA[Zoomen mit dem Mausrad]]></target>
+			</trans-unit>
+			<trans-unit id="tt_content.pi_flexform.height" approved="yes">
+				<source><![CDATA[Height]]></source>
+				<target><![CDATA[Höhe]]></target>
+			</trans-unit>
+			<trans-unit id="tt_content.pi_flexform.layer" approved="yes">
+				<source><![CDATA[Base layer]]></source>
+				<target><![CDATA[Hauptebene]]></target>
+			</trans-unit>
+			<trans-unit id="tt_content.pi_flexform.library" approved="yes">
+				<source><![CDATA[Library]]></source>
+				<target><![CDATA[Programm]]></target>
+			</trans-unit>
+			<trans-unit id="tt_content.pi_flexform.marker" approved="yes">
+				<source><![CDATA[Marker to show]]></source>
+				<target><![CDATA[Markierungen anzeigen]]></target>
+			</trans-unit>
+			<trans-unit id="tt_content.pi_flexform.marker_popup_intial" approved="yes">
+				<source><![CDATA[Show this marker's popup initially]]></source>
+				<target><![CDATA[Markierungspopup anfangs anzeigen]]></target>
+			</trans-unit>
+			<trans-unit id="tt_content.pi_flexform.mouse_navigation" approved="yes">
+				<source><![CDATA[Mouse navigation]]></source>
+				<target><![CDATA[Navigation mit der Maus]]></target>
+			</trans-unit>
+			<trans-unit id="tt_content.pi_flexform.position_show" approved="yes">
+				<source><![CDATA[Show current position]]></source>
+				<target><![CDATA[Aktuelle Position anzeigen]]></target>
+			</trans-unit>
+			<trans-unit id="tt_content.pi_flexform.sheet_sDEF" approved="yes">
+				<source><![CDATA[Default]]></source>
+				<target><![CDATA[Standard]]></target>
+			</trans-unit>
+			<trans-unit id="tt_content.pi_flexform.show_layerswitcher" approved="yes">
+				<source><![CDATA[Show layerswitcher]]></source>
+				<target><![CDATA[Ebenenumschalter anzeigen]]></target>
+			</trans-unit>
+			<trans-unit id="tt_content.pi_flexform.show_layerswitcher.I.0" approved="yes">
+				<source><![CDATA[No]]></source>
+				<target><![CDATA[Nein]]></target>
+			</trans-unit>
+			<trans-unit id="tt_content.pi_flexform.show_layerswitcher.I.1" approved="yes">
+				<source><![CDATA[Closed]]></source>
+				<target><![CDATA[Geschlossen]]></target>
+			</trans-unit>
+			<trans-unit id="tt_content.pi_flexform.show_layerswitcher.I.2" approved="yes">
+				<source><![CDATA[Opened]]></source>
+				<target><![CDATA[Geöffnet]]></target>
+			</trans-unit>
+			<trans-unit id="tt_content.pi_flexform.show_pan_zoom" approved="yes">
+				<source><![CDATA[Show pan/zoom]]></source>
+				<target><![CDATA[Schwenken/zoomen anzeigen]]></target>
+			</trans-unit>
+			<trans-unit id="tt_content.pi_flexform.show_pan_zoom.I.1" approved="yes">
+				<source><![CDATA[Bar]]></source>
+				<target><![CDATA[Balken]]></target>
+			</trans-unit>
+			<trans-unit id="tt_content.pi_flexform.show_pan_zoom.I.2" approved="yes">
+				<source><![CDATA[+/-]]></source>
+				<target><![CDATA[+/-]]></target>
+			</trans-unit>
+			<trans-unit id="tt_content.pi_flexform.show_popups" approved="yes">
+				<source><![CDATA[Show popups]]></source>
+				<target><![CDATA[Popups anzeigen]]></target>
+			</trans-unit>
+			<trans-unit id="tt_content.pi_flexform.show_popups.I.1" approved="yes">
+				<source><![CDATA[Click]]></source>
+				<target><![CDATA[Click]]></target>
+			</trans-unit>
+			<trans-unit id="tt_content.pi_flexform.show_popups.I.2" approved="yes">
+				<source><![CDATA[Hover]]></source>
+				<target><![CDATA[Hover]]></target>
+			</trans-unit>
+			<trans-unit id="tt_content.pi_flexform.show_popups.I.3" approved="yes">
+				<source><![CDATA[Exclusive]]></source>
+				<target><![CDATA[Exklusiv]]></target>
+			</trans-unit>
+			<trans-unit id="tt_content.pi_flexform.show_scalebar" approved="yes">
+				<source><![CDATA[Show ScaleBar]]></source>
+				<target><![CDATA[Massstabsanzeige anzeigen]]></target>
+			</trans-unit>
+			<trans-unit id="tt_content.pi_flexform.use_coords_only_nomarker" approved="yes">
+				<source><![CDATA[Use this coordinates only if no marker exists]]></source>
+				<target><![CDATA[Diese Koordinaten nur verwenden wenn keine Markierung existiert]]></target>
+			</trans-unit>
+			<trans-unit id="tt_content.pi_flexform.width" approved="yes">
+				<source><![CDATA[Width]]></source>
+				<target><![CDATA[Breite]]></target>
+			</trans-unit>
+			<trans-unit id="tt_content.pi_flexform.zoom" approved="yes">
+				<source><![CDATA[Zoom]]></source>
+				<target><![CDATA[Zoom]]></target>
+			</trans-unit>
+			<trans-unit id="tx_odsosm_geocache" approved="yes">
+				<source><![CDATA[Geocache]]></source>
+				<target><![CDATA[Geocache]]></target>
+			</trans-unit>
+			<trans-unit id="tx_odsosm_geocache.cache_hit" approved="yes">
+				<source><![CDATA[Hit from cache]]></source>
+				<target><![CDATA[Hit from cache]]></target>
+			</trans-unit>
+			<trans-unit id="tx_odsosm_geocache.city" approved="yes">
+				<source><![CDATA[City]]></source>
+				<target><![CDATA[Stadt]]></target>
+			</trans-unit>
+			<trans-unit id="tx_odsosm_geocache.country" approved="yes">
+				<source><![CDATA[Country]]></source>
+				<target><![CDATA[Land]]></target>
+			</trans-unit>
+			<trans-unit id="tx_odsosm_geocache.housenumber" approved="yes">
+				<source><![CDATA[Housenumber]]></source>
+				<target><![CDATA[Hausnummer]]></target>
+			</trans-unit>
+			<trans-unit id="tx_odsosm_geocache.lat" approved="yes">
+				<source><![CDATA[Latitude]]></source>
+				<target><![CDATA[Breitengrad]]></target>
+			</trans-unit>
+			<trans-unit id="tx_odsosm_geocache.lon" approved="yes">
+				<source><![CDATA[Longitude]]></source>
+				<target><![CDATA[Längengrad]]></target>
+			</trans-unit>
+			<trans-unit id="tx_odsosm_geocache.service_hit" approved="yes">
+				<source><![CDATA[Hit from location service]]></source>
+				<target><![CDATA[Hit from location service]]></target>
+			</trans-unit>
+			<trans-unit id="tx_odsosm_geocache.state" approved="yes">
+				<source><![CDATA[State]]></source>
+				<target><![CDATA[Bundesland]]></target>
+			</trans-unit>
+			<trans-unit id="tx_odsosm_geocache.street" approved="yes">
+				<source><![CDATA[Street]]></source>
+				<target><![CDATA[Straße]]></target>
+			</trans-unit>
+			<trans-unit id="tx_odsosm_geocache.zip" approved="yes">
+				<source><![CDATA[Zip]]></source>
+				<target><![CDATA[PLZ]]></target>
+			</trans-unit>
+			<trans-unit id="tx_odsosm_lat" approved="yes">
+				<source><![CDATA[Latitude]]></source>
+				<target><![CDATA[Breitengrad]]></target>
+			</trans-unit>
+			<trans-unit id="tx_odsosm_layer" approved="yes">
+				<source><![CDATA[Layer]]></source>
+				<target><![CDATA[Ebene]]></target>
+			</trans-unit>
+			<trans-unit id="tx_odsosm_layer.attribution" approved="yes">
+				<source><![CDATA[Attribution]]></source>
+				<target><![CDATA[Attribution]]></target>
+			</trans-unit>
+			<trans-unit id="tx_odsosm_layer.homepage" approved="yes">
+				<source><![CDATA[Homepage]]></source>
+				<target><![CDATA[Homepage]]></target>
+			</trans-unit>
+			<trans-unit id="tx_odsosm_layer.javascript_include" approved="yes">
+				<source><![CDATA[Include static JavaScript]]></source>
+				<target><![CDATA[Statisches JavaScript einbinden]]></target>
+			</trans-unit>
+			<trans-unit id="tx_odsosm_layer.javascript_leaflet" approved="yes">
+				<source><![CDATA[JavaScript for Leaflet]]></source>
+				<target><![CDATA[JavaScript für Leaflet]]></target>
+			</trans-unit>
+			<trans-unit id="tx_odsosm_layer.javascript_openlayers" approved="yes">
+				<source><![CDATA[JavaScript for OpenLayers]]></source>
+				<target><![CDATA[JavaScript für OpenLayers]]></target>
+			</trans-unit>
+			<trans-unit id="tx_odsosm_layer.javascript_openlayers3" approved="yes">
+				<source><![CDATA[JavaScript for OpenLayers 3]]></source>
+				<target><![CDATA[JavaScript für OpenLayers 3]]></target>
+			</trans-unit>
+			<trans-unit id="tx_odsosm_layer.max_zoom" approved="yes">
+				<source><![CDATA[Maximum zoom]]></source>
+				<target><![CDATA[Maximaler Zoom]]></target>
+			</trans-unit>
+			<trans-unit id="tx_odsosm_layer.min_zoom" approved="yes">
+				<source><![CDATA[Minimum zoom]]></source>
+				<target><![CDATA[Minimaler zoom]]></target>
+			</trans-unit>
+			<trans-unit id="tx_odsosm_layer.overlay" approved="yes">
+				<source><![CDATA[Is overlay]]></source>
+				<target><![CDATA[Ist Overlay]]></target>
+			</trans-unit>
+			<trans-unit id="tx_odsosm_layer.static_url" approved="yes">
+				<source><![CDATA[Static map URL]]></source>
+				<target><![CDATA[URL für statische Karte]]></target>
+			</trans-unit>
+			<trans-unit id="tx_odsosm_layer.subdomains" approved="yes">
+				<source><![CDATA[Subdomains]]></source>
+				<target><![CDATA[Subdomains]]></target>
+			</trans-unit>
+			<trans-unit id="tx_odsosm_layer.tile_https" approved="yes">
+				<source><![CDATA[Tile URL https available]]></source>
+				<target><![CDATA[Tile URL https verfügbar]]></target>
+			</trans-unit>
+			<trans-unit id="tx_odsosm_layer.tile_url" approved="yes">
+				<source><![CDATA[Tile URL]]></source>
+				<target><![CDATA[Tile URL]]></target>
+			</trans-unit>
+			<trans-unit id="tx_odsosm_layer.title" approved="yes">
+				<source><![CDATA[Title]]></source>
+				<target><![CDATA[Titel]]></target>
+			</trans-unit>
+			<trans-unit id="tx_odsosm_lon" approved="yes">
+				<source><![CDATA[Longitude]]></source>
+				<target><![CDATA[Längengrad]]></target>
+			</trans-unit>
+			<trans-unit id="tx_odsosm_marker" approved="yes">
+				<source><![CDATA[Marker]]></source>
+				<target><![CDATA[Marker]]></target>
+			</trans-unit>
+			<trans-unit id="tx_odsosm_marker.icon" approved="yes">
+				<source><![CDATA[Icon]]></source>
+				<target><![CDATA[Icon]]></target>
+			</trans-unit>
+			<trans-unit id="tx_odsosm_marker.offset_x" approved="yes">
+				<source><![CDATA[Offset X]]></source>
+				<target><![CDATA[Ausgleich X]]></target>
+			</trans-unit>
+			<trans-unit id="tx_odsosm_marker.offset_y" approved="yes">
+				<source><![CDATA[Offset Y]]></source>
+				<target><![CDATA[Ausgleich Y]]></target>
+			</trans-unit>
+			<trans-unit id="tx_odsosm_marker.size_x" approved="yes">
+				<source><![CDATA[Size X]]></source>
+				<target><![CDATA[Größe X]]></target>
+			</trans-unit>
+			<trans-unit id="tx_odsosm_marker.size_y" approved="yes">
+				<source><![CDATA[Size Y]]></source>
+				<target><![CDATA[Größe Y]]></target>
+			</trans-unit>
+			<trans-unit id="tx_odsosm_marker.title" approved="yes">
+				<source><![CDATA[Title]]></source>
+				<target><![CDATA[Titel]]></target>
+			</trans-unit>
+			<trans-unit id="tx_odsosm_track" approved="yes">
+				<source><![CDATA[Track]]></source>
+				<target><![CDATA[Track]]></target>
+			</trans-unit>
+			<trans-unit id="tx_odsosm_track.color" approved="yes">
+				<source><![CDATA[Color]]></source>
+				<target><![CDATA[Farbe]]></target>
+			</trans-unit>
+			<trans-unit id="tx_odsosm_track.file" approved="yes">
+				<source><![CDATA[File]]></source>
+				<target><![CDATA[Datei]]></target>
+			</trans-unit>
+			<trans-unit id="tx_odsosm_track.file.add" approved="yes">
+				<source><![CDATA[Add track file]]></source>
+				<target><![CDATA[Track-Datei hinzufügen]]></target>
+			</trans-unit>
+			<trans-unit id="tx_odsosm_track.max_lat" approved="yes">
+				<source><![CDATA[Maximum Latitude]]></source>
+				<target><![CDATA[Maximaler Breitengrad]]></target>
+			</trans-unit>
+			<trans-unit id="tx_odsosm_track.max_lon" approved="yes">
+				<source><![CDATA[Maximum Longitude]]></source>
+				<target><![CDATA[Maximaler Längengrad]]></target>
+			</trans-unit>
+			<trans-unit id="tx_odsosm_track.min_lat" approved="yes">
+				<source><![CDATA[Minimum Latitude]]></source>
+				<target><![CDATA[Minimaler Breitengrad]]></target>
+			</trans-unit>
+			<trans-unit id="tx_odsosm_track.min_lon" approved="yes">
+				<source><![CDATA[Minumum Longitude]]></source>
+				<target><![CDATA[Minimaler Längengrad]]></target>
+			</trans-unit>
+			<trans-unit id="tx_odsosm_track.title" approved="yes">
+				<source><![CDATA[Title]]></source>
+				<target><![CDATA[Titel]]></target>
+			</trans-unit>
+			<trans-unit id="tx_odsosm_track.width" approved="yes">
+				<source><![CDATA[Width]]></source>
+				<target><![CDATA[Breite]]></target>
+			</trans-unit>
+			<trans-unit id="tx_odsosm_vector" approved="yes">
+				<source><![CDATA[Vector]]></source>
+				<target><![CDATA[Vektor]]></target>
+			</trans-unit>
+			<trans-unit id="tx_odsosm_vector.data" approved="yes">
+				<source><![CDATA[GeoJSON]]></source>
+				<target><![CDATA[GeoJSON]]></target>
+			</trans-unit>
+			<trans-unit id="tx_odsosm_vector.file" approved="yes">
+				<source><![CDATA[File]]></source>
+				<target><![CDATA[Datei]]></target>
+			</trans-unit>
+			<trans-unit id="tx_odsosm_vector.file.add" approved="yes">
+				<source><![CDATA[Add geo data file]]></source>
+				<target><![CDATA[GeoJSON-Datei hinzufügen]]></target>
+			</trans-unit>
+			<trans-unit id="tx_odsosm_vector.title" approved="yes">
+				<source><![CDATA[Title]]></source>
+				<target><![CDATA[Titel]]></target>
 			</trans-unit>
 		</body>
 	</file>

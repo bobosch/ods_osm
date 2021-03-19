@@ -210,6 +210,9 @@
 			<trans-unit id="tx_odsosm_track.file" xml:space="preserve">
 				<source>File</source>
 			</trans-unit>
+			<trans-unit id="tx_odsosm_track.file.add" xml:space="preserve">
+				<source>Add track file</source>
+			</trans-unit>
 			<trans-unit id="tx_odsosm_track.min_lon" xml:space="preserve">
 				<source>Minumum Longitude</source>
 			</trans-unit>
@@ -233,6 +236,9 @@
 			</trans-unit>
 			<trans-unit id="tx_odsosm_vector.file" xml:space="preserve">
 				<source>File</source>
+			</trans-unit>
+			<trans-unit id="tx_odsosm_vector.file.add" xml:space="preserve">
+				<source>Add geo data file</source>
 			</trans-unit>
 		</body>
 	</file>

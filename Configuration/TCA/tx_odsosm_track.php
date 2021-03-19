@@ -76,7 +76,7 @@ return array(
                 [
                     'maxitems' => 1,
                     'appearance' => [
-                        'createNewRelationLinkTitle' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:images.addFileReference'
+                        'createNewRelationLinkTitle' => 'LLL:EXT:ods_osm/Resources/Private/Language/locallang_db:tx_odsosm_track.file.add'
                     ],
                     'foreign_match_fields' => [
                         'fieldname' => 'file',
