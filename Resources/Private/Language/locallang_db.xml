@@ -33,6 +33,8 @@
 			<label index="tt_content.pi_flexform.show_scalebar">Show ScaleBar</label>
 			<label index="tt_content.pi_flexform.use_coords_only_nomarker">Use this coordinates only if no marker exists</label>
 			<label index="tt_content.pi_flexform.zoom">Zoom</label>
+			<label index="tt_content.pi_flexform.enable_dragging">Enable dragging with mouse and touch</label>
+			<label index="tt_content.pi_flexform.enable_scrollwheelzoom">Enable zooming with mouse scroll wheel</label>
 			<label index="tx_odsosm_lon">Longitude</label>
 			<label index="tx_odsosm_lat">Latitude</label>
 			<label index="tx_odsosm_geocache">Geocache</label>
@@ -110,6 +112,8 @@
 			<label index="tt_content.pi_flexform.show_scalebar">Massstabsanzeige anzeigen</label>
 			<label index="tt_content.pi_flexform.use_coords_only_nomarker">Diese Koordinaten nur verwenden wenn keine Markierung existiert</label>
 			<label index="tt_content.pi_flexform.zoom">Zoom</label>
+			<label index="tt_content.pi_flexform.enable_dragging">Karte mit Maus bzw. Touch verschieben</label>
+			<label index="tt_content.pi_flexform.enable_scrollwheelzoom">Zoomen mit dem Mausrad</label>
 			<label index="tx_odsosm_lon">Längengrad</label>
 			<label index="tx_odsosm_lat">Breitengrad</label>
 			<label index="tx_odsosm_geocache">Geocache</label>
