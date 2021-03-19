@@ -8,7 +8,7 @@ if (!defined('TYPO3_MODE')) die('Access denied.');
 $tempColumns = array(
     'tx_odsosm_marker' => array(
         'exclude' => 1,
-        'label' => 'LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xml:tt_address_group.tx_odsosm_marker',
+        'label' => 'LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xlf:tt_address_group.tx_odsosm_marker',
         'config' => array(
             'type' => 'group',
             'internal_type' => 'db',

@@ -1,7 +1,7 @@
 <?php
 return array(
     'ctrl' => array(
-        'title' => 'LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xml:tx_odsosm_vector',
+        'title' => 'LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xlf:tx_odsosm_vector',
         'label' => 'title',
         'tstamp' => 'tstamp',
         'crdate' => 'crdate',
@@ -35,7 +35,7 @@ return array(
         ],
         'title' => array(
             'exclude' => 0,
-            'label' => 'LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xml:tx_odsosm_vector.title',
+            'label' => 'LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xlf:tx_odsosm_vector.title',
             'config' => array(
                 'type' => 'input',
                 'size' => 30,
@@ -43,7 +43,7 @@ return array(
         ),
         'data' => array(
             'exclude' => 0,
-            'label' => 'LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xml:tx_odsosm_vector.data',
+            'label' => 'LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xlf:tx_odsosm_vector.data',
             'config' => array(
                 'type' => 'text',
                 'rows' => 10,
@@ -58,7 +58,7 @@ return array(
         ),
         'file' => array(
             'exclude' => 0,
-            'label' => 'LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xml:tx_odsosm_vector.file',
+            'label' => 'LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xlf:tx_odsosm_vector.file',
             'config' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::getFileFieldTCAConfig(
                 'file',
                 [
@@ -78,7 +78,7 @@ return array(
         ),
         'min_lon' => array(
             'exclude' => 0,
-            'label' => 'LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xml:tx_odsosm_track.min_lon',
+            'label' => 'LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xlf:tx_odsosm_track.min_lon',
             'config' => array(
                 'type' => 'none',
                 'size' => 8,
@@ -86,7 +86,7 @@ return array(
         ),
         'min_lat' => array(
             'exclude' => 0,
-            'label' => 'LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xml:tx_odsosm_track.min_lat',
+            'label' => 'LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xlf:tx_odsosm_track.min_lat',
             'config' => array(
                 'type' => 'none',
                 'size' => 8,
@@ -94,7 +94,7 @@ return array(
         ),
         'max_lon' => array(
             'exclude' => 0,
-            'label' => 'LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xml:tx_odsosm_track.max_lon',
+            'label' => 'LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xlf:tx_odsosm_track.max_lon',
             'config' => array(
                 'type' => 'none',
                 'size' => 8,
@@ -102,7 +102,7 @@ return array(
         ),
         'max_lat' => array(
             'exclude' => 0,
-            'label' => 'LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xml:tx_odsosm_track.max_lat',
+            'label' => 'LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xlf:tx_odsosm_track.max_lat',
             'config' => array(
                 'type' => 'none',
                 'size' => 8,

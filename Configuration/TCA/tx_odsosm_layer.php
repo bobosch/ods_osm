@@ -1,7 +1,7 @@
 <?php
 return array(
     'ctrl' => array(
-        'title' => 'LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xml:tx_odsosm_layer',
+        'title' => 'LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xlf:tx_odsosm_layer',
         'label' => 'title',
         'tstamp' => 'tstamp',
         'crdate' => 'crdate',
@@ -36,7 +36,7 @@ return array(
         ],
         'title' => array(
             'exclude' => 0,
-            'label' => 'LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xml:tx_odsosm_layer.title',
+            'label' => 'LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xlf:tx_odsosm_layer.title',
             'config' => array(
                 'type' => 'input',
                 'size' => '30',
@@ -44,7 +44,7 @@ return array(
         ),
         'overlay' => array(
             'exclude' => 0,
-            'label' => 'LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xml:tx_odsosm_layer.overlay',
+            'label' => 'LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xlf:tx_odsosm_layer.overlay',
             'config' => array(
                 'type' => 'check',
                 'default' => '0'
@@ -52,7 +52,7 @@ return array(
         ),
         'javascript_include' => array(
             'exclude' => 0,
-            'label' => 'LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xml:tx_odsosm_layer.javascript_include',
+            'label' => 'LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xlf:tx_odsosm_layer.javascript_include',
             'config' => array(
                 'type' => 'input',
                 'size' => '30',
@@ -61,7 +61,7 @@ return array(
         ),
         'javascript_leaflet' => array(
             'exclude' => 0,
-            'label' => 'LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xml:tx_odsosm_layer.javascript_leaflet',
+            'label' => 'LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xlf:tx_odsosm_layer.javascript_leaflet',
             'config' => array(
                 'type' => 'input',
                 'size' => '30',
@@ -69,7 +69,7 @@ return array(
         ),
         'javascript_openlayers' => array(
             'exclude' => 0,
-            'label' => 'LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xml:tx_odsosm_layer.javascript_openlayers',
+            'label' => 'LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xlf:tx_odsosm_layer.javascript_openlayers',
             'config' => array(
                 'type' => 'input',
                 'size' => '30',
@@ -77,7 +77,7 @@ return array(
         ),
         'javascript_openlayers3' => array(
             'exclude' => 0,
-            'label' => 'LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xml:tx_odsosm_layer.javascript_openlayers3',
+            'label' => 'LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xlf:tx_odsosm_layer.javascript_openlayers3',
             'config' => array(
                 'type' => 'input',
                 'size' => '30',
@@ -85,7 +85,7 @@ return array(
         ),
         'static_url' => array(
             'exclude' => 0,
-            'label' => 'LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xml:tx_odsosm_layer.static_url',
+            'label' => 'LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xlf:tx_odsosm_layer.static_url',
             'config' => array(
                 'type' => 'input',
                 'size' => '30',
@@ -93,7 +93,7 @@ return array(
         ),
         'tile_url' => array(
             'exclude' => 0,
-            'label' => 'LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xml:tx_odsosm_layer.tile_url',
+            'label' => 'LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xlf:tx_odsosm_layer.tile_url',
             'config' => array(
                 'type' => 'input',
                 'size' => '30',
@@ -101,7 +101,7 @@ return array(
         ),
         'tile_https' => array(
             'exclude' => 0,
-            'label' => 'LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xml:tx_odsosm_layer.tile_https',
+            'label' => 'LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xlf:tx_odsosm_layer.tile_https',
             'config' => array(
                 'type' => 'check',
                 'default' => '0',
@@ -109,7 +109,7 @@ return array(
         ),
         'min_zoom' => array(
             'exclude' => 0,
-            'label' => 'LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xml:tx_odsosm_layer.min_zoom',
+            'label' => 'LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xlf:tx_odsosm_layer.min_zoom',
             'config' => array(
                 'type' => 'input',
                 'size' => '2',
@@ -118,7 +118,7 @@ return array(
         ),
         'max_zoom' => array(
             'exclude' => 0,
-            'label' => 'LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xml:tx_odsosm_layer.max_zoom',
+            'label' => 'LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xlf:tx_odsosm_layer.max_zoom',
             'config' => array(
                 'type' => 'input',
                 'size' => '2',
@@ -127,7 +127,7 @@ return array(
         ),
         'subdomains' => array(
             'exclude' => 0,
-            'label' => 'LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xml:tx_odsosm_layer.subdomains',
+            'label' => 'LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xlf:tx_odsosm_layer.subdomains',
             'config' => array(
                 'type' => 'input',
                 'size' => '5',
@@ -135,7 +135,7 @@ return array(
         ),
         'attribution' => array(
             'exclude' => 0,
-            'label' => 'LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xml:tx_odsosm_layer.attribution',
+            'label' => 'LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xlf:tx_odsosm_layer.attribution',
             'config' => array(
                 'type' => 'input',
                 'size' => '30',
@@ -143,7 +143,7 @@ return array(
         ),
         'homepage' => array(
             'exclude' => 0,
-            'label' => 'LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xml:tx_odsosm_layer.homepage',
+            'label' => 'LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xlf:tx_odsosm_layer.homepage',
             'config' => array(
                 'type' => 'input',
                 'size' => '30',

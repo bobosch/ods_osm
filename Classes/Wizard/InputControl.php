@@ -69,7 +69,7 @@ class InputControl extends AbstractNode
 
         return [
             'iconIdentifier' => 'ods_osm',
-            'title' => 'LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xml:coordinatepicker.search_coordinates',
+            'title' => 'LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xlf:coordinatepicker.search_coordinates',
             'linkAttributes' => [
                 'class' => 'coordinatepicker ',
                 'data-id' => $this->data['databaseRow']['uid'],
