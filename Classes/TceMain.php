@@ -148,7 +148,13 @@ class TceMain
                 $filename = Environment::getPublicPath() . '/' . $file->getPublicUrl();
                 if (file_exists($filename)) {
 
-                    $polygon = geoPHP::load(file_get_contents($filename), pathinfo($filename, PATHINFO_EXTENSION));
+                    try {
+                        $polygon = geoPHP::load(file_get_contents($filename), pathinfo($filename, PATHINFO_EXTENSION));
+                    } catch (\Exception $e) {
+                        // silently ignore failure of parsing geojson
+                        break;
+                    }
+
                     $box = $polygon->getBBox();
                     if ($box) {
                         // unfortunately we cannot pass the new values by reference in this hook, because the database operation is already done.

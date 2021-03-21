@@ -198,12 +198,26 @@ class Leaflet extends BaseProvider
                 }
                 break;
             case 'tx_odsosm_vector':
+                // add styles from record if both are set - color and width
+                if (!empty($item['color']) && !empty($item['width'])) {
+                    $jsMarker .= 'var myStyle = {
+                        "color": "'.$item['color'].'",
+                        "weight": '.$item['width'].',
+                        "opacity": 1
+                    };';
+                } else {
+                    $jsMarker .= 'var myStyle = {};';
+                }
+
                 $fileRepository = GeneralUtility::makeInstance(FileRepository::class);
                 $fileObjects = $fileRepository->findByRelation('tx_odsosm_vector', 'file', $item['uid']);
                 if ($fileObjects) {
                     $file = $fileObjects[0];
                     $filename = Environment::getPublicPath() . '/' . $file->getPublicUrl();
-                    $jsMarker .= 'var ' . $jsElementVar . '_file = new L.geoJson(' . file_get_contents($filename) . ');' . "\n";
+                    $jsMarker .= 'var ' . $jsElementVar . '_file = new L.geoJson(' . file_get_contents($filename) . ',
+                    {
+                        style: myStyle
+                    });' . "\n";
                     $jsMarker .= $this->config['id'] . '.addLayer(' . $jsElementVar . '_file);' . "\n";
 
                     // Add vector file to layerswitcher
@@ -212,7 +226,10 @@ class Leaflet extends BaseProvider
 
                 // add geojson from data field as well
                 if ($item['data']) {
-                    $jsMarker .= 'var ' . $jsElementVar . '_data = new L.geoJson(' . $item['data'] . ');' . "\n";
+                    $jsMarker .= 'var ' . $jsElementVar . '_data = new L.geoJson(' . $item['data'] . ',
+                    {
+                        style: myStyle
+                    });' . "\n";
                     $jsMarker .= $this->config['id'] . '.addLayer(' . $jsElementVar . '_data);' . "\n";
 
                     // Add vector data to layerswitcher

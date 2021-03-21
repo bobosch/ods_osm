@@ -56,6 +56,33 @@ return array(
                 ]
             )
         ),
+        'color' => array(
+            'exclude' => 0,
+            'label' => 'LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xlf:tx_odsosm_track.color',
+            'config' => array(
+                'type' => 'input',
+                'size' => 10,
+                'max' => 10,
+                'default' => '#3388ff',
+                'eval' => 'nospace,trim',
+                'renderType' => 'colorpicker',
+            )
+        ),
+        'width' => array(
+            'exclude' => 0,
+            'label' => 'LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xlf:tx_odsosm_track.width',
+            'config' => array(
+                'type' => 'input',
+                'size' => 3,
+                'max' => 3,
+                'default' => 3,
+                'range' => array(
+                    'lower' => 0,
+                    'upper' => 255
+                ),
+                'eval' => 'int',
+            )
+        ),
         'file' => array(
             'exclude' => 0,
             'label' => 'LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xlf:tx_odsosm_vector.file',
@@ -111,7 +138,7 @@ return array(
     ),
     'types' => [
         '0' => [
-            'showitem' => 'hidden, title, data, file,
+            'showitem' => 'hidden, title, data, color, width, file,
             --palette--;;lonlatinfo'
         ]
     ],
