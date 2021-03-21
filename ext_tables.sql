@@ -134,6 +134,8 @@ CREATE TABLE tx_odsosm_vector (
 	deleted tinyint(1) unsigned NOT NULL DEFAULT '0',
 	hidden tinyint(1) unsigned NOT NULL DEFAULT '0',
 	title tinytext NOT NULL,
+	color varchar(10) NOT NULL DEFAULT '#3388ff',
+	width tinyint(3) unsigned NOT NULL DEFAULT '3',
 	data text NOT NULL,
 	file text NOT NULL,
 	min_lon decimal(9,6) NOT NULL DEFAULT '0.000000',
