@@ -21,7 +21,6 @@
 								<minitems>0</minitems>
 								<maxitems>9999</maxitems>
 								<autoSizeMax>20</autoSizeMax>
-								<show_thumbs>1</show_thumbs>
 							</config>
 						</TCEforms>
 					</marker>
@@ -363,7 +362,6 @@
 								<size>1</size>
 								<minitems>0</minitems>
 								<maxitems>1</maxitems>
-								<show_thumbs>1</show_thumbs>
 							</config>
 						</TCEforms>
 					</marker_popup_initial>
