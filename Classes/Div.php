@@ -4,6 +4,7 @@ namespace Bobosch\OdsOsm;
 
 use Doctrine\DBAL\FetchMode;
 use Doctrine\DBAL\ParameterType;
+use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\FrontendRestrictionContainer;
 use TYPO3\CMS\Core\Log\LogManager;
@@ -37,10 +38,12 @@ class Div
                         $queryBuilder->expr()->eq($table . '.' . $ctrl['languageField'], $queryBuilder->createNamedParameter(-1, \PDO::PARAM_INT))
                     ];
 
-                if ($GLOBALS['TSFE']->sys_language_content && $ctrl['transOrigPointerField']) {
+                $languageAspect = GeneralUtility::makeInstance(Context::class)->getAspect('language');
+
+                if ($languageAspect->getContentId() && $ctrl['transOrigPointerField']) {
                     $orConstraints[] = $queryBuilder->expr()->andX(
                         $queryBuilder->expr()->eq($table . '.' . $ctrl['languageField'],
-                            $queryBuilder->createNamedParameter((int) ($GLOBALS['TSFE']->sys_language_content), \PDO::PARAM_INT)),
+                            $queryBuilder->createNamedParameter((int) $languageAspect->getContentId(), \PDO::PARAM_INT)),
                         $queryBuilder->expr()->eq($table . '.' . $ctrl['transOrigPointerField'],
                             $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT))
                     );
