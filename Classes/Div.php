@@ -58,7 +58,7 @@ class Div
     {
         if (TYPO3_MODE == 'BE') {
             foreach ($scripts as $script) {
-                $doc->JScode .= '<script src="' . $script . '" type="text/javascript"></script>';
+                $doc->JScode .= '<script src="' . $script['src'] . '" type="text/javascript"></script>';
             }
         } else {
             $pageRenderer = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Page\PageRenderer::class);
