@@ -255,7 +255,7 @@ class Leaflet extends BaseProvider
                         $markerOptions['icon'] = 'icon: new L.Icon(' . json_encode($iconOptions) . ')';
                     }
                 } else {
-                    $icon = $GLOBALS['TSFE']->absRefPrefix . PathUtility::stripPathSitePrefix(ExtensionManagementUtility::extPath('ods_osm')) . 'Resources/Public/leaflet/images/marker-icon.png';
+                    $icon = $GLOBALS['TSFE']->absRefPrefix . PathUtility::stripPathSitePrefix(ExtensionManagementUtility::extPath('ods_osm')) . 'Resources/Public/JavaScript/Leaflet/Core/images/marker-icon.png';
                 }
                 $jsMarker .= 'var ' . $jsElementVar . ' = new L.Marker([' . $item['latitude'] . ', ' . $item['longitude'] . '], {' . implode(',', $markerOptions) . "});\n";
                 // Add group to layer switch

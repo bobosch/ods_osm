@@ -50,8 +50,8 @@ return array(
                 'cols' => 60,
                 'max' => 20000,
                 'fieldControl' => [
-                    'coordinatepickerControl' => [
-                        'renderType' => 'coordinatepickerControl'
+                    'vectordrawWizard' => [
+                        'renderType' => 'vectordrawWizard'
                     ]
                 ]
             )

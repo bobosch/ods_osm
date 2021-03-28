@@ -40,6 +40,13 @@ if (TYPO3_MODE === 'BE') {
         'class' => \Bobosch\OdsOsm\Wizard\CoordinatepickerWizard::class
     ];
 
+    // Add wizard with map for drawing GeoJSON data
+    $GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['nodeRegistry'][1616968355] = [
+        'nodeName' => 'vectordrawWizard',
+        'priority' => 30,
+        'class' => \Bobosch\OdsOsm\Wizard\VectordrawWizard::class
+    ];
+
     // $GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['nodeRegistry'][1541496933] = [
     //     'nodeName' => 'coordinatepickerControl',
     //     'priority' => 30,
