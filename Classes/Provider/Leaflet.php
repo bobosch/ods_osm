@@ -22,8 +22,8 @@ class Leaflet extends BaseProvider
 
     public function getMapCore($backpath = '')
     {
-        $this->path_res = ($backpath ? $backpath : $GLOBALS['TSFE']->absRefPrefix) . PathUtility::stripPathSitePrefix(ExtensionManagementUtility::extPath('ods_osm')) . 'Resources/Public/';
-        $this->path_leaflet = ($this->config['local_js'] ? $this->path_res . 'leaflet/' : 'https://unpkg.com/leaflet@1.7.1/dist/');
+        $this->path_res = ($backpath ? $backpath : $GLOBALS['TSFE']->absRefPrefix) . PathUtility::stripPathSitePrefix(ExtensionManagementUtility::extPath('ods_osm')) . 'Resources/Public/JavaScript/Leaflet/Core/';
+        $this->path_leaflet = ($this->config['local_js'] ? $this->path_res : 'https://unpkg.com/leaflet@1.7.1/dist/');
         $pageRenderer = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(PageRenderer::class);
         $pageRenderer->addCssFile($this->path_leaflet . 'leaflet.css');
         $this->scripts['leaflet'] = ['src' => $this->path_leaflet . 'leaflet.js', 'sri' => 'sha384-RFZC58YeKApoNsIbBxf4z6JJXmh+geBSgkCQXFyh+4tiFSJmJBt+2FbjxW7Ar16M'];
@@ -164,7 +164,7 @@ class Leaflet extends BaseProvider
                     break;
                 }
 
-                $path = $GLOBALS['TSFE']->absRefPrefix . PathUtility::stripPathSitePrefix(ExtensionManagementUtility::extPath('ods_osm')) . 'Resources/Public/';
+                $path = $GLOBALS['TSFE']->absRefPrefix . PathUtility::stripPathSitePrefix(ExtensionManagementUtility::extPath('ods_osm')) . 'Resources/Public/JavaScript/Leaflet/';
                 // Add tracks to layerswitcher
                 $this->layers[1][$item['title']] = $jsElementVar;
 
