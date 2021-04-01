@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <xliff version="1.0">
-	<file source-language="en" target-language="de" datatype="plaintext" original="messages" date="2021-03-19T20:18:09Z">
+	<file source-language="en" target-language="de" datatype="plaintext" original="messages" date="2021-04-01T22:20:50Z">
 		<header>
 			<generator>LFEditor</generator>
 		</header>
@@ -320,6 +320,10 @@
 			<trans-unit id="tx_odsosm_vector.title" approved="yes">
 				<source><![CDATA[Title]]></source>
 				<target><![CDATA[Titel]]></target>
+			</trans-unit>
+			<trans-unit id="vectordrawWizard.draw" approved="yes">
+				<source><![CDATA[Draw GeoJSON data]]></source>
+				<target><![CDATA[GeoJSON Vektordaten zeichnen]]></target>
 			</trans-unit>
 		</body>
 	</file>

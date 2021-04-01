@@ -6,6 +6,9 @@
 			<trans-unit id="coordinatepicker.search_coordinates" xml:space="preserve">
 				<source>Search coordinates</source>
 			</trans-unit>
+			<trans-unit id="vectordrawWizard.draw" xml:space="preserve">
+				<source>Draw GeoJSON data</source>
+			</trans-unit>
 			<trans-unit id="tt_address_group.tx_odsosm_marker" xml:space="preserve">
 				<source>Marker</source>
 			</trans-unit>

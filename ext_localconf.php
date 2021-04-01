@@ -47,15 +47,10 @@ if (TYPO3_MODE === 'BE') {
         'class' => \Bobosch\OdsOsm\Wizard\VectordrawWizard::class
     ];
 
-    // $GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['nodeRegistry'][1541496933] = [
-    //     'nodeName' => 'coordinatepickerControl',
-    //     'priority' => 30,
-    //     'class' => \Bobosch\OdsOsm\Wizard\InputControl::class
-    // ];
-
     // Register icons
     $icons = [
         'coordinate-picker-wizard' => 'ce_wiz.png',
+        'vectordraw-wizard' => 'vector.png',
         'ods_osm' => 'osm.png'
     ];
     $iconRegistry = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Imaging\IconRegistry::class);

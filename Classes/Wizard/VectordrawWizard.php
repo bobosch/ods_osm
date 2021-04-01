@@ -30,10 +30,10 @@ class VectordrawWizard extends AbstractNode
         $gLon = '12.5683371';
         $nameDataField = $paramArray['itemFormElName'];
 
-        $resultArray['iconIdentifier'] = 'coordinate-picker-wizard';
-        $resultArray['title'] = $this->getLanguageService()->sL('LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xlf:coordinatepicker.search_coordinates');
+        $resultArray['iconIdentifier'] = 'vectordraw-wizard';
+        $resultArray['title'] = $this->getLanguageService()->sL('LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xlf:vectordrawWizard.draw');
         $resultArray['linkAttributes']['class'] = 'vectordrawWizard ';
-        $resultArray['linkAttributes']['data-label-title'] = $this->getLanguageService()->sL('LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xlf:coordinatepicker.search_coordinates');
+        $resultArray['linkAttributes']['data-label-title'] = $this->getLanguageService()->sL('LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xlf:vectordrawWizard.draw');
         $resultArray['linkAttributes']['data-label-close'] = $this->getLanguageService()->sL('LLL:EXT:tt_address/Resources/Private/Language/locallang_db.xlf:tt_address.locationMapWizard.close');
         $resultArray['linkAttributes']['data-label-import'] = $this->getLanguageService()->sL('LLL:EXT:tt_address/Resources/Private/Language/locallang_db.xlf:tt_address.locationMapWizard.import');
         $resultArray['linkAttributes']['data-lat'] = $lat;
