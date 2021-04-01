@@ -93,8 +93,6 @@ define(['jquery', 'TYPO3/CMS/Backend/Icons', 'TYPO3/CMS/Backend/FormEngine', 'TY
             draggable: true
         }).addTo(LeafBE.$map);
 
-        let position = LeafBE.$marker.getLatLng();
-
         LeafBE.$marker.on('dragend', function (event) {
             LeafBE.$marker = event.target;
             position = LeafBE.$marker.getLatLng();

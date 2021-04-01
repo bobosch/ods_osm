@@ -26,22 +26,9 @@ class VectordrawWizard extends AbstractNode
         $paramArray = $this->data['parameterArray'];
         $resultArray = $this->initializeResultArray();
 
-        $nameLongitude = $paramArray['itemFormElName'];
-
-        if (strpos($nameLongitude, '[pi_flexform]') > 0) {
-            // it's a call inside a flexform
-            $lon = $row["pi_flexform"]["data"]["sDEF"]["lDEF"]["lon"]["vDEF"] != '' ? htmlspecialchars($row["pi_flexform"]["data"]["sDEF"]["lDEF"]["lon"]["vDEF"]) : '';
-            $lat = $row["pi_flexform"]["data"]["sDEF"]["lDEF"]["lat"]["vDEF"] != '' ? htmlspecialchars($row["pi_flexform"]["data"]["sDEF"]["lDEF"]["lat"]["vDEF"]) : '';
-        } else {
-            $lat = $row['tx_odsosm_lat'] != '' ? htmlspecialchars($row['tx_odsosm_lat']) : '';
-            $lon = $row['tx_odsosm_lon'] != '' ? htmlspecialchars($row['tx_odsosm_lon']) : '';
-        }
-
-        $nameLatitude = str_replace('lon', 'lat', $nameLongitude);
-        $nameLatitudeActive = str_replace('data', 'control[active]', $nameLatitude);
-        $geoCodeUrl = '';
         $gLat = '55.6760968';
         $gLon = '12.5683371';
+        $nameDataField = $paramArray['itemFormElName'];
 
         $resultArray['iconIdentifier'] = 'coordinate-picker-wizard';
         $resultArray['title'] = $this->getLanguageService()->sL('LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xlf:coordinatepicker.search_coordinates');
@@ -50,14 +37,10 @@ class VectordrawWizard extends AbstractNode
         $resultArray['linkAttributes']['data-label-close'] = $this->getLanguageService()->sL('LLL:EXT:tt_address/Resources/Private/Language/locallang_db.xlf:tt_address.locationMapWizard.close');
         $resultArray['linkAttributes']['data-label-import'] = $this->getLanguageService()->sL('LLL:EXT:tt_address/Resources/Private/Language/locallang_db.xlf:tt_address.locationMapWizard.import');
         $resultArray['linkAttributes']['data-lat'] = $lat;
-        $resultArray['linkAttributes']['data-lon'] = $lon;
+        $resultArray['linkAttributes']['data-fieldName'] = htmlspecialchars($nameDataField);
+        $resultArray['linkAttributes']['data-fieldValue'] = $row['data'];
         $resultArray['linkAttributes']['data-glat'] = $gLat;
         $resultArray['linkAttributes']['data-glon'] = $gLon;
-        $resultArray['linkAttributes']['data-geocodeurl'] = $geoCodeUrl;
-        $resultArray['linkAttributes']['data-geocodeurlshort'] = $geoCodeUrlShort;
-        $resultArray['linkAttributes']['data-namelat'] = htmlspecialchars($nameLatitude);
-        $resultArray['linkAttributes']['data-namelon'] = htmlspecialchars($nameLongitude);
-        $resultArray['linkAttributes']['data-namelat-active'] = htmlspecialchars($nameLatitudeActive);
         $resultArray['linkAttributes']['data-tiles'] = htmlspecialchars('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png');
         $resultArray['linkAttributes']['data-copy'] = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors';
         $resultArray['stylesheetFiles'][] = 'EXT:ods_osm/Resources/Public/JavaScript/Leaflet/leaflet-draw/leaflet.draw.css';
