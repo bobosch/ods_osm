@@ -26,9 +26,21 @@ class VectordrawWizard extends AbstractNode
         $paramArray = $this->data['parameterArray'];
         $resultArray = $this->initializeResultArray();
 
-        $gLat = '55.6760968';
-        $gLon = '12.5683371';
         $nameDataField = $paramArray['itemFormElName'];
+
+        // calculate center point or use Kopenhagen as fallback
+        if (!empty((float)$row['max_lon']) && !empty((float)$row['min_lon'])) {
+            $lon = ($row['max_lon'] + $row['min_lon']) / 2;
+        } else {
+            $lon = '12.5683371';
+        }
+
+        if (!empty((float)$row['max_lat']) && !empty((float)$row['min_lat'])) {
+            $lat = ($row['max_lat'] + $row['min_lat']) / 2;
+        } else {
+            $lat = '55.6760968';
+        }
+
 
         $resultArray['iconIdentifier'] = 'vectordraw-wizard';
         $resultArray['title'] = $this->getLanguageService()->sL('LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xlf:vectordrawWizard.draw');
@@ -36,11 +48,14 @@ class VectordrawWizard extends AbstractNode
         $resultArray['linkAttributes']['data-label-title'] = $this->getLanguageService()->sL('LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xlf:vectordrawWizard.draw');
         $resultArray['linkAttributes']['data-label-close'] = $this->getLanguageService()->sL('LLL:EXT:tt_address/Resources/Private/Language/locallang_db.xlf:tt_address.locationMapWizard.close');
         $resultArray['linkAttributes']['data-label-import'] = $this->getLanguageService()->sL('LLL:EXT:tt_address/Resources/Private/Language/locallang_db.xlf:tt_address.locationMapWizard.import');
+        $resultArray['linkAttributes']['data-minlat'] = empty((float)$row['min_lat']) ? null : $row['min_lat'];
+        $resultArray['linkAttributes']['data-maxlat'] = empty((float)$row['max_lat']) ? null : $row['max_lat'];
+        $resultArray['linkAttributes']['data-minlon'] = empty((float)$row['min_lon']) ? null : $row['min_lon'];
+        $resultArray['linkAttributes']['data-maxlon'] = empty((float)$row['max_lon']) ? null : $row['max_lon'];
         $resultArray['linkAttributes']['data-lat'] = $lat;
+        $resultArray['linkAttributes']['data-lon'] = $lon;
         $resultArray['linkAttributes']['data-fieldName'] = htmlspecialchars($nameDataField);
         $resultArray['linkAttributes']['data-fieldValue'] = $row['data'];
-        $resultArray['linkAttributes']['data-glat'] = $gLat;
-        $resultArray['linkAttributes']['data-glon'] = $gLon;
         $resultArray['linkAttributes']['data-tiles'] = htmlspecialchars('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png');
         $resultArray['linkAttributes']['data-copy'] = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors';
         $resultArray['stylesheetFiles'][] = 'EXT:ods_osm/Resources/Public/JavaScript/Leaflet/leaflet-draw/leaflet.draw.css';

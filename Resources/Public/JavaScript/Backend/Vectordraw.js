@@ -3,18 +3,18 @@ define(['jquery', 'TYPO3/CMS/Backend/Icons', 'TYPO3/CMS/Backend/FormEngine', 'TY
 
     let LeafBE = {
         $element: null,
-        $gLatitude: null,
-        $gLongitude: null,
+        $min_lat: null,
+        $max_lat: null,
+        $min_lon: null,
+        $max_lon: null,
         $latitude: null,
         $longitude: null,
         $fieldData: null,
         $fieldLat: null,
         $fieldLon: null,
-        $fieldLatActive: null,
         $tilesUrl: null,
         $tilesCopy: null,
-        $zoomLevel: 13,
-        $marker: null,
+        $zoomLevel: 7,
         $map: null,
         $iconClose: null,
         $drawnItems: null,
@@ -32,22 +32,22 @@ define(['jquery', 'TYPO3/CMS/Backend/Icons', 'TYPO3/CMS/Backend/FormEngine', 'TY
         LeafBE.$labelTitle = LeafBE.$element.attr('data-label-title');
         LeafBE.$labelClose = LeafBE.$element.attr('data-label-close');
         LeafBE.$labelImport = LeafBE.$element.attr('data-label-import');
+        LeafBE.$min_lon = LeafBE.$element.attr('data-minlon');
+        LeafBE.$max_lon = LeafBE.$element.attr('data-maxlon');
+        LeafBE.$min_lat = LeafBE.$element.attr('data-minlat');
+        LeafBE.$max_lat = LeafBE.$element.attr('data-maxlat');
         LeafBE.$latitude = LeafBE.$element.attr('data-lat');
         LeafBE.$longitude = LeafBE.$element.attr('data-lon');
-        LeafBE.$gLatitude = LeafBE.$element.attr('data-glat');
-        LeafBE.$gLongitude = LeafBE.$element.attr('data-glon');
         LeafBE.$tilesUrl = LeafBE.$element.attr('data-tiles');
         LeafBE.$tilesCopy = LeafBE.$element.attr('data-copy');
         LeafBE.$fieldLat = LeafBE.$element.attr('data-namelat');
         LeafBE.$fieldLon = LeafBE.$element.attr('data-namelon');
         LeafBE.$fieldDataName = LeafBE.$element.attr('data-fieldName');
         LeafBE.$fieldDataValue = LeafBE.$element.attr('data-fieldValue');
-        LeafBE.$fieldLatActive = LeafBE.$element.attr('data-namelat-active');
 
         // add the container to display the map as a nice overlay
         if (!$('#t3js-location-map-wrap').length) {
             LeafBE.addMapMarkup();
-            console.log(LeafBE.$fieldDataValue);
         }
     };
 
@@ -71,19 +71,21 @@ define(['jquery', 'TYPO3/CMS/Backend/Icons', 'TYPO3/CMS/Backend/FormEngine', 'TY
 
     LeafBE.createMap = function () {
 
-        // The ultimate fallback: if one of the coordinates is empty, fallback to Kopenhagen.
-        // Thank you Kaspar for TYPO3 and its great community! ;)
-        if (LeafBE.$latitude == null || LeafBE.$longitude == null) {
-            LeafBE.$latitude = LeafBE.$gLatitude;
-            LeafBE.$longitude = LeafBE.$gLongitude;
-            // set zoomlevel lower for faster navigation
-            LeafBE.$zoomLevel = 4;
-        }
+        // set to center point with default zoom level
         LeafBE.$map = L.map('t3js-location-map-container', {
             center: [LeafBE.$latitude, LeafBE.$longitude],
             zoom: LeafBE.$zoomLevel
         });
-        var osm = L.tileLayer(LeafBE.$tilesUrl, {
+
+        if (LeafBE.$min_lat && LeafBE.$min_lon && LeafBE.$max_lat && LeafBE.$max_lon) {
+            // if bounds are given, fit to it
+            LeafBE.$map.fitBounds([
+                [LeafBE.$min_lat, LeafBE.$min_lon],
+                [LeafBE.$max_lat, LeafBE.$max_lon]
+            ]);
+        }
+
+        L.tileLayer(LeafBE.$tilesUrl, {
             attribution: LeafBE.$tilesCopy
         }).addTo(LeafBE.$map);
 
@@ -108,22 +110,24 @@ define(['jquery', 'TYPO3/CMS/Backend/Icons', 'TYPO3/CMS/Backend/FormEngine', 'TY
             }
         }));
 
-        // convert data from data field to JavaScript object
-        var myGeoJson = JSON.parse(LeafBE.$fieldDataValue.toString());
+        if (LeafBE.$fieldDataValue) {
+            // convert data from data field to JavaScript object
+            var myGeoJson = JSON.parse(LeafBE.$fieldDataValue.toString());
 
-        var geoJsonGroup = L.geoJSON(myGeoJson);
+            var geoJsonGroup = L.geoJSON(myGeoJson);
 
-        // add feature by feature to drawnItems layer
-        addNonGroupLayers(geoJsonGroup, drawnItems);
+            // add feature by feature to drawnItems layer
+            addNonGroupLayers(geoJsonGroup, drawnItems);
 
-        // Would benefit from https://github.com/Leaflet/Leaflet/issues/4461
-        function addNonGroupLayers(sourceLayer, targetGroup) {
-            if (sourceLayer instanceof L.LayerGroup) {
-                sourceLayer.eachLayer(function (layer) {
-                    addNonGroupLayers(layer, targetGroup);
-                });
-            } else {
-                targetGroup.addLayer(sourceLayer);
+            // Would benefit from https://github.com/Leaflet/Leaflet/issues/4461
+            function addNonGroupLayers(sourceLayer, targetGroup) {
+                if (sourceLayer instanceof L.LayerGroup) {
+                    sourceLayer.eachLayer(function (layer) {
+                        addNonGroupLayers(layer, targetGroup);
+                    });
+                } else {
+                    targetGroup.addLayer(sourceLayer);
+                }
             }
         }
 
