@@ -43,11 +43,11 @@ class VectordrawWizard extends AbstractNode
 
 
         $resultArray['iconIdentifier'] = 'vectordraw-wizard';
-        $resultArray['title'] = $this->getLanguageService()->sL('LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xlf:vectordrawWizard.draw');
+        $resultArray['title'] = $this->getLanguageService()->sL('LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xlf:vectordrawWizard');
         $resultArray['linkAttributes']['class'] = 'vectordrawWizard ';
-        $resultArray['linkAttributes']['data-label-title'] = $this->getLanguageService()->sL('LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xlf:vectordrawWizard.draw');
-        $resultArray['linkAttributes']['data-label-close'] = $this->getLanguageService()->sL('LLL:EXT:tt_address/Resources/Private/Language/locallang_db.xlf:tt_address.locationMapWizard.close');
-        $resultArray['linkAttributes']['data-label-import'] = $this->getLanguageService()->sL('LLL:EXT:tt_address/Resources/Private/Language/locallang_db.xlf:tt_address.locationMapWizard.import');
+        $resultArray['linkAttributes']['data-label-title'] = $this->getLanguageService()->sL('LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xlf:vectordrawWizard.title');
+        $resultArray['linkAttributes']['data-label-close'] = $this->getLanguageService()->sL('LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xlf:vectordrawWizard.close');
+        $resultArray['linkAttributes']['data-label-import'] = $this->getLanguageService()->sL('LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xlf:vectordrawWizard.import');
         $resultArray['linkAttributes']['data-minlat'] = empty((float)$row['min_lat']) ? null : $row['min_lat'];
         $resultArray['linkAttributes']['data-maxlat'] = empty((float)$row['max_lat']) ? null : $row['max_lat'];
         $resultArray['linkAttributes']['data-minlon'] = empty((float)$row['min_lon']) ? null : $row['min_lon'];

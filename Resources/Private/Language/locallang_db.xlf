@@ -3,12 +3,30 @@
 	<file source-language="en" datatype="plaintext" original="messages" date="2021-03-19T20:06:52Z" product-name="ods_osm">
 		<header/>
 		<body>
-			<trans-unit id="coordinatepicker.search_coordinates" xml:space="preserve">
+			<trans-unit id="coordinatepickerWizard" xml:space="preserve">
+				<source>Coordinate Picker Wizard</source>
+			</trans-unit>
+			<trans-unit id="coordinatepicker.title" xml:space="preserve">
 				<source>Search coordinates</source>
 			</trans-unit>
-			<trans-unit id="vectordrawWizard.draw" xml:space="preserve">
-				<source>Draw GeoJSON data</source>
+			<trans-unit id="coordinatepicker.close" xml:space="preserve">
+				<source>Close Coordinate Picker Wizard</source>
 			</trans-unit>
+			<trans-unit id="coordinatepicker.import" xml:space="preserve">
+				<source>Import Marker Coordinates</source>
+			</trans-unit>
+			<trans-unit id="vectordrawWizard" xml:space="preserve">
+				<source>Vector Draw Wizard</source>
+			</trans-unit>
+			<trans-unit id="vectordrawWizard.title" xml:space="preserve">
+				<source>Draw vector data and save as GeoJSON</source>
+			</trans-unit>
+            <trans-unit id="vectordrawWizard.close">
+                <source>Close Vector Draw Wizard</source>
+            </trans-unit>
+            <trans-unit id="vectordrawWizard.import">
+                <source>Import vector data to form</source>
+            </trans-unit>
 			<trans-unit id="tt_address_group.tx_odsosm_marker" xml:space="preserve">
 				<source>Marker</source>
 			</trans-unit>

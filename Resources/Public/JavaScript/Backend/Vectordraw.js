@@ -58,7 +58,7 @@ define(['jquery', 'TYPO3/CMS/Backend/Icons', 'TYPO3/CMS/Backend/FormEngine', 'TY
             '<div class="btn-group"><a href="#" class="btn btn-icon btn-default" title="' + LeafBE.$labelClose + '" id="t3js-ttaddress-close-map">' +
             LeafBE.$iconClose +
             '</a>' +
-            '<a class="btn btn-default" href="#" title="Import marker position to form" id="t3js-ttaddress-import-position">' +
+            '<a class="btn btn-default" href="#" id="t3js-ttaddress-import-position">' +
             LeafBE.$labelImport +
             '</a></div>' +
             LeafBE.$labelTitle +
