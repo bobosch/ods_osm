@@ -187,12 +187,19 @@ class TceMain
                     $this->lat = array();
 
                     $polygon = geoPHP::load(($fieldArray['data']));
-                    $box = $polygon->getBBox();
+                    if ($polygon) {
+                        $box = $polygon->getBBox();
 
-                    $fieldArray['min_lon'] = sprintf('%01.6f', $box['minx']);
-                    $fieldArray['min_lat'] = sprintf('%01.6f', $box['miny']);
-                    $fieldArray['max_lon'] = sprintf('%01.6f', $box['maxx']);
-                    $fieldArray['max_lat'] = sprintf('%01.6f', $box['maxy']);
+                        $fieldArray['min_lon'] = sprintf('%01.6f', $box['minx']);
+                        $fieldArray['min_lat'] = sprintf('%01.6f', $box['miny']);
+                        $fieldArray['max_lon'] = sprintf('%01.6f', $box['maxx']);
+                        $fieldArray['max_lat'] = sprintf('%01.6f', $box['maxy']);
+                    } else {
+                        $fieldArray['min_lon'] = 0;
+                        $fieldArray['min_lat'] = 0;
+                        $fieldArray['max_lon'] = 0;
+                        $fieldArray['max_lat'] = 0;
+                    }
                }
                 break;
             default:

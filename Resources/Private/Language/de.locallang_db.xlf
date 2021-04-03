@@ -1,13 +1,29 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <xliff version="1.0">
-	<file source-language="en" target-language="de" datatype="plaintext" original="messages" date="2021-03-19T20:18:09Z">
+	<file source-language="en" target-language="de" datatype="plaintext" original="messages" date="2021-04-03T15:38:51Z">
 		<header>
 			<generator>LFEditor</generator>
 		</header>
 		<body>
+			<trans-unit id="coordinatepicker.close" approved="yes">
+				<source><![CDATA[Close Coordinate Picker Wizard]]></source>
+				<target><![CDATA[Kartenassistent schließen]]></target>
+			</trans-unit>
+			<trans-unit id="coordinatepicker.import" approved="yes">
+				<source><![CDATA[Import Marker Coordinates]]></source>
+				<target><![CDATA[Marker Koordinaten importieren]]></target>
+			</trans-unit>
 			<trans-unit id="coordinatepicker.search_coordinates" approved="yes">
-				<source><![CDATA[Search coordinates]]></source>
+				<source><![CDATA[]]></source>
 				<target><![CDATA[Suche Koordinaten]]></target>
+			</trans-unit>
+			<trans-unit id="coordinatepicker.title" approved="yes">
+				<source><![CDATA[Search coordinates]]></source>
+				<target><![CDATA[Kartenassistent für Auswahl der Koordinaten]]></target>
+			</trans-unit>
+			<trans-unit id="coordinatepickerWizard" approved="yes">
+				<source><![CDATA[Coordinate Picker Wizard]]></source>
+				<target><![CDATA[Kartenassistent für Auswahl der Koordinaten]]></target>
 			</trans-unit>
 			<trans-unit id="tt_address_group.tx_odsosm_marker" approved="yes">
 				<source><![CDATA[Marker]]></source>
@@ -320,6 +336,26 @@
 			<trans-unit id="tx_odsosm_vector.title" approved="yes">
 				<source><![CDATA[Title]]></source>
 				<target><![CDATA[Titel]]></target>
+			</trans-unit>
+			<trans-unit id="vectordrawWizard" approved="yes">
+				<source><![CDATA[Vector Draw Wizard]]></source>
+				<target><![CDATA[Kartenassitent zum Zeichnen von Vektor-Daten]]></target>
+			</trans-unit>
+			<trans-unit id="vectordrawWizard.close" approved="yes">
+				<source><![CDATA[Close Vector Draw Wizard]]></source>
+				<target><![CDATA[Kartenassistent schließen]]></target>
+			</trans-unit>
+			<trans-unit id="vectordrawWizard.draw" approved="yes">
+				<source><![CDATA[]]></source>
+				<target><![CDATA[GeoJSON Vektordaten zeichnen]]></target>
+			</trans-unit>
+			<trans-unit id="vectordrawWizard.import" approved="yes">
+				<source><![CDATA[Import vector data to form]]></source>
+				<target><![CDATA[Vektor-Daten in Formular importieren]]></target>
+			</trans-unit>
+			<trans-unit id="vectordrawWizard.title" approved="yes">
+				<source><![CDATA[Draw vector data and save as GeoJSON]]></source>
+				<target><![CDATA[Vektor-Daten zeichnen und als GeoJSON speichern]]></target>
 			</trans-unit>
 		</body>
 	</file>

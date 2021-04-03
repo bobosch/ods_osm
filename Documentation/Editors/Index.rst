@@ -126,7 +126,8 @@ Marker
 Track
 .....
 
-.. image:: ../Images/Track.png
+.. image:: ../Images/OdsOsmRecordTrack.png
+   :width: 820px
 
 +----------------------------+------------------------------------------------+
 |       Element option       |                  Description                   |
@@ -143,7 +144,12 @@ Track
 Vector
 ......
 
-.. image:: ../Images/Vector.png
+You can add GeoJSON data and/or a GeoJSON file to display on a new layer. The
+GeoJSON may contain FeatureCollections. Polygone, Lines and Points are tested
+and are supported by the vector draw wizard.
+
+.. image:: ../Images/OdsOsmRecordVectorData.png
+   :width: 820px
 
 +----------------------------+------------------------------------------------+
 |       Element option       |                  Description                   |
@@ -152,10 +158,12 @@ Vector
 +----------------------------+------------------------------------------------+
 | GeoJSON                    | Fill GeoJSON data and/or select a GeoJSON file |
 |                            | below.                                         |
+|                            | You can use the vector draw wizard to create   |
+|                            | and edit the GeoJSON data in this field.       |
 +----------------------------+------------------------------------------------+
 | Color                      | Color of the vector line in the map (optional).|
 +----------------------------+------------------------------------------------+
-| Width                      | Width of the vector polyline.                  |
+| Width                      | Width of the vector polyline. (optional)       |
 +----------------------------+------------------------------------------------+
 | File                       | Select only one geojson file here.             |
 +----------------------------+------------------------------------------------+

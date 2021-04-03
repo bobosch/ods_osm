@@ -61,9 +61,9 @@
 								<default>0.000000</default>
 								<eval>Bobosch\OdsOsm\Evaluation\LonLat</eval>
 								<fieldControl>
-									<coordinatepickerControl>
-										<renderType>coordinatepickerControl</renderType>
-									</coordinatepickerControl>
+									<locationMap>
+										<renderType>coordinatepickerWizard</renderType>
+									</locationMap>
 								</fieldControl>
 							</config>
 						</TCEforms>

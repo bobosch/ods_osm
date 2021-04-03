@@ -1,3 +1,10 @@
+2021-04-02 Alexander Bigga <alexander@bigga.de>
+    * Update to Leaflet 1.7.1
+	* Refactored coordinate picker wizard based on Leaflet now
+	* Add new vector draw wizard based on Leaflet now
+	* Fix some deprecation warnings
+	* Fix bug due to removed, deprected code in TYPO3 10 (thanks to Sybille Peters, @sypets)
+
 2021-02-13 Alexander Bigga <alexander@bigga.de>
 	* Compatibility with TYPO3 10.4 LTS and TYPO3 9.5 LTS
 	* Update list of initial layer records. All active records support HTTPS now.

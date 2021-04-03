@@ -25,8 +25,11 @@
   ],
   "license": "GPL-2.0-or-later",
   "require": {
-    "typo3/cms-core": "~9.5.20|~10.4.12",
+    "typo3/cms-core": "~9.5.26|~10.4.14",
     "phayes/geophp": "^1.2"
+  },
+  "suggest": {
+    "friendsoftypo3/tt-address": "^5.2"
   },
   "autoload": {
     "psr-4": {
