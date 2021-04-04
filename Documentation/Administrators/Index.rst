@@ -2,32 +2,31 @@ Administration
 ==============
 
 In the extension configuration
+
 .. image:: ../Images/ExtensionConfiguration.png
 
-+----------------------------+------------------------------------------------+
-|           Option           |                   Description                  |
-+----------------------------+------------------------------------------------+
-| Autocomplete longitude     | You can enable to search the coordinates on    |
-| and latitude               | geonames.org when saving an fe_users or        |
-|                            | tt_address element.                            |
-+----------------------------+------------------------------------------------+
-| Use service to find        | Use this service to get the coordinates of an  |
-| coordinates                | address. If you select “Only cache” you have to|
-|                            | fill the cache table manually. If you select a |
-|                            | provider here, be aware that the fields “zip”, |
-|                            | “city” and “country” of every address record   |
-|                            | you save is sent to the provider.              |
-+----------------------------+------------------------------------------------+
-| Contact email address      | Enter a contact email address for the service  |
-|                            | provider here. If not specified, email address |
-|                            | of server admin is used.                       |
-+----------------------------+------------------------------------------------+
-| Use local javascripts and  | Activate this if you don't like to use the     |
-| images                     | javascript files from                          |
-|                            | http://www.openlayers.org/ and                 |
-|                            | http://www.openstreetmap.org/ to use the local |
-|                            | versions in ods_osm/Resources/.                |
-+----------------------------+------------------------------------------------+
++----------------------------+------------------------------------------------+-------------+
+|           Option           |                   Description                  | Default     |
++----------------------------+------------------------------------------------+-------------+
+| Autocomplete longitude     | You can enable to search the coordinates on    | 1: If no    |
+| and latitude               | geonames.org when saving an fe_users or        | coordinates |
+|                            | tt_address element.                            | are set     |
++----------------------------+------------------------------------------------+-------------+
+| Use service to find        | Use this service to get the coordinates of an  | 2:          |
+| coordinates                | address. If you select “Only cache” you have to| Nominatim   |
+|                            | fill the cache table manually. If you select a |             |
+|                            | provider here, be aware that the fields “zip”, |             |
+|                            | “city” and “country” of every address record   |             |
+|                            | you save is sent to the provider.              |             |
++----------------------------+------------------------------------------------+-------------+
+| Contact email address      | Enter a contact email address for the service  |             |
+|                            | provider here. If not specified, email address |             |
+|                            | of server admin is used.                       |             |
++----------------------------+------------------------------------------------+-------------+
+| Use local javascripts and  | Activate this if you don't like to use the     | 1           |
+| images                     | javascript files from CDNs but the local ones  |             |
+|                            | from this extension.                           |             |
++----------------------------+------------------------------------------------+-------------+
 
 There is a function to mass gecode addresses in the functions menu.
 
@@ -98,7 +97,7 @@ Reference
 | library         | string    | Library: leaflet / openlayers /     | |ol|    |
 |                 |           | openlayers3 / static                |         |
 +-----------------+-----------+-------------------------------------+---------+
-| marker          | array with| Tablenames and a comma separated    | see m   |
+| marker          | array with| Tablenames and a comma separated    | see m_  |
 |                 | table name| list of record ids.                 |         |
 |                 | and       |                                     |         |
 |                 | integer   |                                     |         |
@@ -112,7 +111,7 @@ Reference
 |                 |           || 0: Hide map                        |         |
 |                 |           || 1: Show map                        |         |
 +-----------------+-----------+-------------------------------------+---------+
-| popup           | TS object | There are two additional fields:    | see p   |
+| popup           | TS object | There are two additional fields:    | see p_  |
 |                 |           | “group_title” and                   |         |
 |                 |           | “group_description” filled with     |         |
 |                 |           | group information.                  |         |
@@ -142,26 +141,8 @@ Reference
 | width           | integer   |                                     | 640     |
 +-----------------+-----------+-------------------------------------+---------+
 
-m::
-
-	pages =
-	fe_users =
-	fe_groups =
-	tx_odsosm_track =
-
-p::
-
-	fe_users = COA
-	fe_users {
-		10 = TEXT
-		10.field = name
-		10.wrap = |
-		20 = TEXT
-		20.field = description
-	}
-
-Example
-.......
+Examples
+--------
 
 ::
 
@@ -171,8 +152,56 @@ Example
 		mouse_navigation = 1
 	}
 
-Example of icon property
-........................
+.. _m:
+
+Markers
+```````
+
+::
+
+	plugin.tx_odsosm_pi1 {
+		marker {
+			pages =
+			fe_users =
+			fe_groups =
+			tx_odsosm_track =
+		}
+	}
+
+.. _p:
+
+Popups
+``````
+
+::
+
+	plugin.tx_odsosm_pi1 {
+		popup {
+			fe_users = COA
+			fe_users {
+				10 = TEXT
+				10.field = name
+				10.wrap = <h2>|</h2>
+				20 = TEXT
+				20.field = description
+				20.htmlSpecialChars = 1
+			}
+			tt_address = COA
+			tt_address {
+				10 = TEXT
+				10.field = name
+				10.wrap = <h2>|</h2>
+				20 = TEXT
+				20.field = description
+				20.htmlSpecialChars = 0
+			}
+		}
+	}
+
+
+
+Icon Property
+`````````````
 
 ::
 
@@ -182,6 +211,7 @@ Example of icon property
 			fe_users = IMAGE
 			fe_users {
 				file = fileadmin/icon.png
+				file.width = 60px
 			}
 
 			# HTML example

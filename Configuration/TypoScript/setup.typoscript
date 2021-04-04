@@ -19,6 +19,7 @@ plugin.tx_odsosm_pi1 {
 		sys_category =
 	}
 
+	# see documentation for examples
 	icon {
 		fe_users = IMAGE
 		tt_address = IMAGE
