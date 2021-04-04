@@ -6,13 +6,13 @@
 			<trans-unit id="coordinatepickerWizard" xml:space="preserve">
 				<source>Coordinate Picker Wizard</source>
 			</trans-unit>
-			<trans-unit id="coordinatepicker.title" xml:space="preserve">
+			<trans-unit id="coordinatepickerWizard.title" xml:space="preserve">
 				<source>Search coordinates</source>
 			</trans-unit>
-			<trans-unit id="coordinatepicker.close" xml:space="preserve">
+			<trans-unit id="coordinatepickerWizard.close" xml:space="preserve">
 				<source>Close Coordinate Picker Wizard</source>
 			</trans-unit>
-			<trans-unit id="coordinatepicker.import" xml:space="preserve">
+			<trans-unit id="coordinatepickerWizard.import" xml:space="preserve">
 				<source>Import Marker Coordinates</source>
 			</trans-unit>
 			<trans-unit id="vectordrawWizard" xml:space="preserve">

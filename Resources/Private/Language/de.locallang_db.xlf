@@ -5,19 +5,15 @@
 			<generator>LFEditor</generator>
 		</header>
 		<body>
-			<trans-unit id="coordinatepicker.close" approved="yes">
+			<trans-unit id="coordinatepickerWizard.close" approved="yes">
 				<source><![CDATA[Close Coordinate Picker Wizard]]></source>
 				<target><![CDATA[Kartenassistent schließen]]></target>
 			</trans-unit>
-			<trans-unit id="coordinatepicker.import" approved="yes">
+			<trans-unit id="coordinatepickerWizard.import" approved="yes">
 				<source><![CDATA[Import Marker Coordinates]]></source>
 				<target><![CDATA[Marker Koordinaten importieren]]></target>
 			</trans-unit>
-			<trans-unit id="coordinatepicker.search_coordinates" approved="yes">
-				<source><![CDATA[]]></source>
-				<target><![CDATA[Suche Koordinaten]]></target>
-			</trans-unit>
-			<trans-unit id="coordinatepicker.title" approved="yes">
+			<trans-unit id="coordinatepickerWizard.title" approved="yes">
 				<source><![CDATA[Search coordinates]]></source>
 				<target><![CDATA[Kartenassistent für Auswahl der Koordinaten]]></target>
 			</trans-unit>
