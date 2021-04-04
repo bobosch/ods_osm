@@ -474,17 +474,18 @@ class PluginController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
                         continue;
                     }
                     $item['tx_odsosm_marker'] = $icons[$item['tx_odsosm_marker']];
-                    $item['tx_odsosm_marker']['icon'] = $file->getPublicUrl();
+                    $item['tx_odsosm_marker']['icon'] = $file;
                     $item['tx_odsosm_marker']['type'] = 'image';
-                    $item['tx_odsosm_marker']['size_x'] = '60';
-                    $item['tx_odsosm_marker']['size_y'] = '60';
                 } elseif ($icon) {
                     if ($this->config['icon.'][$table] == 'IMAGE') {
-                        // dummy rendering is necessary to have image information in $GLOBALS['TSFE']->lastImageInfo
-                        $imageDummy = $local_cObj->cObjGetSingle($this->config['icon.'][$table], $this->config['icon.'][$table . '.']);
+                        // rendering is necessary to have image information in $GLOBALS['TSFE']->lastImageInfo
+                        $imageDummy = $local_cObj->cObjGetSingle(
+                            $this->config['icon.'][$table],
+                            $this->config['icon.'][$table . '.']
+                        );
                         $info = $GLOBALS['TSFE']->lastImageInfo;
                         $item['tx_odsosm_marker'] = array(
-                            'icon' => $info['origFile'],
+                            'icon' => $info['processedFile'],
                             'type' => 'image',
                             'size_x' => $info[0],
                             'size_y' => $info[1],
@@ -493,7 +494,10 @@ class PluginController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
                         );
                     } elseif ($this->config['icon.'][$table] == 'TEXT') {
                         $conf = $this->config['icon.'][$table . '.'];
-                        $html = $local_cObj->cObjGetSingle($this->config['icon.'][$table], $this->config['icon.'][$table . '.']);
+                        $html = $local_cObj->cObjGetSingle(
+                            $this->config['icon.'][$table],
+                            $this->config['icon.'][$table . '.']
+                        );
                         $item['tx_odsosm_marker'] = array(
                             'icon' => $html,
                             'type' => 'html',

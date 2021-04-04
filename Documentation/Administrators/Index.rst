@@ -7,7 +7,7 @@ In the extension configuration
 
 +----------------------------+------------------------------------------------+-------------+
 |           Option           |                   Description                  | Default     |
-+----------------------------+------------------------------------------------+-------------+
++============================+================================================+=============+
 | Autocomplete longitude     | You can enable to search the coordinates on    | 1: If no    |
 | and latitude               | geonames.org when saving an fe_users or        | coordinates |
 |                            | tt_address element.                            | are set     |
@@ -44,7 +44,7 @@ Reference
 
 +-----------------+-----------+-------------------------------------+---------+
 |     Property    | Data type |             Description             | Default |
-+-----------------+-----------+-------------------------------------+---------+
++=================+===========+=====================================+=========+
 | cluster         | boolean   | Cluster marker at lower map zoom.   | 0       |
 +-----------------+-----------+-------------------------------------+---------+
 | cluster_radius  | integer   | Cluster marker in given radius.     | 80      |

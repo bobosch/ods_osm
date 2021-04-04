@@ -153,10 +153,10 @@ class Leaflet extends BaseProvider
     {
         $jsMarker = '';
         $jsElementVar = $table . '_' . $item['uid'];
+        $fileRepository = GeneralUtility::makeInstance(FileRepository::class);
 
         switch ($table) {
             case 'tx_odsosm_track':
-                $fileRepository = GeneralUtility::makeInstance(FileRepository::class);
                 $fileObjects = $fileRepository->findByRelation('tx_odsosm_track', 'file', $item['uid']);
                 if ($fileObjects) {
                     $file = $fileObjects[0];
@@ -209,7 +209,6 @@ class Leaflet extends BaseProvider
                     $jsMarker .= 'var myStyle = {};';
                 }
 
-                $fileRepository = GeneralUtility::makeInstance(FileRepository::class);
                 $fileObjects = $fileRepository->findByRelation('tx_odsosm_vector', 'file', $item['uid']);
                 if ($fileObjects) {
                     $file = $fileObjects[0];
@@ -250,7 +249,7 @@ class Leaflet extends BaseProvider
                         $iconOptions['html'] = $marker['icon'];
                         $markerOptions['icon'] = 'icon: new L.divIcon(' . json_encode($iconOptions) . ')';
                     } else {
-                        $icon = $GLOBALS['TSFE']->absRefPrefix . $marker['icon'];
+                        $icon = $GLOBALS['TSFE']->absRefPrefix . $marker['icon']->getPublicUrl();
                         $iconOptions['iconUrl'] = $icon;
                         $markerOptions['icon'] = 'icon: new L.Icon(' . json_encode($iconOptions) . ')';
                     }
@@ -260,7 +259,7 @@ class Leaflet extends BaseProvider
                 $jsMarker .= 'var ' . $jsElementVar . ' = new L.Marker([' . $item['latitude'] . ', ' . $item['longitude'] . '], {' . implode(',', $markerOptions) . "});\n";
                 // Add group to layer switch
                 if ($item['group_title']) {
-                    $this->layers[1][($marker['type'] == 'html' ? $marker['icon'] : '<img src="' . $icon . '" />') . ' ' . $item['group_title']] = $item['group_uid'];
+                    $this->layers[1][($marker['type'] == 'html' ? $marker['icon'] : '<img class="marker-icon" style="max-width: 60px;" src="' . $icon . '" />') . ' ' . $item['group_title']] = $item['group_uid'];
                     $this->layers[2][$item['group_uid']][] = $jsElementVar;
                 } else {
                     $this->layers[2][$this->config['id'] . '_g'][] = $jsElementVar;
