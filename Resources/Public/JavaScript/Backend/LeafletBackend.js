@@ -14,7 +14,7 @@ define(['jquery', 'TYPO3/CMS/Backend/Icons', 'TYPO3/CMS/Backend/FormEngine', 'TY
         $geoCodeUrlShort: null,
         $tilesUrl: null,
         $tilesCopy: null,
-        $zoomLevel: 13,
+        $zoomLevel: 7,
         $marker: null,
         $map: null,
         $iconClose: null
@@ -33,8 +33,9 @@ define(['jquery', 'TYPO3/CMS/Backend/Icons', 'TYPO3/CMS/Backend/FormEngine', 'TY
         LeafBE.$labelImport = LeafBE.$element.attr('data-label-import');
         LeafBE.$latitude = LeafBE.$element.attr('data-lat');
         LeafBE.$longitude = LeafBE.$element.attr('data-lon');
-        LeafBE.$gLatitude = LeafBE.$element.attr('data-glat');
-        LeafBE.$gLongitude = LeafBE.$element.attr('data-glon');
+        LeafBE.$gLatitude = LeafBE.$element.attr('data-default-lat');
+        LeafBE.$gLongitude = LeafBE.$element.attr('data-default-lon');
+        LeafBE.$zoomLevel = LeafBE.$element.attr('data-default-zoom');
         LeafBE.$tilesUrl = LeafBE.$element.attr('data-tiles');
         LeafBE.$tilesCopy = LeafBE.$element.attr('data-copy');
         LeafBE.$geoCodeUrl = LeafBE.$element.attr('data-geocodeurl');
@@ -73,14 +74,12 @@ define(['jquery', 'TYPO3/CMS/Backend/Icons', 'TYPO3/CMS/Backend/FormEngine', 'TY
             LeafBE.geocode();
         }
 
-        // The ultimate fallback: if one of the coordinates is empty, fallback to Kopenhagen.
-        // Thank you Kaspar for TYPO3 and its great community! ;)
-        if (LeafBE.$latitude == null || LeafBE.$longitude == null) {
+        // If one of the coordinates is empty, fallback to default values set in extension configuration.
+        if (LeafBE.$latitude == null || LeafBE.$longitude == null || (LeafBE.$latitude == 0 && LeafBE.$longitude == 0)) {
             LeafBE.$latitude = LeafBE.$gLatitude;
             LeafBE.$longitude = LeafBE.$gLongitude;
-            // set zoomlevel lower for faster navigation
-            LeafBE.$zoomLevel = 4;
         }
+
         LeafBE.$map = L.map('t3js-location-map-container', {
             center: [LeafBE.$latitude, LeafBE.$longitude],
             zoom: LeafBE.$zoomLevel

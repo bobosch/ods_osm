@@ -10,6 +10,8 @@ namespace Bobosch\OdsOsm\Wizard;
  * For the full copyright and license information, please read the
  * LICENSE.txt file that was distributed with this source code.
  */
+
+use Bobosch\OdsOsm\Div;
 use TYPO3\CMS\Backend\Form\AbstractNode;
 use TYPO3\CMS\Core\Localization\LanguageService;
 
@@ -18,6 +20,7 @@ use TYPO3\CMS\Core\Localization\LanguageService;
  */
 class CoordinatepickerWizard extends AbstractNode
 {
+
     /**
      * @return array
      */
@@ -26,6 +29,7 @@ class CoordinatepickerWizard extends AbstractNode
         $row = $this->data['databaseRow'];
         $paramArray = $this->data['parameterArray'];
         $resultArray = $this->initializeResultArray();
+        $extConfig = Div::getConfig();
 
         $nameLongitude = $paramArray['itemFormElName'];
 
@@ -41,16 +45,13 @@ class CoordinatepickerWizard extends AbstractNode
         $nameLatitude = str_replace('lon', 'lat', $nameLongitude);
         $nameLatitudeActive = str_replace('data', 'control[active]', $nameLatitude);
         $geoCodeUrl = '';
-        $gLat = '55.6760968';
-        $gLon = '12.5683371';
 
-
-        if ($lat == '' || $lon == '') {
+        if (empty((float)$lat) || empty((float)$lon)) {
             // remove all after first slash in address (top, floor ...)
             $address = preg_replace('/^([^\/]*).*$/', '$1', $row['address'] ?? '') . ' ';
             $address .= $row['city'] ?? '';
             // if we have at least some address part (saves geocoding calls)
-            if ($address) {
+            if (trim($address)) {
                 // base url
                 $geoCodeUrlBase = 'https://nominatim.openstreetmap.org/search/';
                 $geoCodeUrlAddress = $address;
@@ -71,8 +72,9 @@ class CoordinatepickerWizard extends AbstractNode
         $resultArray['linkAttributes']['data-label-import'] = $this->getLanguageService()->sL('LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xlf:coordinatepickerWizard.import');
         $resultArray['linkAttributes']['data-lat'] = $lat;
         $resultArray['linkAttributes']['data-lon'] = $lon;
-        $resultArray['linkAttributes']['data-glat'] = $gLat;
-        $resultArray['linkAttributes']['data-glon'] = $gLon;
+        $resultArray['linkAttributes']['data-default-lat'] = $extConfig['default_lat'];
+        $resultArray['linkAttributes']['data-default-lon'] = $extConfig['default_lon'];
+        $resultArray['linkAttributes']['data-default-zoom'] = $extConfig['default_zoom'];
         $resultArray['linkAttributes']['data-geocodeurl'] = $geoCodeUrl;
         $resultArray['linkAttributes']['data-geocodeurlshort'] = $geoCodeUrlShort;
         $resultArray['linkAttributes']['data-namelat'] = htmlspecialchars($nameLatitude);

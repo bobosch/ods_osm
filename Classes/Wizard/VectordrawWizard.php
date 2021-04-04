@@ -9,6 +9,8 @@ namespace Bobosch\OdsOsm\Wizard;
  * For the full copyright and license information, please read the
  * LICENSE.txt file that was distributed with this source code.
  */
+
+use Bobosch\OdsOsm\Div;
 use TYPO3\CMS\Backend\Form\AbstractNode;
 use TYPO3\CMS\Core\Localization\LanguageService;
 
@@ -25,6 +27,7 @@ class VectordrawWizard extends AbstractNode
         $row = $this->data['databaseRow'];
         $paramArray = $this->data['parameterArray'];
         $resultArray = $this->initializeResultArray();
+        $extConfig = Div::getConfig();
 
         $nameDataField = $paramArray['itemFormElName'];
 
@@ -32,13 +35,13 @@ class VectordrawWizard extends AbstractNode
         if (!empty((float)$row['max_lon']) && !empty((float)$row['min_lon'])) {
             $lon = ($row['max_lon'] + $row['min_lon']) / 2;
         } else {
-            $lon = '12.5683371';
+            $lon = $extConfig['default_lon'];
         }
 
         if (!empty((float)$row['max_lat']) && !empty((float)$row['min_lat'])) {
             $lat = ($row['max_lat'] + $row['min_lat']) / 2;
         } else {
-            $lat = '55.6760968';
+            $lat = $extConfig['default_lat'];
         }
 
 
