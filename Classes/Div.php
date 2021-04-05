@@ -131,7 +131,7 @@ class Div
         $country = strtoupper(strlen($address['country']) == 2 ? $address['country'] : $config['default_country']);
         $email = GeneralUtility::validEmail($config['geo_service_email']) ? $config['geo_service_email'] : $_SERVER['SERVER_ADMIN'];
 
-        if ($GLOBALS['TYPO3_CONF_VARS']['FE']['debug']) {
+        if ($GLOBALS['TYPO3_CONF_VARS']['BE']['debug']) {
             $service_names = array(0 => 'cache', 1 => 'geonames', 2 => 'nominatim');
             self::getLogger()->debug('Search address using ' . $service_names[$service], $address);
         }
@@ -226,7 +226,7 @@ class Div
 
                     if ($result) {
                         if ($result['status']) {
-                            if ($GLOBALS['TYPO3_CONF_VARS']['FE']['debug']) {
+                            if ($GLOBALS['TYPO3_CONF_VARS']['BE']['debug']) {
                                 self::getLogger()->debug('GeoNames message', (array)$result['status']['message']);
                             }
                             self::flashMessage(
@@ -278,7 +278,7 @@ class Div
                         $query['street'] = $address['housenumber'] . ' ' . $query['street'];
                     }
 
-                    if ($GLOBALS['TYPO3_CONF_VARS']['FE']['debug']) {
+                    if ($GLOBALS['TYPO3_CONF_VARS']['BE']['debug']) {
                         self::getLogger()->debug('Nominatim structured', $query);
                     }
                     $ll = self::searchAddressNominatim($query, $address);
@@ -286,7 +286,7 @@ class Div
                     if (!$ll && $query['postalcode']) {
                         unset($query['postalcode']);
 
-                        if ($GLOBALS['TYPO3_CONF_VARS']['FE']['debug']) {
+                        if ($GLOBALS['TYPO3_CONF_VARS']['BE']['debug']) {
                             self::getLogger()->debug('Nominatim retrying without zip', $query);
                         }
                         $ll = self::searchAddressNominatim($query, $address);
@@ -296,7 +296,7 @@ class Div
                 if ($address['type'] == 'unstructured') {
                     $query['q'] = $address['address'];
 
-                    if ($GLOBALS['TYPO3_CONF_VARS']['FE']['debug']) {
+                    if ($GLOBALS['TYPO3_CONF_VARS']['BE']['debug']) {
                         self::getLogger()->debug('Nominatim unstructured', $query);
                     }
                     $ll = self::searchAddressNominatim($query, $address);
@@ -304,7 +304,7 @@ class Div
                 break;
         }
 
-        if ($GLOBALS['TYPO3_CONF_VARS']['FE']['debug']) {
+        if ($GLOBALS['TYPO3_CONF_VARS']['BE']['debug']) {
             if ($ll) {
                 self::getLogger()->debug('Return address', $address);
             } else {
