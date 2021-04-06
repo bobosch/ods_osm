@@ -7,6 +7,7 @@ use Doctrine\DBAL\ParameterType;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\FrontendRestrictionContainer;
+use TYPO3\CMS\Core\Http\RequestFactory;
 use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
@@ -130,7 +131,7 @@ class Div
         $country = strtoupper(strlen($address['country']) == 2 ? $address['country'] : $config['default_country']);
         $email = GeneralUtility::validEmail($config['geo_service_email']) ? $config['geo_service_email'] : $_SERVER['SERVER_ADMIN'];
 
-        if ($GLOBALS['TYPO3_CONF_VARS']['FE']['debug']) {
+        if ($GLOBALS['TYPO3_CONF_VARS']['BE']['debug']) {
             $service_names = array(0 => 'cache', 1 => 'geonames', 2 => 'nominatim');
             self::getLogger()->debug('Search address using ' . $service_names[$service], $address);
         }
@@ -208,34 +209,50 @@ class Div
                     $query['maxRows'] = 1;
                     $query['username'] = $config['geo_service_user'];
 
-                    $xml = self::getURL('http://api.geonames.org/postalCodeSearch?' . http_build_query($query, '', '&'));
+                    /** @var RequestFactory $requestFactory */
+                    $requestFactory = GeneralUtility::makeInstance(RequestFactory::class);
+                    $configuration = [
+                        'timeout' => 60,
+                        'headers' => [
+                            'Accept' => 'application/json',
+                            'User-Agent' => 'TYPO3 extension ods_osm/' . \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::getExtensionVersion('ods_osm')
+                        ],
+                    ];
 
-                    if ($xml) {
-                        $xmlobj = new \SimpleXMLElement($xml);
-                        if ($xmlobj->status) {
-                            if ($GLOBALS['TYPO3_CONF_VARS']['FE']['debug']) {
-                                self::getLogger()->debug('GeoNames message', (array)$xmlobj->status->attributes());
+                    // secure endpoint available, too: https://secure.geonames.org/postalCodeSearchJSON?
+                    $response = $requestFactory->request('http://api.geonames.org/postalCodeSearchJSON?' . http_build_query($query, '', '&'), 'GET', $configuration);
+                    $content  = $response->getBody()->getContents();
+                    $result = json_decode($content, true);
+
+                    if ($result) {
+                        if ($result['status']) {
+                            if ($GLOBALS['TYPO3_CONF_VARS']['BE']['debug']) {
+                                self::getLogger()->debug('GeoNames message', (array)$result['status']['message']);
                             }
                             self::flashMessage(
-                                (string)$xmlobj->status->attributes()->message,
+                                (string)$result['status']['message'],
                                 'GeoNames message',
                                 \TYPO3\CMS\Core\Messaging\FlashMessage::WARNING
                             );
                         }
 
-                        if ($xmlobj->code) {
+                        if ($result['postalCodes'][0]) {
                             $ll = true;
-                            $address['lat'] = (string)$xmlobj->code->lat;
-                            $address['lon'] = (string)$xmlobj->code->lng;
-                            if ($xmlobj->code->postalcode) {
-                                $address['zip'] = (string)$xmlobj->code->postalcode;
+                            $address['lat'] = (string)$result['postalCodes'][0]['lat'];
+                            $address['lon'] = (string)$result['postalCodes'][0]['lng'];
+                            if ($result['postalCodes'][0]['postalCode']) {
+                                $address['zip'] = (string)$result['postalCodes'][0]['postalCode'];
                             }
-                            if ($xmlobj->code->name) {
-                                $address['city'] = (string)$xmlobj->code->name;
+                            if ($result['postalCodes'][0]['placeName']) {
+                                $address['city'] = (string)$result['postalCodes'][0]['placeName'];
                             }
                             if (empty($address['country'])) {
-                                $address['country'] = (string)$xmlobj->code->countryCode;
+                                $address['country'] = (string)$result['postalCodes'][0]['countryCode'];
                             }
+                        }
+                    } else {
+                        if ($GLOBALS['TYPO3_CONF_VARS']['BE']['debug']) {
+                            self::getLogger()->error('No valid response from GeoNames service.');
                         }
                     }
                 }
@@ -245,7 +262,7 @@ class Div
                 $query['country'] = $country;
                 $query['email'] = $email;
                 $query['addressdetails'] = 1;
-                $query['format'] = 'xml';
+                $query['format'] = 'jsonv2';
 
                 if ($address['type'] == 'structured') {
                     if ($address['city']) {
@@ -261,7 +278,7 @@ class Div
                         $query['street'] = $address['housenumber'] . ' ' . $query['street'];
                     }
 
-                    if ($GLOBALS['TYPO3_CONF_VARS']['FE']['debug']) {
+                    if ($GLOBALS['TYPO3_CONF_VARS']['BE']['debug']) {
                         self::getLogger()->debug('Nominatim structured', $query);
                     }
                     $ll = self::searchAddressNominatim($query, $address);
@@ -269,7 +286,7 @@ class Div
                     if (!$ll && $query['postalcode']) {
                         unset($query['postalcode']);
 
-                        if ($GLOBALS['TYPO3_CONF_VARS']['FE']['debug']) {
+                        if ($GLOBALS['TYPO3_CONF_VARS']['BE']['debug']) {
                             self::getLogger()->debug('Nominatim retrying without zip', $query);
                         }
                         $ll = self::searchAddressNominatim($query, $address);
@@ -279,7 +296,7 @@ class Div
                 if ($address['type'] == 'unstructured') {
                     $query['q'] = $address['address'];
 
-                    if ($GLOBALS['TYPO3_CONF_VARS']['FE']['debug']) {
+                    if ($GLOBALS['TYPO3_CONF_VARS']['BE']['debug']) {
                         self::getLogger()->debug('Nominatim unstructured', $query);
                     }
                     $ll = self::searchAddressNominatim($query, $address);
@@ -287,7 +304,7 @@ class Div
                 break;
         }
 
-        if ($GLOBALS['TYPO3_CONF_VARS']['FE']['debug']) {
+        if ($GLOBALS['TYPO3_CONF_VARS']['BE']['debug']) {
             if ($ll) {
                 self::getLogger()->debug('Return address', $address);
             } else {
@@ -298,61 +315,67 @@ class Div
         return $ll;
     }
 
+    /**
+     * Search for the given address in Nominatim service.
+     *
+     * Data lat, lon, zip and city may get updated.
+     *
+     * @param array $query The query sent to the nominatim API
+     * @param array &$address Address record from database
+     *
+     * @return boolean True if the address was found and got updated.
+     */
     protected static function searchAddressNominatim($query, &$address)
     {
         $ll = false;
 
-        $xml = self::getURL('https://nominatim.openstreetmap.org/search?' . http_build_query($query, '', '&'));
+        /** @var RequestFactory $requestFactory */
+        $requestFactory = GeneralUtility::makeInstance(RequestFactory::class);
+        $configuration = [
+            'timeout' => 60,
+            'headers' => [
+                'Accept' => 'application/json',
+                'User-Agent' => 'TYPO3 extension ods_osm/' . \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::getExtensionVersion('ods_osm')
+            ],
+        ];
 
-        if ($xml) {
-            $xmlobj = new \SimpleXMLElement($xml);
-            if ($xmlobj->place) {
+        $response = $requestFactory->request('https://nominatim.openstreetmap.org/search?' . http_build_query($query, '', '&'), 'GET', $configuration);
+        $content  = $response->getBody()->getContents();
+        $result = json_decode($content, true);
+
+        // Save value in cache
+        if ($result) {
+            // take the first result
+            if ($result[0]) {
                 $ll = true;
-                $address['lat'] = (string)$xmlobj->place['lat'];
-                $address['lon'] = (string)$xmlobj->place['lon'];
-                if ($xmlobj->place->road) {
-                    $address['street'] = (string)$xmlobj->place->road;
+                $address['lat'] = (string)$result[0]['lat'];
+                $address['lon'] = (string)$result[0]['lon'];
+                if ($result[0]['address']['road']) {
+                    $address['street'] = (string)$result[0]['address']['road'];
                 }
-                if ($xmlobj->place->house_number) {
-                    $address['housenumber'] = (string)$xmlobj->place->house_number;
+                if ($result[0]['address']['house_number']) {
+                    $address['housenumber'] = (string)$result[0]['address']['house_number'];
                 }
-                if ($xmlobj->place->postcode) {
-                    $address['zip'] = (string)$xmlobj->place->postcode;
+                if ($result[0]['address']['postcode']) {
+                    $address['zip'] = (string)$result[0]['address']['postcode'];
                 }
-                if ($xmlobj->place->city || $xmlobj->place->villag) {
-                    $address['city'] = $xmlobj->place->city ? (string)$xmlobj->place->city : (string)$xmlobj->place->village;
+                if ($result[0]['address']['city'] || $result[0]['address']['village']) {
+                    $address['city'] = $result[0]['address']['city'] ? (string)$result[0]['address']['city'] : (string)$result[0]['address']['village'];
                 }
-                if ($xmlobj->place->state) {
-                    $address['state'] = (string)$xmlobj->place->state;
+                if ($result[0]['address']['state']) {
+                    $address['state'] = (string)$result[0]['address']['state'];
                 }
-                if ($xmlobj->place->country_code && empty($address['country'])) {
-                    $address['country'] = strtoupper((string)$xmlobj->place->country_code);
+                if ($result[0]['address']['country_code'] && empty($address['country'])) {
+                    $address['country'] = strtoupper((string)$result[0]['address']['country_code']);
                 }
+            }
+        } else {
+            if ($GLOBALS['TYPO3_CONF_VARS']['BE']['debug']) {
+                self::getLogger()->error('No valid response from Nominatim service.');
             }
         }
 
         return $ll;
-    }
-
-    public static function getURL($url)
-    {
-        $ret = GeneralUtility::getURL(
-            $url,
-            false,
-            'User-Agent: TYPO3 extension ods_osm/' . \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::getExtensionVersion('ods_osm')
-        );
-        if ($ret === false) {
-            if ($GLOBALS['TYPO3_CONF_VARS']['FE']['debug']) {
-                self::getLogger()->error('GeneralUtility::getURL failed', $url);
-            }
-            self::flashMessage(
-                'Server connection error.',
-                'ods_osm',
-                \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR
-            );
-        }
-
-        return $ret;
     }
 
     public static function flashMessage($message, $title, $status)
