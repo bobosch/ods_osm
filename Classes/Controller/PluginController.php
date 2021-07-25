@@ -315,13 +315,13 @@ class PluginController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
                                 ->execute();
 
                             while ($resArray = $result->fetch()) {
-                                $records[$t][$r['uid']] = $resArray;
-                                $records[$t][$r['uid']]['group_uid'] = $table . '_' . $row['uid'];
-                                $records[$t][$r['uid']]['group_title'] = $row['title'];
-                                $records[$t][$r['uid']]['group_description'] = $row['description'];
-                                $records[$t][$r['uid']]['tx_odsosm_marker'] = $row['tx_odsosm_marker'];
-                                $records[$t][$r['uid']]['longitude'] = $resArray[$tables[$t]['lon']];
-                                $records[$t][$r['uid']]['latitude'] = $resArray[$tables[$t]['lat']];
+                                $records[$t][$resArray['uid']] = $resArray;
+                                $records[$t][$resArray['uid']]['group_uid'] = $table . '_' . $row['uid'];
+                                $records[$t][$resArray['uid']]['group_title'] = $row['title'];
+                                $records[$t][$resArray['uid']]['group_description'] = $row['description'];
+                                $records[$t][$resArray['uid']]['tx_odsosm_marker'] = $row['tx_odsosm_marker'];
+                                $records[$t][$resArray['uid']]['longitude'] = $resArray[$tables[$t]['lon']];
+                                $records[$t][$resArray['uid']]['latitude'] = $resArray[$tables[$t]['lat']];
                             }
                         }
                     }
