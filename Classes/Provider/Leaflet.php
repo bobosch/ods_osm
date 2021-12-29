@@ -154,6 +154,7 @@ class Leaflet extends BaseProvider
         $jsMarker = '';
         $jsElementVar = $table . '_' . $item['uid'];
         $fileRepository = GeneralUtility::makeInstance(FileRepository::class);
+        $jsElementVarsForPopup = array();
 
         switch ($table) {
             case 'tx_odsosm_track':
@@ -196,6 +197,7 @@ class Leaflet extends BaseProvider
                         $jsMarker .= $this->config['id'] . '.addLayer(' . $jsElementVar . ');' . "\n";
                         break;
                 }
+                $jsElementVarsForPopup[] = $jsElementVar;
                 break;
             case 'tx_odsosm_vector':
                 // add styles from record if both are set - color and width
@@ -221,6 +223,7 @@ class Leaflet extends BaseProvider
 
                     // Add vector file to layerswitcher
                     $this->layers[1][$item['title'] . ' (File)'] = $jsElementVar . '_file';
+                    $jsElementVarsForPopup[] = $jsElementVar . '_file';
                 }
 
                 // add geojson from data field as well
@@ -233,6 +236,7 @@ class Leaflet extends BaseProvider
 
                     // Add vector data to layerswitcher
                     $this->layers[1][$item['title']] = $jsElementVar . '_data';
+                    $jsElementVarsForPopup[] = $jsElementVar . '_data';
                 }
 
                 break;
@@ -265,10 +269,11 @@ class Leaflet extends BaseProvider
                     $this->layers[2][$this->config['id'] . '_g'][] = $jsElementVar;
                 }
 
+                $jsElementVarsForPopup[] = $jsElementVar;
                 break;
         }
 
-        if ($jsElementVar) {
+        foreach ($jsElementVarsForPopup as $jsElementVar) {
             if ($item['popup']) {
                 $jsMarker .= $jsElementVar . '.bindPopup(' . json_encode($item['popup']) . ");\n";
                 if ($item['initial_popup']) {
