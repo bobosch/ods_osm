@@ -1,6 +1,9 @@
 <?php
 
-if (!defined('TYPO3_MODE')) die ('Access denied.');
+defined('TYPO3') || die();
+
+use \TYPO3\CMS\Core\Http\ApplicationType;
+
 
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPItoST43(
     'ods_osm',
@@ -10,7 +13,6 @@ if (!defined('TYPO3_MODE')) die ('Access denied.');
     1
 );
 
-if (TYPO3_MODE === 'BE') {
 
     \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPageTSConfig('
     mod.wizards.newContentElement.wizardItems.plugins.elements.odsosm {
@@ -47,22 +49,6 @@ if (TYPO3_MODE === 'BE') {
         'class' => \Bobosch\OdsOsm\Wizard\VectordrawWizard::class
     ];
 
-    // Register icons
-    $icons = [
-        'coordinate-picker-wizard' => 'ce_wiz.png',
-        'vectordraw-wizard' => 'vector.png',
-        'ods_osm' => 'osm.png'
-    ];
-    $iconRegistry = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Imaging\IconRegistry::class);
-    foreach ($icons as $identifier => $path) {
-        $iconRegistry->registerIcon(
-            $identifier,
-            \TYPO3\CMS\Core\Imaging\IconProvider\BitmapIconProvider::class,
-            ['source' => 'EXT:ods_osm/Resources/Public/Icons/' . $path]
-        );
-    }
-
     $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update']['odsOsmFileLocationUpdater']
             = \Bobosch\OdsOsm\Updates\FileLocationUpdater::class;
 
-}

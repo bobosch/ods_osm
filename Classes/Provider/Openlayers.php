@@ -16,7 +16,7 @@ class Openlayers extends BaseProvider
 
     public function getMapCore($backpath = '')
     {
-        $path = ($backpath ? $backpath : $GLOBALS['TSFE']->absRefPrefix) . PathUtility::stripPathSitePrefix(ExtensionManagementUtility::extPath('ods_osm')) . 'Resources/Public/';
+        $path = ($backpath ? $backpath : Div::RESOURCE_BASE_PATH);
         if ($this->config['local_js']) {
             $this->scripts['Openlayers'] = ['src' => $path . 'OpenLayers/OpenLayers.js'];
         } else {
@@ -145,7 +145,7 @@ class Openlayers extends BaseProvider
                 } else {
                     break;
                 }
-                $jsMarker .= "mapGpx(" . $this->config['id'] . ",'/" .  $file->getPublicUrl() . "','" . $item['title'] . "','" . $item['color'] . "'," . $item['width'] . ");\n";
+                $jsMarker .= "mapGpx(" . $this->config['id'] . ",'" .  $file->getPublicUrl() . "','" . $item['title'] . "','" . $item['color'] . "'," . $item['width'] . ");\n";
                 break;
             case 'tx_odsosm_vector':
                 $fileRepository = GeneralUtility::makeInstance(FileRepository::class);
@@ -164,16 +164,15 @@ class Openlayers extends BaseProvider
                     $marker = $item['tx_odsosm_marker'];
                 } else {
                     $marker = array(
-                        'icon' => PathUtility::stripPathSitePrefix(ExtensionManagementUtility::extPath('ods_osm')) . 'Resources/Public/OpenLayers/img/marker.png',
+                        'icon' => PathUtility::getAbsoluteWebPath(
+                            GeneralUtility::getFileAbsFileName(Div::RESOURCE_BASE_PATH . 'OpenLayers/img/marker.png')
+                        ),
                         'type' => 'image',
                         'size_x' => 21,
                         'size_y' => 25,
                         'offset_x' => -11,
                         'offset_y' => -25
                     );
-                }
-                if ($marker['type'] != 'html') {
-                    $marker['icon'] = $GLOBALS['TSFE']->absRefPrefix . $marker['icon'];
                 }
 
                 // Add group to layer switch

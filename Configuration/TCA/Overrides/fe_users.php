@@ -1,5 +1,6 @@
 <?php
-if (!defined('TYPO3_MODE')) die('Access denied.');
+
+defined('TYPO3') || die();
 
 $tempColumns = array(
     'tx_odsosm_lon' => array( // DECIMAL(9,6)

@@ -236,6 +236,7 @@ class PluginController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
 
         // if no markers are set, select current page to find records on it
         if (count($record_ids) == 0) {
+            //@extensionScannerIgnoreLine
             $record_ids['pages'] = array($GLOBALS['TSFE']->id);
         }
 
