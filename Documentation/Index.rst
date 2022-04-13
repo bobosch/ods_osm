@@ -22,3 +22,4 @@ EXT: OpenStreetMap
    Editors/Index
    Administrators/Index
    Tutorial/Index
+   Conribution/Index

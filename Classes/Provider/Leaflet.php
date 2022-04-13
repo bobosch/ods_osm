@@ -261,7 +261,7 @@ class Leaflet extends BaseProvider
                         $iconOptions['html'] = $marker['icon'];
                         $markerOptions['icon'] = 'icon: new L.divIcon(' . json_encode($iconOptions) . ')';
                     } else {
-                        $icon = $GLOBALS['TSFE']->absRefPrefix . '/' . $marker['icon']->getPublicUrl();
+                        $icon = $GLOBALS['TSFE']->absRefPrefix . $marker['icon']->getPublicUrl();
                         $iconOptions['iconUrl'] = $icon;
                         $markerOptions['icon'] = 'icon: new L.Icon(' . json_encode($iconOptions) . ')';
                     }

@@ -49,6 +49,21 @@ use \TYPO3\CMS\Core\Http\ApplicationType;
         'class' => \Bobosch\OdsOsm\Wizard\VectordrawWizard::class
     ];
 
+    // Register icons
+    $icons = [
+        'coordinate-picker-wizard' => 'ce_wiz.png',
+        'vectordraw-wizard' => 'vector.png',
+        'ods_osm' => 'osm.png'
+    ];
+    $iconRegistry = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Imaging\IconRegistry::class);
+    foreach ($icons as $identifier => $path) {
+        $iconRegistry->registerIcon(
+            $identifier,
+            \TYPO3\CMS\Core\Imaging\IconProvider\BitmapIconProvider::class,
+            ['source' => 'EXT:ods_osm/Resources/Public/Icons/' . $path]
+        );
+    }
+
     $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update']['odsOsmFileLocationUpdater']
             = \Bobosch\OdsOsm\Updates\FileLocationUpdater::class;
 
