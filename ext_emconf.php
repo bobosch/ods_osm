@@ -15,5 +15,5 @@ $EM_CONF[$_EXTKEY] = [
     'createDirs' => 'uploads/tx_odsosm/map',
     'state' => 'stable',
     'uploadfolder' => 1,
-    'version' => '4.0.0-dev',
+    'version' => '4.0.0',
 ];
