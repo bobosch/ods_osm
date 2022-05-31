@@ -2,6 +2,7 @@
 
 namespace Bobosch\OdsOsm\Provider;
 
+use Bobosch\OdsOsm\Div;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Resource\FileRepository;
@@ -22,7 +23,11 @@ class Leaflet extends BaseProvider
 
     public function getMapCore($backpath = '')
     {
-        $this->path_res = ($backpath ? $backpath : $GLOBALS['TSFE']->absRefPrefix) . PathUtility::stripPathSitePrefix(ExtensionManagementUtility::extPath('ods_osm')) . 'Resources/Public/JavaScript/Leaflet/';
+        $this->path_res = ($backpath ? $backpath :
+            PathUtility::getAbsoluteWebPath(
+                GeneralUtility::getFileAbsFileName(Div::RESOURCE_BASE_PATH . 'JavaScript/Leaflet/')
+            )
+        );
         $this->path_leaflet = ($this->config['local_js'] ? $this->path_res . 'Core/' : 'https://unpkg.com/leaflet@1.7.1/dist/');
         $pageRenderer = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(PageRenderer::class);
         $pageRenderer->addCssFile($this->path_leaflet . 'leaflet.css');
@@ -165,7 +170,9 @@ class Leaflet extends BaseProvider
                     break;
                 }
 
-                $path = $GLOBALS['TSFE']->absRefPrefix . PathUtility::stripPathSitePrefix(ExtensionManagementUtility::extPath('ods_osm')) . 'Resources/Public/JavaScript/Leaflet/';
+                $path = PathUtility::getAbsoluteWebPath(
+                    GeneralUtility::getFileAbsFileName(Div::RESOURCE_BASE_PATH . 'JavaScript/Leaflet/')
+                );
                 // Add tracks to layerswitcher
                 $this->layers[1][$item['title']] = $jsElementVar;
 
@@ -175,7 +182,7 @@ class Leaflet extends BaseProvider
                         $this->scripts['leaflet-plugins'] = ['src' => $path . 'leaflet-plugins/layer/vector/KML.js'];
 
                         $jsMarker .= 'var ' . $jsElementVar . ' = new L.KML(';
-                        $jsMarker .= '"/' . $file->getPublicUrl() . '"';
+                        $jsMarker .= '"' . $file->getPublicUrl() . '"';
                         $jsMarker .= ");\n";
                         break;
                     case 'gpx':
@@ -192,7 +199,8 @@ class Leaflet extends BaseProvider
                                 'shadowUrl' => $path . 'leaflet-gpx/pin-shadow.png',
                             ),
                         );
-                        $jsMarker .= 'var ' . $jsElementVar . ' = new L.GPX("/' . $file->getPublicUrl() . '",';
+                        $jsMarker .= 'var ' . $jsElementVar . ' = new L.GPX("' . $file->getPublicUrl() . '",';
+
                         $jsMarker .= json_encode($options) . ");\n";
                         $jsMarker .= $this->config['id'] . '.addLayer(' . $jsElementVar . ');' . "\n";
                         break;
@@ -258,7 +266,7 @@ class Leaflet extends BaseProvider
                         $markerOptions['icon'] = 'icon: new L.Icon(' . json_encode($iconOptions) . ')';
                     }
                 } else {
-                    $icon = $GLOBALS['TSFE']->absRefPrefix . PathUtility::stripPathSitePrefix(ExtensionManagementUtility::extPath('ods_osm')) . 'Resources/Public/JavaScript/Leaflet/Core/images/marker-icon.png';
+                    $icon = $this->path_leaflet . 'Core/images/marker-icon.png';
                 }
                 $jsMarker .= 'var ' . $jsElementVar . ' = new L.Marker([' . $item['latitude'] . ', ' . $item['longitude'] . '], {' . implode(',', $markerOptions) . "});\n";
                 // Add group to layer switch
