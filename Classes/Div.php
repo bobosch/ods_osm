@@ -530,11 +530,11 @@ class Div
             ];
         }
 
-        if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ods_osm']['tables'])) {
+        if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ods_osm']['tables'] ?? null)) {
             $tables = array_merge($tables, $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ods_osm']['tables']);
         }
 
-        return $table ? $tables[$table] : $tables;
+        return $table ? ($tables[$table] ?? []) : $tables;
     }
 
     /**
