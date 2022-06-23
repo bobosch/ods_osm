@@ -206,10 +206,10 @@ class TceMain
                 $tc = Div::getTableConfig($table);
                 if (isset($tc['lon'])) {
                     if (
-                        (isset($tc['address']) && $fieldArray[$tc['address']]) ||
-                        (isset($tc['street']) && $fieldArray[$tc['street']]) ||
-                        (isset($tc['zip']) && $fieldArray[$tc['zip']]) ||
-                        (isset($tc['city']) && $fieldArray[$tc['city']])
+                        (isset($tc['address']) && ($fieldArray[$tc['address']] ?? null)) ||
+                        (isset($tc['street']) && ($fieldArray[$tc['street']] ?? null)) ||
+                        (isset($tc['zip']) && ($fieldArray[$tc['zip']] ?? null)) ||
+                        (isset($tc['city']) && ($fieldArray[$tc['city']] ?? null))
                     ) {
                         $config = Div::getConfig(array('autocomplete'));
                         // Search coordinates
