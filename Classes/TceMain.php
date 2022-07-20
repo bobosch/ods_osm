@@ -12,8 +12,8 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 class TceMain
 {
-    var $lon = array();
-    var $lat = array();
+    var $lon = [];
+    var $lat = [];
 
     // ['t3lib/class.t3lib_tcemain.php']['processDatamapClass']
     function processDatamap_preProcessFieldArray(&$incomingFieldArray, $table, $id, $obj)
@@ -183,8 +183,8 @@ class TceMain
 
             case 'tx_odsosm_vector':
                 if (!empty($fieldArray['data'])) {
-                    $this->lon = array();
-                    $this->lat = array();
+                    $this->lon = [];
+                    $this->lat = [];
 
                     $polygon = geoPHP::load(($fieldArray['data']));
                     if ($polygon) {
@@ -215,7 +215,7 @@ class TceMain
                         // Search coordinates
                         if ($config['autocomplete']) {
                             // Generate address array with standard keys
-                            $address = array();
+                            $address = [];
                             foreach ($tc as $def => $field) {
                                 if ($def == strtolower($def)) {
                                     $address[$def] = $obj->datamap[$table][$id][$field];

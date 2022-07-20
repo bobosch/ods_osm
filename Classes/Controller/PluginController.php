@@ -45,8 +45,8 @@ class PluginController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
 {
     var $config;
     var $hooks;
-    var $lats = array();
-    var $lons = array();
+    var $lats = [];
+    var $lons = [];
     /** @var ConnectionPool */
     var $connectionPool = null;
     /** @var BaseProvider */
@@ -59,7 +59,7 @@ class PluginController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
         $this->pi_loadLL();
         $this->pi_initPIflexForm(); // Init FlexForm configuration for plugin
 
-        $this->hooks = array();
+        $this->hooks = [];
         if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ods_osm']['class.tx_odsosm_pi1.php'])) {
             foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ods_osm']['class.tx_odsosm_pi1.php'] as $classRef) {
                 $this->hooks[] = GeneralUtility::makeInstance($classRef);
@@ -75,7 +75,7 @@ class PluginController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
             - Extension
         -------------------------------------------------- */
 
-        $flex = array();
+        $flex = [];
         $options = array(
             'cluster',
             'height',
@@ -127,13 +127,13 @@ class PluginController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
 
         $this->config = array_merge(Div::getConfig(), $conf, $flex);
         if (!is_array($this->config['marker'])) {
-            $this->config['marker'] = array();
+            $this->config['marker'] = [];
         }
         if (is_array($conf['marker.'])) {
             foreach ($conf['marker.'] as $name => $value) {
                 if (is_string($value) && !empty($value)) {
                     if (!is_array($this->config['marker'][$name])) {
-                        $this->config['marker'][$name] = array();
+                        $this->config['marker'][$name] = [];
                     }
                     $this->config['marker'][$name] = array_merge($this->config['marker'][$name], explode(',', $value));
                 }
@@ -150,7 +150,7 @@ class PluginController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
         }
 
         if ($this->config['show_layerswitcher']) {
-            $this->config['layers_visible'] = array();
+            $this->config['layers_visible'] = [];
         } else {
             $this->config['layers_visible'] = $this->config['layer'];
         }
@@ -271,7 +271,7 @@ class PluginController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
         }
 
         // get marker records from db
-        $records = array();
+        $records = [];
         foreach ($record_ids as $table => $items) {
             $tc = $tables[$table];
             $connection = $this->connectionPool->getConnectionForTable($table);

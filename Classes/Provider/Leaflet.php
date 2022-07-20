@@ -14,9 +14,9 @@ use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 class Leaflet extends BaseProvider
 {
     protected $layers = array(
-        0 => array(), // Base
-        1 => array(), // Overlay
-        2 => array(), // Marker
+        0 => [], // Base
+        1 => [], // Overlay
+        2 => [], // Marker
     );
     protected $path_res;
     protected $path_leaflet;
@@ -36,7 +36,7 @@ class Leaflet extends BaseProvider
 
     public function getMapMain()
     {
-        $controls = array();
+        $controls = [];
         if ($this->config['show_scalebar']) {
             $controls['scalebar'] = 'new L.control.scale()';
         }
@@ -74,7 +74,7 @@ class Leaflet extends BaseProvider
                     '###VISIBLE###' => "'visibility':" . ($layer['visible'] ? 'true' : 'false'),
                 )) . ";\n";
         } elseif ($layer['tile_url']) {
-            $options = array();
+            $options = [];
             if ($layer['min_zoom']) {
                 $options['minZoom'] = $layer['min_zoom'];
             }
@@ -103,13 +103,13 @@ class Leaflet extends BaseProvider
 
     protected function getLayerSwitcher()
     {
-        $base = array();
+        $base = [];
         if (is_array($this->layers[0]) && count($this->layers[0]) > 1) {
             foreach ($this->layers[0] as $title => $var) {
                 $base[] = '"' . $title . '":' . $var;
             }
         }
-        $overlay = array();
+        $overlay = [];
         if (is_array($this->layers[1])) {
             foreach ($this->layers[1] as $title => $var) {
                 $overlay[] = '\'' . $title . '\':' . $var;
@@ -159,7 +159,7 @@ class Leaflet extends BaseProvider
         $jsMarker = '';
         $jsElementVar = $table . '_' . $item['uid'];
         $fileRepository = GeneralUtility::makeInstance(FileRepository::class);
-        $jsElementVarsForPopup = array();
+        $jsElementVarsForPopup = [];
 
         switch ($table) {
             case 'tx_odsosm_track':
@@ -249,7 +249,7 @@ class Leaflet extends BaseProvider
 
                 break;
             default:
-                $markerOptions = array();
+                $markerOptions = [];
                 if (is_array($item['tx_odsosm_marker'])) {
                     $marker = $item['tx_odsosm_marker'];
                     $iconOptions = array(
