@@ -15,6 +15,12 @@ abstract class BaseProvider
     /** @var array keeping all JavaScripts to be included */
     protected $scripts = [];
 
+    protected $layers = [
+        0 => [], // Base
+        1 => [], // Overlay
+        2 => [], // Marker
+    ];
+
     // Implement these functions
     public function getMapCore($backpath = '')
     {
@@ -54,9 +60,15 @@ abstract class BaseProvider
     {
         $this->getMapCore();
 
+        $this->layers = $layers;
+
+        $baselayers = $layers[0];
+        $overlays = $layers[1];
+
         $this->script = "
 			" . $this->getMapMain() . "
-			" . $this->getMainLayers($layers) . "
+			" . $this->getBaseLayers($baselayers) . "
+		    " . $this->getOverlayLayers($overlays) . "
 			" . $this->getMapCenter($lat, $lon, $zoom) . "
 			" . $this->getMarkers($markers);
 
@@ -72,18 +84,37 @@ abstract class BaseProvider
     /**
      * @return string
      */
-    public function getMainLayers($layers, $backpath = '')
+    public function getBaseLayers($layers, $backpath = '')
     {
         // Main layer
         $i = 0;
-        $jsMainLayer = '';
-        foreach ($layers as $layer) {
-            $jsMainLayer .= $this->getLayer($layer, $i, $backpath);
-            $i++;
+        $jsBaseLayer = [];
+        if (is_array($layers) && !empty($layers)) {
+            foreach ($layers as $layer) {
+                $jsBaseLayer[] = $this->getLayer($layer, $i, $backpath);
+                $i++;
+            }
         }
-        Div::addJsFiles($this->scripts, null);
 
-        return $jsMainLayer;
+        return implode("\n", ($jsBaseLayer));
+    }
+
+    /**
+     * @return string
+     */
+    public function getOverlayLayers($layers, $backpath = '')
+    {
+        // Main layer
+        $i = 0;
+        $jsOverlayLayer = [];
+        if (is_array($layers) && !empty($layers)) {
+            foreach ($layers as $layer) {
+                $jsOverlayLayer[] = $this->getLayer($layer, $i, $backpath);
+                $i++;
+            }
+        }
+
+        return implode("\n", ($jsOverlayLayer));
     }
 
     /**

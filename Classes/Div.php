@@ -547,4 +547,17 @@ class Div
 
         return $loggerManager->getLogger(static::class);
     }
+
+
+
+    public function isExtensionLoaded($params = [])
+    {
+        $isLoaded = false;
+
+        if ( \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('tt_address') ) {
+            $isLoaded = true;
+        }
+
+        return $isLoaded;
+    }
 }

@@ -197,17 +197,9 @@
 				<source><![CDATA[Include static JavaScript]]></source>
 				<target><![CDATA[Statisches JavaScript einbinden]]></target>
 			</trans-unit>
-			<trans-unit id="tx_odsosm_layer.javascript_leaflet" approved="yes">
-				<source><![CDATA[JavaScript for Leaflet]]></source>
-				<target><![CDATA[JavaScript für Leaflet]]></target>
-			</trans-unit>
 			<trans-unit id="tx_odsosm_layer.javascript_openlayers" approved="yes">
 				<source><![CDATA[JavaScript for OpenLayers]]></source>
 				<target><![CDATA[JavaScript für OpenLayers]]></target>
-			</trans-unit>
-			<trans-unit id="tx_odsosm_layer.javascript_openlayers3" approved="yes">
-				<source><![CDATA[JavaScript for OpenLayers 3]]></source>
-				<target><![CDATA[JavaScript für OpenLayers 3]]></target>
 			</trans-unit>
 			<trans-unit id="tx_odsosm_layer.max_zoom" approved="yes">
 				<source><![CDATA[Maximum zoom]]></source>

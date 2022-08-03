@@ -12,6 +12,18 @@
 			<trans-unit id="wiz_geocode" xml:space="preserve">
 				<source>Geocode addresses</source>
 			</trans-unit>
+			<trans-unit id="openlayers.showLayerList" xml:space="preserve">
+				<source>Show layer list</source>
+			</trans-unit>
+			<trans-unit id="openlayers.hideLayerList" xml:space="preserve">
+				<source>Hide layer list</source>
+			</trans-unit>
+			<trans-unit id="base_layer" xml:space="preserve">
+				<source>Base Layer</source>
+			</trans-unit>
+			<trans-unit id="overlays" xml:space="preserve">
+				<source>Overlays</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>

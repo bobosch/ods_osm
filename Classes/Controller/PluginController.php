@@ -88,9 +88,12 @@ class PluginController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
             'marker_popup_initial',
             'mouse_navigation',
             'openlayers_layer',
-            'openlayers3_layer',
+            'base_layer',
+            'overlays',
+            'overlays_active',
             'position',
             'show_layerswitcher',
+            'layerswitcher_activationMode',
             'show_scalebar',
             'show_pan_zoom',
             'show_popups',
@@ -122,7 +125,7 @@ class PluginController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
             }
         }
         if ($flex['library']) {
-            $flex['layer'] = $flex[$flex['library'] . '_layer'];
+            $flex['layer'] = $flex['base_layer'];
         }
 
         $this->config = array_merge(Div::getConfig(), $conf, $flex);
@@ -140,7 +143,7 @@ class PluginController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
             }
         }
 
-        $this->config['layer'] = explode(',', $this->config['layer']);
+        $this->config['layer'] = explode(',', $this->config['layer'] . (!empty($this->config['overlays']) ? ',' . $this->config['overlays'] : ''));
 
         if (is_numeric($this->config['height'])) {
             $this->config['height'] .= 'px';
@@ -335,8 +338,7 @@ class PluginController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
                             $foreign = $f['foreign'];
 
                             $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($foreign);
-                            $constraints = Div::getConstraintsForQueryBuilder($foreign,$this->cObj,
-                                $queryBuilder);
+                            $constraints = Div::getConstraintsForQueryBuilder($foreign, $this->cObj, $queryBuilder);
 
                             // set uid
                             $constraints[] = $queryBuilder->expr()->eq($local . '.uid', $queryBuilder->createNamedParameter($item, \PDO::PARAM_INT));
@@ -516,6 +518,7 @@ class PluginController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
             Layers
         ================================================== */
         $layers = [];
+        $baselayers = [];
         if (!empty(implode(',', $this->config['layer']))) {
             $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
                 ->getQueryBuilderForTable('tx_odsosm_layer');
@@ -530,22 +533,86 @@ class PluginController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
                             $this->config['layer'],
                             Connection::PARAM_INT_ARRAY
                         )
-                    )
+                    ),
+                    // $queryBuilder->expr()->eq(
+                    //     'tx_odsosm_layer.overlay',
+                    //     0
+                    // )
                 )
                 ->add('orderBy', 'FIELD(uid, ' . implode(',', $this->config['layer']) . ')', true)
                 ->execute();
 
             while ($resArray = $result->fetch()) {
-                $layers[$resArray['uid']] =  $resArray;
+                $baselayers[$resArray['uid']] =  $resArray;
             }
 
             // set visible flag
             foreach ($this->config['layers_visible'] as $key) {
-                if ($layers[$key]) {
-                    $layers[$key]['visible'] = true;
+                if ($baselayers[$key]) {
+                    $baselayers[$key]['visible'] = true;
+                }
+            }
+            foreach (explode(',', $this->config['overlays_active']) as $key) {
+                if ($baselayers[$key]) {
+                    $baselayers[$key]['visible'] = true;
                 }
             }
         }
+        /* ==================================================
+           Overlays
+        ================================================== */
+        // $overlays = [];
+        // if (!empty(implode(',', $this->config['overlays']))) {
+        //     $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+        //         ->getQueryBuilderForTable('tx_odsosm_layer');
+
+        //     $result = $queryBuilder
+        //         ->select('*')
+        //         ->from('tx_odsosm_layer')
+        //         ->where(
+        //             $queryBuilder->expr()->in(
+        //                 'tx_odsosm_layer.uid',
+        //                 $queryBuilder->createNamedParameter(
+        //                     $this->config['overlays'],
+        //                     Connection::PARAM_INT_ARRAY
+        //                 )
+        //             ),
+        //             $queryBuilder->expr()->eq(
+        //                 'tx_odsosm_layer.overlay',
+        //                 1
+        //             )
+        //         )
+        //         ->add('orderBy', 'FIELD(uid, ' . implode(',', $this->config['layer']) . ')', true)
+        //         ->execute();
+
+        //     while ($resArray = $result->fetch()) {
+        //         $overlays[$resArray['uid']] =  $resArray;
+        //     }
+
+        //     // set visible flag
+        //     foreach ($this->config['layers_visible'] as $key) {
+        //         if ($overlays[$key]) {
+        //             $overlays[$key]['visible'] = true;
+        //         }
+        //     }
+        //     foreach (explode(',', $this->config['overlays_active']) as $key) {
+        //         if ($overlays[$key]) {
+        //             $overlays[$key]['visible'] = true;
+        //         }
+        //     }
+        // }
+
+        foreach ($baselayers as $uid => $layer) {
+            if ($layer['overlay'] == 1) {
+                $layers[1][] = $layer;
+            } else {
+                $layers[0][] = $layer;
+            }
+        }
+        // $layers[0] = $baselayers;
+        // $layers[1] = $overlays;
+        $layers[2] = []; // markers will be filled in provider classes
+
         /* ==================================================
             Map center
         ================================================== */

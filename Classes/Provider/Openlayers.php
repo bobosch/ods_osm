@@ -3,201 +3,166 @@
 namespace Bobosch\OdsOsm\Provider;
 
 use Bobosch\OdsOsm\Div;
-use TYPO3\CMS\Core\Core\Environment;
+use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
-use TYPO3\CMS\Core\Resource\FileRepository;
+use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 
 class Openlayers extends BaseProvider
 {
-    protected $group_titles = array();
-    public $P;
+    protected $layers = [
+        0 => [], // Base
+        1 => [], // Overlay
+        2 => [], // Marker
+    ];
 
     public function getMapCore($backpath = '')
     {
-        $path = ($backpath ? $backpath : Div::RESOURCE_BASE_PATH);
-        if ($this->config['local_js']) {
-            $this->scripts['Openlayers'] = ['src' => $path . 'OpenLayers/OpenLayers.js'];
-        } else {
-            $this->scripts['Openlayers'] = ['src' => 'https://cdnjs.cloudflare.com/ajax/libs/openlayers/2.13.1/OpenLayers.js', 'sri' => 'sha384-1sdAnHpdcrkXIg3U6pRKfecnhahCO+SvNlpRoBSQ9qxY1LwSesu+L25qR9ceYg9V'];
+        $path = ($backpath ? $backpath :
+            PathUtility::getAbsoluteWebPath(
+                GeneralUtility::getFileAbsFileName(Div::RESOURCE_BASE_PATH . 'OpenLayers/')
+            )
+        );
+        $pathOl = ($this->config['local_js'] ? $path : 'https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.15.1/');
+        $pageRenderer = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(PageRenderer::class);
+        $pageRenderer->addCssFile($pathOl . 'css/ol.css');
+        $this->scripts['OpenLayers'] = [
+            'src' => $pathOl . 'build/ol.js',
+            'sri' => 'sha512-9jwbYv3+RCZJsgvMaf9IqM2a2xhFvwDdY+5MUu0JNl6yL00jn98+nsPHt6QzPFVyU+EIUgNk6rc72TPZNf3yag=='
+        ];
+
+        // Do we need the layerswitcher? If so, some extra plugin is required.
+        if ($this->config['show_layerswitcher']) {
+            $pathContrib = ($this->config['local_js'] ? $path . 'Contrib/ol-layerswitcher/' : 'https://unpkg.com/ol-layerswitcher@3.8.3/dist/');
+            $pathCustom = $path . 'Custom/';
+
+            $pageRenderer->addCssFile($pathContrib . 'ol-layerswitcher.css');
+            $pageRenderer->addCssFile($pathCustom . 'ol-layerswitcher.css');
+
+            $this->scripts['OpenLayersSwitch'] = [
+                'src' => $pathContrib . 'ol-layerswitcher.js',
+                'sri' => 'sha512-+cZhYSrGlO4JafMR5fEFkF+6pXr9fwMaicniLZRH76RtnJXc/+WkFpZu/9Av0rg2xDVr84M15XMA6tet1VaMrg=='
+            ];
         }
-        $this->scripts['OpenlayersOds'] = ['src' => $path . 'tx_odsosm_openlayers.js'];
     }
 
     public function getMapMain()
     {
-        $controls = array('oAttribution' => 'new OpenLayers.Control.Attribution()');
-        if ($this->config['show_layerswitcher']) {
-            $controls['oLayerSwitcher'] = "new OpenLayers.Control.LayerSwitcher({" . ($this->config['layerswitcher.']['div'] ? "'div':OpenLayers.Util.getElement('" . $this->config['id'] . "_layerswitcher')" : "") . $this->config['layerswitcher.']['options'] . "})";
-        }
-        if ($this->config['mouse_navigation']) {
-            $controls['oNavigation'] = "new OpenLayers.Control.Navigation()";
-        }
-        if ($this->config['show_pan_zoom']) {
-            $controls['oPanZoom'] = "new OpenLayers.Control.PanZoom" . ($this->config['show_pan_zoom'] == 1 ? 'Bar' : '') . "()";
-        }
-        if ($this->config['show_scalebar']) {
-            $controls['oScalebar'] = "new OpenLayers.Control.ScaleLine()";
-        }
+        return "
+		view = new ol.View({
+			center: [0, 0],
+			zoom: 1
+		});
 
-        $vars = '';
-        foreach ($controls as $var => $obj) {
-            $vars .= $var . '=' . $obj . ";\n";
-        }
+        baselayergroup = new ol.layer.Group({
+            name: 'baselayergroup',
+            title: '" . LocalizationUtility::translate('base_layer', 'ods_osm') . "',
+            layers: [
+                new ol.layer.Tile({
+                    type: 'base',
+                    source: new ol.source.OSM(),
+                })
+            ]
+        });
 
-        return (
-            $vars .
-            $this->config['id'] . "=new OpenLayers.Map('" . $this->config['id'] . "',{
-				controls:[" . implode(',', array_keys($controls)) . "],
-				numZoomLevels:19,
-				projection:new OpenLayers.Projection('EPSG:900913'),
-				displayProjection:new OpenLayers.Projection('EPSG:4326')
-			});\n" .
-            ($this->config['show_layerswitcher'] == 2 ? "oLayerSwitcher.maximizeControl();\n" : "")
-        );
+        overlaygroup = new ol.layer.Group({
+            name: 'overlaygroup',
+            title: '" . LocalizationUtility::translate('overlays', 'ods_osm') . "',
+            layers: []
+        });
+
+        layers = [
+            baselayergroup,
+            overlaygroup,
+        ];
+
+		var " . $this->config['id'] . " = new ol.Map({
+			target: '" . $this->config['id'] . "',
+			controls: ol.control.defaults({
+				attributionOptions: /** @type {olx.control.AttributionOptions} */ ({
+					collapsible: false
+				})
+			}),
+			layers: layers,
+			view: view
+        });
+        ";
     }
 
-    protected function getLayerSwitcher()
+    /**
+     * The center and zoom level of the map
+     *
+     * @param float $lat: latitude
+     * @param float $lon: longitude
+     * @param int $zoom: zoom level
+     *
+     * @return string The JavaScript to set the center and zoom level
+     */
+    public function getMapCenter($lat, $lon, $zoom)
     {
-        if ($this->config['layerswitcher.']['div']) {
-            $content .= '<div id="' . $this->config['id'] . '_layerswitcher" class="olControlLayerSwitcher"></div>';
-        }
+        return '
+			view.setCenter(ol.proj.transform([' . $lon . ', ' . $lat . '], \'EPSG:4326\', \'EPSG:3857\'));
+			view.setZoom(' . $zoom . ');
+		';
     }
 
     protected function getLayer($layer, $i, $backpath = '')
     {
-        if ($layer['javascript_include']) {
-            $javascript_include = strtr($layer['javascript_include'], array(
-                '###STATIC_SCRIPT###' => $this->config['static_script'],
-            ));
-            $parts = parse_url($javascript_include);
-            $filename = basename($parts['path']);
-            if ($parts['scheme']) {
-                $script = $javascript_include;
-            } else {
-                $script = $GLOBALS['TSFE']->absRefPrefix . $backpath . $javascript_include;
-            }
-            // Include javascript only once if different layers use the same javascript
-            $this->scripts[$filename] = [ 'src' => $script];
+        if (empty($layer['subdomains'])) {
+            $layer['subdomains'] = 'abc';
         }
-        if ($layer['javascript_openlayers']) {
-            $jsMainLayer = $this->config['id'] . ".addLayer(" . strtr($layer['javascript_openlayers'], array(
-                    '###STATIC_SCRIPT###' => $this->config['static_script'],
-                    '###TITLE###' => $layer['title'],
-                    '###VISIBLE###' => "'visibility':" . ($layer['visible'] ? 'true' : 'false'),
-                )) . ");\n";
-        } elseif ($layer['tile_url']) {
-            // url
-            $layer['tile_url'] = strtr($this->getTileUrl($layer), array('{x}' => '${x}', '{y}' => '${y}', '{z}' => '${z}'));
-            if (strpos($layer['tile_url'], '{s}')) {
-                if ($layer['subdomains']) {
-                    $subdomains = $layer['subdomains'];
-                } else {
-                    $subdomains = 'abc';
-                }
-                $url = array();
-                for ($i = 0; $i < strlen($subdomains); $i++) {
-                    $url[] = strtr($layer['tile_url'], array('{s}' => substr($subdomains, $i, 1)));
-                }
-            } else {
-                $url = $layer['tile_url'];
-            }
+        $layer['subdomains'] = substr($layer['subdomains'], 0, 1) . '-' . substr($layer['subdomains'], -1, 1);
+        $layer['tile_url'] = strtr($this->getTileUrl($layer), array('{s}' => '{' . $layer['subdomains'] . '}'));
 
-            // options
-            $options = array();
-            if ($layer['attribution']) {
-                $options['attribution'] = $layer['attribution'];
-            }
-            if ($layer['max_zoom']) {
-                $options['numZoomLevels'] = $layer['max_zoom'];
-            }
-            if ($layer['overlay']) {
-                $options['isBaseLayer'] = false;
-                $options['transparent'] = true;
-            }
-            $options['tileOptions']['crossOriginKeyword'] = null;
-            $options['visibility'] = $layer['visible'] ? true : false;
+        if ($layer['overlay'] == 1) {
 
-            $params = array(
-                '"' . $layer['title'] . '"',
-                json_encode($url),
-                json_encode($options, JSON_NUMERIC_CHECK)
-            );
-            $jsMainLayer = $this->config['id'] . '.addLayer(new OpenLayers.Layer.OSM(' . implode(',', $params) . '));' . "\n";
-        }
-        if (!$layer['overlay'] && $layer['visible']) {
-            $jsMainLayer .= $this->config['id'] . '.setBaseLayer(' . $this->config['id'] . '.layers[' . $i . "]);\n";
+            $jsLayer = $this->config['id'] . "_" . $i . "_overlayLayer =
+                    new ol.layer.Tile({
+                        visible: " . ($layer['visible'] == true ? 'true' : 'false') . ",
+                        opacity: 0.99,
+                        title: '" . $layer['title'] . "',
+                        source: new ol.source.OSM({
+                            url: '" . $layer['tile_url'] . "'
+                        })
+                    });
+                overlaygroup.getLayers().push(" . $this->config['id'] . "_" . $i . "_overlayLayer);
+            ";
+        } else {
+            $jsLayer = $this->config['id'] . "_" . $i . "_baselayergroup =
+                    new ol.layer.Tile({
+                        type: 'base',
+                        combine: 'true',
+                        visible: " . ($i == 0 ? 'true' : 'false') . ",
+                        title: '" . $layer['title'] . "',
+                        source: new ol.source.OSM({
+                            url: '" . $layer['tile_url'] . "'
+                        })
+                    });
+                baselayergroup.getLayers().push(" . $this->config['id'] . "_" . $i . "_baselayergroup);
+        ";
         }
 
-        return $jsMainLayer;
+        return $jsLayer;
     }
 
-    protected function getMarker($item, $table)
+    /**
+     * Get the layer switcher
+     *
+     * @return string The JavaScript to add the layerswitcher
+     */
+    protected function getLayerSwitcher()
     {
-        $jsMarker = '';
-        switch ($table) {
-            case 'tx_odsosm_track':
-                $fileRepository = GeneralUtility::makeInstance(FileRepository::class);
-                $fileObjects = $fileRepository->findByRelation('tx_odsosm_track', 'file', $item['uid']);
-                if ($fileObjects) {
-                    $file = $fileObjects[0];
-                } else {
-                    break;
-                }
-                $jsMarker .= "mapGpx(" . $this->config['id'] . ",'" .  $file->getPublicUrl() . "','" . $item['title'] . "','" . $item['color'] . "'," . $item['width'] . ");\n";
-                break;
-            case 'tx_odsosm_vector':
-                $fileRepository = GeneralUtility::makeInstance(FileRepository::class);
-                $fileObjects = $fileRepository->findByRelation('tx_odsosm_vector', 'file', $item['uid']);
-                if ($fileObjects) {
-                    $file = $fileObjects[0];
-                    $filename = Environment::getPublicPath() . '/' . $file->getPublicUrl();
-                    $jsMarker .= "mapVector(" . $this->config['id'] . ",'" . $item['title'] . " (File)'," . file_get_contents($filename) . ");\n";
-                }
-                if ($item['data']) {
-                    $jsMarker .= "mapVector(" . $this->config['id'] . ",'" . $item['title'] . "'," . $item['data'] . ");\n";
-                }
-                break;
-            default:
-                if (is_array($item['tx_odsosm_marker'])) {
-                    $marker = $item['tx_odsosm_marker'];
-                } else {
-                    $marker = array(
-                        'icon' => PathUtility::getAbsoluteWebPath(
-                            GeneralUtility::getFileAbsFileName(Div::RESOURCE_BASE_PATH . 'OpenLayers/img/marker.png')
-                        ),
-                        'type' => 'image',
-                        'size_x' => 21,
-                        'size_y' => 25,
-                        'offset_x' => -11,
-                        'offset_y' => -25
-                    );
-                }
-
-                // Add group to layer switch
-                if (!in_array($item['group_title'], $this->group_titles)) {
-                    $this->group_titles[$item['group_uid']] = $item['group_title'];
-                    $jsMarker .= 'var layerMarkers_' . $item['group_uid'] . '=new OpenLayers.Layer.Markers(' . json_encode(($marker['type'] == 'html' ? $marker['icon'] : '<img src="' . $marker['icon'] . '" />') . ' ' . $item['group_title']) . ");\n";
-                    $jsMarker .= $this->config['id'] . '.addLayer(layerMarkers_' . $item['group_uid'] . ');';
-                }
-                $jsMarker .= 'mapMarker(' . $this->config['id'] . ',' . 'layerMarkers_' . $item['group_uid'] . ',' . json_encode(array(
-                        'longitude' => $item['longitude'],
-                        'latitude' => $item['latitude'],
-                        'icon' => $marker['icon'],
-                        'type' => $marker['type'],
-                        'size_x' => $marker['size_x'],
-                        'size_y' => $marker['size_y'],
-                        'offset_x' => $marker['offset_x'],
-                        'offset_y' => $marker['offset_y'],
-                        'popup' => $item['popup'],
-                        'show_popups' => intval($this->config['show_popups']),
-                        'initial_popup' => intval($item['initial_popup']),
-                    )) . ");\n";
-                break;
-        }
-
-        return $jsMarker;
+        return '
+         var layerSwitcher = new ol.control.LayerSwitcher({
+            activationMode: \'' . ($this->config['layerswitcher_activationMode'] == '1' ? 'click' : 'mouseover') . '\',
+            startActive: ' . ($this->config['show_layerswitcher'] == '2' ? 'true' : 'false') . ',
+            tipLabel: \'' . LocalizationUtility::translate('openlayers.showLayerList', 'ods_osm') . '\',
+            collapseTipLabel: \'' . LocalizationUtility::translate('openlayers.hideLayerList', 'ods_osm') . '\',
+            groupSelectStyle: \'children\',
+            reverse: false
+          });
+          ' . $this->config['id'] . '.addControl(layerSwitcher);
+        ';
     }
-
 }

@@ -15,6 +15,22 @@
 				<source>Geocode addresses</source>
 				<target>Adressen geokodieren</target>
 			</trans-unit>
+			<trans-unit id="openlayers.showLayerList" xml:space="preserve">
+				<source>Show layer list</source>
+				<target>Liste der Kartenebenen</target>
+			</trans-unit>
+			<trans-unit id="openlayers.hideLayerList" xml:space="preserve">
+				<source>Hide layer list</source>
+				<target>Liste der Kartenebenen ausblenden</target>
+			</trans-unit>
+			<trans-unit id="base_layer" xml:space="preserve">
+				<source>Base Layer</source>
+				<target>Grundkarte</target>
+			</trans-unit>
+			<trans-unit id="overlays" xml:space="preserve">
+				<source>Overlays</source>
+				<target>Überlagerungs-Karten</target>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>

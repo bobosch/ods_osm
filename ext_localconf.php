@@ -65,6 +65,10 @@ if (TYPO3_MODE === 'BE') {
         );
     }
 
-    $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update']['odsOsmFileLocationUpdater']
+    # add migration wizards
+    $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update'][\Bobosch\OdsOsm\Updates\FileLocationUpdater::class]
         = \Bobosch\OdsOsm\Updates\FileLocationUpdater::class;
+    $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update'][\Bobosch\OdsOsm\Updates\MigrateSettings::class]
+        = \Bobosch\OdsOsm\Updates\MigrateSettings::class;
+
 }

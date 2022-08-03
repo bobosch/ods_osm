@@ -13,11 +13,6 @@ use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 
 class Leaflet extends BaseProvider
 {
-    protected $layers = array(
-        0 => [], // Base
-        1 => [], // Overlay
-        2 => [], // Marker
-    );
     protected $path_res;
     protected $path_leaflet;
 
@@ -31,7 +26,10 @@ class Leaflet extends BaseProvider
         $this->path_leaflet = ($this->config['local_js'] ? $this->path_res . 'Core/' : 'https://unpkg.com/leaflet@1.7.1/dist/');
         $pageRenderer = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(PageRenderer::class);
         $pageRenderer->addCssFile($this->path_leaflet . 'leaflet.css');
-        $this->scripts['leaflet'] = ['src' => $this->path_leaflet . 'leaflet.js', 'sri' => 'sha384-RFZC58YeKApoNsIbBxf4z6JJXmh+geBSgkCQXFyh+4tiFSJmJBt+2FbjxW7Ar16M'];
+        $this->scripts['leaflet'] = [
+            'src' => $this->path_leaflet . 'leaflet.js',
+            'sri' => 'sha384-RFZC58YeKApoNsIbBxf4z6JJXmh+geBSgkCQXFyh+4tiFSJmJBt+2FbjxW7Ar16M'
+        ];
     }
 
     public function getMapMain()
@@ -64,16 +62,7 @@ class Leaflet extends BaseProvider
 
     protected function getLayer($layer, $i, $backpath = '')
     {
-        $var = preg_replace('/[^a-z]/', '', strtolower($layer['title']));
-        $this->layers[$layer['overlay']][$layer['title']] = $var;
-
-        if ($layer['javascript_leaflet']) {
-            $jsLayer = strtr($layer['javascript_leaflet'], array(
-                    '###STATIC_SCRIPT###' => $this->config['static_script'],
-                    '###TITLE###' => $layer['title'],
-                    '###VISIBLE###' => "'visibility':" . ($layer['visible'] ? 'true' : 'false'),
-                )) . ";\n";
-        } elseif ($layer['tile_url']) {
+        if ($layer['tile_url']) {
             $options = [];
             if ($layer['min_zoom']) {
                 $options['minZoom'] = $layer['min_zoom'];
@@ -91,11 +80,11 @@ class Leaflet extends BaseProvider
             $jsLayer = 'new L.TileLayer(\'' . $this->getTileUrl($layer) . '\',' . json_encode($options) . ');';
         }
 
-        $jsLayer = "\n\t\t\tvar " . $var . ' = ' . $jsLayer;
+        $jsLayer = "\n\t\t\tvar layer_" . $layer['uid'] . ' = ' . $jsLayer;
 
-        // only show one base layer on the map
-        if ($i == 0) {
-            $jsLayer .= "\n\t\t\t" . $this->config['id'] . '.addLayer(' . $var . ');';
+        // only show first base layer on the map
+        if (($layer['overlay'] == 1 && $layer['visible'])|| ($i == 0 && $layer['overlay'] == 0)) {
+            $jsLayer .= "\n\t\t\t" . $this->config['id'] . '.addLayer(layer_' . $layer['uid'] . ');';
         }
 
         return $jsLayer;
@@ -105,14 +94,14 @@ class Leaflet extends BaseProvider
     {
         $base = [];
         if (is_array($this->layers[0]) && count($this->layers[0]) > 1) {
-            foreach ($this->layers[0] as $title => $var) {
-                $base[] = '"' . $title . '":' . $var;
+            foreach ($this->layers[0] as $layer) {
+                $base[] = '"' . $layer['title'] . '":' . ($layer['table'] ?: 'layer') . '_' . $layer['uid'];
             }
         }
         $overlay = [];
         if (is_array($this->layers[1])) {
-            foreach ($this->layers[1] as $title => $var) {
-                $overlay[] = '\'' . $title . '\':' . $var;
+            foreach ($this->layers[1] as $layer) {
+                $overlay[] = '"' . $layer['title'] . '":' . ($layer['table'] ?: 'layer')  . '_' . $layer['uid'];
             }
         }
 
@@ -174,7 +163,11 @@ class Leaflet extends BaseProvider
                     GeneralUtility::getFileAbsFileName(Div::RESOURCE_BASE_PATH . 'JavaScript/Leaflet/')
                 );
                 // Add tracks to layerswitcher
-                $this->layers[1][$item['title']] = $jsElementVar;
+                $this->layers[1][] = [
+                    'title' => $item['title'],
+                    'table' => $table,
+                    'uid' => $item['uid']
+                ];
 
                 switch (strtolower(pathinfo($file->getName(), PATHINFO_EXTENSION))) {
                     case 'kml':
@@ -230,7 +223,11 @@ class Leaflet extends BaseProvider
                     $jsMarker .= $this->config['id'] . '.addLayer(' . $jsElementVar . '_file);' . "\n";
 
                     // Add vector file to layerswitcher
-                    $this->layers[1][$item['title'] . ' (File)'] = $jsElementVar . '_file';
+                    $this->layers[1][] = [
+                        'title' => $item['title'] . ' (File)',
+                        'table' => $table,
+                        'uid' => $item['uid'] . '_file'
+                    ];
                     $jsElementVarsForPopup[] = $jsElementVar . '_file';
                 }
 
@@ -243,7 +240,11 @@ class Leaflet extends BaseProvider
                     $jsMarker .= $this->config['id'] . '.addLayer(' . $jsElementVar . '_data);' . "\n";
 
                     // Add vector data to layerswitcher
-                    $this->layers[1][$item['title']] = $jsElementVar . '_data';
+                    $this->layers[1][] = [
+                        'title' => $item['title'],
+                        'table' => $table,
+                        'uid' => $item['uid'] . '_data'
+                    ];
                     $jsElementVarsForPopup[] = $jsElementVar . '_data';
                 }
 
@@ -271,7 +272,11 @@ class Leaflet extends BaseProvider
                 $jsMarker .= 'var ' . $jsElementVar . ' = new L.Marker([' . $item['latitude'] . ', ' . $item['longitude'] . '], {' . implode(',', $markerOptions) . "});\n";
                 // Add group to layer switch
                 if ($item['group_title']) {
-                    $this->layers[1][($marker['type'] == 'html' ? $marker['icon'] : '<img class="marker-icon" style="max-width: 60px;" src="' . $icon . '" />') . ' ' . $item['group_title']] = $item['group_uid'];
+                    $this->layers[1][] = [
+                        'title' => [($marker['type'] == 'html' ? $marker['icon'] : '<img class="marker-icon" style="max-width: 60px;" src="' . $icon . '" />') . ' ' . $item['group_title']],
+                        'table' => $table,
+                        'uid' => $item['group_uid']
+                    ];
                     $this->layers[2][$item['group_uid']][] = $jsElementVar;
                 } else {
                     $this->layers[2][$this->config['id'] . '_g'][] = $jsElementVar;

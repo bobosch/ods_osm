@@ -183,17 +183,9 @@
 				<source>Include static JavaScript</source>
 				<target>Includi JavaScript statico</target>
 			</trans-unit>
-			<trans-unit id="tx_odsosm_layer.javascript_leaflet" xml:space="preserve" approved="yes">
-				<source>JavaScript for Leaflet</source>
-				<target>JavaScript per Leaflet</target>
-			</trans-unit>
 			<trans-unit id="tx_odsosm_layer.javascript_openlayers" xml:space="preserve" approved="yes">
 				<source>JavaScript for OpenLayers</source>
 				<target>JavaScript per OpenLayers</target>
-			</trans-unit>
-			<trans-unit id="tx_odsosm_layer.javascript_openlayers3" xml:space="preserve" approved="yes">
-				<source>JavaScript for OpenLayers 3</source>
-				<target>JavaScript per OpenLayers 3</target>
 			</trans-unit>
 			<trans-unit id="tx_odsosm_layer.static_url" xml:space="preserve" approved="yes">
 				<source>Static map URL</source>

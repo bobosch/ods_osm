@@ -54,6 +54,18 @@
 			<trans-unit id="tt_content.pi_flexform.layer" xml:space="preserve">
 				<source>Base layer</source>
 			</trans-unit>
+			<trans-unit id="tt_content.pi_flexform.overlays_active" xml:space="preserve">
+				<source>Activated overlays</source>
+			</trans-unit>
+			<trans-unit id="tt_content.pi_flexform.overlays.description" xml:space="preserve">
+				<source>The following overlays are available in the frontend.
+				If using the layer switcher, the selected overlays may be toggled on/off. The initial state is selected by "overlays_active".
+				Without layer switcher, all overlays are active in the map.
+				</source>
+			</trans-unit>
+			<trans-unit id="tt_content.pi_flexform.overlays_active.description" xml:space="preserve">
+				<source>The following overlays are activated in the layer switcher initially.</source>
+			</trans-unit>
 			<trans-unit id="tt_content.pi_flexform.library" xml:space="preserve">
 				<source>Library</source>
 			</trans-unit>
@@ -162,14 +174,8 @@
 			<trans-unit id="tx_odsosm_layer.javascript_include" xml:space="preserve">
 				<source>Include static JavaScript</source>
 			</trans-unit>
-			<trans-unit id="tx_odsosm_layer.javascript_leaflet" xml:space="preserve">
-				<source>JavaScript for Leaflet</source>
-			</trans-unit>
 			<trans-unit id="tx_odsosm_layer.javascript_openlayers" xml:space="preserve">
 				<source>JavaScript for OpenLayers</source>
-			</trans-unit>
-			<trans-unit id="tx_odsosm_layer.javascript_openlayers3" xml:space="preserve">
-				<source>JavaScript for OpenLayers 3</source>
 			</trans-unit>
 			<trans-unit id="tx_odsosm_layer.static_url" xml:space="preserve">
 				<source>Static map URL</source>
