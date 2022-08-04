@@ -124,8 +124,10 @@ class PluginController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
                 }
             }
         }
-        if ($flex['library']) {
+        if ($flex['library'] != 'staticmap') {
             $flex['layer'] = $flex['base_layer'];
+        } else {
+            $flex['layer'] = $flex['staticmap_layer'];
         }
 
         $this->config = array_merge(Div::getConfig(), $conf, $flex);
@@ -534,10 +536,6 @@ class PluginController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
                             Connection::PARAM_INT_ARRAY
                         )
                     ),
-                    // $queryBuilder->expr()->eq(
-                    //     'tx_odsosm_layer.overlay',
-                    //     0
-                    // )
                 )
                 ->add('orderBy', 'FIELD(uid, ' . implode(',', $this->config['layer']) . ')', true)
                 ->execute();
@@ -558,49 +556,6 @@ class PluginController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
                 }
             }
         }
-        /* ==================================================
-           Overlays
-        ================================================== */
-        // $overlays = [];
-        // if (!empty(implode(',', $this->config['overlays']))) {
-        //     $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-        //         ->getQueryBuilderForTable('tx_odsosm_layer');
-
-        //     $result = $queryBuilder
-        //         ->select('*')
-        //         ->from('tx_odsosm_layer')
-        //         ->where(
-        //             $queryBuilder->expr()->in(
-        //                 'tx_odsosm_layer.uid',
-        //                 $queryBuilder->createNamedParameter(
-        //                     $this->config['overlays'],
-        //                     Connection::PARAM_INT_ARRAY
-        //                 )
-        //             ),
-        //             $queryBuilder->expr()->eq(
-        //                 'tx_odsosm_layer.overlay',
-        //                 1
-        //             )
-        //         )
-        //         ->add('orderBy', 'FIELD(uid, ' . implode(',', $this->config['layer']) . ')', true)
-        //         ->execute();
-
-        //     while ($resArray = $result->fetch()) {
-        //         $overlays[$resArray['uid']] =  $resArray;
-        //     }
-
-        //     // set visible flag
-        //     foreach ($this->config['layers_visible'] as $key) {
-        //         if ($overlays[$key]) {
-        //             $overlays[$key]['visible'] = true;
-        //         }
-        //     }
-        //     foreach (explode(',', $this->config['overlays_active']) as $key) {
-        //         if ($overlays[$key]) {
-        //             $overlays[$key]['visible'] = true;
-        //         }
-        //     }
-        // }
 
         foreach ($baselayers as $uid => $layer) {
             if ($layer['overlay'] == 1) {

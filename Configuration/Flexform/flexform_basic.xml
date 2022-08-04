@@ -205,6 +205,7 @@
 						<TCEforms>
 							<label>LLL:EXT:ods_osm/Resources/Private/Language/locallang.xlf:base_layer</label>
 							<description>Select used map base layer. Multiple layers may be selected here. The first layer will be used initially. All other layers are shown in the given order in the layer switcher (see below).</description>
+							<displayCond>FIELD:library:IN:leaflet,openlayers</displayCond>
 							<config>
 								<type>select</type>
 								<size>3</size>
@@ -221,6 +222,7 @@
 						<TCEforms>
 							<label>LLL:EXT:ods_osm/Resources/Private/Language/locallang.xlf:overlays</label>
 							<description>LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xlf:tt_content.pi_flexform.overlays.description</description>
+							<displayCond>FIELD:library:IN:leaflet,openlayers</displayCond>
 							<config>
 								<type>select</type>
 								<size>3</size>
@@ -237,7 +239,12 @@
 						<TCEforms>
 							<label>LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xlf:tt_content.pi_flexform.overlays_active</label>
 							<description>LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xlf:tt_content.pi_flexform.overlays_active.description</description>
-							<displayCond>FIELD:show_layerswitcher:!=:0</displayCond>
+							<displayCond>
+								<and>
+									<value1>FIELD:show_layerswitcher:!=:0</value1>
+									<value2>FIELD:library:IN:leaflet,openlayers</value2>
+								</and>
+							</displayCond>
 							<config>
 								<type>select</type>
 								<size>3</size>
@@ -250,25 +257,6 @@
 							</config>
 						</TCEforms>
 					</overlays_active>
-					<openlayers3_layer>
-						<TCEforms>
-							<label>LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xlf:tt_content.pi_flexform.layer</label>
-							<displayCond>FIELD:library:=:openlayers3</displayCond>
-							<config>
-								<type>select</type>
-                                <renderType>selectSingle</renderType>
-								<foreign_table>tx_odsosm_layer</foreign_table>
-								<foreign_table_where>AND tx_odsosm_layer.hidden=0 AND tx_odsosm_layer.tile_url!="" ORDER BY tx_odsosm_layer.sorting</foreign_table_where>
-								<items type="array">
-									<numIndex index="0" type="array">
-										<numIndex index="0"></numIndex>
-										<numIndex index="1"></numIndex>
-									</numIndex>
-								</items>
-								<eval>required</eval>
-							</config>
-						</TCEforms>
-					</openlayers3_layer>
 					<staticmap_layer>
 						<TCEforms>
 							<label>LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xlf:tt_content.pi_flexform.layer</label>

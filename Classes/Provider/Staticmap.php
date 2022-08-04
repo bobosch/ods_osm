@@ -2,9 +2,12 @@
 
 namespace Bobosch\OdsOsm\Provider;
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Core\Environment;
+
 class Staticmap extends BaseProvider
 {
-    protected $uploadPath = 'uploads/tx_odsosm/';
+    protected $uploadPath = 'fileadmin/tx_odsosm/staticmap';
 
     public function getMap($layers, $markers, $lon, $lat, $zoom)
     {
@@ -38,8 +41,14 @@ class Staticmap extends BaseProvider
         );
 
         $layer = array_shift($layers);
-        $url = strtr($layer['static_url'], $markerUrl);
-        $filename = $this->uploadPath . 'map/' . md5($url) . '.png';
+        $url = strtr($layer[0]['static_url'], $markerUrl);
+
+        $this->uploadPath = Environment::getPublicPath() . '/'  . $this->uploadPath;
+        if (!is_dir($this->uploadPath)) {
+            GeneralUtility::mkdir_deep($this->uploadPath);
+        }
+
+        $filename = $this->uploadPath . md5($url) . '.png';
 
         // Cache image
         $cache = false;
