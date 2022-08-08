@@ -123,7 +123,10 @@ class Openlayers extends BaseProvider
                         opacity: 0.99,
                         title: '" . $layer['title'] . "',
                         source: new ol.source.OSM({
-                            url: '" . $layer['tile_url'] . "'
+                            url: '" . $layer['tile_url'] . "',
+                            attributions: [
+                                '" . $layer['attribution']. "'
+                            ]
                         })
                     });
                 overlaygroup.getLayers().push(" . $this->config['id'] . "_" . $i . "_overlayLayer);
@@ -136,7 +139,10 @@ class Openlayers extends BaseProvider
                         visible: " . ($i == 0 ? 'true' : 'false') . ",
                         title: '" . $layer['title'] . "',
                         source: new ol.source.OSM({
-                            url: '" . $layer['tile_url'] . "'
+                            url: '" . $layer['tile_url'] . "',
+                            attributions: [
+                                '" . $layer['attribution']. "'
+                            ]
                         })
                     });
                 baselayergroup.getLayers().push(" . $this->config['id'] . "_" . $i . "_baselayergroup);
