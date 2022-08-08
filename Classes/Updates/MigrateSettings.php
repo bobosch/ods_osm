@@ -173,31 +173,27 @@ class MigrateSettings implements UpgradeWizardInterface
     protected function migrateFlexformSettings(string $oldValue): string
     {
         $xml = simplexml_load_string($oldValue);
-
         // get all field elements
         $library = $xml->xpath("//field[@index='library'][1]");
 
         // get all field elements
         $fields = $xml->xpath("//field");
 
-        switch ($library) {
-            case 'openlayers':
-                break;
-            case 'openlayers3':
-                break;
-            case 'leaflet':
-            default:
-            foreach ($fields as $field) {
-
-                if ($field['index'] == 'leaflet_layer') {
-                    $field['index'] = 'base_layer';
-//                    $field->value = 2;
-                }
-                if ($field['index'] == 'layer' || $field['index'] == 'openlayers_layer') {
-                    unset($field[0]);
-                }
+        foreach ($fields as $field) {
+            if ($library[0]->value != 'staticmap' && $field['index'] == $library[0]->value . '_layer') {
+                // rename base layer field to base_layer
+                $field['index'] = 'base_layer';
+                // Copy all layers into new 'overlays' field. This is easier here, doesn't hurt the
+                // frontend and will be filtered to only real 'overlays' on next saving the plugin flexform.
+                $overlays = $xml->data->sheet->language->addChild('field');
+                $overlays->addAttribute('index', 'overlays');
+                $overlays->addChild('value', $field->value)->addAttribute('index', 'vDEF');
+            } else if ($field['index'] != $library[0]->value . '_layer' && ($field['index'] == 'layer' ||
+                    $field['index'] == 'openlayers_layer' ||
+                    $field['index'] == 'openlayers3_layer' || $field['index'] == 'leaflet_layer')) {
+                // remove all other, unused layer fields from flexform xml
+                unset($field[0]);
             }
-
         }
 
         return $xml->asXML();
