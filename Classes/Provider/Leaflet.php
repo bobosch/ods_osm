@@ -101,7 +101,11 @@ class Leaflet extends BaseProvider
         $overlay = [];
         if (is_array($this->layers[1])) {
             foreach ($this->layers[1] as $layer) {
-                $overlay[] = '"' . $layer['title'] . '":' . ($layer['table'] ?: 'layer')  . '_' . $layer['uid'];
+                if (!empty($layer['gid'])) {
+                    $overlay[] = '"' . $layer['title'] . '":' . $layer['gid'];
+                } else {
+                    $overlay[] = '"' . $layer['title'] . '":' . ($layer['table'] ?: 'layer')  . '_' . $layer['uid'];
+                }
             }
         }
 
@@ -273,9 +277,8 @@ class Leaflet extends BaseProvider
                 // Add group to layer switch
                 if ($item['group_title']) {
                     $this->layers[1][] = [
-                        'title' => [($marker['type'] == 'html' ? $marker['icon'] : '<img class="marker-icon" style="max-width: 60px;" src="' . $icon . '" />') . ' ' . $item['group_title']],
-                        'table' => $table,
-                        'uid' => $item['group_uid']
+                        'title' => ($marker['type'] == 'html' ? $marker['icon'] : "<img class='marker-icon' style='max-width: 60px;' src='" . $icon . "' />") . ' ' . $item['group_title'],
+                        'gid' => $item['group_uid']
                     ];
                     $this->layers[2][$item['group_uid']][] = $jsElementVar;
                 } else {
