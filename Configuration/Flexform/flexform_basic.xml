@@ -285,30 +285,6 @@
 							</config>
 						</TCEforms>
 					</mouse_navigation>
-					<show_pan_zoom>
-						<TCEforms>
-							<label>LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xlf:tt_content.pi_flexform.show_pan_zoom</label>
-							<displayCond>FIELD:library:=:openlayers</displayCond>
-							<config>
-								<type>select</type>
-                                <renderType>selectSingle</renderType>
-								<items type="array">
-									<numIndex index="0" type="array">
-										<numIndex index="0"></numIndex>
-										<numIndex index="1"></numIndex>
-									</numIndex>
-									<numIndex index="1" type="array">
-										<numIndex index="0">LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xlf:tt_content.pi_flexform.show_pan_zoom.I.1</numIndex>
-										<numIndex index="1">1</numIndex>
-									</numIndex>
-									<numIndex index="2" type="array">
-										<numIndex index="0">LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xlf:tt_content.pi_flexform.show_pan_zoom.I.2</numIndex>
-										<numIndex index="1">2</numIndex>
-									</numIndex>
-								</items>
-							</config>
-						</TCEforms>
-					</show_pan_zoom>
 					<show_popups>
 						<TCEforms>
 							<label>LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xlf:tt_content.pi_flexform.show_popups</label>

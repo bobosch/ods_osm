@@ -80,9 +80,10 @@ class Openlayers extends BaseProvider
 		var " . $this->config['id'] . " = new ol.Map({
 			target: '" . $this->config['id'] . "',
 			controls: ol.control.defaults({
+                zoom: false,
 				attributionOptions: /** @type {olx.control.AttributionOptions} */ ({
 					collapsible: false
-				})
+				}),
 			}),
 			layers: layers,
 			view: view

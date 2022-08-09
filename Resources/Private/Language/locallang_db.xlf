@@ -75,15 +75,6 @@
 			<trans-unit id="tt_content.pi_flexform.position_show" xml:space="preserve">
 				<source>Show current position</source>
 			</trans-unit>
-			<trans-unit id="tt_content.pi_flexform.show_pan_zoom" xml:space="preserve">
-				<source>Show pan/zoom</source>
-			</trans-unit>
-			<trans-unit id="tt_content.pi_flexform.show_pan_zoom.I.1" xml:space="preserve">
-				<source>Bar</source>
-			</trans-unit>
-			<trans-unit id="tt_content.pi_flexform.show_pan_zoom.I.2" xml:space="preserve">
-				<source>+/-</source>
-			</trans-unit>
 			<trans-unit id="tt_content.pi_flexform.show_popups" xml:space="preserve">
 				<source>Show popups</source>
 			</trans-unit>

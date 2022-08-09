@@ -89,18 +89,6 @@
 				<source><![CDATA[Opened]]></source>
 				<target><![CDATA[Geöffnet]]></target>
 			</trans-unit>
-			<trans-unit id="tt_content.pi_flexform.show_pan_zoom" approved="yes">
-				<source><![CDATA[Show pan/zoom]]></source>
-				<target><![CDATA[Schwenken/zoomen anzeigen]]></target>
-			</trans-unit>
-			<trans-unit id="tt_content.pi_flexform.show_pan_zoom.I.1" approved="yes">
-				<source><![CDATA[Bar]]></source>
-				<target><![CDATA[Balken]]></target>
-			</trans-unit>
-			<trans-unit id="tt_content.pi_flexform.show_pan_zoom.I.2" approved="yes">
-				<source><![CDATA[+/-]]></source>
-				<target><![CDATA[+/-]]></target>
-			</trans-unit>
 			<trans-unit id="tt_content.pi_flexform.show_popups" approved="yes">
 				<source><![CDATA[Show popups]]></source>
 				<target><![CDATA[Popups anzeigen]]></target>
