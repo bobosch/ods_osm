@@ -69,7 +69,7 @@ class Div
                 false,
                 '|',
                 false,
-                $script['sri'],
+                $script['sri'] ?? '',
                 false,
                 'anonymous'
             );
