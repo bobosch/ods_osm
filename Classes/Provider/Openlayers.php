@@ -3,7 +3,10 @@
 namespace Bobosch\OdsOsm\Provider;
 
 use Bobosch\OdsOsm\Div;
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Page\PageRenderer;
+use TYPO3\CMS\Core\Resource\FileRepository;
+use TYPO3\CMS\Core\Resource\StorageRepository;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
@@ -80,7 +83,7 @@ class Openlayers extends BaseProvider
 		var " . $this->config['id'] . " = new ol.Map({
 			target: '" . $this->config['id'] . "',
 			controls: ol.control.defaults({
-                zoom: false,
+                zoom: true,
 				attributionOptions: /** @type {olx.control.AttributionOptions} */ ({
 					collapsible: false
 				}),
@@ -172,4 +175,187 @@ class Openlayers extends BaseProvider
           ' . $this->config['id'] . '.addControl(layerSwitcher);
         ';
     }
+
+
+    protected function getMarker($item, $table)
+    {
+        $jsMarker = '';
+        $jsElementVar = $table . '_' . $item['uid'];
+        $fileRepository = GeneralUtility::makeInstance(FileRepository::class);
+        $jsElementVarsForPopup = [];
+
+        // Convert item color hex value to rgba() as Openlayers doesn't have an opacity option.
+        if (empty($item['color'])) {
+            // set default blue, if nothing is given
+            $item['color'] = '#0009ff';
+        }
+        if (strlen($item['color']) == 7) {
+            $hex = array( $item['color'][1] . $item['color'][2], $item['color'][3] . $item['color'][4], $item['color'][5] . $item['color'][6] );
+            $rgb = array_map('hexdec', $hex);
+            $opacity = '0.2';
+            $item['rgba'] = 'rgba('.implode(",", $rgb).','.$opacity.')';
+        }
+
+        switch ($table) {
+            case 'tx_odsosm_track':
+                $fileObjects = $fileRepository->findByRelation('tx_odsosm_track', 'file', $item['uid']);
+                if ($fileObjects) {
+                    $file = $fileObjects[0];
+                } else {
+                    break;
+                }
+
+                $path = PathUtility::getAbsoluteWebPath(
+                    GeneralUtility::getFileAbsFileName(Div::RESOURCE_BASE_PATH . 'JavaScript/Leaflet/')
+                );
+                // Add tracks to layerswitcher
+                $this->layers[1][] = [
+                    'title' => $item['title'],
+                    'table' => $table,
+                    'uid' => $item['uid']
+                ];
+
+                switch (strtolower(pathinfo($file->getName(), PATHINFO_EXTENSION))) {
+                    case 'kml':
+                        // include javascript file for KML support
+                        $this->scripts['leaflet-plugins'] = ['src' => $path . 'leaflet-plugins/layer/vector/KML.js'];
+
+                        $jsMarker .= 'var ' . $jsElementVar . ' = new L.KML(';
+                        $jsMarker .= '"' . $file->getPublicUrl() . '"';
+                        $jsMarker .= ");\n";
+                        break;
+                    case 'gpx':
+                        // include javascript file for GPX support
+                        $this->scripts['leaflet-gpx'] = ['src' => $path . 'leaflet-gpx/gpx.js'];
+                        $options = array(
+                            'clickable' => 'false',
+                            'polyline_options' => array(
+                                'color' => $item['color'],
+                            ),
+                            'marker_options' => array(
+                                'startIconUrl' => $path . 'leaflet-gpx/pin-icon-start.png',
+                                'endIconUrl' => $path . 'leaflet-gpx/pin-icon-end.png',
+                                'shadowUrl' => $path . 'leaflet-gpx/pin-shadow.png',
+                            ),
+                        );
+                        $jsMarker .= 'var ' . $jsElementVar . ' = new L.GPX("' . $file->getPublicUrl() . '",';
+
+                        $jsMarker .= json_encode($options) . ");\n";
+                        $jsMarker .= $this->config['id'] . '.addLayer(' . $jsElementVar . ');' . "\n";
+                        break;
+                }
+                $jsElementVarsForPopup[] = $jsElementVar;
+                break;
+            case 'tx_odsosm_vector':
+                // define style from given color and width
+                $jsMarker .= 'var ' . $jsElementVar . '_style = new ol.style.Style({
+                    stroke: new ol.style.Stroke({
+                        color: \''.$item['color'].'\',
+                        width: '.($item['width'] ?: 1).'
+                    }),
+                    fill: new ol.style.Fill({
+                        color: \''.$item['rgba'].'\',
+                        opacity: 1
+                    }),
+                });';
+
+                $fileObjects = $fileRepository->findByRelation('tx_odsosm_vector', 'file', $item['uid']);
+                if ($fileObjects) {
+                    $file = $fileObjects[0];
+                    $filename = '/' . $file->getPublicUrl();
+
+                    $jsMarker .= 'var ' . $jsElementVar . '_file = new ol.layer.Vector({
+                        source: new ol.source.Vector({
+                            projection: \'EPSG:3857\',
+                            url: \'' . $filename . '\',
+                            format: new ol.format.GeoJSON()
+                        }),
+                        style: ' . $jsElementVar . '_style
+                    });' . "\n";
+
+                    $jsMarker .= "overlaygroup.getLayers().push(" . $jsElementVar . "_file);";
+
+                    // Add vector file to layerswitcher
+                    $this->layers[1][] = [
+                        'overlay' => '1',
+                        'title' => $item['title'] . ' (File)',
+                        'table' => $table,
+                        'uid' => $jsElementVar . '_file'
+                    ];
+                    $jsElementVarsForPopup[] = $jsElementVar . '_file';
+                }
+
+                // add geojson from data field as well
+                if ($item['data']) {
+                    $jsMarker .= 'const ' . $jsElementVar . '_geojsonObject = '. $item['data'] . ';';
+
+                    $jsMarker .= 'var ' . $jsElementVar . '_data = new ol.layer.Vector({
+                        source: new ol.source.Vector({
+                            features: new ol.format.GeoJSON({
+                                featureProjection:"EPSG:3857"
+                            }).readFeatures(' . $jsElementVar . '_geojsonObject)
+                        }),
+                        style: ' . $jsElementVar . '_style
+                    });';
+
+                    $jsMarker .= "overlaygroup.getLayers().push(" . $jsElementVar . "_data);";
+
+                    // Add vector data to layerswitcher
+                    $this->layers[1][] = [
+                        'title' => $item['title'],
+                        'table' => $table,
+                        'uid' => $item['uid'] . '_data'
+                    ];
+                    $jsElementVarsForPopup[] = $jsElementVar . '_data';
+                }
+
+                break;
+            default:
+                $markerOptions = [];
+                if (is_array($item['tx_odsosm_marker'])) {
+                    $marker = $item['tx_odsosm_marker'];
+                    $iconOptions = array(
+                        'iconSize' => array((int)$marker['size_x'], (int)$marker['size_y']),
+                        'iconAnchor' => array(-(int)$marker['offset_x'], -(int)$marker['offset_y']),
+                        'popupAnchor' => array(0, (int)$marker['offset_y'])
+                    );
+                    if ($marker['type'] == 'html') {
+                        $iconOptions['html'] = $marker['icon'];
+                        $markerOptions['icon'] = 'icon: new L.divIcon(' . json_encode($iconOptions) . ')';
+                    } else {
+                        $icon = $GLOBALS['TSFE']->absRefPrefix . $marker['icon']->getPublicUrl();
+                        $iconOptions['iconUrl'] = $icon;
+                        $markerOptions['icon'] = 'icon: new L.Icon(' . json_encode($iconOptions) . ')';
+                    }
+                } else {
+                    $icon = $this->path_leaflet . 'images/marker-icon.png';
+                }
+                $jsMarker .= 'var ' . $jsElementVar . ' = new L.Marker([' . $item['latitude'] . ', ' . $item['longitude'] . '], {' . implode(',', $markerOptions) . "});\n";
+                // Add group to layer switch
+                if ($item['group_title']) {
+                    $this->layers[1][] = [
+                        'title' => ($marker['type'] == 'html' ? $marker['icon'] : "<img class='marker-icon' style='max-width: 60px;' src='" . $icon . "' />") . ' ' . $item['group_title'],
+                        'gid' => $item['group_uid']
+                    ];
+                    $this->layers[2][$item['group_uid']][] = $jsElementVar;
+                } else {
+                    $this->layers[2][$this->config['id'] . '_g'][] = $jsElementVar;
+                }
+
+                $jsElementVarsForPopup[] = $jsElementVar;
+                break;
+        }
+
+        foreach ($jsElementVarsForPopup as $jsElementVar) {
+            if ($item['popup']) {
+                $jsMarker .= $jsElementVar . '.bindPopup(' . json_encode($item['popup']) . ");\n";
+                if ($item['initial_popup']) {
+                    $jsMarker .= $jsElementVar . ".openPopup();\n";
+                }
+            }
+        }
+
+        return $jsMarker;
+    }
+
 }
