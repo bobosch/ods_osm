@@ -43,10 +43,6 @@
 				<source>Library</source>
 				<target>Libreria</target>
 			</trans-unit>
-			<trans-unit id="tt_content.pi_flexform.mouse_navigation" xml:space="preserve" approved="yes">
-				<source>Mouse navigation</source>
-				<target>Navigazione con il mouse</target>
-			</trans-unit>
 			<trans-unit id="tt_content.pi_flexform.position_show" xml:space="preserve" approved="yes">
 				<source>Show current position</source>
 				<target>Mostra posizione attuale</target>

@@ -10,6 +10,7 @@ use TYPO3\CMS\Core\Resource\StorageRepository;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 
 class Leaflet extends BaseProvider
 {
@@ -228,7 +229,7 @@ class Leaflet extends BaseProvider
 
                     // Add vector file to layerswitcher
                     $this->layers[1][] = [
-                        'title' => $item['title'] . ' (File)',
+                        'title' => $item['title'] . ' ('. LocalizationUtility::translate('file', 'ods_osm') .')',
                         'table' => $table,
                         'uid' => $item['uid'] . '_file'
                     ];

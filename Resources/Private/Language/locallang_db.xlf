@@ -69,11 +69,11 @@
 			<trans-unit id="tt_content.pi_flexform.library" xml:space="preserve">
 				<source>Library</source>
 			</trans-unit>
-			<trans-unit id="tt_content.pi_flexform.mouse_navigation" xml:space="preserve">
-				<source>Mouse navigation</source>
-			</trans-unit>
 			<trans-unit id="tt_content.pi_flexform.position_show" xml:space="preserve">
 				<source>Show current position</source>
+			</trans-unit>
+			<trans-unit id="tt_content.pi_flexform.mouse_position" xml:space="preserve">
+				<source>Show mouse position</source>
 			</trans-unit>
 			<trans-unit id="tt_content.pi_flexform.show_popups" xml:space="preserve">
 				<source>Show popups</source>

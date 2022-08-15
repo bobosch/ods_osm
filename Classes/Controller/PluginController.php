@@ -86,7 +86,7 @@ class PluginController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
             'lon',
             'marker',
             'marker_popup_initial',
-            'mouse_navigation',
+            'mouse_position',
             'openlayers_layer',
             'base_layer',
             'overlays',

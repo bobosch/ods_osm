@@ -4,6 +4,7 @@ namespace Bobosch\OdsOsm\Provider;
 
 use Bobosch\OdsOsm\Div;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
+use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 
 abstract class BaseProvider
 {
@@ -153,7 +154,12 @@ abstract class BaseProvider
      */
     protected function getHtml()
     {
-        return '<div style="width:' . $this->config['width'] . ';height:' . $this->config['height'] . ';" id="' . $this->config['id'] . '"></div>';
+        $mousePosition = '';
+        if ($this->config['mouse_position']) {
+            $mousePosition = '<div id="mouse-position-' . $this->config['id'] . '">' . LocalizationUtility::translate('mouse_position', 'ods_osm') . ':&nbsp;</div>';
+        }
+
+        return '<div style="width:' . $this->config['width'] . '; height:' . $this->config['height'] . '; " id="' . $this->config['id'] . '"></div>' . $mousePosition;
     }
 
     /**

@@ -276,15 +276,6 @@
 							</config>
 						</TCEforms>
 					</staticmap_layer>
-					<mouse_navigation>
-						<TCEforms>
-							<label>LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xlf:tt_content.pi_flexform.mouse_navigation</label>
-							<displayCond>FIELD:library:=:openlayers</displayCond>
-							<config>
-								<type>check</type>
-							</config>
-						</TCEforms>
-					</mouse_navigation>
 					<show_popups>
 						<TCEforms>
 							<label>LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xlf:tt_content.pi_flexform.show_popups</label>
@@ -416,6 +407,15 @@
 							</config>
 						</TCEforms>
 					</position>
+					<mouse_position>
+						<TCEforms>
+							<label>LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xlf:tt_content.pi_flexform.mouse_position</label>
+							<displayCond>FIELD:library:=:openlayers</displayCond>
+							<config>
+								<type>check</type>
+							</config>
+						</TCEforms>
+					</mouse_position>
 				</el>
 			</ROOT>
 		</sDEF>

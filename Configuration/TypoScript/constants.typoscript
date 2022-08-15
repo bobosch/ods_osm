@@ -35,8 +35,8 @@ plugin.tx_odsosm_pi1 {
 	# cat=OpenStreetMap//1060; type=boolean; label=Position: Get current user postion from browser to center the map.
 	position = 0
 
-	# cat=OpenStreetMap//2000; type=boolean; label=Mouse navigation: Allow navigation with the mouse.
-	mouse_navigation = 0
+	# cat=OpenStreetMap//2000; type=boolean; label=Show mouse position.
+	mouse_positoin = 0
 
 	# cat=OpenStreetMap//2020; type=options[No=0,Click=1,Hover=2,Exclusive=3]; label=Show popup: Show popup window with record information.
 	show_popups = 0

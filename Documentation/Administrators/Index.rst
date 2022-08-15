@@ -105,8 +105,6 @@ Reference
 +-----------------+-----------+-------------------------------------+---------+
 | |mpi|           | integer   | Open popup of this marker           |         |
 +-----------------+-----------+-------------------------------------+---------+
-| mouse_navigation| boolean   |                                     | 0       |
-+-----------------+-----------+-------------------------------------+---------+
 | no_marker       | boolean   || If no marker is set:               | 1       |
 |                 |           || 0: Hide map                        |         |
 |                 |           || 1: Show map                        |         |
@@ -145,7 +143,7 @@ Examples
 	plugin.tx_odsosm_pi1 {
 		width = 800
 		height = 600
-		mouse_navigation = 1
+		mouse_position = 1
 	}
 
 .. _m:

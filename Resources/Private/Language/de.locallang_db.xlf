@@ -61,13 +61,13 @@
 				<source><![CDATA[Show this marker's popup initially]]></source>
 				<target><![CDATA[Markierungspopup anfangs anzeigen]]></target>
 			</trans-unit>
-			<trans-unit id="tt_content.pi_flexform.mouse_navigation" approved="yes">
-				<source><![CDATA[Mouse navigation]]></source>
-				<target><![CDATA[Navigation mit der Maus]]></target>
-			</trans-unit>
 			<trans-unit id="tt_content.pi_flexform.position_show" approved="yes">
 				<source><![CDATA[Show current position]]></source>
 				<target><![CDATA[Aktuelle Position anzeigen]]></target>
+			</trans-unit>
+			<trans-unit id="tt_content.pi_flexform.mouse_position" xml:space="preserve">
+				<source>Show mouse position</source>
+				<target><![CDATA[Zeige Mausposition]]></target>
 			</trans-unit>
 			<trans-unit id="tt_content.pi_flexform.sheet_sDEF" approved="yes">
 				<source><![CDATA[Default]]></source>

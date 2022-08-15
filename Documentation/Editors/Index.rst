@@ -42,8 +42,8 @@ The map will center to the average coordinates of the markers.
 | initially                  | map.                                           |
 | (marker_popup_initial)     |                                                |
 +----------------------------+------------------------------------------------+
-| Mouse navigation           | Allow navigation with the mouse.               |
-| (mouse_navigation)         |                                                |
+| Mouse position             | Show position of current mouse cursor.         |
+| (mouse_position)           |                                                |
 +----------------------------+------------------------------------------------+
 | Show layerswitcher         | Show layerswitcher which allows the user to    |
 | (show_layerswitcher)       | hide markers from the same group.              |

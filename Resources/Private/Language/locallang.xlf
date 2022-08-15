@@ -24,6 +24,12 @@
 			<trans-unit id="overlays" xml:space="preserve">
 				<source>Overlays</source>
 			</trans-unit>
+			<trans-unit id="file" xml:space="preserve">
+				<source>File</source>
+			</trans-unit>
+			<trans-unit id="mouse_position" xml:space="preserve">
+				<source>Mouse position</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>

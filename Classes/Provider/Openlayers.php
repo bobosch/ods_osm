@@ -52,6 +52,23 @@ class Openlayers extends BaseProvider
 
     public function getMapMain()
     {
+        $controls = [
+            'new ol.control.Attribution()',
+            'new ol.control.Zoom()',
+            'new ol.control.Rotate()'
+        ];
+        if ($this->config['mouse_position']) {
+            $controls[] = "new ol.control.MousePosition({
+                coordinateFormat: ol.coordinate.createStringXY(2),
+                projection: 'EPSG:4326',
+                className: 'ods-osm-mouse-position',
+                target: document.getElementById('mouse-position-" . $this->config['id'] . "')
+            })";
+        }
+        if ($this->config['show_scalebar']) {
+            $controls[] = "new ol.control.ScaleLine()";
+        }
+
         return "
 		view = new ol.View({
 			center: [0, 0],
@@ -80,14 +97,10 @@ class Openlayers extends BaseProvider
             overlaygroup,
         ];
 
+
 		var " . $this->config['id'] . " = new ol.Map({
 			target: '" . $this->config['id'] . "',
-			controls: ol.control.defaults({
-                zoom: true,
-				attributionOptions: /** @type {olx.control.AttributionOptions} */ ({
-					collapsible: false
-				}),
-			}),
+            controls:[" . implode(',', $controls) . "],
 			layers: layers,
 			view: view
         });
@@ -196,6 +209,17 @@ class Openlayers extends BaseProvider
             $item['rgba'] = 'rgba('.implode(",", $rgb).','.$opacity.')';
         }
 
+        // define style from given color and width
+        $jsMarker .= 'var ' . $jsElementVar . '_style = new ol.style.Style({
+            stroke: new ol.style.Stroke({
+                color: \''.$item['color'].'\',
+                width: '.($item['width'] ?: 1).'
+            }),
+            fill: new ol.style.Fill({
+                color: \''.$item['rgba'].'\'
+            }),
+        });';
+
         switch ($table) {
             case 'tx_odsosm_track':
                 $fileObjects = $fileRepository->findByRelation('tx_odsosm_track', 'file', $item['uid']);
@@ -205,9 +229,6 @@ class Openlayers extends BaseProvider
                     break;
                 }
 
-                $path = PathUtility::getAbsoluteWebPath(
-                    GeneralUtility::getFileAbsFileName(Div::RESOURCE_BASE_PATH . 'JavaScript/Leaflet/')
-                );
                 // Add tracks to layerswitcher
                 $this->layers[1][] = [
                     'title' => $item['title'],
@@ -217,54 +238,42 @@ class Openlayers extends BaseProvider
 
                 switch (strtolower(pathinfo($file->getName(), PATHINFO_EXTENSION))) {
                     case 'kml':
-                        // include javascript file for KML support
-                        $this->scripts['leaflet-plugins'] = ['src' => $path . 'leaflet-plugins/layer/vector/KML.js'];
+                        $jsMarker .= 'var ' . $jsElementVar . '_gpx = new ol.layer.Vector({
+                            title: \'' .$item['title'] . '\',
+                            source: new ol.source.Vector({
+                                projection: \'EPSG:3857\',
+                                url: \'/' . $file->getPublicUrl() . '\',
+                                format: new ol.format.KML()
+                            }),
+                            style: ' . $jsElementVar . '_style
+                        });' . "\n";
 
-                        $jsMarker .= 'var ' . $jsElementVar . ' = new L.KML(';
-                        $jsMarker .= '"' . $file->getPublicUrl() . '"';
-                        $jsMarker .= ");\n";
+                        $jsMarker .= "overlaygroup.getLayers().push(" . $jsElementVar . "_gpx);";
                         break;
                     case 'gpx':
-                        // include javascript file for GPX support
-                        $this->scripts['leaflet-gpx'] = ['src' => $path . 'leaflet-gpx/gpx.js'];
-                        $options = array(
-                            'clickable' => 'false',
-                            'polyline_options' => array(
-                                'color' => $item['color'],
-                            ),
-                            'marker_options' => array(
-                                'startIconUrl' => $path . 'leaflet-gpx/pin-icon-start.png',
-                                'endIconUrl' => $path . 'leaflet-gpx/pin-icon-end.png',
-                                'shadowUrl' => $path . 'leaflet-gpx/pin-shadow.png',
-                            ),
-                        );
-                        $jsMarker .= 'var ' . $jsElementVar . ' = new L.GPX("' . $file->getPublicUrl() . '",';
+                        $jsMarker .= 'var ' . $jsElementVar . '_gpx = new ol.layer.Vector({
+                            title: \'' .$item['title'] . '\',
+                            source: new ol.source.Vector({
+                                projection: \'EPSG:3857\',
+                                url: \'/' . $file->getPublicUrl() . '\',
+                                format: new ol.format.GPX()
+                            }),
+                            style: ' . $jsElementVar . '_style
+                        });' . "\n";
 
-                        $jsMarker .= json_encode($options) . ");\n";
-                        $jsMarker .= $this->config['id'] . '.addLayer(' . $jsElementVar . ');' . "\n";
+                        $jsMarker .= "overlaygroup.getLayers().push(" . $jsElementVar . "_gpx);";
                         break;
                 }
                 $jsElementVarsForPopup[] = $jsElementVar;
                 break;
             case 'tx_odsosm_vector':
-                // define style from given color and width
-                $jsMarker .= 'var ' . $jsElementVar . '_style = new ol.style.Style({
-                    stroke: new ol.style.Stroke({
-                        color: \''.$item['color'].'\',
-                        width: '.($item['width'] ?: 1).'
-                    }),
-                    fill: new ol.style.Fill({
-                        color: \''.$item['rgba'].'\',
-                        opacity: 1
-                    }),
-                });';
-
                 $fileObjects = $fileRepository->findByRelation('tx_odsosm_vector', 'file', $item['uid']);
                 if ($fileObjects) {
                     $file = $fileObjects[0];
                     $filename = '/' . $file->getPublicUrl();
 
                     $jsMarker .= 'var ' . $jsElementVar . '_file = new ol.layer.Vector({
+                        title: \'' .$item['title'] . ' ('. LocalizationUtility::translate('file', 'ods_osm') .')\',
                         source: new ol.source.Vector({
                             projection: \'EPSG:3857\',
                             url: \'' . $filename . '\',
@@ -274,15 +283,6 @@ class Openlayers extends BaseProvider
                     });' . "\n";
 
                     $jsMarker .= "overlaygroup.getLayers().push(" . $jsElementVar . "_file);";
-
-                    // Add vector file to layerswitcher
-                    $this->layers[1][] = [
-                        'overlay' => '1',
-                        'title' => $item['title'] . ' (File)',
-                        'table' => $table,
-                        'uid' => $jsElementVar . '_file'
-                    ];
-                    $jsElementVarsForPopup[] = $jsElementVar . '_file';
                 }
 
                 // add geojson from data field as well
@@ -290,6 +290,7 @@ class Openlayers extends BaseProvider
                     $jsMarker .= 'const ' . $jsElementVar . '_geojsonObject = '. $item['data'] . ';';
 
                     $jsMarker .= 'var ' . $jsElementVar . '_data = new ol.layer.Vector({
+                        title: \'' .$item['title'] . '\',
                         source: new ol.source.Vector({
                             features: new ol.format.GeoJSON({
                                 featureProjection:"EPSG:3857"
@@ -299,14 +300,6 @@ class Openlayers extends BaseProvider
                     });';
 
                     $jsMarker .= "overlaygroup.getLayers().push(" . $jsElementVar . "_data);";
-
-                    // Add vector data to layerswitcher
-                    $this->layers[1][] = [
-                        'title' => $item['title'],
-                        'table' => $table,
-                        'uid' => $item['uid'] . '_data'
-                    ];
-                    $jsElementVarsForPopup[] = $jsElementVar . '_data';
                 }
 
                 break;

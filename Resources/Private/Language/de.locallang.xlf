@@ -31,6 +31,14 @@
 				<source>Overlays</source>
 				<target>Überlagerungs-Karten</target>
 			</trans-unit>
+			<trans-unit id="file" xml:space="preserve">
+				<source>File</source>
+				<target>Datei</target>
+			</trans-unit>
+			<trans-unit id="mouse_position" xml:space="preserve">
+				<source>Mouse position</source>
+				<target>Mausposition</target>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>
