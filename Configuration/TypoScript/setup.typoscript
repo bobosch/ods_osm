@@ -72,3 +72,10 @@ plugin.tx_odsosm_pi1 {
 
 	_CSS_DEFAULT_STYLE = .olControlAttribution{bottom:0px!important;}
 }
+
+
+page {
+	includeCSS {
+		ods-osm = EXT:ods_osm/Resources/Public/Css/ods_osm.css
+	}
+}

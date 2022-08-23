@@ -278,7 +278,7 @@ class Leaflet extends BaseProvider
                 // Add group to layer switch
                 if ($item['group_title']) {
                     $this->layers[1][] = [
-                        'title' => ($marker['type'] == 'html' ? $marker['icon'] : "<img class='marker-icon' style='max-width: 60px;' src='" . $icon . "' />") . ' ' . $item['group_title'],
+                        'title' => ($marker['type'] == 'html' ? $marker['icon'] : "<img class='marker-icon' src='" . $icon . "' />") . ' ' . $item['group_title'],
                         'gid' => $item['group_uid']
                     ];
                     $this->layers[2][$item['group_uid']][] = $jsElementVar;

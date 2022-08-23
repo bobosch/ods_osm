@@ -36,7 +36,7 @@ plugin.tx_odsosm_pi1 {
 	position = 0
 
 	# cat=OpenStreetMap//2000; type=boolean; label=Show mouse position.
-	mouse_positoin = 0
+	mouse_position = 0
 
 	# cat=OpenStreetMap//2020; type=options[No=0,Click=1,Hover=2,Exclusive=3]; label=Show popup: Show popup window with record information.
 	show_popups = 0

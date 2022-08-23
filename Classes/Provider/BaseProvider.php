@@ -155,11 +155,18 @@ abstract class BaseProvider
     protected function getHtml()
     {
         $mousePosition = '';
-        if ($this->config['mouse_position']) {
-            $mousePosition = '<div id="mouse-position-' . $this->config['id'] . '">' . LocalizationUtility::translate('mouse_position', 'ods_osm') . ':&nbsp;</div>';
+        $popupcode = '';
+        if ($this->config['library'] == 'openlayers') {
+            if ($this->config['mouse_position']) {
+                $mousePosition = '<div id="mouse-position-' . $this->config['id'] . '">' . LocalizationUtility::translate('mouse_position', 'ods_osm') . ':&nbsp;</div>';
+            }
+            $popupcode = '
+                <div id="popup" class="ol-popup">
+                <a href="#" id="popup-closer" class="ol-popup-closer"></a>
+                <div id="popup-content"></div>
+            </div>';
         }
-
-        return '<div style="width:' . $this->config['width'] . '; height:' . $this->config['height'] . '; " id="' . $this->config['id'] . '"></div>' . $mousePosition;
+        return '<div style="width:' . $this->config['width'] . '; height:' . $this->config['height'] . '; " id="' . $this->config['id'] . '"></div>' . $mousePosition . $popupcode;
     }
 
     /**

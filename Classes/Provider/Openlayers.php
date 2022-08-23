@@ -104,6 +104,26 @@ class Openlayers extends BaseProvider
 			layers: layers,
 			view: view
         });
+
+        // Popup showing the position the user clicked
+        var container = document.getElementById('popup');
+        var closer = document.getElementById('popup-closer');
+        var content = document.getElementById('popup-content');
+        var popup = new ol.Overlay({
+            element: container,
+            autoPan: true,
+            autoPanAnimation: {
+                duration: 100
+            }
+        });
+        " . $this->config['id'] . ".addOverlay(popup);
+        closer.onclick = function () {
+            popup.setPosition(undefined);
+            content.innerHTML = '';
+            closer.blur();
+            return false;
+        };
+
         ";
     }
 
@@ -209,17 +229,6 @@ class Openlayers extends BaseProvider
             $item['rgba'] = 'rgba('.implode(",", $rgb).','.$opacity.')';
         }
 
-        // define style from given color and width
-        $jsMarker .= 'var ' . $jsElementVar . '_style = new ol.style.Style({
-            stroke: new ol.style.Stroke({
-                color: \''.$item['color'].'\',
-                width: '.($item['width'] ?: 1).'
-            }),
-            fill: new ol.style.Fill({
-                color: \''.$item['rgba'].'\'
-            }),
-        });';
-
         switch ($table) {
             case 'tx_odsosm_track':
                 $fileObjects = $fileRepository->findByRelation('tx_odsosm_track', 'file', $item['uid']);
@@ -236,7 +245,18 @@ class Openlayers extends BaseProvider
                     'uid' => $item['uid']
                 ];
 
-                switch (strtolower(pathinfo($file->getName(), PATHINFO_EXTENSION))) {
+            // define style from given color and width
+            $jsMarker .= 'var ' . $jsElementVar . '_style = new ol.style.Style({
+                stroke: new ol.style.Stroke({
+                    color: \''.$item['color'].'\',
+                    width: '.($item['width'] ?: 1).'
+                }),
+                fill: new ol.style.Fill({
+                    color: \''.$item['rgba'].'\'
+                }),
+            });';
+
+            switch (strtolower(pathinfo($file->getName(), PATHINFO_EXTENSION))) {
                     case 'kml':
                         $jsMarker .= 'var ' . $jsElementVar . '_gpx = new ol.layer.Vector({
                             title: \'' .$item['title'] . '\',
@@ -271,6 +291,17 @@ class Openlayers extends BaseProvider
                 if ($fileObjects) {
                     $file = $fileObjects[0];
                     $filename = '/' . $file->getPublicUrl();
+
+                    // define style from given color and width
+                    $jsMarker .= 'var ' . $jsElementVar . '_style = new ol.style.Style({
+                        stroke: new ol.style.Stroke({
+                            color: \''.$item['color'].'\',
+                            width: '.($item['width'] ?: 1).'
+                        }),
+                        fill: new ol.style.Fill({
+                            color: \''.$item['rgba'].'\'
+                        }),
+                    });' . "\n";
 
                     $jsMarker .= 'var ' . $jsElementVar . '_file = new ol.layer.Vector({
                         title: \'' .$item['title'] . ' ('. LocalizationUtility::translate('file', 'ods_osm') .')\',
@@ -321,21 +352,63 @@ class Openlayers extends BaseProvider
                         $markerOptions['icon'] = 'icon: new L.Icon(' . json_encode($iconOptions) . ')';
                     }
                 } else {
-                    $icon = $this->path_leaflet . 'images/marker-icon.png';
-                }
-                $jsMarker .= 'var ' . $jsElementVar . ' = new L.Marker([' . $item['latitude'] . ', ' . $item['longitude'] . '], {' . implode(',', $markerOptions) . "});\n";
-                // Add group to layer switch
-                if ($item['group_title']) {
-                    $this->layers[1][] = [
-                        'title' => ($marker['type'] == 'html' ? $marker['icon'] : "<img class='marker-icon' style='max-width: 60px;' src='" . $icon . "' />") . ' ' . $item['group_title'],
-                        'gid' => $item['group_uid']
-                    ];
-                    $this->layers[2][$item['group_uid']][] = $jsElementVar;
-                } else {
-                    $this->layers[2][$this->config['id'] . '_g'][] = $jsElementVar;
+                    $icon = '/typo3conf/ext/ods_osm/Resources/Public/Icons/marker-icon.png';
                 }
 
-                $jsElementVarsForPopup[] = $jsElementVar;
+                if (!empty($icon)) {
+                    $jsMarker .= "
+                    const " . $jsElementVar . "_style = new ol.style.Style({
+                        image: new ol.style.Icon({
+                          anchor: [0.5, 46],
+                          anchorXUnits: 'fraction',
+                          anchorYUnits: 'pixels',
+                          src: '" . $icon ."',
+                        }),
+                    });
+                    ";
+                }
+
+                $jsMarker .= "var " . $jsElementVar . " = new ol.layer.Vector({
+                    title: '<img src=\"" .$icon . "\" class=\"marker-icon\" /> " . $item['group_title'] . "',
+                    source: new ol.source.Vector({
+                        features: [
+                            new ol.Feature({
+                                geometry: new ol.geom.Point(ol.proj.fromLonLat([" . $item['longitude'] . ", " . $item['latitude'] . "])),
+                                type: 'Point',
+                                desc: '" . $item['popup'] . "'
+                            })
+                        ]
+                    }),
+                    style: " . $jsElementVar . "_style
+                });
+                ";
+
+                $jsMarker .= "overlaygroup.getLayers().push(" . $jsElementVar . ");\n";
+
+                $jsMarker .= "
+
+                        var containery = document.getElementById('popup');
+
+
+                ";
+
+                $jsMarker .= "
+                " . $this->config['id'] . ".on('singleclick', function (event) {
+                        var feature = " . $this->config['id'] . ".forEachFeatureAtPixel(event.pixel, function (feat, layer) {
+                            return feat;
+                        });
+
+                        if (feature && feature.get('type') == 'Point') {
+                            var coordinate = event.coordinate;    //default projection is EPSG:3857 you may want to use ol.proj.transform
+
+                            content.innerHTML = feature.get('desc');
+                            popup.setPosition(coordinate);
+                        }
+                        else {
+                            popup.setPosition(undefined);
+                        }
+                    });
+                ";
                 break;
         }
 
