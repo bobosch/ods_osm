@@ -191,6 +191,7 @@ class Leaflet extends BaseProvider
                             'clickable' => 'false',
                             'polyline_options' => array(
                                 'color' => $item['color'],
+                                'weight' => $item['width'] ?: 1,
                             ),
                             'marker_options' => array(
                                 'startIconUrl' => $path . 'leaflet-gpx/pin-icon-start.png',
