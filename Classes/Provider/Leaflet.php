@@ -182,6 +182,7 @@ class Leaflet extends BaseProvider
                         $jsMarker .= 'var ' . $jsElementVar . ' = new L.KML(';
                         $jsMarker .= '"' . $file->getPublicUrl() . '"';
                         $jsMarker .= ");\n";
+                        $jsMarker .= $this->config['id'] . '.addLayer(' . $jsElementVar . ');' . "\n";
                         break;
                     case 'gpx':
                         // include javascript file for GPX support
