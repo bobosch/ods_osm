@@ -288,20 +288,22 @@ class Openlayers extends BaseProvider
                 break;
             case 'tx_odsosm_vector':
                 $fileObjects = $fileRepository->findByRelation('tx_odsosm_vector', 'file', $item['uid']);
+
+                // define style from given color and width
+                $jsMarker .= 'var ' . $jsElementVar . '_style = new ol.style.Style({
+                    stroke: new ol.style.Stroke({
+                        color: \''.$item['color'].'\',
+                        width: '.($item['width'] ?: 1).'
+                    }),
+                    fill: new ol.style.Fill({
+                        color: \''.$item['rgba'].'\'
+                    }),
+                });' . "\n";
+
                 if ($fileObjects) {
                     $file = $fileObjects[0];
                     $filename = '/' . $file->getPublicUrl();
 
-                    // define style from given color and width
-                    $jsMarker .= 'var ' . $jsElementVar . '_style = new ol.style.Style({
-                        stroke: new ol.style.Stroke({
-                            color: \''.$item['color'].'\',
-                            width: '.($item['width'] ?: 1).'
-                        }),
-                        fill: new ol.style.Fill({
-                            color: \''.$item['rgba'].'\'
-                        }),
-                    });' . "\n";
 
                     $jsMarker .= 'var ' . $jsElementVar . '_file = new ol.layer.Vector({
                         title: \'' .$item['title'] . ' ('. LocalizationUtility::translate('file', 'ods_osm') .')\',
