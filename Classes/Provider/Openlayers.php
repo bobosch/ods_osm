@@ -401,7 +401,7 @@ class Openlayers extends BaseProvider
                         });
 
                         if (feature && feature.get('type') == 'Point') {
-                            var coordinate = event.coordinate;    //default projection is EPSG:3857 you may want to use ol.proj.transform
+                            var coordinate = event.coordinate;    // default projection is EPSG:3857 you may want to use ol.proj.transform
 
                             content.innerHTML = feature.get('desc');
                             popup.setPosition(coordinate);

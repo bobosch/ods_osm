@@ -29,7 +29,7 @@
 			</trans-unit>
 			<trans-unit id="overlays" xml:space="preserve">
 				<source>Overlays</source>
-				<target>Überlagerungs-Karten</target>
+				<target>Überlagerungskarten</target>
 			</trans-unit>
 			<trans-unit id="file" xml:space="preserve">
 				<source>File</source>

@@ -99,6 +99,9 @@
 			<trans-unit id="tt_content.pi_flexform.show_layerswitcher.I.2" xml:space="preserve">
 				<source>Opened</source>
 			</trans-unit>
+			<trans-unit id="tt_content.pi_flexform.layerswitcher_activationMode" xml:space="preserve">
+				<source>Layerswitcher Activation Mode</source>
+			</trans-unit>
 			<trans-unit id="tt_content.pi_flexform.show_scalebar" xml:space="preserve">
 				<source>Show ScaleBar</source>
 			</trans-unit>

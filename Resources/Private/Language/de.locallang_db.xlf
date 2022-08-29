@@ -1,10 +1,14 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <xliff version="1.0">
-	<file source-language="en" target-language="de" datatype="plaintext" original="messages" date="2021-04-03T15:38:51Z">
+	<file source-language="en" target-language="de" datatype="plaintext" original="messages" date="2022-08-29T19:29:08Z">
 		<header>
 			<generator>LFEditor</generator>
 		</header>
 		<body>
+			<trans-unit id="coordinatepickerWizard" approved="yes">
+				<source><![CDATA[Coordinate Picker Wizard]]></source>
+				<target><![CDATA[Kartenassistent für Auswahl der Koordinaten]]></target>
+			</trans-unit>
 			<trans-unit id="coordinatepickerWizard.close" approved="yes">
 				<source><![CDATA[Close Coordinate Picker Wizard]]></source>
 				<target><![CDATA[Kartenassistent schließen]]></target>
@@ -15,10 +19,6 @@
 			</trans-unit>
 			<trans-unit id="coordinatepickerWizard.title" approved="yes">
 				<source><![CDATA[Search coordinates]]></source>
-				<target><![CDATA[Kartenassistent für Auswahl der Koordinaten]]></target>
-			</trans-unit>
-			<trans-unit id="coordinatepickerWizard" approved="yes">
-				<source><![CDATA[Coordinate Picker Wizard]]></source>
 				<target><![CDATA[Kartenassistent für Auswahl der Koordinaten]]></target>
 			</trans-unit>
 			<trans-unit id="tt_address_group.tx_odsosm_marker" approved="yes">
@@ -49,6 +49,10 @@
 				<source><![CDATA[Base layer]]></source>
 				<target><![CDATA[Hauptebene]]></target>
 			</trans-unit>
+			<trans-unit id="tt_content.pi_flexform.layerswitcher_activationMode" approved="yes">
+				<source><![CDATA[Layerswitcher Activation Mode]]></source>
+				<target><![CDATA[Methode zum Aufklappen des Ebenenumschalter]]></target>
+			</trans-unit>
 			<trans-unit id="tt_content.pi_flexform.library" approved="yes">
 				<source><![CDATA[Library]]></source>
 				<target><![CDATA[Programm]]></target>
@@ -61,13 +65,28 @@
 				<source><![CDATA[Show this marker's popup initially]]></source>
 				<target><![CDATA[Markierungspopup anfangs anzeigen]]></target>
 			</trans-unit>
+			<trans-unit id="tt_content.pi_flexform.mouse_position" approved="yes">
+				<source><![CDATA[Show mouse position]]></source>
+				<target><![CDATA[Zeige Mausposition]]></target>
+			</trans-unit>
+			<trans-unit id="tt_content.pi_flexform.overlays.description" approved="yes" xml:space="preserve">
+				<source><![CDATA[The following overlays are available in the frontend.
+				If using the layer switcher, the selected overlays may be toggled on/off. The initial state is selected by "overlays_active".
+				Without layer switcher, all overlays are active in the map.
+				]]></source>
+				<target><![CDATA[Die folgenden Überlagerungskarten stehen im Frontend zur Verfügung. Wenn der Ebenumschalter erwendet wird, können diese Ebenen ein- und ausgeschaltet werden. Die initiale Aktivierung kann mit der folgenden Einstellung ("Überlagerungskarten aktivieren") gesteuert werden. Ohne Ebenenumschalter werden alle Ebenen angezeigt.]]></target>
+			</trans-unit>
+			<trans-unit id="tt_content.pi_flexform.overlays_active" approved="yes">
+				<source><![CDATA[Activated overlays]]></source>
+				<target><![CDATA[Überlagerungskarten aktivieren]]></target>
+			</trans-unit>
+			<trans-unit id="tt_content.pi_flexform.overlays_active.description" approved="yes">
+				<source><![CDATA[The following overlays are activated in the layer switcher initially.]]></source>
+				<target><![CDATA[Die folgenden Überlagerungskarten sind beim Laden der Karte aktiviert.]]></target>
+			</trans-unit>
 			<trans-unit id="tt_content.pi_flexform.position_show" approved="yes">
 				<source><![CDATA[Show current position]]></source>
 				<target><![CDATA[Aktuelle Position anzeigen]]></target>
-			</trans-unit>
-			<trans-unit id="tt_content.pi_flexform.mouse_position" xml:space="preserve">
-				<source>Show mouse position</source>
-				<target><![CDATA[Zeige Mausposition]]></target>
 			</trans-unit>
 			<trans-unit id="tt_content.pi_flexform.sheet_sDEF" approved="yes">
 				<source><![CDATA[Default]]></source>
@@ -320,10 +339,6 @@
 			<trans-unit id="vectordrawWizard.close" approved="yes">
 				<source><![CDATA[Close Vector Draw Wizard]]></source>
 				<target><![CDATA[Kartenassistent schließen]]></target>
-			</trans-unit>
-			<trans-unit id="vectordrawWizard.draw" approved="yes">
-				<source><![CDATA[]]></source>
-				<target><![CDATA[GeoJSON Vektordaten zeichnen]]></target>
 			</trans-unit>
 			<trans-unit id="vectordrawWizard.import" approved="yes">
 				<source><![CDATA[Import vector data to form]]></source>
