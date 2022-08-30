@@ -262,7 +262,7 @@ class Openlayers extends BaseProvider
                             title: \'' .$item['title'] . '\',
                             source: new ol.source.Vector({
                                 projection: \'EPSG:3857\',
-                                url: \'/' . $file->getPublicUrl() . '\',
+                                url: \'' . $GLOBALS['TSFE']->absRefPrefix . $file->getPublicUrl() . '\',
                                 format: new ol.format.KML()
                             }),
                             style: ' . $jsElementVar . '_style
@@ -275,7 +275,7 @@ class Openlayers extends BaseProvider
                             title: \'' .$item['title'] . '\',
                             source: new ol.source.Vector({
                                 projection: \'EPSG:3857\',
-                                url: \'/' . $file->getPublicUrl() . '\',
+                                url: \'' . $GLOBALS['TSFE']->absRefPrefix . $file->getPublicUrl() . '\',
                                 format: new ol.format.GPX()
                             }),
                             style: ' . $jsElementVar . '_style
@@ -302,7 +302,7 @@ class Openlayers extends BaseProvider
 
                 if ($fileObjects) {
                     $file = $fileObjects[0];
-                    $filename = '/' . $file->getPublicUrl();
+                    $filename = $GLOBALS['TSFE']->absRefPrefix . $file->getPublicUrl();
 
 
                     $jsMarker .= 'var ' . $jsElementVar . '_file = new ol.layer.Vector({
