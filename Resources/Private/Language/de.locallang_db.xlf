@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <xliff version="1.0">
-	<file source-language="en" target-language="de" datatype="plaintext" original="messages" date="2022-08-29T19:29:08Z">
+	<file source-language="en" target-language="de" datatype="plaintext" original="messages" date="2022-10-01T19:38:03Z">
 		<header>
 			<generator>LFEditor</generator>
 		</header>
@@ -91,6 +91,10 @@
 			<trans-unit id="tt_content.pi_flexform.sheet_sDEF" approved="yes">
 				<source><![CDATA[Default]]></source>
 				<target><![CDATA[Standard]]></target>
+			</trans-unit>
+			<trans-unit id="tt_content.pi_flexform.show_fullscreen" approved="yes">
+				<source><![CDATA[Show FullScreen Button]]></source>
+				<target><![CDATA[Vollbild anzeigen]]></target>
 			</trans-unit>
 			<trans-unit id="tt_content.pi_flexform.show_layerswitcher" approved="yes">
 				<source><![CDATA[Show layerswitcher]]></source>

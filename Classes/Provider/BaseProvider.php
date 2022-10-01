@@ -3,6 +3,8 @@
 namespace Bobosch\OdsOsm\Provider;
 
 use Bobosch\OdsOsm\Div;
+use TYPO3\CMS\Core\Page\PageRenderer;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 
@@ -12,6 +14,11 @@ abstract class BaseProvider
     public $cObj; // Must set from instantiating class
     protected $config;
     protected $script;
+
+    /**
+     *
+     */
+    protected $pageRenderer;
 
     /** @var array keeping all JavaScripts to be included */
     protected $scripts = [];
@@ -52,6 +59,8 @@ abstract class BaseProvider
     public function init($config)
     {
         $this->config = $config;
+        $this->pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
+
     }
 
     /**
@@ -75,6 +84,10 @@ abstract class BaseProvider
 
         if ($this->config['show_layerswitcher']) {
             $this->script .= $this->getLayerSwitcher() . "\n";
+        }
+
+        if ($this->config['show_fullscreen']) {
+            $this->script .= $this->getFullScreen() . "\n";
         }
 
         Div::addJsFiles($this->scripts, null);

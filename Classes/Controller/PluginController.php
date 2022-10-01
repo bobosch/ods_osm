@@ -95,6 +95,7 @@ class PluginController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
             'show_layerswitcher',
             'layerswitcher_activationMode',
             'show_scalebar',
+            'show_fullscreen',
             'show_popups',
             'staticmap_layer',
             'use_coords_only_nomarker',

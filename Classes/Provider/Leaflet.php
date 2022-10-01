@@ -4,7 +4,6 @@ namespace Bobosch\OdsOsm\Provider;
 
 use Bobosch\OdsOsm\Div;
 use TYPO3\CMS\Core\Core\Environment;
-use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Resource\FileRepository;
 use TYPO3\CMS\Core\Resource\StorageRepository;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -24,9 +23,8 @@ class Leaflet extends BaseProvider
                 GeneralUtility::getFileAbsFileName(Div::RESOURCE_BASE_PATH . 'JavaScript/Leaflet/')
             )
         );
-        $this->path_leaflet = ($this->config['local_js'] ? $this->path_res . 'Core/' : 'https://unpkg.com/leaflet@1.7.1/dist/');
-        $pageRenderer = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(PageRenderer::class);
-        $pageRenderer->addCssFile($this->path_leaflet . 'leaflet.css');
+        $this->path_leaflet = ($this->config['local_js'] ? $this->path_res . 'Core/' : 'https://unpkg.com/leaflet@1.9.1/dist/');
+        $this->pageRenderer->addCssFile($this->path_leaflet . 'leaflet.css');
         $this->scripts['leaflet'] = [
             'src' => $this->path_leaflet . 'leaflet.js',
             'sri' => 'sha384-RFZC58YeKApoNsIbBxf4z6JJXmh+geBSgkCQXFyh+4tiFSJmJBt+2FbjxW7Ar16M'
@@ -52,10 +50,11 @@ class Leaflet extends BaseProvider
 			L.Icon.Default.imagePath='" . $this->path_leaflet . "images/';"
             . $vars;
         if ($this->config['cluster']) {
-            $pageRenderer = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Page\\PageRenderer');
-            $pageRenderer->addCssFile($this->path_res . 'leaflet-markercluster/MarkerCluster.css');
-            $pageRenderer->addCssFile($this->path_res . 'leaflet-markercluster/MarkerCluster.Default.css');
-            $this->scripts['leaflet-markercluster'] = ['src' => $this->path_res . 'leaflet-markercluster/leaflet.markercluster.js'];
+            $this->pageRenderer->addCssFile($this->path_res . 'leaflet-markercluster/MarkerCluster.css');
+            $this->pageRenderer->addCssFile($this->path_res . 'leaflet-markercluster/MarkerCluster.Default.css');
+            $this->scripts['leaflet-markercluster'] = [
+                'src' => $this->path_res . 'leaflet-markercluster/leaflet.markercluster.js'
+            ];
         }
 
         return $jsMain;
@@ -119,6 +118,26 @@ class Leaflet extends BaseProvider
         return $layerString;
     }
 
+    public function getFullScreen()
+    {
+        // load leaflet.fullscreen plugin
+        $this->scripts['leaflet-plugins'] = [
+            'src' => $this->path_res . 'leaflet-fullscreen/Control.FullScreen.js',
+            'sri' => 'sha384-TqFtkYBnYsrP2JCfIv/oLQxS9L6xpaIV9xnaI2UGMK25cJsTtQXZIU6WGQ7daT0Z'
+        ];
+        $this->pageRenderer->addCssFile($this->path_res . 'leaflet-fullscreen/Control.FullScreen.css');
+
+        return "L.control.fullscreen({
+            position: 'topleft', // change the position of the button can be topleft, topright, bottomright or bottomleft, default topleft
+            title: 'Show me the fullscreen !', // change the title of the button, default Full Screen
+            titleCancel: 'Exit fullscreen mode', // change the title of the button when fullscreen is on, default Exit Full Screen
+            content: null, // change the content of the button, can be HTML, default null
+            forceSeparateButton: true, // force separate button to detach from zoom buttons, default false
+            forcePseudoFullscreen: true, // force use of pseudo full screen even if full screen API is available, default false
+            fullscreenElement: false // Dom element to render in full screen, false by default, fallback to map._container
+          }).addTo(" . $this->config['id'] . ");";
+    }
+
     public function getMapCenter($lat, $lon, $zoom)
     {
         $return = 'var center = new L.LatLng(' . json_encode($lat) . ',' . json_encode($lon) . ');' . $this->config['id'] . '.setView(center,' . $zoom . ');';
@@ -164,9 +183,6 @@ class Leaflet extends BaseProvider
                     break;
                 }
 
-                $path = PathUtility::getAbsoluteWebPath(
-                    GeneralUtility::getFileAbsFileName(Div::RESOURCE_BASE_PATH . 'JavaScript/Leaflet/')
-                );
                 // Add tracks to layerswitcher
                 $this->layers[1][] = [
                     'title' => $item['title'],
@@ -177,7 +193,9 @@ class Leaflet extends BaseProvider
                 switch (strtolower(pathinfo($file->getName(), PATHINFO_EXTENSION))) {
                     case 'kml':
                         // include javascript file for KML support
-                        $this->scripts['leaflet-plugins'] = ['src' => $path . 'leaflet-plugins/layer/vector/KML.js'];
+                        $this->scripts['leaflet-plugins'] = [
+                            'src' => $this->path_res . 'leaflet-plugins/layer/vector/KML.js'
+                        ];
 
                         $jsMarker .= 'var ' . $jsElementVar . ' = new L.KML(';
                         $jsMarker .= '"' . $file->getPublicUrl() . '"';
@@ -186,7 +204,9 @@ class Leaflet extends BaseProvider
                         break;
                     case 'gpx':
                         // include javascript file for GPX support
-                        $this->scripts['leaflet-gpx'] = ['src' => $path . 'leaflet-gpx/gpx.js'];
+                        $this->scripts['leaflet-gpx'] = [
+                            'src' => $this->path_res . 'leaflet-gpx/gpx.js'
+                        ];
                         $options = array(
                             'clickable' => 'false',
                             'polyline_options' => array(
@@ -194,9 +214,9 @@ class Leaflet extends BaseProvider
                                 'weight' => $item['width'] ?: 1,
                             ),
                             'marker_options' => array(
-                                'startIconUrl' => $path . 'leaflet-gpx/pin-icon-start.png',
-                                'endIconUrl' => $path . 'leaflet-gpx/pin-icon-end.png',
-                                'shadowUrl' => $path . 'leaflet-gpx/pin-shadow.png',
+                                'startIconUrl' => $this->path_res . 'leaflet-gpx/pin-icon-start.png',
+                                'endIconUrl' => $this->path_res . 'leaflet-gpx/pin-icon-end.png',
+                                'shadowUrl' => $this->path_res . 'leaflet-gpx/pin-shadow.png',
                             ),
                         );
                         $jsMarker .= 'var ' . $jsElementVar . ' = new L.GPX("' . $file->getPublicUrl() . '",';

@@ -369,6 +369,15 @@
 							</config>
 						</TCEforms>
 					</layerswitcher_activationMode>
+					<show_fullscreen>
+						<TCEforms>
+							<label>LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xlf:tt_content.pi_flexform.show_fullscreen</label>
+							<displayCond>FIELD:library:IN:openlayers,leaflet</displayCond>
+							<config>
+								<type>check</type>
+							</config>
+						</TCEforms>
+					</show_fullscreen>
 					<show_scalebar>
 						<TCEforms>
 							<label>LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xlf:tt_content.pi_flexform.show_scalebar</label>

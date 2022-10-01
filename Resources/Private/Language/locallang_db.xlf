@@ -105,6 +105,9 @@
 			<trans-unit id="tt_content.pi_flexform.show_scalebar" xml:space="preserve">
 				<source>Show ScaleBar</source>
 			</trans-unit>
+			<trans-unit id="tt_content.pi_flexform.show_fullscreen" xml:space="preserve">
+				<source>Show FullScreen Button</source>
+			</trans-unit>
 			<trans-unit id="tt_content.pi_flexform.use_coords_only_nomarker" xml:space="preserve">
 				<source>Use this coordinates only if no marker exists</source>
 			</trans-unit>
