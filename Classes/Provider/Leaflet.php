@@ -27,7 +27,7 @@ class Leaflet extends BaseProvider
         $this->pageRenderer->addCssFile($this->path_leaflet . 'leaflet.css');
         $this->scripts['leaflet'] = [
             'src' => $this->path_leaflet . 'leaflet.js',
-            'sri' => 'sha384-RFZC58YeKApoNsIbBxf4z6JJXmh+geBSgkCQXFyh+4tiFSJmJBt+2FbjxW7Ar16M'
+            'sri' => 'sha384-mvgACVzya0zhB/4CbnTX8JiDAJXE6NGoGD70xNLLwtv0ON8la+5S7Xnyf+0nOqF8'
         ];
     }
 
