@@ -27,17 +27,17 @@ class Openlayers extends BaseProvider
                 GeneralUtility::getFileAbsFileName(Div::RESOURCE_BASE_PATH . 'OpenLayers/')
             )
         );
-        $pathOl = ($this->config['local_js'] ? $path : 'https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.15.1/');
+        $pathOl = ($this->config['local_js'] ? $path : 'https://cdn.jsdelivr.net/npm/ol@v7.1.0/');
         $pageRenderer = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(PageRenderer::class);
-        $pageRenderer->addCssFile($pathOl . 'css/ol.css');
+        $pageRenderer->addCssFile($pathOl . 'ol.css');
         $this->scripts['OpenLayers'] = [
-            'src' => $pathOl . 'build/ol.js',
-            'sri' => 'sha512-9jwbYv3+RCZJsgvMaf9IqM2a2xhFvwDdY+5MUu0JNl6yL00jn98+nsPHt6QzPFVyU+EIUgNk6rc72TPZNf3yag=='
+            'src' => $pathOl . 'dist/ol.js',
+            'sri' => 'sha512-zcRdjTuLRJPIXiyXpHwGxbw5/meqPWTVO8Bko9XL6qmwSaPiFe9R1/xBmba4RjWzFzT8e+dNqIWDCa6gdEgajw=='
         ];
 
         // Do we need the layerswitcher? If so, some extra plugin is required.
         if ($this->config['show_layerswitcher']) {
-            $pathContrib = ($this->config['local_js'] ? $path . 'Contrib/ol-layerswitcher/' : 'https://unpkg.com/ol-layerswitcher@3.8.3/dist/');
+            $pathContrib = ($this->config['local_js'] ? $path . 'Contrib/ol-layerswitcher/' : 'https://unpkg.com/ol-layerswitcher@4.0.0/dist/');
             $pathCustom = $path . 'Custom/';
 
             $pageRenderer->addCssFile($pathContrib . 'ol-layerswitcher.css');
@@ -45,7 +45,7 @@ class Openlayers extends BaseProvider
 
             $this->scripts['OpenLayersSwitch'] = [
                 'src' => $pathContrib . 'ol-layerswitcher.js',
-                'sri' => 'sha512-+cZhYSrGlO4JafMR5fEFkF+6pXr9fwMaicniLZRH76RtnJXc/+WkFpZu/9Av0rg2xDVr84M15XMA6tet1VaMrg=='
+                'sri' => 'sha512-vTZfK/QA+2mdjJU/AYvJJqZipymv81D7WuEF4n6gr9udJnfPtLmXnUBfGsRaWbSj2ERSSBzPRvVL340ePCIESQ=='
             ];
         }
     }
