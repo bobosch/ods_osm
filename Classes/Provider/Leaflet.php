@@ -118,6 +118,11 @@ class Leaflet extends BaseProvider
         return $layerString;
     }
 
+    /**
+     * Get the fullscreen button
+     *
+     * @return string The JavaScript to add the fullscreen button
+     */
     public function getFullScreen()
     {
         // load leaflet.fullscreen plugin
@@ -128,11 +133,10 @@ class Leaflet extends BaseProvider
         $this->pageRenderer->addCssFile($this->path_res . 'leaflet-fullscreen/Control.FullScreen.css');
 
         return "L.control.fullscreen({
-            position: 'topleft', // change the position of the button can be topleft, topright, bottomright or bottomleft, default topleft
-            title: 'Show me the fullscreen !', // change the title of the button, default Full Screen
-            titleCancel: 'Exit fullscreen mode', // change the title of the button when fullscreen is on, default Exit Full Screen
-            content: null, // change the content of the button, can be HTML, default null
-            forceSeparateButton: true, // force separate button to detach from zoom buttons, default false
+            position: 'topleft',
+            title: 'Full Screen',
+            titleCancel: 'Exit fullscreen mode',
+            forceSeparateButton: true,
             forcePseudoFullscreen: true, // force use of pseudo full screen even if full screen API is available, default false
             fullscreenElement: false // Dom element to render in full screen, false by default, fallback to map._container
           }).addTo(" . $this->config['id'] . ");";

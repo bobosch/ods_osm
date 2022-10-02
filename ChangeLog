@@ -1,6 +1,7 @@
 2022-08-00 Alexander Bigga <alexander@bigga.de>
 	* Update to OpenLayers 6.5.1
 	* Update to Leaflet 1.9.1
+	* Add fullscreen mode
 
 2021-04-02 Alexander Bigga <alexander@bigga.de>
     * Update to Leaflet 1.7.1

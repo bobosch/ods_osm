@@ -375,6 +375,7 @@
 							<displayCond>FIELD:library:IN:openlayers,leaflet</displayCond>
 							<config>
 								<type>check</type>
+								<default>1</default>
 							</config>
 						</TCEforms>
 					</show_fullscreen>

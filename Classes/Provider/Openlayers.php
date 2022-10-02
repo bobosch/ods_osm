@@ -209,6 +209,18 @@ class Openlayers extends BaseProvider
         ';
     }
 
+    /**
+     * Get the fullscreen button
+     *
+     * @return string The JavaScript to add the fullscreen button
+     */
+    protected function getFullScreen()
+    {
+        return '
+         var fullScreen = new ol.control.FullScreen();
+          ' . $this->config['id'] . '.addControl(fullScreen);
+        ';
+    }
 
     protected function getMarker($item, $table)
     {
