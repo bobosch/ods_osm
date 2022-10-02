@@ -16,7 +16,7 @@
 							<config>
 								<type>group</type>
 								<internal_type>db</internal_type>
-								<allowed>fe_groups,fe_users,pages,sys_category,tx_odsosm_track,tx_odsosm_vector</allowed>
+                                <allowed>fe_groups,fe_users,pages,sys_category,tx_odsosm_track,tx_odsosm_vector,tt_address,tx_cal_location,tx_cal_organizer</allowed>
 								<size>5</size>
 								<minitems>0</minitems>
 								<maxitems>9999</maxitems>
@@ -193,10 +193,6 @@
 										<numIndex index="0">OpenLayers</numIndex>
 										<numIndex index="1">openlayers</numIndex>
 									</numIndex>
-									<numIndex index="3" type="array">
-										<numIndex index="0">OpenLayers 3</numIndex>
-										<numIndex index="1">openlayers3</numIndex>
-									</numIndex>
 									<numIndex index="4" type="array">
 										<numIndex index="0">Static Map</numIndex>
 										<numIndex index="1">staticmap</numIndex>
@@ -205,10 +201,11 @@
 							</config>
 						</TCEforms>
 					</library>
-					<layer>
+					<base_layer>
 						<TCEforms>
-							<label>LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xlf:tt_content.pi_flexform.layer</label>
-							<displayCond>FIELD:library:=:</displayCond>
+							<label>LLL:EXT:ods_osm/Resources/Private/Language/locallang.xlf:base_layer</label>
+							<description>Select used map base layer. Multiple layers may be selected here. The first layer will be used initially. All other layers are shown in the given order in the layer switcher (see below).</description>
+							<displayCond>FIELD:library:IN:leaflet,openlayers</displayCond>
 							<config>
 								<type>select</type>
 								<size>3</size>
@@ -217,14 +214,15 @@
 								<maxitems>99</maxitems>
 								<autoSizeMax>20</autoSizeMax>
 								<foreign_table>tx_odsosm_layer</foreign_table>
-								<foreign_table_where>AND tx_odsosm_layer.hidden=0 ORDER BY tx_odsosm_layer.sorting</foreign_table_where>
+								<foreign_table_where>AND tx_odsosm_layer.hidden=0 AND tx_odsosm_layer.overlay=0 AND (tx_odsosm_layer.tile_url!="") ORDER BY tx_odsosm_layer.sorting</foreign_table_where>
 							</config>
 						</TCEforms>
-					</layer>
-					<leaflet_layer>
+					</base_layer>
+					<overlays>
 						<TCEforms>
-							<label>LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xlf:tt_content.pi_flexform.layer</label>
-							<displayCond>FIELD:library:=:leaflet</displayCond>
+							<label>LLL:EXT:ods_osm/Resources/Private/Language/locallang.xlf:overlays</label>
+							<description>LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xlf:tt_content.pi_flexform.overlays.description</description>
+							<displayCond>FIELD:library:IN:leaflet,openlayers</displayCond>
 							<config>
 								<type>select</type>
 								<size>3</size>
@@ -233,14 +231,20 @@
 								<maxitems>99</maxitems>
 								<autoSizeMax>20</autoSizeMax>
 								<foreign_table>tx_odsosm_layer</foreign_table>
-								<foreign_table_where>AND tx_odsosm_layer.hidden=0 AND (tx_odsosm_layer.javascript_leaflet!="" OR tx_odsosm_layer.tile_url!="") ORDER BY tx_odsosm_layer.sorting</foreign_table_where>
+								<foreign_table_where>AND tx_odsosm_layer.hidden=0 AND tx_odsosm_layer.overlay=1 AND (tx_odsosm_layer.tile_url!="") ORDER BY tx_odsosm_layer.sorting</foreign_table_where>
 							</config>
 						</TCEforms>
-					</leaflet_layer>
-					<openlayers_layer>
+					</overlays>
+					<overlays_active>
 						<TCEforms>
-							<label>LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xlf:tt_content.pi_flexform.layer</label>
-							<displayCond>FIELD:library:=:openlayers</displayCond>
+							<label>LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xlf:tt_content.pi_flexform.overlays_active</label>
+							<description>LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xlf:tt_content.pi_flexform.overlays_active.description</description>
+							<displayCond>
+								<and>
+									<value1>FIELD:show_layerswitcher:!=:0</value1>
+									<value2>FIELD:library:IN:leaflet,openlayers</value2>
+								</and>
+							</displayCond>
 							<config>
 								<type>select</type>
 								<size>3</size>
@@ -249,29 +253,10 @@
 								<maxitems>99</maxitems>
 								<autoSizeMax>20</autoSizeMax>
 								<foreign_table>tx_odsosm_layer</foreign_table>
-								<foreign_table_where>AND tx_odsosm_layer.hidden=0 AND (tx_odsosm_layer.javascript_openlayers!="" OR tx_odsosm_layer.tile_url!="") ORDER BY tx_odsosm_layer.sorting</foreign_table_where>
+								<foreign_table_where>AND tx_odsosm_layer.hidden=0 AND tx_odsosm_layer.overlay=1 AND (tx_odsosm_layer.tile_url!="") ORDER BY tx_odsosm_layer.sorting</foreign_table_where>
 							</config>
 						</TCEforms>
-					</openlayers_layer>
-					<openlayers3_layer>
-						<TCEforms>
-							<label>LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xlf:tt_content.pi_flexform.layer</label>
-							<displayCond>FIELD:library:=:openlayers3</displayCond>
-							<config>
-								<type>select</type>
-                                <renderType>selectSingle</renderType>
-								<foreign_table>tx_odsosm_layer</foreign_table>
-								<foreign_table_where>AND tx_odsosm_layer.hidden=0 AND tx_odsosm_layer.tile_url!="" ORDER BY tx_odsosm_layer.sorting</foreign_table_where>
-								<items type="array">
-									<numIndex index="0" type="array">
-										<numIndex index="0"></numIndex>
-										<numIndex index="1"></numIndex>
-									</numIndex>
-								</items>
-								<eval>required</eval>
-							</config>
-						</TCEforms>
-					</openlayers3_layer>
+					</overlays_active>
 					<staticmap_layer>
 						<TCEforms>
 							<label>LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xlf:tt_content.pi_flexform.layer</label>
@@ -291,39 +276,6 @@
 							</config>
 						</TCEforms>
 					</staticmap_layer>
-					<mouse_navigation>
-						<TCEforms>
-							<label>LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xlf:tt_content.pi_flexform.mouse_navigation</label>
-							<displayCond>FIELD:library:=:openlayers</displayCond>
-							<config>
-								<type>check</type>
-							</config>
-						</TCEforms>
-					</mouse_navigation>
-					<show_pan_zoom>
-						<TCEforms>
-							<label>LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xlf:tt_content.pi_flexform.show_pan_zoom</label>
-							<displayCond>FIELD:library:=:openlayers</displayCond>
-							<config>
-								<type>select</type>
-                                <renderType>selectSingle</renderType>
-								<items type="array">
-									<numIndex index="0" type="array">
-										<numIndex index="0"></numIndex>
-										<numIndex index="1"></numIndex>
-									</numIndex>
-									<numIndex index="1" type="array">
-										<numIndex index="0">LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xlf:tt_content.pi_flexform.show_pan_zoom.I.1</numIndex>
-										<numIndex index="1">1</numIndex>
-									</numIndex>
-									<numIndex index="2" type="array">
-										<numIndex index="0">LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xlf:tt_content.pi_flexform.show_pan_zoom.I.2</numIndex>
-										<numIndex index="1">2</numIndex>
-									</numIndex>
-								</items>
-							</config>
-						</TCEforms>
-					</show_pan_zoom>
 					<show_popups>
 						<TCEforms>
 							<label>LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xlf:tt_content.pi_flexform.show_popups</label>
@@ -371,6 +323,7 @@
 						<TCEforms>
 							<label>LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xlf:tt_content.pi_flexform.show_layerswitcher</label>
 							<displayCond>FIELD:library:IN:leaflet,openlayers</displayCond>
+							<onChange>reload</onChange>
 							<config>
 								<type>select</type>
                                 <renderType>selectSingle</renderType>
@@ -391,6 +344,41 @@
 							</config>
 						</TCEforms>
 					</show_layerswitcher>
+					<layerswitcher_activationMode>
+						<TCEforms>
+							<label>LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xlf:tt_content.pi_flexform.layerswitcher_activationMode</label>
+							<displayCond>
+								<and>
+									<value1>FIELD:library:IN:openlayers</value1>
+									<value2>FIELD:show_layerswitcher:!=:0</value2>
+								</and>
+							</displayCond>
+							<config>
+								<type>select</type>
+                                <renderType>selectSingle</renderType>
+								<items type="array">
+									<numIndex index="1" type="array">
+										<numIndex index="0">LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xlf:tt_content.pi_flexform.show_popups.I.1</numIndex>
+										<numIndex index="1">1</numIndex>
+									</numIndex>
+									<numIndex index="2" type="array">
+										<numIndex index="0">LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xlf:tt_content.pi_flexform.show_popups.I.2</numIndex>
+										<numIndex index="1">2</numIndex>
+									</numIndex>
+								</items>
+							</config>
+						</TCEforms>
+					</layerswitcher_activationMode>
+					<show_fullscreen>
+						<TCEforms>
+							<label>LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xlf:tt_content.pi_flexform.show_fullscreen</label>
+							<displayCond>FIELD:library:IN:openlayers,leaflet</displayCond>
+							<config>
+								<type>check</type>
+								<default>1</default>
+							</config>
+						</TCEforms>
+					</show_fullscreen>
 					<show_scalebar>
 						<TCEforms>
 							<label>LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xlf:tt_content.pi_flexform.show_scalebar</label>
@@ -429,6 +417,15 @@
 							</config>
 						</TCEforms>
 					</position>
+					<mouse_position>
+						<TCEforms>
+							<label>LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xlf:tt_content.pi_flexform.mouse_position</label>
+							<displayCond>FIELD:library:=:openlayers</displayCond>
+							<config>
+								<type>check</type>
+							</config>
+						</TCEforms>
+					</mouse_position>
 				</el>
 			</ROOT>
 		</sDEF>

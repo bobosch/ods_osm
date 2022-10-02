@@ -15,7 +15,7 @@ return array(
         'iconfile' => 'EXT:ods_osm/Resources/Public/Icons/icon_tx_odsosm_layer.png',
     ),
     'interface' => array(
-        'showRecordFieldList' => 'hidden,title,overlay,javascript_include,javascript_leaflet,javascript_openlayers,javascript_openlayers3,static_url,tile_url,tile_https,min_zoom,max_zoom,subdomains,attribution,homepage'
+        'showRecordFieldList' => 'hidden,title,overlay,javascript_include,javascript_openlayers,static_url,tile_url,tile_https,min_zoom,max_zoom,subdomains,attribution,homepage'
     ),
     'columns' => array(
         'hidden' => [
@@ -59,25 +59,9 @@ return array(
                 'checkbox' => '',
             )
         ),
-        'javascript_leaflet' => array(
-            'exclude' => 0,
-            'label' => 'LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xlf:tx_odsosm_layer.javascript_leaflet',
-            'config' => array(
-                'type' => 'input',
-                'size' => '30',
-            )
-        ),
         'javascript_openlayers' => array(
             'exclude' => 0,
             'label' => 'LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xlf:tx_odsosm_layer.javascript_openlayers',
-            'config' => array(
-                'type' => 'input',
-                'size' => '30',
-            )
-        ),
-        'javascript_openlayers3' => array(
-            'exclude' => 0,
-            'label' => 'LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xlf:tx_odsosm_layer.javascript_openlayers3',
             'config' => array(
                 'type' => 'input',
                 'size' => '30',
@@ -151,7 +135,7 @@ return array(
         ),
     ),
     'types' => array(
-        '0' => array('showitem' => 'hidden, title, overlay, javascript_include, javascript_leaflet, javascript_openlayers, javascript_openlayers3, static_url, tile_url, tile_https, min_zoom, max_zoom, subdomains, attribution, homepage')
+        '0' => array('showitem' => 'hidden, title, overlay, javascript_include, javascript_openlayers, static_url, tile_url, tile_https, min_zoom, max_zoom, subdomains, attribution, homepage')
     ),
     'palettes' => array(
         '1' => array('showitem' => '')

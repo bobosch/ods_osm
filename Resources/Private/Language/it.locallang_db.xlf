@@ -43,25 +43,9 @@
 				<source>Library</source>
 				<target>Libreria</target>
 			</trans-unit>
-			<trans-unit id="tt_content.pi_flexform.mouse_navigation" xml:space="preserve" approved="yes">
-				<source>Mouse navigation</source>
-				<target>Navigazione con il mouse</target>
-			</trans-unit>
 			<trans-unit id="tt_content.pi_flexform.position_show" xml:space="preserve" approved="yes">
 				<source>Show current position</source>
 				<target>Mostra posizione attuale</target>
-			</trans-unit>
-			<trans-unit id="tt_content.pi_flexform.show_pan_zoom" xml:space="preserve" approved="yes">
-				<source>Show pan/zoom</source>
-				<target>Mostra panoramica/zoom</target>
-			</trans-unit>
-			<trans-unit id="tt_content.pi_flexform.show_pan_zoom.I.1" xml:space="preserve" approved="yes">
-				<source>Bar</source>
-				<target>Barra</target>
-			</trans-unit>
-			<trans-unit id="tt_content.pi_flexform.show_pan_zoom.I.2" xml:space="preserve" approved="yes">
-				<source>+/-</source>
-				<target>+/-</target>
 			</trans-unit>
 			<trans-unit id="tt_content.pi_flexform.show_popups" xml:space="preserve" approved="yes">
 				<source>Show popups</source>
@@ -183,17 +167,9 @@
 				<source>Include static JavaScript</source>
 				<target>Includi JavaScript statico</target>
 			</trans-unit>
-			<trans-unit id="tx_odsosm_layer.javascript_leaflet" xml:space="preserve" approved="yes">
-				<source>JavaScript for Leaflet</source>
-				<target>JavaScript per Leaflet</target>
-			</trans-unit>
 			<trans-unit id="tx_odsosm_layer.javascript_openlayers" xml:space="preserve" approved="yes">
 				<source>JavaScript for OpenLayers</source>
 				<target>JavaScript per OpenLayers</target>
-			</trans-unit>
-			<trans-unit id="tx_odsosm_layer.javascript_openlayers3" xml:space="preserve" approved="yes">
-				<source>JavaScript for OpenLayers 3</source>
-				<target>JavaScript per OpenLayers 3</target>
 			</trans-unit>
 			<trans-unit id="tx_odsosm_layer.static_url" xml:space="preserve" approved="yes">
 				<source>Static map URL</source>

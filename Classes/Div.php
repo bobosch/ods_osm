@@ -143,7 +143,7 @@ class Div
 
         switch ($service) {
             case 0: // cache
-                $where = array();
+                $where = [];
                 if ($country) {
                     $where[] = 'country=' . $connection->quote($country, ParameterType::STRING);
                 }
@@ -394,7 +394,7 @@ class Div
         $flashMessageQueue->addMessage($flashMessage);
     }
 
-    public static function updateCache($address, $search = array())
+    public static function updateCache($address, $search = [])
     {
         $set = array(
             'search_city' => $search['city'] ?? '',
@@ -454,10 +454,10 @@ class Div
     }
 
     /* Get extension configuration, and if not available use default configuration. Optional parameter checks if single value is available. */
-    public static function getConfig($values = array())
+    public static function getConfig($values = [])
     {
         $config = $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['ods_osm'];
-        $getDefault = array();
+        $getDefault = [];
 
         if ($config && is_array($values) && count($values)) {
             foreach ($values as $value) {
@@ -546,5 +546,18 @@ class Div
         $loggerManager = GeneralUtility::makeInstance(LogManager::class);
 
         return $loggerManager->getLogger(static::class);
+    }
+
+
+
+    public function isExtensionLoaded($params = [])
+    {
+        $isLoaded = false;
+
+        if ( \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('tt_address') ) {
+            $isLoaded = true;
+        }
+
+        return $isLoaded;
     }
 }

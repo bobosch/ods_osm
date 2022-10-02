@@ -62,8 +62,7 @@ plugin.tx_odsosm_pi1 {
 
 	# User controls
 
-	mouse_navigation = {$plugin.tx_odsosm_pi1.mouse_navigation}
-	show_pan_zoom = {$plugin.tx_odsosm_pi1.show_pan_zoom}
+	mouse_position = {$plugin.tx_odsosm_pi1.mouse_position}
 	show_popups = {$plugin.tx_odsosm_pi1.show_popups}
 	marker_popup_initial =
 	show_layerswitcher = {$plugin.tx_odsosm_pi1.show_layerswitcher}
@@ -72,4 +71,11 @@ plugin.tx_odsosm_pi1 {
 	layerswitcher.options =
 
 	_CSS_DEFAULT_STYLE = .olControlAttribution{bottom:0px!important;}
+}
+
+
+page {
+	includeCSS {
+		ods-osm = EXT:ods_osm/Resources/Public/Css/ods_osm.css
+	}
 }

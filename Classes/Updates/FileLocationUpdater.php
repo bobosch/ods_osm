@@ -41,7 +41,7 @@ use TYPO3\CMS\Core\Resource\ResourceStorage;
 use TYPO3\CMS\Core\Resource\StorageRepository;
 
 /**
- * Migrate locate of marker and track files to new, FAL-based location
+ * Migrate location of marker and track files to new, FAL-based location
  */
 class FileLocationUpdater implements UpgradeWizardInterface, ChattyInterface, LoggerAwareInterface
 {

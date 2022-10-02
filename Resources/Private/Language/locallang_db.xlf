@@ -54,23 +54,26 @@
 			<trans-unit id="tt_content.pi_flexform.layer" xml:space="preserve">
 				<source>Base layer</source>
 			</trans-unit>
+			<trans-unit id="tt_content.pi_flexform.overlays_active" xml:space="preserve">
+				<source>Activated overlays</source>
+			</trans-unit>
+			<trans-unit id="tt_content.pi_flexform.overlays.description" xml:space="preserve">
+				<source>The following overlays are available in the frontend.
+				If using the layer switcher, the selected overlays may be toggled on/off. The initial state is selected by "overlays_active".
+				Without layer switcher, all overlays are active in the map.
+				</source>
+			</trans-unit>
+			<trans-unit id="tt_content.pi_flexform.overlays_active.description" xml:space="preserve">
+				<source>The following overlays are activated in the layer switcher initially.</source>
+			</trans-unit>
 			<trans-unit id="tt_content.pi_flexform.library" xml:space="preserve">
 				<source>Library</source>
-			</trans-unit>
-			<trans-unit id="tt_content.pi_flexform.mouse_navigation" xml:space="preserve">
-				<source>Mouse navigation</source>
 			</trans-unit>
 			<trans-unit id="tt_content.pi_flexform.position_show" xml:space="preserve">
 				<source>Show current position</source>
 			</trans-unit>
-			<trans-unit id="tt_content.pi_flexform.show_pan_zoom" xml:space="preserve">
-				<source>Show pan/zoom</source>
-			</trans-unit>
-			<trans-unit id="tt_content.pi_flexform.show_pan_zoom.I.1" xml:space="preserve">
-				<source>Bar</source>
-			</trans-unit>
-			<trans-unit id="tt_content.pi_flexform.show_pan_zoom.I.2" xml:space="preserve">
-				<source>+/-</source>
+			<trans-unit id="tt_content.pi_flexform.mouse_position" xml:space="preserve">
+				<source>Show mouse position</source>
 			</trans-unit>
 			<trans-unit id="tt_content.pi_flexform.show_popups" xml:space="preserve">
 				<source>Show popups</source>
@@ -96,8 +99,14 @@
 			<trans-unit id="tt_content.pi_flexform.show_layerswitcher.I.2" xml:space="preserve">
 				<source>Opened</source>
 			</trans-unit>
+			<trans-unit id="tt_content.pi_flexform.layerswitcher_activationMode" xml:space="preserve">
+				<source>Layerswitcher Activation Mode</source>
+			</trans-unit>
 			<trans-unit id="tt_content.pi_flexform.show_scalebar" xml:space="preserve">
 				<source>Show ScaleBar</source>
+			</trans-unit>
+			<trans-unit id="tt_content.pi_flexform.show_fullscreen" xml:space="preserve">
+				<source>Show FullScreen Button</source>
 			</trans-unit>
 			<trans-unit id="tt_content.pi_flexform.use_coords_only_nomarker" xml:space="preserve">
 				<source>Use this coordinates only if no marker exists</source>
@@ -162,14 +171,8 @@
 			<trans-unit id="tx_odsosm_layer.javascript_include" xml:space="preserve">
 				<source>Include static JavaScript</source>
 			</trans-unit>
-			<trans-unit id="tx_odsosm_layer.javascript_leaflet" xml:space="preserve">
-				<source>JavaScript for Leaflet</source>
-			</trans-unit>
 			<trans-unit id="tx_odsosm_layer.javascript_openlayers" xml:space="preserve">
 				<source>JavaScript for OpenLayers</source>
-			</trans-unit>
-			<trans-unit id="tx_odsosm_layer.javascript_openlayers3" xml:space="preserve">
-				<source>JavaScript for OpenLayers 3</source>
 			</trans-unit>
 			<trans-unit id="tx_odsosm_layer.static_url" xml:space="preserve">
 				<source>Static map URL</source>

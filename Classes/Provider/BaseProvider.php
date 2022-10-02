@@ -3,7 +3,10 @@
 namespace Bobosch\OdsOsm\Provider;
 
 use Bobosch\OdsOsm\Div;
+use TYPO3\CMS\Core\Page\PageRenderer;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
+use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 
 abstract class BaseProvider
 {
@@ -12,8 +15,19 @@ abstract class BaseProvider
     protected $config;
     protected $script;
 
+    /**
+     *
+     */
+    protected $pageRenderer;
+
     /** @var array keeping all JavaScripts to be included */
     protected $scripts = [];
+
+    protected $layers = [
+        0 => [], // Base
+        1 => [], // Overlay
+        2 => [], // Marker
+    ];
 
     // Implement these functions
     public function getMapCore($backpath = '')
@@ -45,6 +59,8 @@ abstract class BaseProvider
     public function init($config)
     {
         $this->config = $config;
+        $this->pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
+
     }
 
     /**
@@ -54,14 +70,24 @@ abstract class BaseProvider
     {
         $this->getMapCore();
 
+        $this->layers = $layers;
+
+        $baselayers = $layers[0];
+        $overlays = $layers[1];
+
         $this->script = "
 			" . $this->getMapMain() . "
-			" . $this->getMainLayers($layers) . "
+			" . $this->getBaseLayers($baselayers) . "
+		    " . $this->getOverlayLayers($overlays) . "
 			" . $this->getMapCenter($lat, $lon, $zoom) . "
 			" . $this->getMarkers($markers);
 
         if ($this->config['show_layerswitcher']) {
             $this->script .= $this->getLayerSwitcher() . "\n";
+        }
+
+        if ($this->config['show_fullscreen']) {
+            $this->script .= $this->getFullScreen() . "\n";
         }
 
         Div::addJsFiles($this->scripts, null);
@@ -72,18 +98,37 @@ abstract class BaseProvider
     /**
      * @return string
      */
-    public function getMainLayers($layers, $backpath = '')
+    public function getBaseLayers($layers, $backpath = '')
     {
         // Main layer
         $i = 0;
-        $jsMainLayer = '';
-        foreach ($layers as $layer) {
-            $jsMainLayer .= $this->getLayer($layer, $i, $backpath);
-            $i++;
+        $jsBaseLayer = [];
+        if (is_array($layers) && !empty($layers)) {
+            foreach ($layers as $layer) {
+                $jsBaseLayer[] = $this->getLayer($layer, $i, $backpath);
+                $i++;
+            }
         }
-        Div::addJsFiles($this->scripts, null);
 
-        return $jsMainLayer;
+        return implode("\n", ($jsBaseLayer));
+    }
+
+    /**
+     * @return string
+     */
+    public function getOverlayLayers($layers, $backpath = '')
+    {
+        // Main layer
+        $i = 0;
+        $jsOverlayLayer = [];
+        if (is_array($layers) && !empty($layers)) {
+            foreach ($layers as $layer) {
+                $jsOverlayLayer[] = $this->getLayer($layer, $i, $backpath);
+                $i++;
+            }
+        }
+
+        return implode("\n", ($jsOverlayLayer));
     }
 
     /**
@@ -122,7 +167,19 @@ abstract class BaseProvider
      */
     protected function getHtml()
     {
-        return '<div style="width:' . $this->config['width'] . ';height:' . $this->config['height'] . ';" id="' . $this->config['id'] . '"></div>';
+        $mousePosition = '';
+        $popupcode = '';
+        if ($this->config['library'] == 'openlayers') {
+            if ($this->config['mouse_position']) {
+                $mousePosition = '<div id="mouse-position-' . $this->config['id'] . '">' . LocalizationUtility::translate('mouse_position', 'ods_osm') . ':&nbsp;</div>';
+            }
+            $popupcode = '
+                <div id="popup" class="ol-popup">
+                <a href="#" id="popup-closer" class="ol-popup-closer"></a>
+                <div id="popup-content"></div>
+            </div>';
+        }
+        return '<div style="width:' . $this->config['width'] . '; height:' . $this->config['height'] . '; " id="' . $this->config['id'] . '"></div>' . $mousePosition . $popupcode;
     }
 
     /**

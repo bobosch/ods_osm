@@ -4,10 +4,10 @@ plugin.tx_odsosm_pi1 {
 
 	# cat=OpenStreetMap//0020; type=options[Leaflet=leaflet,Openlayers=openlayers,Openlayers 3=openlayers3,Static=static]; label=Library: Choose between http://openlayers.org/ , http://leaflet.cloudmade.com/ or a static map without javascript.
 	library = openlayers
-	
+
 	# cat=OpenStreetMap//0030; type=boolean; label=External control: Allow control with GET or POST.
 	external_control = 0
-	
+
 	# cat=OpenStreetMap//1000; type=int; label=Width: Width of the map in pixels.
 	width = 640
 
@@ -31,15 +31,12 @@ plugin.tx_odsosm_pi1 {
 
 	# cat=OpenStreetMap//1060; type=boolean; label=Use coordinates only if no marker exists: Use the default coordinates only if no marker exists.
 	use_coords_only_nomarker = 0
-	
+
 	# cat=OpenStreetMap//1060; type=boolean; label=Position: Get current user postion from browser to center the map.
 	position = 0
 
-	# cat=OpenStreetMap//2000; type=boolean; label=Mouse navigation: Allow navigation with the mouse.
-	mouse_navigation = 0
-
-	# cat=OpenStreetMap//2010; type=options[No=0,Bar=1,+/-=2]; label=Show pan/zoom: Show pan/zoom element.
-	show_pan_zoom = 0
+	# cat=OpenStreetMap//2000; type=boolean; label=Show mouse position.
+	mouse_position = 0
 
 	# cat=OpenStreetMap//2020; type=options[No=0,Click=1,Hover=2,Exclusive=3]; label=Show popup: Show popup window with record information.
 	show_popups = 0

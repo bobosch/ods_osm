@@ -12,8 +12,6 @@ $EM_CONF[$_EXTKEY] = [
         'conflicts' => [],
         'suggests' =>  [],
     ],
-    'createDirs' => 'uploads/tx_odsosm/map',
     'state' => 'stable',
-    'uploadfolder' => 1,
-    'version' => '4.0.0',
+    'version' => '4.1.0',
 ];
