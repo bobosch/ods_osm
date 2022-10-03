@@ -197,4 +197,20 @@ abstract class BaseProvider
             return 'http://' . $layer['tile_url'];
         }
     }
+
+
+    /**
+     * Get absRefPrefix in case of TYPO3 10.4
+     *
+     * @return string
+     */
+    protected function getAbsRefPrefix()
+    {
+        $absRefPrefix = '';
+        $versionInformation = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Information\Typo3Version::class);
+        if ($versionInformation->getMajorVersion() == 10) {
+            $absRefPrefix = $GLOBALS['TSFE']->absRefPrefix;
+        }
+        return $absRefPrefix;
+    }
 }

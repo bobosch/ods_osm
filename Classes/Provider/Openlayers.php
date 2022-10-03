@@ -274,7 +274,7 @@ class Openlayers extends BaseProvider
                             title: \'' .$item['title'] . '\',
                             source: new ol.source.Vector({
                                 projection: \'EPSG:3857\',
-                                url: \'' . $GLOBALS['TSFE']->absRefPrefix . $file->getPublicUrl() . '\',
+                                url: \'' . $this->getAbsRefPrefix() . $file->getPublicUrl() . '\',
                                 format: new ol.format.KML()
                             }),
                             style: ' . $jsElementVar . '_style
@@ -287,7 +287,7 @@ class Openlayers extends BaseProvider
                             title: \'' .$item['title'] . '\',
                             source: new ol.source.Vector({
                                 projection: \'EPSG:3857\',
-                                url: \'' . $GLOBALS['TSFE']->absRefPrefix . $file->getPublicUrl() . '\',
+                                url: \'' . $this->getAbsRefPrefix() . $file->getPublicUrl() . '\',
                                 format: new ol.format.GPX()
                             }),
                             style: ' . $jsElementVar . '_style
@@ -314,7 +314,7 @@ class Openlayers extends BaseProvider
 
                 if ($fileObjects) {
                     $file = $fileObjects[0];
-                    $filename = $GLOBALS['TSFE']->absRefPrefix . $file->getPublicUrl();
+                    $filename = $this->getAbsRefPrefix() . $file->getPublicUrl();
 
 
                     $jsMarker .= 'var ' . $jsElementVar . '_file = new ol.layer.Vector({
@@ -361,7 +361,7 @@ class Openlayers extends BaseProvider
                         $iconOptions['html'] = $marker['icon'];
                         $markerOptions['icon'] = 'icon: new L.divIcon(' . json_encode($iconOptions) . ')';
                     } else {
-                        $icon = $GLOBALS['TSFE']->absRefPrefix . $marker['icon']->getPublicUrl();
+                        $icon = $this->getAbsRefPrefix() . $marker['icon']->getPublicUrl();
                         $iconOptions['iconUrl'] = $icon;
                         $markerOptions['icon'] = 'icon: new L.Icon(' . json_encode($iconOptions) . ')';
                     }
