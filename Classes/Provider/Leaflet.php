@@ -45,8 +45,8 @@ class Leaflet extends BaseProvider
 
         $jsMain =
             $this->config['id'] . "=new L.Map('" . $this->config['id'] . "',
-                {scrollWheelZoom: " .($this->config['enable_scrollwheelzoom'] == '1' ? 'true' : 'false'). ",
-                dragging: " .($this->config['enable_dragging'] == '1' ? 'true' : 'false'). "});
+                {scrollWheelZoom: " .(isset($this->config['enable_scrollwheelzoom']) && $this->config['enable_scrollwheelzoom'] == '1' ? 'true' : 'false'). ",
+                dragging: " .(isset($this->config['enable_dragging']) && $this->config['enable_dragging'] == '1' ? 'true' : 'false'). "});
 			L.Icon.Default.imagePath='" . $this->path_leaflet . "images/';"
             . $vars;
         if ($this->config['cluster']) {
@@ -93,13 +93,13 @@ class Leaflet extends BaseProvider
     protected function getLayerSwitcher()
     {
         $base = [];
-        if (is_array($this->layers[0]) && count($this->layers[0]) > 1) {
+        if (is_array($this->layers[0] ?? null) && count($this->layers[0]) > 1) {
             foreach ($this->layers[0] as $layer) {
                 $base[] = '"' . $layer['title'] . '":' . ($layer['table'] ?: 'layer') . '_' . $layer['uid'];
             }
         }
         $overlay = [];
-        if (is_array($this->layers[1])) {
+        if (is_array($this->layers[1] ?? null)) {
             foreach ($this->layers[1] as $layer) {
                 if (!empty($layer['gid'])) {
                     $overlay[] = '"' . $layer['title'] . '":' . $layer['gid'];
