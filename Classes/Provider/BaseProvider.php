@@ -72,8 +72,8 @@ abstract class BaseProvider
 
         $this->layers = $layers;
 
-        $baselayers = $layers[0];
-        $overlays = $layers[1];
+        $baselayers = $layers[0] ?? null;
+        $overlays = $layers[1] ?? null;
 
         $this->script = "
 			" . $this->getMapMain() . "
@@ -82,11 +82,11 @@ abstract class BaseProvider
 			" . $this->getMapCenter($lat, $lon, $zoom) . "
 			" . $this->getMarkers($markers);
 
-        if ($this->config['show_layerswitcher']) {
+        if ($this->config['show_layerswitcher'] ?? null) {
             $this->script .= $this->getLayerSwitcher() . "\n";
         }
 
-        if ($this->config['show_fullscreen']) {
+        if ($this->config['show_fullscreen'] ?? null) {
             $this->script .= $this->getFullScreen() . "\n";
         }
 

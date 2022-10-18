@@ -60,7 +60,7 @@ class PluginController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
         $this->pi_initPIflexForm(); // Init FlexForm configuration for plugin
 
         $this->hooks = [];
-        if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ods_osm']['class.tx_odsosm_pi1.php'])) {
+        if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ods_osm']['class.tx_odsosm_pi1.php'] ?? null)) {
             foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ods_osm']['class.tx_odsosm_pi1.php'] as $classRef) {
                 $this->hooks[] = GeneralUtility::makeInstance($classRef);
             }
@@ -545,14 +545,18 @@ class PluginController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
             }
 
             // set visible flag
-            foreach ($this->config['layers_visible'] as $key) {
-                if ($baselayers[$key]) {
-                    $baselayers[$key]['visible'] = true;
+            if (isset($this->config['layers_visible'])) {
+                foreach ($this->config['layers_visible'] as $key) {
+                    if ($baselayers[$key]) {
+                        $baselayers[$key]['visible'] = true;
+                    }
                 }
             }
-            foreach (explode(',', $this->config['overlays_active']) as $key) {
-                if ($baselayers[$key]) {
-                    $baselayers[$key]['visible'] = true;
+            if (isset($this->config['overlays_active'])) {
+                foreach (explode(',', $this->config['overlays_active']) as $key) {
+                    if ($baselayers[$key]) {
+                        $baselayers[$key]['visible'] = true;
+                    }
                 }
             }
         }
