@@ -83,7 +83,7 @@ class Leaflet extends BaseProvider
         $jsLayer = "\n\t\t\tvar layer_" . $layer['uid'] . ' = ' . $jsLayer;
 
         // only show first base layer on the map
-        if (($layer['overlay'] == 1 && $layer['visible'])|| ($i == 0 && $layer['overlay'] == 0)) {
+        if (($layer['overlay'] == 1 && $layer['visible']) || ($i == 0 && $layer['overlay'] == 0)) {
             $jsLayer .= "\n\t\t\t" . $this->config['id'] . '.addLayer(layer_' . $layer['uid'] . ');';
         }
 
@@ -95,7 +95,7 @@ class Leaflet extends BaseProvider
         $base = [];
         if (is_array($this->layers[0] ?? null) && count($this->layers[0]) > 1) {
             foreach ($this->layers[0] as $layer) {
-                $base[] = '"' . $layer['title'] . '":' . ($layer['table'] ?: 'layer') . '_' . $layer['uid'];
+                $base[] = '"' . $layer['title'] . '":' . ($layer['table'] ?? 'layer') . '_' . $layer['uid'];
             }
         }
         $overlay = [];
@@ -104,7 +104,7 @@ class Leaflet extends BaseProvider
                 if (!empty($layer['gid'])) {
                     $overlay[] = '"' . $layer['title'] . '":' . $layer['gid'];
                 } else {
-                    $overlay[] = '"' . $layer['title'] . '":' . ($layer['table'] ?: 'layer')  . '_' . $layer['uid'];
+                    $overlay[] = '"' . $layer['title'] . '":' . ($layer['table'] ?? 'layer')  . '_' . $layer['uid'];
                 }
             }
         }

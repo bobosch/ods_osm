@@ -145,13 +145,13 @@ class PluginController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
         }
 
         $this->config = array_merge(Div::getConfig(), $conf, $flex);
-        if (!is_array($this->config['marker'])) {
+        if (!is_array($this->config['marker'] ?? null)) {
             $this->config['marker'] = [];
         }
         if (is_array($conf['marker.'])) {
             foreach ($conf['marker.'] as $name => $value) {
                 if (is_string($value) && !empty($value)) {
-                    if (!is_array($this->config['marker'][$name])) {
+                    if (!is_array($this->config['marker'][$name] ?? null)) {
                         $this->config['marker'][$name] = [];
                     }
                     $this->config['marker'][$name] = array_merge($this->config['marker'][$name], explode(',', $value));
@@ -192,9 +192,7 @@ class PluginController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
             }
         }
 
-        if (GeneralUtility::_GP('tx_calendarize_calendar')['index']) {
-            $da = GeneralUtility::_GP('tx_calendarize_calendar')['index'];
-            $do = GeneralUtility::_GP('tx_calendarize_calendar');
+        if (GeneralUtility::_GP('tx_calendarize_calendar')['index'] ?? false) {
             $this->config['marker']['tx_calendarize_domain_model_event'][] = GeneralUtility::_GP('tx_calendarize_calendar')['index'];
         }
 
@@ -299,7 +297,7 @@ class PluginController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
         // get marker records from db
         $records = [];
         foreach ($record_ids as $table => $items) {
-            $tc = $tables[$table];
+            $tc = $tables[$table] ?? [];
             $connection = $this->connectionPool->getConnectionForTable($table);
             foreach ($items as $item) {
                 $item = intval($item);
@@ -322,7 +320,7 @@ class PluginController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
 
                 if ($row = $result->fetch()) {
                     // Group with relation to a field
-                    if (is_array($tc['FIND_IN_SET'])) {
+                    if (is_array($tc['FIND_IN_SET'] ?? null)) {
                         foreach ($tc['FIND_IN_SET'] as $t => $f) {
                             $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
                             ->getQueryBuilderForTable($table);
@@ -354,7 +352,7 @@ class PluginController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
                     }
 
                     // Group with mm relation
-                    if (is_array($tc['MM'])) {
+                    if (is_array($tc['MM'] ?? null)) {
                         foreach ($tc['MM'] as $t => $f) {
                             $local = $f['local'];
                             $mm = $f['mm'];
@@ -563,6 +561,7 @@ class PluginController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
 
             while ($resArray = $result->fetch()) {
                 $baselayers[$resArray['uid']] =  $resArray;
+                $baselayers[$resArray['uid']]['visible'] = false;
             }
 
             // set visible flag
