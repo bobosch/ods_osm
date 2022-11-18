@@ -14,7 +14,7 @@ if (TYPO3_MODE === 'BE') {
     \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPageTSConfig(
         '
     mod.wizards.newContentElement.wizardItems.plugins.elements.odsosm {
-        iconIdentifier = ods_osm_wizard
+        iconIdentifier = ods_osm
         title = LLL:EXT:ods_osm/Resources/Private/Language/locallang.xlf:pi1_title
         description = LLL:EXT:ods_osm/Resources/Private/Language/locallang.xlf:pi1_plus_wiz_description
         tt_content_defValues {
