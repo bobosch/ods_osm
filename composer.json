@@ -29,7 +29,8 @@
     "phayes/geophp": "^1.2"
   },
   "suggest": {
-    "friendsoftypo3/tt-address": "^5.2"
+    "friendsoftypo3/tt-address": "^6.1",
+    "lochmueller/calendarize": "^12.4"
   },
   "autoload": {
     "psr-4": {

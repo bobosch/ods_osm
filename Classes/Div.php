@@ -517,6 +517,15 @@ class Div
         ];
 
         // load configuration for tt_address only if extension is loaded
+        if (ExtensionManagementUtility::isLoaded('calendarize')) {
+            $tables['tx_calendarize_domain_model_event'] = [
+                'FORMAT' => '%01.6f',
+                'lon' => 'tx_odsosm_lon',
+                'lat' => 'tx_odsosm_lat',
+                'address' => 'location',
+            ];
+        }
+            // load configuration for tt_address only if extension is loaded
         if (ExtensionManagementUtility::isLoaded('tt_address')) {
             $tables['tt_address'] = [
                 'FORMAT' => '%01.11f',

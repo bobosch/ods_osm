@@ -2,6 +2,8 @@
 
 if (!defined('TYPO3_MODE')) die ('Access denied.');
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPItoST43(
     'ods_osm',
     null,
@@ -56,7 +58,7 @@ if (TYPO3_MODE === 'BE') {
         'vectordraw-wizard' => 'vector.png',
         'ods_osm' => 'osm.png'
     ];
-    $iconRegistry = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Imaging\IconRegistry::class);
+    $iconRegistry = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Imaging\IconRegistry::class);
     foreach ($icons as $identifier => $path) {
         $iconRegistry->registerIcon(
             $identifier,
@@ -72,3 +74,19 @@ if (TYPO3_MODE === 'BE') {
         = \Bobosch\OdsOsm\Updates\MigrateSettings::class;
 
 }
+
+call_user_func(
+    function () {
+        // XCLASS event
+        $GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects'][HDNET\Calendarize\Domain\Model\Event::class] = [
+            'className' => \Bobosch\OdsOsm\Domain\Model\Event::class
+        ];
+
+        // Register extended domain class
+        GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Object\Container\Container::class)
+            ->registerImplementation(
+                \HDNET\Calendarize\Domain\Model\Event::class,
+                \Bobosch\OdsOsm\Domain\Model\Event::class
+            );
+    }
+);

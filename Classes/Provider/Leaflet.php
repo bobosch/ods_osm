@@ -45,8 +45,8 @@ class Leaflet extends BaseProvider
 
         $jsMain =
             $this->config['id'] . "=new L.Map('" . $this->config['id'] . "',
-                {scrollWheelZoom: " .(isset($this->config['enable_scrollwheelzoom']) && $this->config['enable_scrollwheelzoom'] == '1' ? 'true' : 'false'). ",
-                dragging: " .(isset($this->config['enable_dragging']) && $this->config['enable_dragging'] == '1' ? 'true' : 'false'). "});
+                {scrollWheelZoom: " .((!isset($this->config['enable_scrollwheelzoom']) || $this->config['enable_scrollwheelzoom'] == '1') ? 'true' : 'false'). ",
+                dragging: " .((!isset($this->config['enable_dragging']) || $this->config['enable_dragging'] == '1') ? 'true' : 'false'). "});
 			L.Icon.Default.imagePath='" . $this->path_leaflet . "images/';"
             . $vars;
         if ($this->config['cluster']) {

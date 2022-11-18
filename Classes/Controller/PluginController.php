@@ -43,6 +43,20 @@ use TYPO3\CMS\Core\Resource\FileRepository;
  */
 class PluginController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
 {
+    /**
+     * Same as class name
+     *
+     * @var string
+     */
+    public $prefixId = 'tx_odsosm_pi1';
+
+    /**
+     * The extension key.
+     *
+     * @var string
+     */
+    public $extKey = 'ods_osm';
+
     var $config;
     var $hooks;
     var $lats = [];
@@ -124,10 +138,10 @@ class PluginController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
                 }
             }
         }
-        if ($flex['library'] != 'staticmap') {
-            $flex['layer'] = $flex['base_layer'];
-        } else {
+        if ($flex['library'] == 'staticmap' && !empty($flex['staticmap_layer'])) {
             $flex['layer'] = $flex['staticmap_layer'];
+        } else if (!empty($flex['base_layer'])) {
+            $flex['layer'] = $flex['base_layer'];
         }
 
         $this->config = array_merge(Div::getConfig(), $conf, $flex);
@@ -178,7 +192,14 @@ class PluginController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
             }
         }
 
-        $this->config['id'] = 'osm_' . $this->cObj->data['uid'];
+        if (GeneralUtility::_GP('tx_calendarize_calendar')['index']) {
+            $da = GeneralUtility::_GP('tx_calendarize_calendar')['index'];
+            $do = GeneralUtility::_GP('tx_calendarize_calendar');
+            $this->config['marker']['tx_calendarize_domain_model_event'][] = GeneralUtility::_GP('tx_calendarize_calendar')['index'];
+        }
+
+        $this->config['id'] = 'osm_' . ($this->cObj->data['uid'] ? : uniqid()) ;
+
         $this->config['marker'] = $this->extractGroup($this->config['marker']);
 
         // Show this marker's popup intially

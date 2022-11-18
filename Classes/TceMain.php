@@ -202,6 +202,29 @@ class TceMain
                     }
                }
                 break;
+            // case 'tx_calendarize_domain_model_event':
+            //     $tc = Div::getTableConfig($table);
+            //     if (!empty($fieldArray['location'])) {
+            //         $this->lon = [];
+            //         $this->lat = [];
+
+            //         $config = Div::getConfig(array('autocomplete'));
+            //         // Search coordinates
+            //         if ($config['autocomplete']) {
+            //             // Generate address array with standard keys
+            //             $address = [];
+
+            //             $address['type'] = 'unstructured';
+            //             $address['address'] = $fieldArray['location'];
+
+            //             $ll = Div::updateAddress($address);
+            //             if ($ll) {
+            //                 $fieldArray['tx_odsosm_lon'] = $address['lon'];
+            //                 $fieldArray['tx_odsosm_lat'] = $address['lat'];
+            //             }
+            //         }
+            //     }
+            //     break;
             default:
                 $tc = Div::getTableConfig($table);
                 if (isset($tc['lon'])) {
@@ -227,11 +250,24 @@ class TceMain
                                     // Optimize address
                                     $address['lon'] = sprintf($tc['FORMAT'], $address['lon']);
                                     $address['lat'] = sprintf($tc['FORMAT'], $address['lat']);
-                                    if (isset($tc['address']) && !isset($tc['street'])) {
-                                        if ($address['street']) {
-                                            $address['address'] = $address['street'];
-                                            if ($address['housenumber']) {
-                                                $address['address'] .= ' ' . $address['housenumber'];
+                                    if ($address['structured']) {
+                                        if (isset($tc['address']) && !isset($tc['street'])) {
+                                            if ($address['street']) {
+                                                $address['address'] = $address['street'];
+                                                if ($address['housenumber']) {
+                                                    $address['address'] .= ' ' . $address['housenumber'];
+                                                }
+                                            }
+                                        }
+                                    } else {
+                                        if (isset($tc['address'])) {
+                                            if ($address['street']) {
+                                                $address['address'] = $address['street'];
+                                                if ($address['housenumber']) {
+                                                    $address['address'] .= ' ' . $address['housenumber'];
+                                                }
+                                                $address['address'] .= ', ' . $address['zip'] . ' ' . $address['city'];
+                                                $address['address'] .= ', ' . $address['country'];
                                             }
                                         }
                                     }

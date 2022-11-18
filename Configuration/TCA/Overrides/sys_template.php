@@ -7,3 +7,9 @@ defined('TYPO3') || die();
     'Configuration/TypoScript/',
     'Template OpenStreetMap'
 );
+
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addStaticFile(
+    'ods_osm',
+    'Configuration/TypoScript/Calendarize/',
+    'Template OpenStreetMap for Calendarize'
+);

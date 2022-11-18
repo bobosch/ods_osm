@@ -17,6 +17,7 @@ plugin.tx_odsosm_pi1 {
 		tx_odsosm_track =
 		tt_address =
 		sys_category =
+		tx_calendarize_domain_model_event =
 	}
 
 	# see documentation for examples
@@ -43,6 +44,12 @@ plugin.tx_odsosm_pi1 {
 			20 = TEXT
 			20.field = description
 			20.htmlSpecialChars = 0
+		}
+		tx_calendarize_domain_model_event = COA
+		tx_calendarize_domain_model_event {
+			10 = TEXT
+			10.field = location
+			10.wrap = <h2>|</h2>
 		}
 	}
 

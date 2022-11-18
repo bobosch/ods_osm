@@ -44,7 +44,6 @@ class VectordrawWizard extends AbstractNode
             $lat = $extConfig['default_lat'];
         }
 
-
         $resultArray['iconIdentifier'] = 'vectordraw-wizard';
         $resultArray['title'] = $this->getLanguageService()->sL('LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xlf:vectordrawWizard');
         $resultArray['linkAttributes']['class'] = 'vectordrawWizard ';
