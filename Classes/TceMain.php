@@ -2,6 +2,8 @@
 
 namespace Bobosch\OdsOsm;
 
+use TYPO3\CMS\Core\DataHandling\DataHandler;
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use \geoPHP;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Database\ConnectionPool;
@@ -27,14 +29,14 @@ class TceMain
      * @param string $table table name
      * @param int $id id of the record
      * @param array $fieldArray fieldArray
-     * @param \TYPO3\CMS\Core\DataHandling\DataHandler $parentObject parent Object
+     * @param DataHandler $parentObject parent Object
      */
     public function processDatamap_afterDatabaseOperations(
         $status,
         $table,
         $id,
         array $fieldArray,
-        \TYPO3\CMS\Core\DataHandling\DataHandler $parentObject
+        DataHandler $parentObject
     ) {
 
         /**
@@ -82,7 +84,7 @@ class TceMain
                     // If extension is installed via composer, the class geoPHP is already known.
                     // Otherwise we use the (older) copy out of the extension folder.
                     if (!class_exists(geoPHP::class)) {
-                        require_once \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('ods_osm', 'Resources/Public/geoPHP/geoPHP.inc');
+                        require_once ExtensionManagementUtility::extPath('ods_osm', 'Resources/Public/geoPHP/geoPHP.inc');
                     }
                     $polygon = geoPHP::load(file_get_contents($filename), pathinfo($filename, PATHINFO_EXTENSION));
                     $box = $polygon->getBBox();
@@ -202,6 +204,29 @@ class TceMain
                     }
                }
                 break;
+            // case 'tx_calendarize_domain_model_event':
+            //     $tc = Div::getTableConfig($table);
+            //     if (!empty($fieldArray['location'])) {
+            //         $this->lon = [];
+            //         $this->lat = [];
+
+            //         $config = Div::getConfig(array('autocomplete'));
+            //         // Search coordinates
+            //         if ($config['autocomplete']) {
+            //             // Generate address array with standard keys
+            //             $address = [];
+
+            //             $address['type'] = 'unstructured';
+            //             $address['address'] = $fieldArray['location'];
+
+            //             $ll = Div::updateAddress($address);
+            //             if ($ll) {
+            //                 $fieldArray['tx_odsosm_lon'] = $address['lon'];
+            //                 $fieldArray['tx_odsosm_lat'] = $address['lat'];
+            //             }
+            //         }
+            //     }
+            //     break;
             default:
                 $tc = Div::getTableConfig($table);
                 if (isset($tc['lon'])) {
@@ -227,11 +252,24 @@ class TceMain
                                     // Optimize address
                                     $address['lon'] = sprintf($tc['FORMAT'], $address['lon']);
                                     $address['lat'] = sprintf($tc['FORMAT'], $address['lat']);
-                                    if (isset($tc['address']) && !isset($tc['street'])) {
-                                        if ($address['street']) {
-                                            $address['address'] = $address['street'];
-                                            if ($address['housenumber']) {
-                                                $address['address'] .= ' ' . $address['housenumber'];
+                                    if ($address['structured']) {
+                                        if (isset($tc['address']) && !isset($tc['street'])) {
+                                            if ($address['street']) {
+                                                $address['address'] = $address['street'];
+                                                if ($address['housenumber']) {
+                                                    $address['address'] .= ' ' . $address['housenumber'];
+                                                }
+                                            }
+                                        }
+                                    } else {
+                                        if (isset($tc['address'])) {
+                                            if ($address['street']) {
+                                                $address['address'] = $address['street'];
+                                                if ($address['housenumber']) {
+                                                    $address['address'] .= ' ' . $address['housenumber'];
+                                                }
+                                                $address['address'] .= ', ' . $address['zip'] . ' ' . $address['city'];
+                                                $address['address'] .= ', ' . $address['country'];
                                             }
                                         }
                                     }

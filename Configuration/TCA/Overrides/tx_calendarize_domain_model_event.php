@@ -34,6 +34,6 @@ $tempColumns = array(
     ),
 );
 
-ExtensionManagementUtility::addTCAcolumns('fe_users', $tempColumns);
-ExtensionManagementUtility::addToAllTCAtypes('fe_users', 'tx_odsosm_lon', '', 'after:country');
-ExtensionManagementUtility::addFieldsToAllPalettesOfField('fe_users', 'tx_odsosm_lon', 'tx_odsosm_lat');
+ExtensionManagementUtility::addTCAcolumns('tx_calendarize_domain_model_event', $tempColumns);
+ExtensionManagementUtility::addToAllTCAtypes('tx_calendarize_domain_model_event', 'tx_odsosm_lon', '', 'after:location');
+ExtensionManagementUtility::addFieldsToAllPalettesOfField('tx_calendarize_domain_model_event', 'tx_odsosm_lon', 'tx_odsosm_lat');

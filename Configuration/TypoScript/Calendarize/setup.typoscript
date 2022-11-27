@@ -1,0 +1,18 @@
+plugin.tx_calendarize.view.templateRootPaths.200 = EXT:ods_osm/Resources/Private/Extensions/Calendarize/Templates/
+
+plugin.tx_odsosm_pi1 {
+
+    marker.tx_calendarize_domain_model_event.data = GP:tx_calendarize_calendar|index
+
+    zoom = 14
+
+    layer = 1
+
+    show_popups = 1
+
+    width = 100%
+
+    show_fullscreen = 1
+
+    library = leaflet
+}

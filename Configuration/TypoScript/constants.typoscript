@@ -2,8 +2,8 @@ plugin.tx_odsosm_pi1 {
 	# cat=OpenStreetMap//0010; type=options[none,jquery]; label=JavaScript library
 	JSlibrary = none
 
-	# cat=OpenStreetMap//0020; type=options[Leaflet=leaflet,Openlayers=openlayers,Openlayers 3=openlayers3,Static=static]; label=Library: Choose between http://openlayers.org/ , http://leaflet.cloudmade.com/ or a static map without javascript.
-	library = openlayers
+	# cat=OpenStreetMap//0020; type=options[Leaflet=leaflet,Openlayers=openlayers,Static=static]; label=Library: Choose between http://openlayers.org/ , http://leaflet.cloudmade.com/ or a static map without javascript.
+	library = leaflet
 
 	# cat=OpenStreetMap//0030; type=boolean; label=External control: Allow control with GET or POST.
 	external_control = 0

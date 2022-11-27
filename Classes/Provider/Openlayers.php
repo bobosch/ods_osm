@@ -1,4 +1,26 @@
 <?php
+/***************************************************************
+ *  Copyright notice
+ *
+ *  (c) 2022 Alexander Bigga <alexander@bigga.de>
+ *  All rights reserved
+ *
+ *  This script is part of the TYPO3 project. The TYPO3 project is
+ *  free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 2 of the License, or
+ *  (at your option) any later version.
+ *
+ *  The GNU General Public License can be found at
+ *  http://www.gnu.org/copyleft/gpl.html.
+ *
+ *  This script is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  This copyright notice MUST APPEAR in all copies of the script!
+ ***************************************************************/
 
 namespace Bobosch\OdsOsm\Provider;
 
@@ -28,7 +50,7 @@ class Openlayers extends BaseProvider
             )
         );
         $pathOl = ($this->config['local_js'] ? $path : 'https://cdn.jsdelivr.net/npm/ol@v7.1.0/');
-        $pageRenderer = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(PageRenderer::class);
+        $pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
         $pageRenderer->addCssFile($pathOl . 'ol.css');
         $this->scripts['OpenLayers'] = [
             'src' => $pathOl . 'dist/ol.js',
@@ -227,7 +249,6 @@ class Openlayers extends BaseProvider
         $jsMarker = '';
         $jsElementVar = $table . '_' . $item['uid'];
         $fileRepository = GeneralUtility::makeInstance(FileRepository::class);
-        $jsElementVarsForPopup = [];
 
         // Convert item color hex value to rgba() as Openlayers doesn't have an opacity option.
         if (empty($item['color'])) {
@@ -296,7 +317,6 @@ class Openlayers extends BaseProvider
                         $jsMarker .= "overlaygroup.getLayers().push(" . $jsElementVar . "_gpx);";
                         break;
                 }
-                $jsElementVarsForPopup[] = $jsElementVar;
                 break;
             case 'tx_odsosm_vector':
                 $fileObjects = $fileRepository->findByRelation('tx_odsosm_vector', 'file', $item['uid']);
@@ -406,33 +426,38 @@ class Openlayers extends BaseProvider
 
                 ";
 
-                $jsMarker .= "
-                " . $this->config['id'] . ".on('singleclick', function (event) {
-                        var feature = " . $this->config['id'] . ".forEachFeatureAtPixel(event.pixel, function (feat, layer) {
-                            return feat;
-                        });
-
-                        if (feature && feature.get('type') == 'Point') {
-                            var coordinate = event.coordinate;    // default projection is EPSG:3857 you may want to use ol.proj.transform
-
-                            content.innerHTML = feature.get('desc');
-                            popup.setPosition(coordinate);
-                        }
-                        else {
-                            popup.setPosition(undefined);
-                        }
-                    });
-                ";
-                break;
-        }
-
-        foreach ($jsElementVarsForPopup as $jsElementVar) {
-            if ($item['popup']) {
-                $jsMarker .= $jsElementVar . '.bindPopup(' . json_encode($item['popup']) . ");\n";
-                if ($item['initial_popup']) {
-                    $jsMarker .= $jsElementVar . ".openPopup();\n";
+                // open popup? If yes, with click or hover?
+                switch ($this->config['show_popups']) {
+                    case 1:
+                        $eventMethod = 'singleclick';
+                        break;
+                    case 2:
+                        $eventMethod = 'pointermove';
+                        break;
+                    default:
+                        $eventMethod = false;
                 }
-            }
+
+                if ($eventMethod !== false) {
+                    $jsMarker .= "
+                    " . $this->config['id'] . ".on('" . $eventMethod . "', function (event) {
+                            var feature = " . $this->config['id'] . ".forEachFeatureAtPixel(event.pixel, function (feat, layer) {
+                                return feat;
+                            });
+
+                            if (feature && feature.get('type') == 'Point') {
+                                var coordinate = event.coordinate;    // default projection is EPSG:3857 you may want to use ol.proj.transform
+
+                                content.innerHTML = feature.get('desc');
+                                popup.setPosition(coordinate);
+                            }
+                            else {
+                                popup.setPosition(undefined);
+                            }
+                        });
+                    ";
+                }
+                break;
         }
 
         return $jsMarker;

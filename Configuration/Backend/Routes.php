@@ -1,8 +1,9 @@
 <?php
 
+use Bobosch\OdsOsm\Wizard\Coordinatepicker;
 return [
     'coordinatepicker' => [
         'path' => '/wizard/ods_osm/coordinatepicker',
-        'target' => \Bobosch\OdsOsm\Wizard\Coordinatepicker::class . '::mainAction'
+        'target' => Coordinatepicker::class . '::mainAction'
     ],
 ];

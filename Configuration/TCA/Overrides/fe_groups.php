@@ -1,5 +1,6 @@
 <?php
 
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 defined('TYPO3') || die();
 
 /* --------------------------------------------------
@@ -12,7 +13,6 @@ $tempColumns = array(
         'label' => 'LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xlf:tt_address_group.tx_odsosm_marker',
         'config' => array(
             'type' => 'group',
-            'internal_type' => 'db',
             'allowed' => 'tx_odsosm_marker',
             'size' => 1,
             'minitems' => 0,
@@ -22,5 +22,5 @@ $tempColumns = array(
     ),
 );
 
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTCAcolumns('fe_groups', $tempColumns);
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addToAllTCAtypes('fe_groups', 'tx_odsosm_marker');
+ExtensionManagementUtility::addTCAcolumns('fe_groups', $tempColumns);
+ExtensionManagementUtility::addToAllTCAtypes('fe_groups', 'tx_odsosm_marker');

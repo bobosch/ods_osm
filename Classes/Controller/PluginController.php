@@ -24,14 +24,15 @@
 
 namespace Bobosch\OdsOsm\Controller;
 
+use TYPO3\CMS\Frontend\Plugin\AbstractPlugin;
 use Bobosch\OdsOsm\Div;
 use Bobosch\OdsOsm\Provider\BaseProvider;
 use Doctrine\DBAL\FetchMode;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Page\PageRenderer;
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Frontend\Page\PageRepository;
 use TYPO3\CMS\Core\Resource\FileRepository;
 
 /**
@@ -41,8 +42,22 @@ use TYPO3\CMS\Core\Resource\FileRepository;
  * @package    TYPO3
  * @subpackage    tx_odsosm
  */
-class PluginController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
+class PluginController extends AbstractPlugin
 {
+    /**
+     * Same as class name
+     *
+     * @var string
+     */
+    public $prefixId = 'tx_odsosm_pi1';
+
+    /**
+     * The extension key.
+     *
+     * @var string
+     */
+    public $extKey = 'ods_osm';
+
     var $config;
     var $hooks;
     var $lats = [];
@@ -124,20 +139,20 @@ class PluginController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
                 }
             }
         }
-        if ($flex['library'] != 'staticmap') {
-            $flex['layer'] = $flex['base_layer'];
-        } else {
+        if ($flex['library'] == 'staticmap' && !empty($flex['staticmap_layer'])) {
             $flex['layer'] = $flex['staticmap_layer'];
+        } else if (!empty($flex['base_layer'])) {
+            $flex['layer'] = $flex['base_layer'];
         }
 
         $this->config = array_merge(Div::getConfig(), $conf, $flex);
-        if (!is_array($this->config['marker'])) {
+        if (!is_array($this->config['marker'] ?? null)) {
             $this->config['marker'] = [];
         }
         if (is_array($conf['marker.'])) {
             foreach ($conf['marker.'] as $name => $value) {
                 if (is_string($value) && !empty($value)) {
-                    if (!is_array($this->config['marker'][$name])) {
+                    if (!is_array($this->config['marker'][$name] ?? null)) {
                         $this->config['marker'][$name] = [];
                     }
                     $this->config['marker'][$name] = array_merge($this->config['marker'][$name], explode(',', $value));
@@ -178,7 +193,31 @@ class PluginController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
             }
         }
 
-        $this->config['id'] = 'osm_' . $this->cObj->data['uid'];
+        // If EXT:calendarize is installed and the single view is called, we try to fetch the right event.
+        if (ExtensionManagementUtility::isLoaded('calendarize') &&
+            GeneralUtility::_GP('tx_calendarize_calendar')['index'] ?? false) {
+                $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+                    ->getQueryBuilderForTable('tx_calendarize_domain_model_index');
+
+                $result = $queryBuilder
+                    ->select('foreign_uid')
+                    ->from('tx_calendarize_domain_model_index')
+                    ->where(
+                        $queryBuilder->expr()->eq(
+                            'tx_calendarize_domain_model_index.uid',
+                            $queryBuilder->createNamedParameter((int) GeneralUtility::_GP('tx_calendarize_calendar')['index'], Connection::PARAM_INT)
+                        )
+                    )
+                    ->setMaxResults(1)
+                    ->execute();
+
+                if ($row = $result->fetch()) {
+                    $this->config['marker']['tx_calendarize_domain_model_event'][] = $row['foreign_uid'];
+                }
+        }
+
+        $this->config['id'] = 'osm_' . ($this->cObj->data['uid'] ? : uniqid()) ;
+
         $this->config['marker'] = $this->extractGroup($this->config['marker']);
 
         // Show this marker's popup intially
@@ -278,7 +317,7 @@ class PluginController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
         // get marker records from db
         $records = [];
         foreach ($record_ids as $table => $items) {
-            $tc = $tables[$table];
+            $tc = $tables[$table] ?? [];
             $connection = $this->connectionPool->getConnectionForTable($table);
             foreach ($items as $item) {
                 $item = intval($item);
@@ -301,7 +340,7 @@ class PluginController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
 
                 if ($row = $result->fetch()) {
                     // Group with relation to a field
-                    if (is_array($tc['FIND_IN_SET'])) {
+                    if (is_array($tc['FIND_IN_SET'] ?? null)) {
                         foreach ($tc['FIND_IN_SET'] as $t => $f) {
                             $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
                             ->getQueryBuilderForTable($table);
@@ -333,7 +372,7 @@ class PluginController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
                     }
 
                     // Group with mm relation
-                    if (is_array($tc['MM'])) {
+                    if (is_array($tc['MM'] ?? null)) {
                         foreach ($tc['MM'] as $t => $f) {
                             $local = $f['local'];
                             $mm = $f['mm'];
@@ -385,7 +424,7 @@ class PluginController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
                     }
 
                     // Special element
-                    if ($tc === true) {
+                    if ($tc === true && $row) {
                         $records[$table][$item] = $row;
                     }
                 }
@@ -458,8 +497,8 @@ class PluginController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
         $local_cObj = GeneralUtility::makeInstance('TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer');
         foreach ($markers as $table => &$items) {
             foreach ($items as $key => &$item) {
-                $popup = is_string($this->config['popup.'][$table]) && is_array($this->config['popup.'][$table . '.']) && $this->config['show_popups'];
-                $icon = is_string($this->config['icon.'][$table]) && is_array($this->config['icon.'][$table . '.']);
+                $popup = is_string($this->config['popup.'][$table] ?? null) && is_array($this->config['popup.'][$table . '.'] ?? null) && $this->config['show_popups'];
+                $icon = is_string($this->config['icon.'][$table] ?? null) && is_array($this->config['icon.'][$table . '.'] ?? null);
                 if ($popup || $icon) {
                     $local_cObj->start($item, $table);
                 }
@@ -470,7 +509,7 @@ class PluginController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
                 }
 
                 // Add icon information
-                if ($item['tx_odsosm_marker']) {
+                if ($item['tx_odsosm_marker'] ?? null) {
                     $fileRepository = GeneralUtility::makeInstance(FileRepository::class);
                     $fileObjects = $fileRepository->findByRelation('tx_odsosm_marker', 'icon', $item['tx_odsosm_marker']);
                     if ($fileObjects) {
@@ -542,6 +581,7 @@ class PluginController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
 
             while ($resArray = $result->fetch()) {
                 $baselayers[$resArray['uid']] =  $resArray;
+                $baselayers[$resArray['uid']]['visible'] = false;
             }
 
             // set visible flag

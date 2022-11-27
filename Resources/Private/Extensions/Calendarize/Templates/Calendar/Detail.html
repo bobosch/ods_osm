@@ -1,0 +1,26 @@
+<div xmlns="http://www.w3.org/1999/xhtml" lang="en"
+		 xmlns:f="http://typo3.org/ns/TYPO3/Fluid/ViewHelpers"
+>
+
+	<f:layout name="Default"/>
+	<f:section name="Main">
+		<div class="panel panel-default">
+			<div class="panel-body">
+				<f:render partial="{index.configuration.partialIdentifier}/Detail" arguments="{index: index}"/>
+				<div class="btn-group">
+					<f:if condition="{settings.listPid}">
+						<f:link.page pageUid="{settings.listPid}" class="btn btn-default">
+							<span class="glyphicon glyphicon-arrow-left"></span>
+							<f:translate key="back"/>
+						</f:link.page>
+					</f:if>
+					<f:link.action action="detail" arguments="{index: index}" format="ics" class="btn btn-default">ICS/iCal
+					</f:link.action>
+				</div>
+				<div class="map">
+					<f:cObject typoscriptObjectPath="plugin.tx_odsosm_pi1" />
+				</div>
+			</div>
+		</div>
+	</f:section>
+</div>

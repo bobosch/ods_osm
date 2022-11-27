@@ -14,9 +14,6 @@ return array(
         ),
         'iconfile' => 'EXT:ods_osm/Resources/Public/Icons/icon_tx_odsosm_layer.png',
     ),
-    'interface' => array(
-        'showRecordFieldList' => 'hidden,title,overlay,javascript_include,javascript_openlayers,static_url,tile_url,tile_https,min_zoom,max_zoom,subdomains,attribution,homepage'
-    ),
     'columns' => array(
         'hidden' => [
             'exclude' => true,

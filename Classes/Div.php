@@ -2,6 +2,10 @@
 
 namespace Bobosch\OdsOsm;
 
+use TYPO3\CMS\Core\Database\Query\QueryBuilder;
+use TYPO3\CMS\Core\Page\PageRenderer;
+use TYPO3\CMS\Core\Messaging\AbstractMessage;
+use TYPO3\CMS\Core\Log\Logger;
 use Doctrine\DBAL\FetchMode;
 use Doctrine\DBAL\ParameterType;
 use TYPO3\CMS\Core\Context\Context;
@@ -20,7 +24,7 @@ class Div
     const RESOURCE_BASE_PATH = 'EXT:ods_osm/Resources/Public/';
 
     public static function getConstraintsForQueryBuilder($table, ContentObjectRenderer $cObj,
-        \TYPO3\CMS\Core\Database\Query\QueryBuilder $queryBuilder) : array
+        QueryBuilder $queryBuilder) : array
     {
         $constraints = [];
 
@@ -34,7 +38,7 @@ class Div
                 $queryBuilder->expr()->gte($table . '.pid', $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT));
 
             // Translation
-            if ($ctrl['languageField']) {
+            if ($ctrl['languageField'] ?? null) {
                 $orConstraints = [
                         $queryBuilder->expr()->eq($table . '.' . $ctrl['languageField'], $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)),
                         $queryBuilder->expr()->eq($table . '.' . $ctrl['languageField'], $queryBuilder->createNamedParameter(-1, \PDO::PARAM_INT))
@@ -58,7 +62,7 @@ class Div
 
     public static function addJsFiles($scripts, $doc)
     {
-        $pageRenderer = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Page\PageRenderer::class);
+        $pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
         foreach ($scripts as $script) {
             $pageRenderer->addJsFooterFile(
                 $script['src'],
@@ -216,7 +220,7 @@ class Div
                         'timeout' => 60,
                         'headers' => [
                             'Accept' => 'application/json',
-                            'User-Agent' => 'TYPO3 extension ods_osm/' . \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::getExtensionVersion('ods_osm')
+                            'User-Agent' => 'TYPO3 extension ods_osm/' . ExtensionManagementUtility::getExtensionVersion('ods_osm')
                         ],
                     ];
 
@@ -233,7 +237,7 @@ class Div
                             self::flashMessage(
                                 (string)$result['status']['message'],
                                 'GeoNames message',
-                                \TYPO3\CMS\Core\Messaging\FlashMessage::WARNING
+                                AbstractMessage::WARNING
                             );
                         }
 
@@ -336,7 +340,7 @@ class Div
             'timeout' => 60,
             'headers' => [
                 'Accept' => 'application/json',
-                'User-Agent' => 'TYPO3 extension ods_osm/' . \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::getExtensionVersion('ods_osm')
+                'User-Agent' => 'TYPO3 extension ods_osm/' . ExtensionManagementUtility::getExtensionVersion('ods_osm')
             ],
         ];
 
@@ -383,7 +387,7 @@ class Div
     {
         /** @var FlashMessage $flashMessage */
         $flashMessage = GeneralUtility::makeInstance(
-            \TYPO3\CMS\Core\Messaging\FlashMessage::class,
+            FlashMessage::class,
             $message,
             $title,
             $status
@@ -468,7 +472,7 @@ class Div
         }
 
         if ($config === false || count($getDefault)) {
-            $default = parse_ini_file(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('ods_osm') . 'ext_conf_template.txt');
+            $default = parse_ini_file(ExtensionManagementUtility::extPath('ods_osm') . 'ext_conf_template.txt');
             if ($config === false) {
                 return $default;
             } else {
@@ -517,6 +521,15 @@ class Div
         ];
 
         // load configuration for tt_address only if extension is loaded
+        if (ExtensionManagementUtility::isLoaded('calendarize')) {
+            $tables['tx_calendarize_domain_model_event'] = [
+                'FORMAT' => '%01.6f',
+                'lon' => 'tx_odsosm_lon',
+                'lat' => 'tx_odsosm_lat',
+                'address' => 'location',
+            ];
+        }
+            // load configuration for tt_address only if extension is loaded
         if (ExtensionManagementUtility::isLoaded('tt_address')) {
             $tables['tt_address'] = [
                 'FORMAT' => '%01.11f',
@@ -538,7 +551,7 @@ class Div
     }
 
     /**
-     * @return \TYPO3\CMS\Core\Log\Logger
+     * @return Logger
      */
     protected static function getLogger()
     {
@@ -554,7 +567,7 @@ class Div
     {
         $isLoaded = false;
 
-        if ( \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('tt_address') ) {
+        if ( ExtensionManagementUtility::isLoaded('tt_address') ) {
             $isLoaded = true;
         }
 

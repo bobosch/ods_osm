@@ -117,7 +117,7 @@ class MigrateSettings implements UpgradeWizardInterface
     /**
      * Is an update necessary?
      *
-     * Looks for fe plugins in tt_content table to be migrated
+     * Looks for ods_osm plugins in tt_content table to be migrated
      *
      * @return bool
      */

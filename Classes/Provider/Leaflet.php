@@ -45,8 +45,8 @@ class Leaflet extends BaseProvider
 
         $jsMain =
             $this->config['id'] . "=new L.Map('" . $this->config['id'] . "',
-                {scrollWheelZoom: " .(isset($this->config['enable_scrollwheelzoom']) && $this->config['enable_scrollwheelzoom'] == '1' ? 'true' : 'false'). ",
-                dragging: " .(isset($this->config['enable_dragging']) && $this->config['enable_dragging'] == '1' ? 'true' : 'false'). "});
+                {scrollWheelZoom: " .((!isset($this->config['enable_scrollwheelzoom']) || $this->config['enable_scrollwheelzoom'] == '1') ? 'true' : 'false'). ",
+                dragging: " .((!isset($this->config['enable_dragging']) || $this->config['enable_dragging'] == '1') ? 'true' : 'false'). "});
 			L.Icon.Default.imagePath='" . $this->path_leaflet . "images/';"
             . $vars;
         if ($this->config['cluster']) {
@@ -83,7 +83,7 @@ class Leaflet extends BaseProvider
         $jsLayer = "\n\t\t\tvar layer_" . $layer['uid'] . ' = ' . $jsLayer;
 
         // only show first base layer on the map
-        if (($layer['overlay'] == 1 && $layer['visible'])|| ($i == 0 && $layer['overlay'] == 0)) {
+        if (($layer['overlay'] == 1 && $layer['visible']) || ($i == 0 && $layer['overlay'] == 0)) {
             $jsLayer .= "\n\t\t\t" . $this->config['id'] . '.addLayer(layer_' . $layer['uid'] . ');';
         }
 
@@ -95,7 +95,7 @@ class Leaflet extends BaseProvider
         $base = [];
         if (is_array($this->layers[0] ?? null) && count($this->layers[0]) > 1) {
             foreach ($this->layers[0] as $layer) {
-                $base[] = '"' . $layer['title'] . '":' . ($layer['table'] ?: 'layer') . '_' . $layer['uid'];
+                $base[] = '"' . $layer['title'] . '":' . ($layer['table'] ?? 'layer') . '_' . $layer['uid'];
             }
         }
         $overlay = [];
@@ -104,7 +104,7 @@ class Leaflet extends BaseProvider
                 if (!empty($layer['gid'])) {
                     $overlay[] = '"' . $layer['title'] . '":' . $layer['gid'];
                 } else {
-                    $overlay[] = '"' . $layer['title'] . '":' . ($layer['table'] ?: 'layer')  . '_' . $layer['uid'];
+                    $overlay[] = '"' . $layer['title'] . '":' . ($layer['table'] ?? 'layer')  . '_' . $layer['uid'];
                 }
             }
         }
@@ -317,10 +317,14 @@ class Leaflet extends BaseProvider
         }
 
         foreach ($jsElementVarsForPopup as $jsElementVar) {
-            if ($item['popup']) {
-                $jsMarker .= $jsElementVar . '.bindPopup(' . json_encode($item['popup']) . ");\n";
-                if ($item['initial_popup']) {
-                    $jsMarker .= $jsElementVar . ".openPopup();\n";
+            if ($item['popup'] ?? null) {
+                if ($this->config['show_popups'] == 1) {
+                    $jsMarker .= $jsElementVar . '.bindPopup(' . json_encode($item['popup']) . ').addTo(' . $this->config['id'] .'); ' . "\n";
+                    if ($item['initial_popup'] ?? null) {
+                        $jsMarker .= $jsElementVar . ".openPopup();\n";
+                    }
+                } else if ($this->config['show_popups'] == 2) {
+                    $jsMarker .= $jsElementVar . '.bindTooltip(' . json_encode($item['popup']) . ");\n";
                 }
             }
         }

@@ -78,14 +78,14 @@
 			<trans-unit id="tt_content.pi_flexform.show_popups" xml:space="preserve">
 				<source>Show popups</source>
 			</trans-unit>
+			<trans-unit id="tt_content.pi_flexform.show_popups.I.0" xml:space="preserve">
+				<source>No</source>
+			</trans-unit>
 			<trans-unit id="tt_content.pi_flexform.show_popups.I.1" xml:space="preserve">
 				<source>Click</source>
 			</trans-unit>
 			<trans-unit id="tt_content.pi_flexform.show_popups.I.2" xml:space="preserve">
 				<source>Hover</source>
-			</trans-unit>
-			<trans-unit id="tt_content.pi_flexform.show_popups.I.3" xml:space="preserve">
-				<source>Exclusive</source>
 			</trans-unit>
 			<trans-unit id="tt_content.pi_flexform.show_layerswitcher" xml:space="preserve">
 				<source>Show layerswitcher</source>
