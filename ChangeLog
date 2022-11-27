@@ -1,3 +1,8 @@
+2022-11-27 Alexander Bigga <alexander@bigga.de>
+	* fix show_popup for click and hover with OpenLayers and Leaflet
+	* Show map on EXT:calendarize event detail if location is geo referenced
+	* Cleanup the code with typo3-rector for TYPO3 11 and PHP 8.1
+
 2022-10-03 Alexander Bigga <alexander@bigga.de>
 	* Update to OpenLayers 7.1.0
 	* Update to Leaflet 1.9.1

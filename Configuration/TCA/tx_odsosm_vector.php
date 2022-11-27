@@ -1,4 +1,6 @@
 <?php
+
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 return array(
     'ctrl' => array(
         'title' => 'LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xlf:tx_odsosm_vector',
@@ -12,9 +14,6 @@ return array(
             'disabled' => 'hidden',
         ),
         'iconfile' => 'EXT:ods_osm/Resources/Public/Icons/icon_tx_odsosm_vector.png',
-    ),
-    'interface' => array(
-        'showRecordFieldList' => 'hidden,title,data,min_lat,min_lon,max_lat,max_lon'
     ),
     'columns' => array(
         'hidden' => [
@@ -86,7 +85,7 @@ return array(
         'file' => array(
             'exclude' => 0,
             'label' => 'LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xlf:tx_odsosm_vector.file',
-            'config' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::getFileFieldTCAConfig(
+            'config' => ExtensionManagementUtility::getFileFieldTCAConfig(
                 'file',
                 [
                     'maxitems' => 1,

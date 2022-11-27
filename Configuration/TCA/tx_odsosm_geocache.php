@@ -11,9 +11,6 @@ return array(
         'rootLevel' => 1,
         'iconfile' => 'EXT:ods_osm/Resources/Public/Icons/icon_tx_odsosm_geocache.png',
     ),
-    'interface' => array(
-        'showRecordFieldList' => 'cache_hit,service_hit,search_city,country,state,city,zip,street,housenumber,lon,lat'
-    ),
     'columns' => array(
         'cache_hit' => array(
             'exclude' => 0,

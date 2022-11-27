@@ -301,10 +301,6 @@
 										<numIndex index="0">LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xlf:tt_content.pi_flexform.show_popups.I.2</numIndex>
 										<numIndex index="1">2</numIndex>
 									</numIndex>
-									<numIndex index="3" type="array">
-										<numIndex index="0">LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xlf:tt_content.pi_flexform.show_popups.I.3</numIndex>
-										<numIndex index="1">3</numIndex>
-									</numIndex>
 								</items>
 								<default>1</default>
 							</config>

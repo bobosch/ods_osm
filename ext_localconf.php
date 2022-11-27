@@ -1,6 +1,6 @@
 <?php
 
-if (!defined('TYPO3_MODE')) die ('Access denied.');
+if (!defined('TYPO3')) die ('Access denied.');
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 

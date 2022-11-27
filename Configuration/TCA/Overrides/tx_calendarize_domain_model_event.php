@@ -1,5 +1,6 @@
 <?php
 
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 defined('TYPO3') || die();
 
 $tempColumns = array(
@@ -33,6 +34,6 @@ $tempColumns = array(
     ),
 );
 
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTCAcolumns('tx_calendarize_domain_model_event', $tempColumns);
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addToAllTCAtypes('tx_calendarize_domain_model_event', 'tx_odsosm_lon', '', 'after:location');
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addFieldsToAllPalettesOfField('tx_calendarize_domain_model_event', 'tx_odsosm_lon', 'tx_odsosm_lat');
+ExtensionManagementUtility::addTCAcolumns('tx_calendarize_domain_model_event', $tempColumns);
+ExtensionManagementUtility::addToAllTCAtypes('tx_calendarize_domain_model_event', 'tx_odsosm_lon', '', 'after:location');
+ExtensionManagementUtility::addFieldsToAllPalettesOfField('tx_calendarize_domain_model_event', 'tx_odsosm_lon', 'tx_odsosm_lat');

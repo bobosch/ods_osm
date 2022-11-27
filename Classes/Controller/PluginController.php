@@ -24,14 +24,15 @@
 
 namespace Bobosch\OdsOsm\Controller;
 
+use TYPO3\CMS\Frontend\Plugin\AbstractPlugin;
 use Bobosch\OdsOsm\Div;
 use Bobosch\OdsOsm\Provider\BaseProvider;
 use Doctrine\DBAL\FetchMode;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Page\PageRenderer;
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Frontend\Page\PageRepository;
 use TYPO3\CMS\Core\Resource\FileRepository;
 
 /**
@@ -41,7 +42,7 @@ use TYPO3\CMS\Core\Resource\FileRepository;
  * @package    TYPO3
  * @subpackage    tx_odsosm
  */
-class PluginController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
+class PluginController extends AbstractPlugin
 {
     /**
      * Same as class name
@@ -192,8 +193,27 @@ class PluginController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
             }
         }
 
-        if (GeneralUtility::_GP('tx_calendarize_calendar')['index'] ?? false) {
-            $this->config['marker']['tx_calendarize_domain_model_event'][] = GeneralUtility::_GP('tx_calendarize_calendar')['index'];
+        // If EXT:calendarize is installed and the single view is called, we try to fetch the right event.
+        if (ExtensionManagementUtility::isLoaded('calendarize') &&
+            GeneralUtility::_GP('tx_calendarize_calendar')['index'] ?? false) {
+                $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+                    ->getQueryBuilderForTable('tx_calendarize_domain_model_index');
+
+                $result = $queryBuilder
+                    ->select('foreign_uid')
+                    ->from('tx_calendarize_domain_model_index')
+                    ->where(
+                        $queryBuilder->expr()->eq(
+                            'tx_calendarize_domain_model_index.uid',
+                            $queryBuilder->createNamedParameter((int) GeneralUtility::_GP('tx_calendarize_calendar')['index'], Connection::PARAM_INT)
+                        )
+                    )
+                    ->setMaxResults(1)
+                    ->execute();
+
+                if ($row = $result->fetch()) {
+                    $this->config['marker']['tx_calendarize_domain_model_event'][] = $row['foreign_uid'];
+                }
         }
 
         $this->config['id'] = 'osm_' . ($this->cObj->data['uid'] ? : uniqid()) ;
@@ -404,7 +424,7 @@ class PluginController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
                     }
 
                     // Special element
-                    if ($tc === true) {
+                    if ($tc === true && $row) {
                         $records[$table][$item] = $row;
                     }
                 }
@@ -477,8 +497,8 @@ class PluginController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
         $local_cObj = GeneralUtility::makeInstance('TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer');
         foreach ($markers as $table => &$items) {
             foreach ($items as $key => &$item) {
-                $popup = is_string($this->config['popup.'][$table]) && is_array($this->config['popup.'][$table . '.']) && $this->config['show_popups'];
-                $icon = is_string($this->config['icon.'][$table]) && is_array($this->config['icon.'][$table . '.']);
+                $popup = is_string($this->config['popup.'][$table] ?? null) && is_array($this->config['popup.'][$table . '.'] ?? null) && $this->config['show_popups'];
+                $icon = is_string($this->config['icon.'][$table] ?? null) && is_array($this->config['icon.'][$table . '.'] ?? null);
                 if ($popup || $icon) {
                     $local_cObj->start($item, $table);
                 }
@@ -489,7 +509,7 @@ class PluginController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
                 }
 
                 // Add icon information
-                if ($item['tx_odsosm_marker']) {
+                if ($item['tx_odsosm_marker'] ?? null) {
                     $fileRepository = GeneralUtility::makeInstance(FileRepository::class);
                     $fileObjects = $fileRepository->findByRelation('tx_odsosm_marker', 'icon', $item['tx_odsosm_marker']);
                     if ($fileObjects) {

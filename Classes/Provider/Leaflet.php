@@ -317,10 +317,14 @@ class Leaflet extends BaseProvider
         }
 
         foreach ($jsElementVarsForPopup as $jsElementVar) {
-            if ($item['popup']) {
-                $jsMarker .= $jsElementVar . '.bindPopup(' . json_encode($item['popup']) . ");\n";
-                if ($item['initial_popup']) {
-                    $jsMarker .= $jsElementVar . ".openPopup();\n";
+            if ($item['popup'] ?? null) {
+                if ($this->config['show_popups'] == 1) {
+                    $jsMarker .= $jsElementVar . '.bindPopup(' . json_encode($item['popup']) . ').addTo(' . $this->config['id'] .'); ' . "\n";
+                    if ($item['initial_popup'] ?? null) {
+                        $jsMarker .= $jsElementVar . ".openPopup();\n";
+                    }
+                } else if ($this->config['show_popups'] == 2) {
+                    $jsMarker .= $jsElementVar . '.bindTooltip(' . json_encode($item['popup']) . ");\n";
                 }
             }
         }

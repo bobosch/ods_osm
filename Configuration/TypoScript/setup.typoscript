@@ -27,6 +27,12 @@ plugin.tx_odsosm_pi1 {
 	}
 
 	popup {
+		tx_odsosm_vector = COA
+		tx_odsosm_vector {
+			10 = TEXT
+			10.field = title
+			10.wrap = <h2>|</h2>
+		}
 		fe_users = COA
 		fe_users {
 			10 = TEXT

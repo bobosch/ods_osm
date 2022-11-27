@@ -4,7 +4,6 @@
 
 	<f:layout name="Default"/>
 	<f:section name="Main">
-		<f:debug>{index}</f:debug>
 		<div class="panel panel-default">
 			<div class="panel-body">
 				<f:render partial="{index.configuration.partialIdentifier}/Detail" arguments="{index: index}"/>
@@ -19,7 +18,6 @@
 					</f:link.action>
 				</div>
 				<div class="map">
-					<h1>hallo map</h1>
 					<f:cObject typoscriptObjectPath="plugin.tx_odsosm_pi1" />
 				</div>
 			</div>

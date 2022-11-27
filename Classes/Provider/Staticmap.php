@@ -11,6 +11,8 @@ class Staticmap extends BaseProvider
 
     public function getMap($layers, $markers, $lon, $lat, $zoom)
     {
+        $marker = [];
+
         foreach ($markers as $table => $items) {
             foreach ($items as $item) {
                 switch ($table) {
@@ -25,7 +27,7 @@ class Staticmap extends BaseProvider
                             $icon = $marker['icon'];
                         } else {
                             $marker = array('size_x' => 21, 'size_y' => 25, 'offset_x' => -11, 'offset_y' => -25);
-                            $icon = 'EXT:ods_osm/Resources/Public/OpenLayers/img/marker.png';
+                            $icon = 'EXT:ods_osm/Resources/Public/JavaScript/Leaflet/Core/images/marker-icon.png';
                         }
                         break 3;
                 }
@@ -48,7 +50,7 @@ class Staticmap extends BaseProvider
             GeneralUtility::mkdir_deep($this->uploadPath);
         }
 
-        $filename = $this->uploadPath . md5($url) . '.png';
+        $filename = $this->uploadPath . '/' . md5($url) . '.png';
 
         // Cache image
         $cache = false;
@@ -70,23 +72,25 @@ class Staticmap extends BaseProvider
         }
 
         // Generate image tag
-//		$config['file'] = $filename;
-        $config = array(
+        $config = [
             'file' => 'GIFBUILDER',
-            'file.' => array(
+            'file.' => [
                 'format' => 'png',
                 'XY' => '[10.w],[10.h]',
                 '10' => 'IMAGE',
-                '10.' => array(
+                '10.' => [
                     'file' => $filename,
-                ),
-                '20' => 'IMAGE',
-                '20.' => array(
-                    'offset' => ($this->config['width'] / 2 + $marker['offset_x']) . ',' . ($this->config['height'] / 2 + $marker['offset_y']),
-                    'file' => $icon,
-                ),
-            ),
-        );
+                ]
+            ],
+        ];
+
+        if ($marker['offset_x'] ?? null) {
+            $config['file.']['20'] = 'IMAGE';
+            $config['file.']['20.'] = [
+                'offset' => ((int)$this->config['width'] / 2 + (int)$marker['offset_x']) . ',' . ((int)$this->config['height'] / 2 + (int)$marker['offset_y']),
+                'file' => $icon,
+            ];
+        }
 
         $content = $this->cObj->cObjGetSingle('IMAGE', $config);
 

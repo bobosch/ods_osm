@@ -116,6 +116,10 @@
 				<source><![CDATA[Show popups]]></source>
 				<target><![CDATA[Popups anzeigen]]></target>
 			</trans-unit>
+			<trans-unit id="tt_content.pi_flexform.show_popups.I.0" approved="yes">
+				<source><![CDATA[No]]></source>
+				<target><![CDATA[NNein]]></target>
+			</trans-unit>
 			<trans-unit id="tt_content.pi_flexform.show_popups.I.1" approved="yes">
 				<source><![CDATA[Click]]></source>
 				<target><![CDATA[Click]]></target>
@@ -123,10 +127,6 @@
 			<trans-unit id="tt_content.pi_flexform.show_popups.I.2" approved="yes">
 				<source><![CDATA[Hover]]></source>
 				<target><![CDATA[Hover]]></target>
-			</trans-unit>
-			<trans-unit id="tt_content.pi_flexform.show_popups.I.3" approved="yes">
-				<source><![CDATA[Exclusive]]></source>
-				<target><![CDATA[Exklusiv]]></target>
 			</trans-unit>
 			<trans-unit id="tt_content.pi_flexform.show_scalebar" approved="yes">
 				<source><![CDATA[Show ScaleBar]]></source>

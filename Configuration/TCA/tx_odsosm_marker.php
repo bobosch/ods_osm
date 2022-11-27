@@ -1,4 +1,6 @@
 <?php
+
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 return array(
     'ctrl' => array(
         'title' => 'LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xlf:tx_odsosm_marker',
@@ -9,9 +11,6 @@ return array(
         'default_sortby' => 'ORDER BY title',
         'delete' => 'deleted',
         'iconfile' => 'EXT:ods_osm/Resources/Public/Icons/icon_tx_odsosm_marker.png',
-    ),
-    'interface' => array(
-        'showRecordFieldList' => 'title,icon,offset_x,offset_y'
     ),
     'columns' => array(
         'title' => array(
@@ -25,7 +24,7 @@ return array(
         'icon' => array(
             'exclude' => 0,
             'label' => 'LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xlf:tx_odsosm_marker.icon',
-            'config' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::getFileFieldTCAConfig(
+            'config' => ExtensionManagementUtility::getFileFieldTCAConfig(
                 'icon',
                 [
                     'maxitems' => 1,

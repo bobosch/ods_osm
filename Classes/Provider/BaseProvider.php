@@ -2,6 +2,7 @@
 
 namespace Bobosch\OdsOsm\Provider;
 
+use TYPO3\CMS\Core\Information\Typo3Version;
 use Bobosch\OdsOsm\Div;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -207,10 +208,15 @@ abstract class BaseProvider
     protected function getAbsRefPrefix()
     {
         $absRefPrefix = '';
-        $versionInformation = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Information\Typo3Version::class);
+        $versionInformation = GeneralUtility::makeInstance(Typo3Version::class);
         if ($versionInformation->getMajorVersion() == 10) {
             $absRefPrefix = $GLOBALS['TSFE']->absRefPrefix;
         }
         return $absRefPrefix;
+    }
+
+    public function setContentObjectRenderer(ContentObjectRenderer $cObj): void
+    {
+        $this->cObj = $cObj;
     }
 }
