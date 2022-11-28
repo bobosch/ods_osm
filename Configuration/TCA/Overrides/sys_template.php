@@ -1,7 +1,7 @@
 <?php
+defined('TYPO3') || die();
 
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
-defined('TYPO3') || die();
 
 ExtensionManagementUtility::addStaticFile(
     'ods_osm',

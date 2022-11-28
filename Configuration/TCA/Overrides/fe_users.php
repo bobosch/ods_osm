@@ -1,13 +1,13 @@
 <?php
-
-use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 defined('TYPO3') || die();
 
-$tempColumns = array(
-    'tx_odsosm_lon' => array( // DECIMAL(9,6)
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+
+$tempColumns = [
+    'tx_odsosm_lon' => [ // DECIMAL(9,6)
         'exclude' => 1,
         'label' => 'LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xlf:tx_odsosm_lon',
-        'config' => array(
+        'config' => [
             'type' => 'input',
             'size' => 11,
             'max' => 11,
@@ -19,20 +19,20 @@ $tempColumns = array(
 	            ]
             ],
             'default' => 0.000000,
-        )
-    ),
-    'tx_odsosm_lat' => array( // DECIMAL(8,6)
+        ]
+    ],
+    'tx_odsosm_lat' => [ // DECIMAL(8,6)
         'exclude' => 1,
         'label' => 'LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xlf:tx_odsosm_lat',
-        'config' => array(
+        'config' => [
             'type' => 'input',
             'size' => 10,
             'max' => 10,
             'eval' => 'Bobosch\\OdsOsm\\Evaluation\\LonLat',
             'default' => 0.000000,
-        )
-    ),
-);
+        ]
+    ],
+];
 
 ExtensionManagementUtility::addTCAcolumns('fe_users', $tempColumns);
 ExtensionManagementUtility::addToAllTCAtypes('fe_users', 'tx_odsosm_lon', '', 'after:country');

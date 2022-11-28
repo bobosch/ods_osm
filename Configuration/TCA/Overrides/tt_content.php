@@ -1,5 +1,4 @@
 <?php
-
 defined('TYPO3') || die();
 
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
@@ -9,10 +8,10 @@ use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 -------------------------------------------------- */
 
 ExtensionManagementUtility::addPlugin(
-	array(
+	[
 		'LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xlf:tt_content.list_type_pi1',
 		'ods_osm_pi1'
-	),
+	],
 	'list_type',
 	'ods_osm'
 );
