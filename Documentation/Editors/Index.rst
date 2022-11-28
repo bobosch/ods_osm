@@ -77,9 +77,6 @@ You can define your own layers on root level.
 |                            || ###VISIBLE###: Contains “'visible':true” if   |
 |                            | is overlay and no layerswitcher activated.     |
 +----------------------------+------------------------------------------------+
-| Include static JavaScript  || Optionally include this javascript file.      |
-|                            || ###STATIC_SCRIPT###: Value set by TS          |
-+----------------------------+------------------------------------------------+
 | Static map URL             || Download static map from this URL.            |
 |                            || ###lat###: Latitude of map center.            |
 |                            || ###lon###: Longitude of map center.           |
