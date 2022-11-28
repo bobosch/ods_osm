@@ -125,10 +125,6 @@ Reference
 +-----------------+-----------+-------------------------------------+---------+
 | show_scalebar   | boolean   | Show a scale line on the map.       | 0       |
 +-----------------+-----------+-------------------------------------+---------+
-| static_script   | string    | Marker ###STATIC_SCRIPT### in layer |         |
-|                 |           | “Include static JavaScript”. Use it |         |
-|                 |           | for google or bing maps api key.    |         |
-+-----------------+-----------+-------------------------------------+---------+
 | |uconm|         | boolean   | Use the default coordinates only if | 0       |
 |                 |           | no marker exists.                   |         |
 +-----------------+-----------+-------------------------------------+---------+
