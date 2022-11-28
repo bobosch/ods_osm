@@ -39,7 +39,7 @@ class MigrateSettings implements UpgradeWizardInterface
 
     /**
      * Return the identifier for this wizard
-     * This should be the same string as used in the ext_localconf class registration
+     * This must be the same string as used in the ext_localconf class registration
      *
      * @return string
      */
