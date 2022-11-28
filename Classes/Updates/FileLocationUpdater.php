@@ -88,11 +88,14 @@ class FileLocationUpdater implements UpgradeWizardInterface, ChattyInterface, Lo
     protected $targetPath = '_migrated/tx_odsosm/';
 
     /**
-     * @return string Unique identifier of this updater
+     * Return the identifier for this wizard
+     * This must be the same string as used in the ext_localconf class registration
+     *
+     * @return string
      */
     public function getIdentifier(): string
     {
-        return 'odsOsmFileLocationUpdater';
+        return self::class;
     }
 
     /**

@@ -194,8 +194,8 @@ class PluginController extends AbstractPlugin
         }
 
         // If EXT:calendarize is installed and the single view is called, we try to fetch the right event.
-        if (ExtensionManagementUtility::isLoaded('calendarize') &&
-            GeneralUtility::_GP('tx_calendarize_calendar')['index'] ?? false) {
+        if (ExtensionManagementUtility::isLoaded('calendarize')) {
+            if (GeneralUtility::_GP('tx_calendarize_calendar')['index'] ?? false) {
                 $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
                     ->getQueryBuilderForTable('tx_calendarize_domain_model_index');
 
@@ -214,6 +214,7 @@ class PluginController extends AbstractPlugin
                 if ($row = $result->fetch()) {
                     $this->config['marker']['tx_calendarize_domain_model_event'][] = $row['foreign_uid'];
                 }
+            }
         }
 
         $this->config['id'] = 'osm_' . ($this->cObj->data['uid'] ? : uniqid()) ;
