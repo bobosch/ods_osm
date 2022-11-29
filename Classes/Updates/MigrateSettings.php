@@ -45,7 +45,7 @@ class MigrateSettings implements UpgradeWizardInterface
      */
     public function getIdentifier(): string
     {
-        return self::class;
+        return 'odsOsmMigrateSettingsUpdater';
     }
 
     /**
@@ -55,7 +55,7 @@ class MigrateSettings implements UpgradeWizardInterface
      */
     public function getTitle(): string
     {
-        return 'Migrate settings in EXT:ods_osm plugins';
+        return 'EXT:ods_osm: Migrate plugin flexform settings';
     }
 
     /**
