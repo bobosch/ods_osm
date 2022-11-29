@@ -45,7 +45,7 @@ class MigrateSettings implements UpgradeWizardInterface
      */
     public function getIdentifier(): string
     {
-        return 'odsOsmMigrateSettingsUpdater';
+        return 'odsOsmMigrateSettings';
     }
 
     /**
