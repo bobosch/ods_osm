@@ -94,6 +94,24 @@ class MigrateSettings implements UpgradeWizardInterface
 
         // Update the found record sets
         while ($record = $statement->fetch()) {
+            // Robust error handling in case pi_flexform is NULL or empty
+            // this should normally not happen by might happen due to problems on saving CE initially
+            // records like this should be fixed in any case but this Upgrade Wizard will ignore these problems and
+            // continue, because otherwise it would crash which would leave it in half finished state.
+            if (!($record['pi_flexform'] ?? false)) {
+                continue;
+            }
+            $oldXml = $record['pi_flexform'];
+            $newXml = $this->migrateFlexformSettings($record['pi_flexform']);
+
+            if ($oldXml === $newXml) {
+                // robust error handling:
+                // if no change is necessary, this record was probably already converted and we skip the SQL UPDATE
+                // which could happen if Upgrade Wizard is run several times (in case it crashed previously, for reasons
+                // out of control here)
+                continue;
+            }
+
             $queryBuilder = $connection->createQueryBuilder();
             $updateResult = $queryBuilder->update('tt_content')
                 ->where(
@@ -102,7 +120,7 @@ class MigrateSettings implements UpgradeWizardInterface
                         $queryBuilder->createNamedParameter($record['uid'], \PDO::PARAM_INT)
                     )
                 )
-                ->set('pi_flexform', $this->migrateFlexformSettings($record['pi_flexform']))
+                ->set('pi_flexform', $newXml)
                 ->execute();
 
             // exit if at least one update statement is not successful
