@@ -95,7 +95,7 @@ class FileLocationUpdater implements UpgradeWizardInterface, ChattyInterface, Lo
      */
     public function getIdentifier(): string
     {
-        return self::class;
+        return 'odsOsmFileLocationUpdater';
     }
 
     /**
@@ -105,7 +105,7 @@ class FileLocationUpdater implements UpgradeWizardInterface, ChattyInterface, Lo
      */
     public function getTitle(): string
     {
-        return 'Migrate files used in EXT:ods_osm to FAL.';
+        return 'EXT:ods_osm: Migrate used files to FAL';
     }
 
     /**

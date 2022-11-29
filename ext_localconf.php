@@ -60,9 +60,9 @@ foreach ($icons as $identifier => $path) {
 }
 
 # add migration wizards
-$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update'][\Bobosch\OdsOsm\Updates\FileLocationUpdater::class]
+$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update']['odsOsmFileLocationUpdater']
     = \Bobosch\OdsOsm\Updates\FileLocationUpdater::class;
-$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update'][\Bobosch\OdsOsm\Updates\MigrateSettings::class]
+$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update']['odsOsmMigrateSettingsUpdater']
     = \Bobosch\OdsOsm\Updates\MigrateSettings::class;
 
 call_user_func(

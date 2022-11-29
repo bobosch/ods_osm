@@ -133,8 +133,8 @@ class Div
         $config = self::getConfig(array('default_country', 'geo_service_email', 'geo_service_user'));
         $ll = false;
 
-        $country = strtoupper(strlen($address['country']) == 2 ? $address['country'] : $config['default_country']);
-        $email = GeneralUtility::validEmail($config['geo_service_email']) ? $config['geo_service_email'] : $_SERVER['SERVER_ADMIN'];
+        $country = strtoupper(strlen($address['country'] ?? false) == 2 ? $address['country'] : $config['default_country']);
+        $email = GeneralUtility::validEmail($config['geo_service_email']) ? $config['geo_service_email'] : ($_SERVER['SERVER_ADMIN'] ?? 'unkown@example.com');
 
         if ($GLOBALS['TYPO3_CONF_VARS']['BE']['debug']) {
             $service_names = array(0 => 'cache', 1 => 'geonames', 2 => 'nominatim');
@@ -151,16 +151,16 @@ class Div
                 if ($country) {
                     $where[] = 'country=' . $connection->quote($country, ParameterType::STRING);
                 }
-                if ($address['city']) {
+                if ($address['city'] ?? false) {
                     $where[] = '(city=' . $connection->quote($address['city'], ParameterType::STRING) . ' OR search_city=' . $connection->quote($address['city'], ParameterType::STRING) . ')';
                 }
-                if ($address['zip']) {
+                if ($address['zip'] ?? false) {
                     $where[] = 'zip=' . $connection->quote($address['zip'], ParameterType::STRING);
                 }
-                if ($address['street']) {
+                if ($address['street'] ?? false) {
                     $where[] = 'street=' . $connection->quote($address['street'], ParameterType::STRING);
                 }
-                if ($address['housenumber']) {
+                if ($address['housenumber'] ?? false) {
                     $where[] = 'housenumber=' . $connection->quote($address['housenumber'], ParameterType::STRING);
                 }
 
@@ -183,16 +183,16 @@ class Div
 
                         $address['lat'] = $row['lat'];
                         $address['lon'] = $row['lon'];
-                        if ($row['zip']) {
+                        if ($row['zip'] ?? false) {
                             $address['zip'] = $row['zip'];
                         }
-                        if ($row['city']) {
+                        if ($row['city'] ?? false) {
                             $address['city'] = $row['city'];
                         }
-                        if ($row['state']) {
+                        if ($row['state'] ?? false) {
                             $address['state'] = $row['state'];
                         }
-                        if (empty($address['country'])) {
+                        if (empty($address['country'] ?? false)) {
                             $address['country'] = $row['country'];
                         }
                     }
@@ -203,10 +203,10 @@ class Div
                 if ($country) {
                     $query['country'] = $country;
                 }
-                if ($address['city']) {
+                if ($address['city'] ?? false) {
                     $query['placename'] = $address['city'];
                 }
-                if ($address['zip']) {
+                if ($address['zip'] ?? false) {
                     $query['postalcode'] = $address['zip'];
                 }
 
@@ -230,7 +230,7 @@ class Div
                     $result = json_decode($content, true);
 
                     if ($result) {
-                        if ($result['status']) {
+                        if ($result['status'] ?? false) {
                             if ($GLOBALS['TYPO3_CONF_VARS']['BE']['debug']) {
                                 self::getLogger()->debug('GeoNames message', (array)$result['status']['message']);
                             }
@@ -241,22 +241,22 @@ class Div
                             );
                         }
 
-                        if ($result['postalCodes'][0]) {
+                        if ($result['postalCodes'][0] ?? false) {
                             $ll = true;
                             $address['lat'] = (string)$result['postalCodes'][0]['lat'];
                             $address['lon'] = (string)$result['postalCodes'][0]['lng'];
-                            if ($result['postalCodes'][0]['postalCode']) {
+                            if ($result['postalCodes'][0]['postalCode'] ?? false) {
                                 $address['zip'] = (string)$result['postalCodes'][0]['postalCode'];
                             }
-                            if ($result['postalCodes'][0]['placeName']) {
+                            if ($result['postalCodes'][0]['placeName'] ?? false) {
                                 $address['city'] = (string)$result['postalCodes'][0]['placeName'];
                             }
-                            if (empty($address['country'])) {
+                            if (empty($address['country'] ?? false)) {
                                 $address['country'] = (string)$result['postalCodes'][0]['countryCode'];
                             }
                         }
                     } else {
-                        if ($GLOBALS['TYPO3_CONF_VARS']['BE']['debug']) {
+                        if ($GLOBALS['TYPO3_CONF_VARS']['BE']['debug'] ?? false) {
                             self::getLogger()->error('No valid response from GeoNames service.');
                         }
                     }
@@ -270,28 +270,28 @@ class Div
                 $query['format'] = 'jsonv2';
 
                 if ($address['type'] == 'structured') {
-                    if ($address['city']) {
+                    if ($address['city'] ?? false) {
                         $query['city'] = $address['city'];
                     }
-                    if ($address['zip']) {
+                    if ($address['zip'] ?? false) {
                         $query['postalcode'] = $address['zip'];
                     }
-                    if ($address['street']) {
+                    if ($address['street'] ?? false) {
                         $query['street'] = $address['street'];
                     }
-                    if ($address['housenumber']) {
+                    if ($address['housenumber'] ?? false) {
                         $query['street'] = $address['housenumber'] . ' ' . $query['street'];
                     }
 
-                    if ($GLOBALS['TYPO3_CONF_VARS']['BE']['debug']) {
+                    if ($GLOBALS['TYPO3_CONF_VARS']['BE']['debug'] ?? false) {
                         self::getLogger()->debug('Nominatim structured', $query);
                     }
                     $ll = self::searchAddressNominatim($query, $address);
 
-                    if (!$ll && $query['postalcode']) {
+                    if (!$ll && ($query['postalcode'] ?? false)) {
                         unset($query['postalcode']);
 
-                        if ($GLOBALS['TYPO3_CONF_VARS']['BE']['debug']) {
+                        if ($GLOBALS['TYPO3_CONF_VARS']['BE']['debug'] ?? false) {
                             self::getLogger()->debug('Nominatim retrying without zip', $query);
                         }
                         $ll = self::searchAddressNominatim($query, $address);
@@ -301,7 +301,7 @@ class Div
                 if ($address['type'] == 'unstructured') {
                     $query['q'] = $address['address'];
 
-                    if ($GLOBALS['TYPO3_CONF_VARS']['BE']['debug']) {
+                    if ($GLOBALS['TYPO3_CONF_VARS']['BE']['debug'] ?? false) {
                         self::getLogger()->debug('Nominatim unstructured', $query);
                     }
                     $ll = self::searchAddressNominatim($query, $address);
@@ -309,7 +309,7 @@ class Div
                 break;
         }
 
-        if ($GLOBALS['TYPO3_CONF_VARS']['BE']['debug']) {
+        if ($GLOBALS['TYPO3_CONF_VARS']['BE']['debug'] ?? false) {
             if ($ll) {
                 self::getLogger()->debug('Return address', $address);
             } else {
@@ -351,31 +351,31 @@ class Div
         // Save value in cache
         if ($result) {
             // take the first result
-            if ($result[0]) {
+            if ($result[0] ?? false) {
                 $ll = true;
                 $address['lat'] = (string)$result[0]['lat'];
                 $address['lon'] = (string)$result[0]['lon'];
-                if ($result[0]['address']['road']) {
+                if ($result[0]['address']['road'] ?? false) {
                     $address['street'] = (string)$result[0]['address']['road'];
                 }
-                if ($result[0]['address']['house_number']) {
+                if ($result[0]['address']['house_number'] ?? false) {
                     $address['housenumber'] = (string)$result[0]['address']['house_number'];
                 }
-                if ($result[0]['address']['postcode']) {
+                if ($result[0]['address']['postcode'] ?? false) {
                     $address['zip'] = (string)$result[0]['address']['postcode'];
                 }
-                if ($result[0]['address']['city'] || $result[0]['address']['village']) {
+                if (($result[0]['address']['city'] ?? false) || ($result[0]['address']['village'] ?? false)) {
                     $address['city'] = $result[0]['address']['city'] ? (string)$result[0]['address']['city'] : (string)$result[0]['address']['village'];
                 }
-                if ($result[0]['address']['state']) {
+                if ($result[0]['address']['state'] ?? false) {
                     $address['state'] = (string)$result[0]['address']['state'];
                 }
-                if ($result[0]['address']['country_code'] && empty($address['country'])) {
+                if (($result[0]['address']['country_code'] ?? false) && empty($address['country'] ?? false)) {
                     $address['country'] = strtoupper((string)$result[0]['address']['country_code']);
                 }
             }
         } else {
-            if ($GLOBALS['TYPO3_CONF_VARS']['BE']['debug']) {
+            if ($GLOBALS['TYPO3_CONF_VARS']['BE']['debug'] ?? false) {
                 self::getLogger()->error('No valid response from Nominatim service.');
             }
         }
@@ -437,12 +437,12 @@ class Div
     public static function splitAddressField(&$address)
     {
         // Address field contains street if country, city or zip is set
-        if ($address['country'] || $address['city'] || $address['zip']) {
+        if (($address['country'] ?? false)|| ($address['city'] ?? false) || ($address['zip'] ?? false)) {
             $address['type'] = 'structured';
-            if ($address['address'] && !$address['street']) {
+            if ($address['address'] && !($address['street'] ?? false)) {
                 $address['street'] = $address['address'];
             }
-            if (!$address['housenumber']) {
+            if (!($address['housenumber'] ?? false)) {
                 // Split street and house number
                 preg_match('/^(.+)\s(\d+(\s*[^\d\s]+)*)$/', $address['street'], $matches);
                 if ($matches) {
@@ -450,7 +450,7 @@ class Div
                     $address['housenumber'] = $matches[2];
                 }
             }
-        } elseif ($address['address']) {
+        } elseif ($address['address'] ?? false) {
             $address['type'] = 'unstructured';
         } else {
             $address['type'] = 'empty';
