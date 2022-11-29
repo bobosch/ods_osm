@@ -184,7 +184,7 @@ class TceMain
         switch ($table) {
 
             case 'tx_odsosm_vector':
-                if (!empty($fieldArray['data'])) {
+                if (!empty($fieldArray['data'] ?? false)) {
                     $this->lon = [];
                     $this->lat = [];
 
@@ -229,7 +229,7 @@ class TceMain
             //     break;
             default:
                 $tc = Div::getTableConfig($table);
-                if (isset($tc['lon'])) {
+                if ($tc['lon'] ?? false) {
                     if (
                         (isset($tc['address']) && ($fieldArray[$tc['address']] ?? null)) ||
                         (isset($tc['street']) && ($fieldArray[$tc['street']] ?? null)) ||
@@ -246,13 +246,13 @@ class TceMain
                                     $address[$def] = $obj->datamap[$table][$id][$field];
                                 }
                             }
-                            if ($config['autocomplete'] == 2 || floatval($address['longitude']) == 0) {
+                            if ($config['autocomplete'] == 2 || floatval($address['longitude'] ?? 0) == 0) {
                                 $ll = Div::updateAddress($address);
                                 if ($ll) {
                                     // Optimize address
                                     $address['lon'] = sprintf($tc['FORMAT'], $address['lon']);
                                     $address['lat'] = sprintf($tc['FORMAT'], $address['lat']);
-                                    if ($address['structured']) {
+                                    if ($address['structured'] ?? false) {
                                         if (isset($tc['address']) && !isset($tc['street'])) {
                                             if ($address['street']) {
                                                 $address['address'] = $address['street'];
@@ -262,10 +262,10 @@ class TceMain
                                             }
                                         }
                                     } else {
-                                        if (isset($tc['address'])) {
-                                            if ($address['street']) {
+                                        if ($tc['address'] ?? false) {
+                                            if ($address['street'] ?? false) {
                                                 $address['address'] = $address['street'];
-                                                if ($address['housenumber']) {
+                                                if ($address['housenumber'] ?? false) {
                                                     $address['address'] .= ' ' . $address['housenumber'];
                                                 }
                                                 $address['address'] .= ', ' . $address['zip'] . ' ' . $address['city'];
