@@ -95,9 +95,6 @@ class MigrateSettings implements UpgradeWizardInterface
         // Update the found record sets
         while ($record = $statement->fetch()) {
             // Robust error handling in case pi_flexform is NULL or empty
-            // this should normally not happen by might happen due to problems on saving CE initially
-            // records like this should be fixed in any case but this Upgrade Wizard will ignore these problems and
-            // continue, because otherwise it would crash which would leave it in half finished state.
             if (!($record['pi_flexform'] ?? false)) {
                 continue;
             }
@@ -107,8 +104,6 @@ class MigrateSettings implements UpgradeWizardInterface
             if ($oldXml === $newXml) {
                 // robust error handling:
                 // if no change is necessary, this record was probably already converted and we skip the SQL UPDATE
-                // which could happen if Upgrade Wizard is run several times (in case it crashed previously, for reasons
-                // out of control here)
                 continue;
             }
 
@@ -158,6 +153,9 @@ class MigrateSettings implements UpgradeWizardInterface
 
         // Update the found record sets
         while ($record = $statement->fetch()) {
+            if (!($record['pi_flexform'] ?? false)) {
+                continue;
+            }
             $oldSettingsFound = $this->checkForOldSettings($record['pi_flexform']);
             if ($oldSettingsFound === true) {
                 // We found at least one field to be updated --> break here
@@ -186,11 +184,17 @@ class MigrateSettings implements UpgradeWizardInterface
 
     /**
      * @param string $oldValue
-     * @return string
+     * @return string|bool
      */
-    protected function migrateFlexformSettings(string $oldValue): string
+    protected function migrateFlexformSettings(string $oldValue): ?string
     {
         $xml = simplexml_load_string($oldValue);
+
+        // if something went wrong, return.
+        if ($xml === false) {
+            return false;
+        }
+
         // get all field elements
         $library = $xml->xpath("//field[@index='library'][1]");
 
@@ -224,6 +228,11 @@ class MigrateSettings implements UpgradeWizardInterface
     protected function checkForOldSettings(string $flexFormXml): bool
     {
         $xml = simplexml_load_string($flexFormXml);
+
+        // if something went wrong, return.
+        if ($xml === false) {
+            return false;
+        }
 
         // check for existing values of attribute "index"
         // * openlayers_layer
