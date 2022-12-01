@@ -121,22 +121,20 @@ class PluginController extends AbstractPlugin
         );
         foreach ($options as $option) {
             $value = $this->pi_getFFvalue($this->cObj->data['pi_flexform'], $option, 'sDEF');
-            if ($value) {
-                switch ($option) {
-                    case 'lat':
-                    case 'lon':
-                        if ($value != 0) {
-                            $flex[$option] = $value;
-                        }
-                        break;
-                    case 'marker':
-                    case 'marker_popup_initial':
-                        $flex[$option] = $this->splitGroup($value, 'tt_address');
-                        break;
-                    default:
+            switch ($option) {
+                case 'lat':
+                case 'lon':
+                    if ($value != 0) {
                         $flex[$option] = $value;
-                        break;
-                }
+                    }
+                    break;
+                case 'marker':
+                case 'marker_popup_initial':
+                    $flex[$option] = $this->splitGroup($value, 'tt_address');
+                    break;
+                default:
+                    $flex[$option] = $value;
+                    break;
             }
         }
         if ($flex['library'] == 'staticmap' && !empty($flex['staticmap_layer'])) {
@@ -588,14 +586,14 @@ class PluginController extends AbstractPlugin
             // set visible flag
             if (isset($this->config['layers_visible'])) {
                 foreach ($this->config['layers_visible'] as $key) {
-                    if ($baselayers[$key]) {
+                    if ($baselayers[$key] ?? false) {
                         $baselayers[$key]['visible'] = true;
                     }
                 }
             }
             if (isset($this->config['overlays_active'])) {
                 foreach (explode(',', $this->config['overlays_active']) as $key) {
-                    if ($baselayers[$key]) {
+                    if ($baselayers[$key] ?? false) {
                         $baselayers[$key]['visible'] = true;
                     }
                 }
