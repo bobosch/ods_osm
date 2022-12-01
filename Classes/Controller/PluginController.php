@@ -69,7 +69,6 @@ class PluginController extends AbstractPlugin
 
     function init($conf)
     {
-        $this->conf = $conf;
         $this->pi_setPiVarDefaults();
         $this->pi_loadLL();
         $this->pi_initPIflexForm(); // Init FlexForm configuration for plugin
@@ -145,9 +144,9 @@ class PluginController extends AbstractPlugin
 
         // 1. get extension configuration
         $this->config = Div::getConfig();
-        // 2. merge with TypoScript configuration
-        \TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule($this->config, $this->conf, true, false);
-        // 3. merge with Flexform settings
+        // 2. merge with TypoScript configuration, empty values do not override
+        \TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule($this->config, $conf, true, false);
+        // 3. merge with Flexform settings, empty values do not override
         \TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule($this->config, $flex, true, false);
 
         if (!is_array($this->config['marker'] ?? null)) {
