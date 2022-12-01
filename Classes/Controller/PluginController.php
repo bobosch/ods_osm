@@ -143,7 +143,13 @@ class PluginController extends AbstractPlugin
             $flex['layer'] = $flex['base_layer'];
         }
 
-        $this->config = array_merge(Div::getConfig(), $conf, $flex);
+        // 1. get extension configuration
+        $this->config = Div::getConfig();
+        // 2. merge with TypoScript configuration
+        \TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule($this->config, $this->conf, true, false);
+        // 3. merge with Flexform settings
+        \TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule($this->config, $flex, true, false);
+
         if (!is_array($this->config['marker'] ?? null)) {
             $this->config['marker'] = [];
         }
@@ -167,13 +173,13 @@ class PluginController extends AbstractPlugin
             $this->config['width'] .= 'px';
         }
 
-        if ($this->config['show_layerswitcher']) {
+        if ($this->config['show_layerswitcher'] ?? false) {
             $this->config['layers_visible'] = [];
         } else {
             $this->config['layers_visible'] = $this->config['layer'];
         }
 
-        if ($this->config['external_control']) {
+        if ($this->config['external_control'] ?? false) {
             if (GeneralUtility::_GP('lon')) {
                 $this->config['lon'] = GeneralUtility::_GP('lon');
             }
