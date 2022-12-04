@@ -39,7 +39,6 @@
 							<config>
 								<type>input</type>
 								<size>5</size>
-								<default>80vw</default>
 							</config>
 						</TCEforms>
 					</width>
@@ -49,7 +48,6 @@
 							<config>
 								<type>input</type>
 								<size>5</size>
-								<default>80vh</default>
 							</config>
 						</TCEforms>
 					</height>
@@ -59,8 +57,6 @@
 							<config>
 								<type>input</type>
 								<size>11</size>
-								<checkbox>0.000000</checkbox>
-								<default>0.000000</default>
 								<eval>Bobosch\OdsOsm\Evaluation\LonLat</eval>
 								<fieldControl>
 									<locationMap>
@@ -172,7 +168,6 @@
 										<numIndex index="1">18</numIndex>
 									</numIndex>
 								</items>
-								<default>10</default>
 							</config>
 						</TCEforms>
 					</zoom>
@@ -201,7 +196,6 @@
 										<numIndex index="1">staticmap</numIndex>
 									</numIndex>
 								</items>
-								<default>leaflet</default>
 							</config>
 						</TCEforms>
 					</library>
@@ -291,7 +285,7 @@
 								<items type="array">
 									<numIndex index="0" type="array">
 										<numIndex index="0">LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xlf:tt_content.pi_flexform.show_popups.I.0</numIndex>
-										<numIndex index="1">0</numIndex>
+										<numIndex index="1">-1</numIndex>
 									</numIndex>
 									<numIndex index="1" type="array">
 										<numIndex index="0">LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xlf:tt_content.pi_flexform.show_popups.I.1</numIndex>
@@ -331,7 +325,7 @@
 								<items type="array">
 									<numIndex index="1" type="array">
 										<numIndex index="0">LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xlf:tt_content.pi_flexform.show_layerswitcher.I.0</numIndex>
-										<numIndex index="1">0</numIndex>
+										<numIndex index="1">-1</numIndex>
 									</numIndex>
 									<numIndex index="2" type="array">
 										<numIndex index="0">LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xlf:tt_content.pi_flexform.show_layerswitcher.I.1</numIndex>
@@ -342,6 +336,7 @@
 										<numIndex index="1">2</numIndex>
 									</numIndex>
 								</items>
+								<default>1</default>
 							</config>
 						</TCEforms>
 					</show_layerswitcher>
@@ -367,6 +362,7 @@
 										<numIndex index="1">2</numIndex>
 									</numIndex>
 								</items>
+								<default>2</default>
 							</config>
 						</TCEforms>
 					</layerswitcher_activationMode>

@@ -370,7 +370,7 @@ class Openlayers extends BaseProvider
                 break;
             default:
                 $markerOptions = [];
-                if (is_array($item['tx_odsosm_marker'])) {
+                if ($item['tx_odsosm_marker'] ?? false) {
                     $marker = $item['tx_odsosm_marker'];
                     $iconOptions = array(
                         'iconSize' => array((int)$marker['size_x'], (int)$marker['size_y']),
@@ -403,7 +403,7 @@ class Openlayers extends BaseProvider
                 }
 
                 $jsMarker .= "var " . $jsElementVar . " = new ol.layer.Vector({
-                    title: '<img src=\"" .$icon . "\" class=\"marker-icon\" /> " . $item['group_title'] . "',
+                    title: '<img src=\"" .$icon . "\" class=\"marker-icon\" /> " . ($item['group_title'] ?? $item['name']) . "',
                     source: new ol.source.Vector({
                         features: [
                             new ol.Feature({

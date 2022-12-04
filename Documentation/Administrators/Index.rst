@@ -88,12 +88,6 @@ Reference
 |                 |           || 32: Stamen Terrain Labels          |         |
 |                 |           || 33: Railway Infrastructure         |         |
 +-----------------+-----------+-------------------------------------+---------+
-| layerswitcher.  | boolean   | Use extra div for the layerswitcher.| 0       |
-| div             |           |                                     |         |
-+-----------------+-----------+-------------------------------------+---------+
-| layerswitcher.  | string    | Additional options when creating    |         |
-| options         |           | layerswitcher.                      |         |
-+-----------------+-----------+-------------------------------------+---------+
 | library         | string    | Library: leaflet / openlayers /     | |ol|    |
 |                 |           | openlayers3 / static                |         |
 +-----------------+-----------+-------------------------------------+---------+

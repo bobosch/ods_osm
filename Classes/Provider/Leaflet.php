@@ -282,7 +282,7 @@ class Leaflet extends BaseProvider
                 break;
             default:
                 $markerOptions = [];
-                if (is_array($item['tx_odsosm_marker'])) {
+                if ($item['tx_odsosm_marker'] ?? false) {
                     $marker = $item['tx_odsosm_marker'];
                     $iconOptions = array(
                         'iconSize' => array((int)$marker['size_x'], (int)$marker['size_y']),
@@ -302,7 +302,7 @@ class Leaflet extends BaseProvider
                 }
                 $jsMarker .= 'var ' . $jsElementVar . ' = new L.Marker([' . $item['latitude'] . ', ' . $item['longitude'] . '], {' . implode(',', $markerOptions) . "});\n";
                 // Add group to layer switch
-                if ($item['group_title']) {
+                if ($item['group_title'] ?? false) {
                     $this->layers[1][] = [
                         'title' => ($marker['type'] == 'html' ? $marker['icon'] : "<img class='marker-icon' src='" . $icon . "' />") . ' ' . $item['group_title'],
                         'gid' => $item['group_uid']

@@ -22,17 +22,26 @@ class Staticmap extends BaseProvider
                     default:
                         $lon = $item['longitude'];
                         $lat = $item['latitude'];
-                        if (is_array($item['tx_odsosm_marker'])) {
+                        if ($item['tx_odsosm_marker'] ?? false) {
                             $marker = $item['tx_odsosm_marker'];
                             $icon = $marker['icon'];
                         } else {
-                            $marker = array('size_x' => 21, 'size_y' => 25, 'offset_x' => -11, 'offset_y' => -25);
-                            $icon = 'EXT:ods_osm/Resources/Public/JavaScript/Leaflet/Core/images/marker-icon.png';
+                            $marker = ['size_x' => 21, 'size_y' => 25, 'offset_x' => -11, 'offset_y' => -25];
+                            $icon = 'EXT:ods_osm/Resources/Public/Icons/marker-icon.png';
                         }
                         break 3;
                 }
             }
         }
+
+        // set reasonable defaults for width and height (100% and vh/vw does not work with staticmap)
+        if (intval($this->config['width']) <= 100) {
+            $this->config['width'] = 640;
+        }
+        if (intval($this->config['height']) <= 100) {
+            $this->config['height'] = 480;
+        }
+
 
         $markerUrl = array(
             '###lon###' => $lon,
