@@ -14,6 +14,7 @@ plugin.tx_odsosm_pi1 {
 		fe_users =
 		fe_groups =
 		tx_odsosm_track =
+		tx_odsosm_marker =
 		tt_address =
 		sys_category =
 		tx_calendarize_domain_model_event =
@@ -62,8 +63,6 @@ plugin.tx_odsosm_pi1 {
 
 	width = {$plugin.tx_odsosm_pi1.width}
 	height = {$plugin.tx_odsosm_pi1.height}
-	lon =
-	lat =
 	zoom = {$plugin.tx_odsosm_pi1.zoom}
 	layer = {$plugin.tx_odsosm_pi1.layer}
 	cluster = {$plugin.tx_odsosm_pi1.cluster}
@@ -79,10 +78,17 @@ plugin.tx_odsosm_pi1 {
 	marker_popup_initial =
 	show_layerswitcher = {$plugin.tx_odsosm_pi1.show_layerswitcher}
 	show_scalebar = {$plugin.tx_odsosm_pi1.show_scalebar}
-	layerswitcher.div = 0
-	layerswitcher.options =
 
-	_CSS_DEFAULT_STYLE = .olControlAttribution{bottom:0px!important;}
+	show_fullscreen = {$plugin.tx_odsosm_pi1.show_fullscreen}
+
+# 	Leaflet only
+	enable_scrollwheelzoom = 1
+	enable_dragging = 1
+	position = 0
+
+#	OpenLayers only
+	layerswitcher_activationMode = 1
+	mouse_position = 0
 }
 
 

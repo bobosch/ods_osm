@@ -31,6 +31,7 @@ use Doctrine\DBAL\FetchMode;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Page\PageRenderer;
+use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Resource\FileRepository;
@@ -69,7 +70,6 @@ class PluginController extends AbstractPlugin
 
     function init($conf)
     {
-        $this->conf = $conf;
         $this->pi_setPiVarDefaults();
         $this->pi_loadLL();
         $this->pi_initPIflexForm(); // Init FlexForm configuration for plugin
@@ -84,10 +84,10 @@ class PluginController extends AbstractPlugin
         $this->connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
 
         /* --------------------------------------------------
-            Configuration (order of priority)
-            - FlexForm
-            - TypoScript
-            - Extension
+            Configuration may be done in different places
+            - FlexForm ($flex)
+            - TypoScript ($conf)
+            - extension settings
         -------------------------------------------------- */
 
         $flex = [];
@@ -119,31 +119,41 @@ class PluginController extends AbstractPlugin
             'enable_scrollwheelzoom',
             'enable_dragging'
         );
-        foreach ($options as $option) {
-            $value = $this->pi_getFFvalue($this->cObj->data['pi_flexform'], $option, 'sDEF');
-            switch ($option) {
-                case 'lat':
-                case 'lon':
-                    if ($value != 0) {
+        // fill flex array, if there is a flexform data available
+        if ($this->cObj->data['pi_flexform'] ?? null) {
+            foreach ($options as $option) {
+                $value = $this->pi_getFFvalue($this->cObj->data['pi_flexform'] ?? null, $option, 'sDEF');
+                switch ($option) {
+                    case 'lat':
+                    case 'lon':
+                        if ($value != 0) {
+                            $flex[$option] = $value;
+                        }
+                        break;
+                    case 'marker':
+                    case 'marker_popup_initial':
+                        $flex[$option] = $this->splitGroup($value, 'tt_address');
+                        break;
+                    default:
                         $flex[$option] = $value;
-                    }
-                    break;
-                case 'marker':
-                case 'marker_popup_initial':
-                    $flex[$option] = $this->splitGroup($value, 'tt_address');
-                    break;
-                default:
-                    $flex[$option] = $value;
-                    break;
+                        break;
+                }
+            }
+            if ($flex['library'] == 'staticmap' && !empty($flex['staticmap_layer'])) {
+                $flex['layer'] = $flex['staticmap_layer'];
+            } else if (!empty($flex['base_layer'])) {
+                $flex['layer'] = $flex['base_layer'];
             }
         }
-        if ($flex['library'] == 'staticmap' && !empty($flex['staticmap_layer'])) {
-            $flex['layer'] = $flex['staticmap_layer'];
-        } else if (!empty($flex['base_layer'])) {
-            $flex['layer'] = $flex['base_layer'];
-        }
 
-        $this->config = array_merge(Div::getConfig(), $conf, $flex);
+        // merge configs together into $this->config
+        // 1. get extension configuration
+        $this->config = Div::getConfig();
+        // 2. get TypoScript settings
+        ArrayUtility::mergeRecursiveWithOverrule($this->config, $conf);
+        // 3. merge Flexform settings, but skip empty values.
+        ArrayUtility::mergeRecursiveWithOverrule($this->config, $flex, true, false);
+
         if (!is_array($this->config['marker'] ?? null)) {
             $this->config['marker'] = [];
         }
@@ -167,13 +177,13 @@ class PluginController extends AbstractPlugin
             $this->config['width'] .= 'px';
         }
 
-        if ($this->config['show_layerswitcher']) {
+        if ($this->config['show_layerswitcher'] ?? false) {
             $this->config['layers_visible'] = [];
         } else {
             $this->config['layers_visible'] = $this->config['layer'];
         }
 
-        if ($this->config['external_control']) {
+        if ($this->config['external_control'] ?? false) {
             if (GeneralUtility::_GP('lon')) {
                 $this->config['lon'] = GeneralUtility::_GP('lon');
             }
@@ -215,7 +225,7 @@ class PluginController extends AbstractPlugin
             }
         }
 
-        $this->config['id'] = 'osm_' . ($this->cObj->data['uid'] ? : uniqid()) ;
+        $this->config['id'] = 'osm_' . ($this->cObj->data['uid'] ?? uniqid()) ;
 
         $this->config['marker'] = $this->extractGroup($this->config['marker']);
 
@@ -437,7 +447,7 @@ class PluginController extends AbstractPlugin
             }
         }
 
-        // get lon&lat
+        // get lon & lat
         foreach ($records as $table => $items) {
             foreach ($items as $uid => $row) {
                 switch ($table) {
@@ -463,8 +473,13 @@ class PluginController extends AbstractPlugin
         // No markers
         if (count($this->lons) == 0) {
             if ($this->config['no_marker'] == 1) {
-                $this->lons[] = $this->config['lon'];
-                $this->lats[] = $this->config['lat'];
+                if (($this->config['lon'] ?? false) && ($this->config['lat'] ?? false)) {
+                    $this->lons[] = $this->config['lon'];
+                    $this->lats[] = $this->config['lat'];
+                } else {
+                    $this->lons[] = $this->config['default_lon'];
+                    $this->lats[] = $this->config['default_lat'];
+                }
             }
         }
 
@@ -614,12 +629,12 @@ class PluginController extends AbstractPlugin
         /* ==================================================
             Map center
         ================================================== */
-        if ($this->config['lon'] == 0 || $this->config['use_coords_only_nomarker']) {
+        if ($this->config['lon'] ?? false || $this->config['use_coords_only_nomarker'] ?? false) {
             $lon = array_sum($this->lons) / count($this->lons);
             $lat = array_sum($this->lats) / count($this->lats);
         } else {
-            $lon = floatval($this->config['lon']);
-            $lat = floatval($this->config['lat']);
+            $lon = floatval($this->config['lon'] ?? $this->config['default_lon']);
+            $lat = floatval($this->config['lat'] ?? $this->config['default_lat']);
         }
         $zoom = intval($this->config['zoom']);
 
