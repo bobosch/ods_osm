@@ -4,15 +4,21 @@ plugin.tx_odsosm_pi1 {
 
     marker.tx_calendarize_domain_model_event.data = GP:tx_calendarize_calendar|index
 
+    use_coords_only_nomarker = 1
+
+    width = 480px
+    height = 360px
+
     zoom = 14
 
     layer = 1
 
     show_popups = 1
-
-    width = 100%
+    marker_popup_initial = 1
 
     show_fullscreen = 1
+
+    show_scalebar = 1
 
     library = leaflet
 }

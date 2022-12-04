@@ -83,7 +83,7 @@ abstract class BaseProvider
 			" . $this->getMapCenter($lat, $lon, $zoom) . "
 			" . $this->getMarkers($markers);
 
-        if ($this->config['show_layerswitcher'] ?? null) {
+        if (($this->config['show_layerswitcher'] ?? null) && ($this->config['show_layerswitcher'] > 0)) {
             $this->script .= $this->getLayerSwitcher() . "\n";
         }
 
