@@ -59,7 +59,13 @@ Reference
 |                 |           | markers                             |         |
 |                 |           || Don't forget to set no_cache=1     |         |
 +-----------------+-----------+-------------------------------------+---------+
-| height          | integer   |                                     | 400     |
+| height          | integer   | Height of the map div block. This   | 80vh    |
+|                 |           | depends on your webdesign. The      |         |
+|                 |           | default value is 80vh which means   |         |
+|                 |           | 80% from current view port.         |         |
+|                 |           |                                     |         |
+|                 |           | You can set other values like       |         |
+|                 |           | "80%", 480, 480px                   |         |
 +-----------------+-----------+-------------------------------------+---------+
 | icon            | IMAGE or  | Default marker image                | Library |
 |                 | TEXT      |                                     | default |
@@ -87,12 +93,6 @@ Reference
 |                 |           || 31: Public Transport Lines         |         |
 |                 |           || 32: Stamen Terrain Labels          |         |
 |                 |           || 33: Railway Infrastructure         |         |
-+-----------------+-----------+-------------------------------------+---------+
-| layerswitcher.  | boolean   | Use extra div for the layerswitcher.| 0       |
-| div             |           |                                     |         |
-+-----------------+-----------+-------------------------------------+---------+
-| layerswitcher.  | string    | Additional options when creating    |         |
-| options         |           | layerswitcher.                      |         |
 +-----------------+-----------+-------------------------------------+---------+
 | library         | string    | Library: leaflet / openlayers /     | |ol|    |
 |                 |           | openlayers3 / static                |         |
@@ -128,7 +128,13 @@ Reference
 | |uconm|         | boolean   | Use the default coordinates only if | 0       |
 |                 |           | no marker exists.                   |         |
 +-----------------+-----------+-------------------------------------+---------+
-| width           | integer   |                                     | 640     |
+| width           | integer   | Height of the map div block. This   | 80vw    |
+|                 |           | depends on your webdesign. The      |         |
+|                 |           | default value is 80vw which means   |         |
+|                 |           | 80% from current view port.         |         |
+|                 |           |                                     |         |
+|                 |           | You can set other values like       |         |
+|                 |           | "100%", 640, 640px                  |         |
 +-----------------+-----------+-------------------------------------+---------+
 
 Examples
