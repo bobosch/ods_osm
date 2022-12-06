@@ -3,9 +3,9 @@
 
 .. _Start:
 
-==================
-EXT: OpenStreetMap
-==================
+============================
+EXT: ods_osm (OpenStreetMap)
+============================
 
 :Author:    Robert Heel <typo3@bobosch.de>
 :License:   GPL 3.0
@@ -22,4 +22,3 @@ EXT: OpenStreetMap
    Editors/Index
    Administrators/Index
    Tutorial/Index
-   Conribution/Index
