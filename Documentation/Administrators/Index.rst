@@ -1,9 +1,23 @@
+==============
 Administration
 ==============
 
-In the extension configuration
+Extension Configuration
+=======================
 
-.. image:: ../Images/ExtensionConfiguration.png
+Some global settings of the extension may be configured in `Settings -> Extension Configuration -> ods_osm`.
+
+Screenshot
+----------
+
+..  figure:: /Images/ExtensionConfiguration.png
+    :class: with-shadow
+    :alt: Screenshot with first part of the ods_osm settings in the extension configuration
+
+    Screenshot of the ods_osm Extension Configuration
+
+Reference
+---------
 
 +----------------------------+------------------------------------------------+-------------+
 |           Option           |                   Description                  | Default     |
@@ -19,19 +33,43 @@ In the extension configuration
 |                            | “city” and “country” of every address record   |             |
 |                            | you save is sent to the provider.              |             |
 +----------------------------+------------------------------------------------+-------------+
-| Contact email address      | Enter a contact email address for the service  |             |
+| Geo service contact email  | Enter a contact email address for the service  |             |
 |                            | provider here. If not specified, email address |             |
 |                            | of server admin is used.                       |             |
++----------------------------+------------------------------------------------+-------------+
+| Geo service user name      | The GeoNames service requires a username       |             |
++----------------------------+------------------------------------------------+-------------+
+| Default country            | Two letter countrycode used in search if no    | DE          |
+|                            | country is specified.                          |             |
++----------------------------+------------------------------------------------+-------------+
+| Enable address search cache| The result of the geo service is stored in     | 1           |
+|                            | tx_odsosm_geocache if activated.               |             |
 +----------------------------+------------------------------------------------+-------------+
 | Use local javascripts and  | Activate this if you don't like to use the     | 1           |
 | images                     | javascript files from CDNs but the local ones  |             |
 |                            | from this extension.                           |             |
 +----------------------------+------------------------------------------------+-------------+
+| Default longitude          |                                                | 10.41       |
++----------------------------+------------------------------------------------+-------------+
+| Default latitude           |                                                | 51.27       |
++----------------------------+------------------------------------------------+-------------+
+| Default zoom               |                                                | 8           |
++----------------------------+------------------------------------------------+-------------+
 
-There is a function to mass gecode addresses in the functions menu.
 
-Configuration
-=============
+TypoScript Configuration
+========================
+
+It is mandatory to include the ods_osm TypoScript template "Template OpenStreetMap".
+This template sets some default values for the ods_osm plugin. The defaults may be configured
+with the TypoScript Constant Editor.
+
+With these TypoScript defaults, the editor does not need to make a detailed configuration of the
+ods_osm plugin. Selecting the wanted marker is suffician.
+
+The dimenions of the map, the right JavaScript library and zoom level are set by the defaults.
+But editors may set and overwrite the defaults in the plugin settings.
+
 
 Reference
 ---------
@@ -153,7 +191,7 @@ Examples
 Markers
 ```````
 
-::
+..  code-block:: typoscript
 
 	plugin.tx_odsosm_pi1 {
 		marker {
@@ -169,7 +207,7 @@ Markers
 Popups
 ``````
 
-::
+..  code-block:: typoscript
 
 	plugin.tx_odsosm_pi1 {
 		popup {
@@ -199,7 +237,7 @@ Popups
 Icon Property
 `````````````
 
-::
+..  code-block:: typoscript
 
 	plugin.tx_odsosm_pi1 {
 		icon {
