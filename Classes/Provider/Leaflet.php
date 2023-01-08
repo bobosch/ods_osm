@@ -23,11 +23,11 @@ class Leaflet extends BaseProvider
                 GeneralUtility::getFileAbsFileName(Div::RESOURCE_BASE_PATH . 'JavaScript/Leaflet/')
             )
         );
-        $this->path_leaflet = ($this->config['local_js'] ? $this->path_res . 'Core/' : 'https://unpkg.com/leaflet@1.9.1/dist/');
+        $this->path_leaflet = ($this->config['local_js'] ? $this->path_res . 'Core/' : 'https://unpkg.com/leaflet@1.9.3/dist/');
         $this->pageRenderer->addCssFile($this->path_leaflet . 'leaflet.css');
         $this->scripts['leaflet'] = [
             'src' => $this->path_leaflet . 'leaflet.js',
-            'sri' => 'sha384-mvgACVzya0zhB/4CbnTX8JiDAJXE6NGoGD70xNLLwtv0ON8la+5S7Xnyf+0nOqF8'
+            'sri' => 'sha384-okbbMvvx/qfQkmiQKfd5VifbKZ/W8p1qIsWvE1ROPUfHWsDcC8/BnHohF7vPg2T6'
         ];
     }
 
