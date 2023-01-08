@@ -520,7 +520,7 @@ class Div
             ]
         ];
 
-        // load configuration for tt_address only if extension is loaded
+        // load configuration for calendarize only if extension is loaded
         if (ExtensionManagementUtility::isLoaded('calendarize')) {
             $tables['tx_calendarize_domain_model_event'] = [
                 'FORMAT' => '%01.6f',
@@ -561,16 +561,4 @@ class Div
         return $loggerManager->getLogger(static::class);
     }
 
-
-
-    public function isExtensionLoaded($params = [])
-    {
-        $isLoaded = false;
-
-        if ( ExtensionManagementUtility::isLoaded('tt_address') ) {
-            $isLoaded = true;
-        }
-
-        return $isLoaded;
-    }
 }
