@@ -21,7 +21,7 @@ CREATE TABLE sys_category (
 );
 
 --
--- Table structure for table 'fe_users'
+-- Table structure for table 'tx_calendarize_domain_model_event'
 --
 CREATE TABLE tx_calendarize_domain_model_event (
 	tx_odsosm_lon decimal(9,6) NOT NULL DEFAULT '0.000000',

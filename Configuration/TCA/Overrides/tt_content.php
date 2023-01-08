@@ -23,21 +23,3 @@ ExtensionManagementUtility::addPiFlexFormValue(
 
 $GLOBALS['TCA']['tt_content']['types']['list']['subtypes_addlist']['ods_osm_pi1']     = 'pi_flexform';
 $GLOBALS['TCA']['tt_content']['types']['list']['subtypes_excludelist']['ods_osm_pi1'] = 'layout,select_key,pages,recursive';
-
-// Avoid PHP 8.1 errors due to not available index if extensions are not installed
-if (! ExtensionManagementUtility::isLoaded('tt_address')) {
-	$GLOBALS['TCA']['tt_address'] = [
-		'ctrl' => [
-			'title' => '',
-			'iconfile' => 'EXT:ods_osm/Resources/Public/Icons/osm.png'
-		]
-	];
-}
-if (! ExtensionManagementUtility::isLoaded('calendarize')) {
-	$GLOBALS['TCA']['tx_calendarize_domain_model_event'] = [
-		'ctrl' => [
-			'title' => '',
-			'iconfile' => 'EXT:ods_osm/Resources/Public/Icons/osm.png'
-		]
-	];
-}
