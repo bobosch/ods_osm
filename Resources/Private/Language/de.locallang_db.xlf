@@ -58,8 +58,12 @@
 				<target><![CDATA[Programm]]></target>
 			</trans-unit>
 			<trans-unit id="tt_content.pi_flexform.marker" approved="yes">
-				<source><![CDATA[Marker to show]]></source>
+				<source><![CDATA[Records to show]]></source>
 				<target><![CDATA[Markierungen anzeigen]]></target>
+			</trans-unit>
+			<trans-unit id="tt_content.pi_flexform.marker.description" approved="yes">
+				<source><![CDATA[Select marker, track or vector records to show on the map.]]></source>
+				<target><![CDATA[Marker, Track oder Vector-Daten für die Anzeige auf der Karte wählen.]]></target>
 			</trans-unit>
 			<trans-unit id="tt_content.pi_flexform.marker_popup_intial" approved="yes">
 				<source><![CDATA[Show this marker's popup initially]]></source>
@@ -118,7 +122,7 @@
 			</trans-unit>
 			<trans-unit id="tt_content.pi_flexform.show_popups.I.0" approved="yes">
 				<source><![CDATA[No]]></source>
-				<target><![CDATA[NNein]]></target>
+				<target><![CDATA[Nein]]></target>
 			</trans-unit>
 			<trans-unit id="tt_content.pi_flexform.show_popups.I.1" approved="yes">
 				<source><![CDATA[Click]]></source>

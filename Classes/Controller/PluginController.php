@@ -327,7 +327,15 @@ class PluginController extends AbstractPlugin
         $records = [];
         foreach ($record_ids as $table => $items) {
             $tc = $tables[$table] ?? [];
-            $connection = $this->connectionPool->getConnectionForTable($table);
+            $connection = $this->connectionPool
+                ->getConnectionForTable($table)
+                ->getSchemaManager()
+                ->tablesExist([$table]);
+
+            // table seems not available --> break to avoid exceptions
+            if ($connection === false) {
+                break;
+            }
             foreach ($items as $item) {
                 $item = intval($item);
 

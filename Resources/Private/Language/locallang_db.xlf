@@ -40,7 +40,10 @@
 				<source>Cluster markers</source>
 			</trans-unit>
 			<trans-unit id="tt_content.pi_flexform.marker" xml:space="preserve">
-				<source>Marker to show</source>
+				<source>Records to show</source>
+			</trans-unit>
+			<trans-unit id="tt_content.pi_flexform.marker.description" xml:space="preserve">
+				<source>Select marker, track or vector records to show on the map.</source>
 			</trans-unit>
 			<trans-unit id="tt_content.pi_flexform.marker_popup_intial" xml:space="preserve">
 				<source>Show this marker's popup initially</source>
