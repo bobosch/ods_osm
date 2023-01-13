@@ -7,7 +7,7 @@
 EXT: ods_osm (OpenStreetMap)
 ============================
 
-:Author:    Robert Heel <typo3@bobosch.de>
+:Author:    Robert Heel <typo3@bobosch.de>, Alexander Bigga <alexander@bigga.de>
 :License:   GPL 3.0
 :Rendered:  |today|
 :Description:

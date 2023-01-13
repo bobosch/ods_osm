@@ -30,6 +30,16 @@ mod.wizards.newContentElement.wizardItems.plugins.show := addToList(odsosm)
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processDatamapClass'][] = \Bobosch\OdsOsm\TceMain::class;
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tce']['formevals'][\Bobosch\OdsOsm\Evaluation\LonLat::class] = '';
 
+// Modify flexform fields since core 8.5 via formEngine: Inject a data provider between TcaFlexPrepare and TcaFlexProcess
+$GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['formDataGroup']['tcaDatabaseRecord'][\Bobosch\OdsOsm\Backend\FormDataProvider\FlexFormManipulation::class] = [
+    'depends' => [
+        \TYPO3\CMS\Backend\Form\FormDataProvider\TcaFlexPrepare::class,
+    ],
+    'before' => [
+        \TYPO3\CMS\Backend\Form\FormDataProvider\TcaFlexProcess::class,
+    ],
+];
+
 // Add wizard with map for setting geo location
 $GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['nodeRegistry'][1616876515] = [
     'nodeName' => 'coordinatepickerWizard',
