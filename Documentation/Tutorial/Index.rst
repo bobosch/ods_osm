@@ -9,7 +9,7 @@ The following steps are tested with TYPO3 11.5 LTS.
 
    ``composer require bobosch/ods-osm:^4.1``
 
-2. Install tt_address
+2. Install tt_address (optional)
 
    ``composer req friendsoftypo3/tt-address``
 
