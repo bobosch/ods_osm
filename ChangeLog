@@ -1,3 +1,8 @@
+2023-01-15 Alexander Bigga <alexander@bigga.de>
+	* Fix missing TCA configuration of fe_groups and sys_category in TYPO3 10.4. Thanks to Dirk Wildt, verdigado eG.
+	* Fix exception on loading plugin settings if tt_address is not installed
+	* Update to Leaflet 1.9.3
+
 2022-11-27 Alexander Bigga <alexander@bigga.de>
 	* fix show_popup for click and hover with OpenLayers and Leaflet
 	* Show map on EXT:calendarize event detail if location is geo referenced
