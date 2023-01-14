@@ -168,7 +168,11 @@ Extended elements
 Website user
 ............
 
-.. image:: ../Images/Coordinates.png
+..  figure:: /Images/FeUserCoordinates.png
+    :class: with-shadow
+    :alt: Part of the form of a fe_users record with fields for longitude and latitude.
+
+    Fields for longitude and latitude of a fe_users record. Click on the OSM icon to launch the map wizard.
 
 +----------------------------+------------------------------------------------+
 |       Element option       |                  Description                   |
