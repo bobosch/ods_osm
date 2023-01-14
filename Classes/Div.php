@@ -437,12 +437,12 @@ class Div
     public static function splitAddressField(&$address)
     {
         // Address field contains street if country, city or zip is set
-        if (($address['country'] ?? false)|| ($address['city'] ?? false) || ($address['zip'] ?? false)) {
+        if (($address['country'] ?? false) || ($address['city'] ?? false) || ($address['zip'] ?? false)) {
             $address['type'] = 'structured';
             if ($address['address'] && !($address['street'] ?? false)) {
                 $address['street'] = $address['address'];
             }
-            if (!($address['housenumber'] ?? false)) {
+            if (!($address['housenumber'] ?? false) && ($address['street'] ?? false)) {
                 // Split street and house number
                 preg_match('/^(.+)\s(\d+(\s*[^\d\s]+)*)$/', $address['street'], $matches);
                 if ($matches) {

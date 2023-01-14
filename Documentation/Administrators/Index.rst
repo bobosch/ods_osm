@@ -2,6 +2,8 @@
 Administration
 ==============
 
+.. _extension-configuration:
+
 Extension Configuration
 =======================
 
@@ -56,6 +58,8 @@ Reference
 | Default zoom               |                                                | 8           |
 +----------------------------+------------------------------------------------+-------------+
 
+
+.. _typoscript-configuration:
 
 TypoScript Configuration
 ========================
