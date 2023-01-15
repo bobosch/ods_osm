@@ -218,8 +218,13 @@ Popups
 			fe_users = COA
 			fe_users {
 				10 = TEXT
-				10.field = name
-				10.wrap = <h2>|</h2>
+				10 {
+					field = name
+					wrap = <h2>|</h2>
+					override = {field:first_name} {field:middle_name} {field:last_name}
+					override.insertData = 1
+					override.if.isFalse.field = name
+				}
 				20 = TEXT
 				20.field = description
 				20.htmlSpecialChars = 1
