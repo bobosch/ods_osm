@@ -298,6 +298,7 @@ class Leaflet extends BaseProvider
                         $markerOptions['icon'] = 'icon: new L.Icon(' . json_encode($iconOptions) . ')';
                     }
                 } else {
+                    $marker = [ 'type' => 'image' ];
                     $icon = $this->path_leaflet . 'images/marker-icon.png';
                 }
                 $jsMarker .= 'var ' . $jsElementVar . ' = new L.Marker([' . $item['latitude'] . ', ' . $item['longitude'] . '], {' . implode(',', $markerOptions) . "});\n";
