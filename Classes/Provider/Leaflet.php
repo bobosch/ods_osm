@@ -320,7 +320,7 @@ class Leaflet extends BaseProvider
         foreach ($jsElementVarsForPopup as $jsElementVar) {
             if ($item['popup'] ?? null) {
                 if ($this->config['show_popups'] == 1) {
-                    $jsMarker .= $jsElementVar . '.bindPopup(' . json_encode($item['popup']) . ').addTo(' . $this->config['id'] .'); ' . "\n";
+                    $jsMarker .= $jsElementVar . '.bindPopup(' . json_encode($item['popup']) . '); ' . "\n";
                     if ($item['initial_popup'] ?? null) {
                         $jsMarker .= $jsElementVar . ".openPopup();\n";
                     }
