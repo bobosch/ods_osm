@@ -217,6 +217,25 @@ Popups
 		popup {
 			fe_users = COA
 			fe_users {
+				9 = FILES
+				9 {
+					references {
+						table = fe_users
+						fieldName = image
+					}
+					renderObj = IMAGE
+					renderObj {
+						file {
+							import.data = file:current:uid
+							treatIdAsReference = 1
+							width = 150c
+							height = 150c
+						}
+						altText.data = file:current:alternative
+						titleText.data = file:current:title
+						stdWrap.typolink.parameter.data = file:current:link
+					}
+				}
 				10 = TEXT
 				10 {
 					field = name
@@ -231,6 +250,25 @@ Popups
 			}
 			tt_address = COA
 			tt_address {
+				9 = FILES
+				9 {
+					references {
+						table = tt_address
+						fieldName = image
+					}
+					renderObj = IMAGE
+					renderObj {
+						file {
+							import.data = file:current:uid
+							treatIdAsReference = 1
+							width = 150c
+							height = 150c
+						}
+						altText.data = file:current:alternative
+						titleText.data = file:current:title
+						stdWrap.typolink.parameter.data = file:current:link
+					}
+				}
 				10 = TEXT
 				10.field = name
 				10.wrap = <h2>|</h2>
