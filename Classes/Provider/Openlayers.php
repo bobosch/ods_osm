@@ -409,7 +409,7 @@ class Openlayers extends BaseProvider
                             new ol.Feature({
                                 geometry: new ol.geom.Point(ol.proj.fromLonLat([" . $item['longitude'] . ", " . $item['latitude'] . "])),
                                 type: 'Point',
-                                desc: '" . $item['popup'] . "'
+                                desc: '" . json_encode($item['popup']). "',
                             })
                         ]
                     }),
