@@ -372,18 +372,11 @@ class Openlayers extends BaseProvider
                 $markerOptions = [];
                 if ($item['tx_odsosm_marker'] ?? false) {
                     $marker = $item['tx_odsosm_marker'];
-                    $iconOptions = array(
-                        'iconSize' => array((int)$marker['size_x'], (int)$marker['size_y']),
-                        'iconAnchor' => array(-(int)$marker['offset_x'], -(int)$marker['offset_y']),
-                        'popupAnchor' => array(0, (int)$marker['offset_y'])
-                    );
                     if ($marker['type'] == 'html') {
-                        $iconOptions['html'] = $marker['icon'];
-                        $markerOptions['icon'] = 'icon: new L.divIcon(' . json_encode($iconOptions) . ')';
+                        $markerOptions['icon'] = 'icon: new L.divIcon(' . json_encode($marker['icon']) . ')';
                     } else {
                         $icon = $this->getAbsRefPrefix() . $marker['icon']->getPublicUrl();
-                        $iconOptions['iconUrl'] = $icon;
-                        $markerOptions['icon'] = 'icon: new L.Icon(' . json_encode($iconOptions) . ')';
+                        $markerOptions['icon'] = 'icon: new L.Icon(' . json_encode($icon) . ')';
                     }
                 } else {
                     $icon = '/typo3conf/ext/ods_osm/Resources/Public/Icons/marker-icon.png';
@@ -397,6 +390,8 @@ class Openlayers extends BaseProvider
                           anchorXUnits: 'fraction',
                           anchorYUnits: 'pixels',
                           src: '" . $icon ."',
+                          width: " . (int)$marker['size_x'] . ",
+                          height: " . (int)$marker['size_y'] . "
                         }),
                     });
                     ";
