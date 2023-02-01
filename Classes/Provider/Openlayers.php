@@ -244,6 +244,46 @@ class Openlayers extends BaseProvider
         ';
     }
 
+    protected function getMarkers($markers)
+    {
+        $jsMarker = parent::getMarkers($markers);
+
+
+        // open popup? If yes, with click or hover?
+        switch ($this->config['show_popups']) {
+            case 1:
+                $eventMethod = 'singleclick';
+                break;
+            case 2:
+                $eventMethod = 'pointermove';
+                break;
+            default:
+                $eventMethod = false;
+        }
+
+        if ($eventMethod !== false) {
+            $jsMarker .= "
+            " . $this->config['id'] . ".on('" . $eventMethod . "', function (event) {
+                    var feature = " . $this->config['id'] . ".forEachFeatureAtPixel(event.pixel, function (feat, layer) {
+                        return feat;
+                    });
+
+                    if (feature && feature.get('type') == 'Point') {
+                        var coordinate = event.coordinate;    // default projection is EPSG:3857 you may want to use ol.proj.transform
+
+                        content.innerHTML = feature.get('desc');
+                        popup.setPosition(coordinate);
+                    }
+                    else {
+                        popup.setPosition(undefined);
+                    }
+                });
+            ";
+        }
+
+        return $jsMarker;
+    }
+
     protected function getMarker($item, $table)
     {
         $jsMarker = '';
@@ -418,40 +458,7 @@ class Openlayers extends BaseProvider
 
                         var containery = document.getElementById('popup');
 
-
                 ";
-
-                // open popup? If yes, with click or hover?
-                switch ($this->config['show_popups']) {
-                    case 1:
-                        $eventMethod = 'singleclick';
-                        break;
-                    case 2:
-                        $eventMethod = 'pointermove';
-                        break;
-                    default:
-                        $eventMethod = false;
-                }
-
-                if ($eventMethod !== false) {
-                    $jsMarker .= "
-                    " . $this->config['id'] . ".on('" . $eventMethod . "', function (event) {
-                            var feature = " . $this->config['id'] . ".forEachFeatureAtPixel(event.pixel, function (feat, layer) {
-                                return feat;
-                            });
-
-                            if (feature && feature.get('type') == 'Point') {
-                                var coordinate = event.coordinate;    // default projection is EPSG:3857 you may want to use ol.proj.transform
-
-                                content.innerHTML = feature.get('desc');
-                                popup.setPosition(coordinate);
-                            }
-                            else {
-                                popup.setPosition(undefined);
-                            }
-                        });
-                    ";
-                }
                 break;
         }
 
