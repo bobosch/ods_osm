@@ -126,7 +126,7 @@ class Leaflet extends BaseProvider
     public function getFullScreen()
     {
         // load leaflet.fullscreen plugin
-        $this->scripts['leaflet-plugins'] = [
+        $this->scripts['leaflet-fullscreen'] = [
             'src' => $this->path_res . 'leaflet-fullscreen/Control.FullScreen.js',
             'sri' => 'sha384-TqFtkYBnYsrP2JCfIv/oLQxS9L6xpaIV9xnaI2UGMK25cJsTtQXZIU6WGQ7daT0Z'
         ];
