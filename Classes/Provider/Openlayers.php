@@ -158,7 +158,8 @@ class Openlayers extends BaseProvider
 
         layers = [
             baselayergroup,
-            clusters
+            clusters,
+            overlaygroup
         ];
 
 
