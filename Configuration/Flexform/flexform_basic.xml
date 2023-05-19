@@ -28,12 +28,22 @@
 					<cluster>
 						<TCEforms>
 							<label>LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xlf:tt_content.pi_flexform.cluster</label>
-							<displayCond>FIELD:library:=:leaflet</displayCond>
 							<config>
 								<type>check</type>
 							</config>
 						</TCEforms>
 					</cluster>
+					<cluster_radius>
+						<TCEforms>
+							<label>LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xlf:tt_content.pi_flexform.cluster_radius</label>
+							<displayCond>FIELD:cluster:!=:0</displayCond>
+							<config>
+								<type>input</type>
+								<size>5</size>
+								<eval>int</eval>
+							</config>
+						</TCEforms>
+					</cluster_radius>
 					<width>
 						<TCEforms>
 							<label>LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xlf:tt_content.pi_flexform.width</label>

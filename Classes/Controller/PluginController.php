@@ -93,6 +93,7 @@ class PluginController extends AbstractPlugin
         $flex = [];
         $options = array(
             'cluster',
+            'cluster_radius',
             'height',
             'lat',
             'layer',
