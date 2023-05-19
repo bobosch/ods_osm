@@ -114,9 +114,51 @@ class Openlayers extends BaseProvider
             layers: []
         });
 
+        const styleCache = {};
+        clusters = new ol.layer.Vector({
+            name: 'clusters',
+            source: new ol.source.Cluster({
+                distance: " . $this->config['cluster_radius'] . ",
+                minDistance: 10,
+                source: new ol.source.Vector({
+                    name: 'source',
+                    features: [],
+                })
+            }),
+            style: function (feature) {
+                const size = feature.get('features').length;
+                let style = styleCache[size];
+                if (!style) {
+                    if (size == 1) {
+                        style = feature.get('features')[0].values_['style'];
+                    } else {
+                        style = new ol.style.Style({
+                            image: new ol.style.Circle({
+                            radius: 20,
+                            stroke: new ol.style.Stroke({
+                                color: '#fff',
+                            }),
+                            fill: new ol.style.Fill({
+                                color: '#3399CC',
+                            }),
+                            }),
+                            text: new ol.style.Text({
+                            text: size.toString(),
+                            fill: new ol.style.Fill({
+                                color: '#fff',
+                            }),
+                            }),
+                        });
+                    }
+                    styleCache[size] = style;
+                }
+                return style;
+            },
+        });
+
         layers = [
             baselayergroup,
-            overlaygroup,
+            clusters
         ];
 
 
@@ -268,13 +310,48 @@ class Openlayers extends BaseProvider
                         return feat;
                     });
 
-                    if (feature && feature.get('type') == 'Point') {
-                        var coordinate = event.coordinate;    // default projection is EPSG:3857 you may want to use ol.proj.transform
+                    if (feature === undefined) {
+                        return;
+                    }
+                    if (feature.get('features').length === 1) {
+                        var singleFeature = feature.get('features')[0];
+                        if (feature && singleFeature.get('type') == 'Point') {
+                            var coordinate = event.coordinate;
+
+                            content.innerHTML = singleFeature.get('desc');
+                            popup.setPosition(coordinate);
+                        }
+                    } else if (feature && feature.get('type') == 'Point') {
+
+                        var coordinate = event.coordinate;
 
                         content.innerHTML = feature.get('desc');
                         popup.setPosition(coordinate);
-                    }
-                    else {
+                    } else {
+                        if (feature.get('features').length > 0) {
+                            const clusterMembers = feature.get('features');
+                            if (clusterMembers.length > 1) {
+                                // Calculate the extent of the cluster members.
+                                const extent = new ol.extent.createEmpty();
+                                clusterMembers.forEach((feature) =>
+                                    ol.extent.extend(extent, feature.getGeometry().getExtent())
+                                );
+                                const view = " . $this->config['id'] . ".getView();
+                                const resolution = " . $this->config['id'] . ".getView().getResolution();
+                                if (
+                                    view.getZoom() === view.getMaxZoom() ||
+                                    (ol.extent.getWidth(extent) < resolution && ol.extent.getHeight(extent) < resolution)
+                                ) {
+                                    // Show an expanded view of the cluster members.
+                                    clickFeature = features[0];
+                                    clickResolution = resolution;
+                                    clusterCircles.setStyle(clusterCircleStyle);
+                                } else {
+                                    // Zoom to the extent of the cluster members.
+                                    view.fit(extent, {duration: 600, padding: [100, 100, 100, 100]});
+                                }
+                            }
+                        }
                         popup.setPosition(undefined);
                     }
                 });
@@ -433,34 +510,35 @@ class Openlayers extends BaseProvider
                           width: " . (int)$marker['size_x'] . ",
                           height: " . (int)$marker['size_y'] . "
                         }),
-                    });
-                    ";
+                    });";
                 }
 
-                $jsMarker .= "var " . $jsElementVar . " = new ol.layer.Vector({
-                    title: '<img src=\"" .$icon . "\" class=\"marker-icon\" /> " . ($item['group_title'] ?? $item['name']) . "',
-                    source: new ol.source.Vector({
-                        features: [
-                            new ol.Feature({
-                                geometry: new ol.geom.Point(ol.proj.fromLonLat([" . $item['longitude'] . ", " . $item['latitude'] . "])),
-                                type: 'Point',
-                                desc: " . json_encode($item['popup']) . ",
-                            })
-                        ]
-                    }),
+                // $jsMarker .= "var " . $jsElementVar . " = new ol.layer.Vector({
+                //     title: '<img src=\"" .$icon . "\" class=\"marker-icon\" /> " . ($item['group_title'] ?? $item['name']) . "',
+                //     source: new ol.source.Vector({
+                //         features: [
+                //             new ol.Feature({
+                //                 geometry: new ol.geom.Point(ol.proj.fromLonLat([" . $item['longitude'] . ", " . $item['latitude'] . "])),
+                //                 type: 'Point',
+                //                 desc: " . json_encode($item['popup']) . ",
+                //             })
+                //         ]
+                //     }),
+                //     style: " . $jsElementVar . "_style
+                // });
+                // ";
+
+                $jsMarker .= "var " . $jsElementVar . " = new ol.Feature({
+                    geometry: new ol.geom.Point(ol.proj.fromLonLat([" . $item['longitude'] . ", " . $item['latitude'] . "])),
+                    type: 'Point',
+                    desc: " . json_encode($item['popup']) . ",
                     style: " . $jsElementVar . "_style
                 });
                 ";
-
-                $jsMarker .= "overlaygroup.getLayers().push(" . $jsElementVar . ");\n";
-
-                $jsMarker .= "
-
-                        var containery = document.getElementById('popup');
-
-                ";
+                // $jsMarker .= "overlaygroup.getLayers().push(" . $jsElementVar . ");\n";
+                $jsMarker .= "clusters.getSource().getSource().addFeature(" . $jsElementVar . ");";
                 break;
-        }
+            }
 
         return $jsMarker;
     }
