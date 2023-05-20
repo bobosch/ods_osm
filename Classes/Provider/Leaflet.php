@@ -23,11 +23,11 @@ class Leaflet extends BaseProvider
                 GeneralUtility::getFileAbsFileName(Div::RESOURCE_BASE_PATH . 'JavaScript/Leaflet/')
             )
         );
-        $this->path_leaflet = ($this->config['local_js'] ? $this->path_res . 'Core/' : 'https://unpkg.com/leaflet@1.9.3/dist/');
+        $this->path_leaflet = ($this->config['local_js'] ? $this->path_res . 'Core/' : 'https://unpkg.com/leaflet@1.9.4/dist/');
         $this->pageRenderer->addCssFile($this->path_leaflet . 'leaflet.css');
         $this->scripts['leaflet'] = [
             'src' => $this->path_leaflet . 'leaflet.js',
-            'sri' => 'sha384-okbbMvvx/qfQkmiQKfd5VifbKZ/W8p1qIsWvE1ROPUfHWsDcC8/BnHohF7vPg2T6'
+            'sri' => 'sha384-cxOPjt7s7Iz04uaHJceBmS+qpjv2JkIHNVcuOrM+YHwZOmJGBXI00mdUXEq65HTH'
         ];
     }
 
@@ -126,7 +126,7 @@ class Leaflet extends BaseProvider
     public function getFullScreen()
     {
         // load leaflet.fullscreen plugin
-        $this->scripts['leaflet-plugins'] = [
+        $this->scripts['leaflet-fullscreen'] = [
             'src' => $this->path_res . 'leaflet-fullscreen/Control.FullScreen.js',
             'sri' => 'sha384-TqFtkYBnYsrP2JCfIv/oLQxS9L6xpaIV9xnaI2UGMK25cJsTtQXZIU6WGQ7daT0Z'
         ];
