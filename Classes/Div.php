@@ -93,7 +93,7 @@ class Div
      */
     public static function updateAddress(&$address)
     {
-        $config = self::getConfig(array('cache_enabled', 'geo_service'));
+        $config = self::getConfig(['cache_enabled', 'geo_service']);
 
         self::splitAddressField($address);
 
@@ -130,7 +130,7 @@ class Div
      */
     public static function searchAddress(&$address, $service = 0)
     {
-        $config = self::getConfig(array('default_country', 'geo_service_email', 'geo_service_user'));
+        $config = self::getConfig(['default_country', 'geo_service_email', 'geo_service_user']);
         $ll = false;
 
         $country = strtoupper(strlen($address['country'] ?? false) == 2 ? $address['country'] : $config['default_country']);
@@ -457,10 +457,18 @@ class Div
         }
     }
 
-    /* Get extension configuration, and if not available use default configuration. Optional parameter checks if single value is available. */
+    /**
+     * Get extension configuration, and if not available use
+     * default configuration. Optional parameter checks if
+     * single value is available.
+     *
+     * @param array $values
+     *
+     * @return array
+     */
     public static function getConfig($values = [])
     {
-        $config = $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['ods_osm'];
+        $config = $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['ods_osm'] ?? [];
         $getDefault = [];
 
         if ($config && is_array($values) && count($values)) {
@@ -471,10 +479,10 @@ class Div
             }
         }
 
-        if ($config === false || count($getDefault)) {
+        if (empty($config) || count($getDefault)) {
             $default = parse_ini_file(ExtensionManagementUtility::extPath('ods_osm') . 'ext_conf_template.txt');
-            if ($config === false) {
-                return $default;
+            if (empty($config)) {
+                $config = $default;
             } else {
                 foreach ($getDefault as $value) {
                     $config[$value] = $default[$value];
