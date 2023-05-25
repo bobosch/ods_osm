@@ -236,7 +236,7 @@ class TceMain
                         (isset($tc['zip']) && ($fieldArray[$tc['zip']] ?? null)) ||
                         (isset($tc['city']) && ($fieldArray[$tc['city']] ?? null))
                     ) {
-                        $config = Div::getConfig(array('autocomplete'));
+                        $config = Div::getConfig(['autocomplete']);
                         // Search coordinates
                         if ($config['autocomplete']) {
                             // Generate address array with standard keys
