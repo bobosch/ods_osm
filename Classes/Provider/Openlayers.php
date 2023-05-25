@@ -59,7 +59,7 @@ class Openlayers extends BaseProvider
 
         // Do we need the layerswitcher? If so, some extra plugin is required.
         if ($this->config['show_layerswitcher']) {
-            $pathContrib = ($this->config['local_js'] ? $path . 'Contrib/ol-layerswitcher/' : 'https://unpkg.com/ol-layerswitcher@4.0.0/dist/');
+            $pathContrib = ($this->config['local_js'] ? $path . 'Contrib/ol-layerswitcher/' : 'https://unpkg.com/ol-layerswitcher@4.1.1/dist/');
             $pathCustom = $path . 'Custom/';
 
             $pageRenderer->addCssFile($pathContrib . 'ol-layerswitcher.css');
@@ -67,7 +67,7 @@ class Openlayers extends BaseProvider
 
             $this->scripts['OpenLayersSwitch'] = [
                 'src' => $pathContrib . 'ol-layerswitcher.js',
-                'sri' => 'sha512-vTZfK/QA+2mdjJU/AYvJJqZipymv81D7WuEF4n6gr9udJnfPtLmXnUBfGsRaWbSj2ERSSBzPRvVL340ePCIESQ=='
+                'sri' => 'sha512-HhCrrWOoQb5HSpRe1fsk9ugZQEOokbJsLioPuUhfXlr5ccRTZVg3UpnfRsTJzrdKLejmx7uvY62n2fp5qLdYQg=='
             ];
         }
     }
@@ -498,6 +498,8 @@ class Openlayers extends BaseProvider
                     }
                 } else {
                     $icon = '/typo3conf/ext/ods_osm/Resources/Public/Icons/marker-icon.png';
+                    $marker['size_x'] = 25;
+                    $marker['size_y'] = 41;
                 }
 
                 if (!empty($icon)) {
