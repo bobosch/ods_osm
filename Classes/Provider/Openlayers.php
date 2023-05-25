@@ -118,7 +118,7 @@ class Openlayers extends BaseProvider
         clusters = new ol.layer.Vector({
             name: 'clusters',
             source: new ol.source.Cluster({
-                distance: " . $this->config['cluster_radius'] . ",
+                distance: " . ($this->config['cluster'] ? (int)$this->config['cluster_radius'] : 0) . ",
                 minDistance: 10,
                 source: new ol.source.Vector({
                     name: 'source',
@@ -516,21 +516,6 @@ class Openlayers extends BaseProvider
                     });";
                 }
 
-                // $jsMarker .= "var " . $jsElementVar . " = new ol.layer.Vector({
-                //     title: '<img src=\"" .$icon . "\" class=\"marker-icon\" /> " . ($item['group_title'] ?? $item['name']) . "',
-                //     source: new ol.source.Vector({
-                //         features: [
-                //             new ol.Feature({
-                //                 geometry: new ol.geom.Point(ol.proj.fromLonLat([" . $item['longitude'] . ", " . $item['latitude'] . "])),
-                //                 type: 'Point',
-                //                 desc: " . json_encode($item['popup']) . ",
-                //             })
-                //         ]
-                //     }),
-                //     style: " . $jsElementVar . "_style
-                // });
-                // ";
-
                 $jsMarker .= "var " . $jsElementVar . " = new ol.Feature({
                     geometry: new ol.geom.Point(ol.proj.fromLonLat([" . $item['longitude'] . ", " . $item['latitude'] . "])),
                     type: 'Point',
@@ -538,7 +523,6 @@ class Openlayers extends BaseProvider
                     style: " . $jsElementVar . "_style
                 });
                 ";
-                // $jsMarker .= "overlaygroup.getLayers().push(" . $jsElementVar . ");\n";
                 $jsMarker .= "clusters.getSource().getSource().addFeature(" . $jsElementVar . ");";
                 break;
             }

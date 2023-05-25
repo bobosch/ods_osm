@@ -39,6 +39,9 @@
 			<trans-unit id="tt_content.pi_flexform.cluster" xml:space="preserve">
 				<source>Cluster markers</source>
 			</trans-unit>
+			<trans-unit id="tt_content.pi_flexform.cluster_radius" xml:space="preserve">
+				<source>Cluster radius</source>
+			</trans-unit>
 			<trans-unit id="tt_content.pi_flexform.marker" xml:space="preserve">
 				<source>Records to show</source>
 			</trans-unit>
