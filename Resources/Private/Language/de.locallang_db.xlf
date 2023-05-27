@@ -33,6 +33,10 @@
 				<source><![CDATA[Cluster markers]]></source>
 				<target><![CDATA[Markierungen bündeln]]></target>
 			</trans-unit>
+			<trans-unit id="tt_content.pi_flexform.cluster_radius" approved="yes">
+				<source><![CDATA[Cluster radius]]></source>
+				<target><![CDATA[Radius des Marker Clusters]]></target>
+			</trans-unit>
 			<trans-unit id="tt_content.pi_flexform.enable_dragging" approved="yes">
 				<source><![CDATA[Enable dragging with mouse and touch]]></source>
 				<target><![CDATA[Karte mit Maus bzw. Touch verschieben]]></target>

@@ -49,17 +49,17 @@ class Openlayers extends BaseProvider
                 GeneralUtility::getFileAbsFileName(Div::RESOURCE_BASE_PATH . 'OpenLayers/')
             )
         );
-        $pathOl = ($this->config['local_js'] ? $path : 'https://cdn.jsdelivr.net/npm/ol@v7.1.0/');
+        $pathOl = ($this->config['local_js'] ? $path : 'https://cdn.jsdelivr.net/npm/ol@v7.3.0/');
         $pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
         $pageRenderer->addCssFile($pathOl . 'ol.css');
         $this->scripts['OpenLayers'] = [
             'src' => $pathOl . 'dist/ol.js',
-            'sri' => 'sha512-zcRdjTuLRJPIXiyXpHwGxbw5/meqPWTVO8Bko9XL6qmwSaPiFe9R1/xBmba4RjWzFzT8e+dNqIWDCa6gdEgajw=='
+            'sri' => 'sha512-K73qKSvojDplEsKTd/xKO4GgzEWWqunrpCcuwmhD9CPT2RCx+HiWFGnWIiDCz8bK3YXYL7cqBdu1fspIomEq1g=='
         ];
 
         // Do we need the layerswitcher? If so, some extra plugin is required.
         if ($this->config['show_layerswitcher']) {
-            $pathContrib = ($this->config['local_js'] ? $path . 'Contrib/ol-layerswitcher/' : 'https://unpkg.com/ol-layerswitcher@4.0.0/dist/');
+            $pathContrib = ($this->config['local_js'] ? $path . 'Contrib/ol-layerswitcher/' : 'https://unpkg.com/ol-layerswitcher@4.1.1/dist/');
             $pathCustom = $path . 'Custom/';
 
             $pageRenderer->addCssFile($pathContrib . 'ol-layerswitcher.css');
@@ -67,7 +67,7 @@ class Openlayers extends BaseProvider
 
             $this->scripts['OpenLayersSwitch'] = [
                 'src' => $pathContrib . 'ol-layerswitcher.js',
-                'sri' => 'sha512-vTZfK/QA+2mdjJU/AYvJJqZipymv81D7WuEF4n6gr9udJnfPtLmXnUBfGsRaWbSj2ERSSBzPRvVL340ePCIESQ=='
+                'sri' => 'sha512-HhCrrWOoQb5HSpRe1fsk9ugZQEOokbJsLioPuUhfXlr5ccRTZVg3UpnfRsTJzrdKLejmx7uvY62n2fp5qLdYQg=='
             ];
         }
     }
@@ -118,7 +118,7 @@ class Openlayers extends BaseProvider
         clusters = new ol.layer.Vector({
             name: 'clusters',
             source: new ol.source.Cluster({
-                distance: " . $this->config['cluster_radius'] . ",
+                distance: " . ($this->config['cluster'] ? (int)$this->config['cluster_radius'] : 0) . ",
                 minDistance: 10,
                 source: new ol.source.Vector({
                     name: 'source',
@@ -498,6 +498,8 @@ class Openlayers extends BaseProvider
                     }
                 } else {
                     $icon = '/typo3conf/ext/ods_osm/Resources/Public/Icons/marker-icon.png';
+                    $marker['size_x'] = 25;
+                    $marker['size_y'] = 41;
                 }
 
                 if (!empty($icon)) {
@@ -514,21 +516,6 @@ class Openlayers extends BaseProvider
                     });";
                 }
 
-                // $jsMarker .= "var " . $jsElementVar . " = new ol.layer.Vector({
-                //     title: '<img src=\"" .$icon . "\" class=\"marker-icon\" /> " . ($item['group_title'] ?? $item['name']) . "',
-                //     source: new ol.source.Vector({
-                //         features: [
-                //             new ol.Feature({
-                //                 geometry: new ol.geom.Point(ol.proj.fromLonLat([" . $item['longitude'] . ", " . $item['latitude'] . "])),
-                //                 type: 'Point',
-                //                 desc: " . json_encode($item['popup']) . ",
-                //             })
-                //         ]
-                //     }),
-                //     style: " . $jsElementVar . "_style
-                // });
-                // ";
-
                 $jsMarker .= "var " . $jsElementVar . " = new ol.Feature({
                     geometry: new ol.geom.Point(ol.proj.fromLonLat([" . $item['longitude'] . ", " . $item['latitude'] . "])),
                     type: 'Point',
@@ -536,7 +523,6 @@ class Openlayers extends BaseProvider
                     style: " . $jsElementVar . "_style
                 });
                 ";
-                // $jsMarker .= "overlaygroup.getLayers().push(" . $jsElementVar . ");\n";
                 $jsMarker .= "clusters.getSource().getSource().addFeature(" . $jsElementVar . ");";
                 break;
             }

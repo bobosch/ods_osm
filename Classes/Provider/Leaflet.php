@@ -158,7 +158,7 @@ class Leaflet extends BaseProvider
 
         foreach ($this->layers[2] as $group_uid => $group) {
             if ($this->config['cluster']) {
-                $jsMarker .= 'var ' . $group_uid . ' = new L.MarkerClusterGroup({maxClusterRadius:' . $this->config['cluster_radius'] . '});' . "\n";
+                $jsMarker .= 'var ' . $group_uid . ' = new L.MarkerClusterGroup({maxClusterRadius:' . (int)$this->config['cluster_radius'] . '});' . "\n";
                 foreach ($group as $jsElementVar) {
                     $jsMarker .= $group_uid . '.addLayer(' . $jsElementVar . ');' . "\n";
                 }
