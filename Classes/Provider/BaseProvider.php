@@ -48,6 +48,7 @@ abstract class BaseProvider
      */
     protected function getLayer($layer, $i, $backpath = '')
     {
+        return '';
     }
 
     /**
@@ -55,13 +56,23 @@ abstract class BaseProvider
      */
     protected function getMarker($item, $table)
     {
+        return '';
+    }
+
+    /**
+     * Get JavaScript code for fulltext button
+     *
+     * @return string The JavaScript to add the fullscreen button
+     */
+    protected function getFullScreen()
+    {
+        return '';
     }
 
     public function init($config)
     {
         $this->config = $config;
         $this->pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
-
     }
 
     /**

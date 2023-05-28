@@ -334,18 +334,18 @@ class FileLocationUpdater implements UpgradeWizardInterface, ChattyInterface, Lo
                 $this->logger->notice(
                     'File ' . $this->sourcePath . $fieldItem . ' does not exist. Reference was not migrated.',
                     [
-                        'table' => $this->table,
+                        'table' => $table,
                         'record' => $row,
-                        'field' => $this->fieldToMigrate,
+                        'field' => $fieldItem,
                     ]
                 );
                 $format = 'File \'%s\' does not exist. Referencing field: %s.%d.%s. The reference was not migrated.';
                 $this->output->writeln(sprintf(
                     $format,
-                    $this->sourcePath . $item,
-                    $this->table,
+                    $this->sourcePath . $fieldItem,
+                    $table,
                     $row['uid'],
-                    $this->fieldToMigrate
+                    $fieldItem
                 ));
                 return false;
             }

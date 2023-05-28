@@ -65,8 +65,6 @@ class TceMain
             return;
         }
 
-        $this->connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
-
         switch ($table) {
             case 'tx_odsosm_track':
                 if (is_int($id)) {
