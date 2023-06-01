@@ -26,8 +26,8 @@
 				<target><![CDATA[Marker]]></target>
 			</trans-unit>
 			<trans-unit id="tt_content.list_type_pi1" approved="yes">
-				<source><![CDATA[Openstreetmap]]></source>
-				<target><![CDATA[Openstreetmap]]></target>
+				<source><![CDATA[OpenStreetMap]]></source>
+				<target><![CDATA[OpenStreetMap]]></target>
 			</trans-unit>
 			<trans-unit id="tt_content.pi_flexform.cluster" approved="yes">
 				<source><![CDATA[Cluster markers]]></source>

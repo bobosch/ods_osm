@@ -31,7 +31,7 @@
 				<source>Marker</source>
 			</trans-unit>
 			<trans-unit id="tt_content.list_type_pi1" xml:space="preserve">
-				<source>Openstreetmap</source>
+				<source>OpenStreetMap</source>
 			</trans-unit>
 			<trans-unit id="tt_content.pi_flexform.sheet_sDEF" xml:space="preserve">
 				<source>Default</source>

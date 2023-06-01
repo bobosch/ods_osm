@@ -8,8 +8,8 @@
 				<target>Segnaposto</target>
 			</trans-unit>
 			<trans-unit id="tt_content.list_type_pi1" xml:space="preserve" approved="yes">
-				<source>Openstreetmap</source>
-				<target>Openstreetmap</target>
+				<source>OpenStreetMap</source>
+				<target>OpenStreetMap</target>
 			</trans-unit>
 			<trans-unit id="tt_content.pi_flexform.sheet_sDEF" xml:space="preserve" approved="yes">
 				<source>Default</source>

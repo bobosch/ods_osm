@@ -3,7 +3,7 @@ Users manual
 
 Frontend Plugin
 ---------------
-Insert the Openstreetmap as frontend plugin and define at least one marker to show.
+Insert the OpenStreetMap as frontend plugin and define at least one marker to show.
 The map will center to the average coordinates of the markers.
 
 .. image:: ../Images/FrontendPlugin.png
