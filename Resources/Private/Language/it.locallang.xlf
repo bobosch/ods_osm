@@ -4,8 +4,8 @@
 		<header/>
 		<body>
 			<trans-unit id="pi1_title" xml:space="preserve" approved="yes">
-				<source>Openstreetmap</source>
-				<target>Openstreetmap</target>
+				<source>OpenStreetMap</source>
+				<target>OpenStreetMap</target>
 			</trans-unit>
 			<trans-unit id="pi1_plus_wiz_description" xml:space="preserve" approved="yes">
 				<source>Add an interactive map to your website.</source>

@@ -37,7 +37,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Resource\FileRepository;
 
 /**
- * Plugin 'Openstreetmap' for the 'ods_osm' extension.
+ * Plugin 'OpenStreetMap' for the 'ods_osm' extension.
  *
  * @author    Robert Heel <typo3@bobosch.de>
  * @package    TYPO3

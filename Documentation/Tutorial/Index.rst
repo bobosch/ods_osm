@@ -48,7 +48,7 @@ Create Record
 Place OSM Plugin
 ----------------
 
-1. Insert a content element plugin “Openstreetmap” on your page.
+1. Insert a content element plugin "OpenStreetMap" on your page.
 2. Add your address record in "Records to show”.
 
 ..  figure:: /Images/RecordsToShow.png

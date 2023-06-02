@@ -4,7 +4,7 @@
 		<header/>
 		<body>
 			<trans-unit id="pi1_title" xml:space="preserve">
-				<source>Openstreetmap</source>
+				<source>OpenStreetMap</source>
 			</trans-unit>
 			<trans-unit id="pi1_plus_wiz_description" xml:space="preserve">
 				<source>Add an interactive map to your website.</source>
