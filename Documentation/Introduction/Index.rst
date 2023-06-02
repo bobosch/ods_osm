@@ -6,7 +6,7 @@ What does it do?
 - Show an interactive OpenStreetMap map with OpenLayers or Leaflet.
 - Store coordinates in fe_users and tt_address tables and show as markers in the map.
 - Show record information in popup window.
-- Display gps tracks.
+- Display gps tracks (GPX, KML).
 
 Screenshots
 -----------
@@ -20,8 +20,14 @@ The example shows the output of the frontend plugin with the following settings:
 
 .. image:: ../Images/FrontendExample.png
 
+Demo Instance
+-------------
+
+At https://osm.bigga.de a demo instance of EXT:ods_osm is available which presents multiple use cases of this extension.
+
 Donation
 --------
+
 This extension was only possible with the help of many other free projects.
 
 You're likely using one of the main map “Mapnik”, “Osmarender” or “Cyclemap” - feel free to donate to the OpenStreetMap project http://donate.openstreetmap.org/

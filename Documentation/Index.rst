@@ -12,7 +12,7 @@ EXT: ods_osm (OpenStreetMap)
 :Rendered:  |today|
 :Description:
    Add an interactive OpenStreetMap map to your website.
-   Can also show other OpenLayers compatible maps.
+   Can also show other tile based maps with OpenLayers or Leaflet.
 
 .. toctree::
    :maxdepth: 2
