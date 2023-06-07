@@ -127,13 +127,9 @@ class Openlayers extends BaseProvider
             }),
             style: function (feature) {
                 const size = feature.get('features').length;
-                let style = styleCache[size];
-                if (!style) {
-                    if (size == 1) {
-                        style = feature.get('features')[0].values_['style'];
-                    } else {
-                        style = new ol.style.Style({
-                            image: new ol.style.Circle({
+                if (size > 1) {
+                    style = new ol.style.Style({
+                        image: new ol.style.Circle({
                             radius: 20,
                             stroke: new ol.style.Stroke({
                                 color: '#fff',
@@ -141,16 +137,16 @@ class Openlayers extends BaseProvider
                             fill: new ol.style.Fill({
                                 color: '#3399CC',
                             }),
-                            }),
-                            text: new ol.style.Text({
+                        }),
+                        text: new ol.style.Text({
                             text: size.toString(),
                             fill: new ol.style.Fill({
                                 color: '#fff',
                             }),
-                            }),
-                        });
-                    }
-                    styleCache[size] = style;
+                        }),
+                    });
+                } else {
+                    style = feature.get('features')[0].values_.style;
                 }
                 return style;
             },
@@ -161,7 +157,6 @@ class Openlayers extends BaseProvider
             clusters,
             overlaygroup
         ];
-
 
 		var " . $this->config['id'] . " = new ol.Map({
 			target: '" . $this->config['id'] . "',
