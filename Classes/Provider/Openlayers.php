@@ -309,7 +309,11 @@ class Openlayers extends BaseProvider
                     if (feature === undefined) {
                         return;
                     }
-                    if (feature.get('features').length === 1) {
+                    if (feature.get('features') === undefined) {
+                        var coordinate = event.coordinate;
+                        content.innerHTML = feature.get('desc');
+                        popup.setPosition(coordinate);
+                    } else if (feature.get('features').length === 1) {
                         var singleFeature = feature.get('features')[0];
                         if (feature && singleFeature.get('type') == 'Point') {
                             var coordinate = event.coordinate;
