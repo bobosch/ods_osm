@@ -23,6 +23,10 @@
 				<source>Hide layer list</source>
 				<target>Liste der Kartenebenen ausblenden</target>
 			</trans-unit>
+			<trans-unit id="openlayers.clusterLayer" xml:space="preserve">
+				<source>Cluster Layer</source>
+				<target>Cluster Ebene</target>
+			</trans-unit>
 			<trans-unit id="base_layer" xml:space="preserve">
 				<source>Base Layer</source>
 				<target>Grundkarte</target>
