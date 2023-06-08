@@ -118,7 +118,7 @@ class Openlayers extends BaseProvider
         clusters = new ol.layer.Vector({
             name: 'clusters',
             source: new ol.source.Cluster({
-                distance: " . ($this->config['cluster'] ? (int)$this->config['cluster_radius'] : 0) . ",
+                distance: " . (int)$this->config['cluster_radius']  . ",
                 minDistance: 10,
                 source: new ol.source.Vector({
                     name: 'source',
@@ -354,6 +354,25 @@ class Openlayers extends BaseProvider
             ";
         }
 
+        // grouped marker layer
+        foreach ($this->layers[2] as $group_uid => $group) {
+
+            $jsMarker .= $group['layer'];
+            $jsMarkerFeatureBatch = [];
+            foreach ($group['jsMarkerFeatures'] as $id => $jsMarkerFeature) {
+                $jsMarker .= 'var ' . $group_uid . $id . ' = ' . $jsMarkerFeature;
+                $jsMarkerFeatureBatch[] = $group_uid . $id;
+            }
+
+            if ($this->config['cluster']) {
+                $jsMarker .= 'clusters.getSource().getSource().addFeatures([' . implode(',', $jsMarkerFeatureBatch) . ']);' . "\n";
+            } else {
+                $jsMarker .= $group_uid . '.getSource().addFeatures([' . implode(',', $jsMarkerFeatureBatch) . ']);' . "\n";
+                $jsMarker .= 'overlaygroup.getLayers().push(' . $group_uid . ');' . "\n";
+            }
+            // $jsMarker .= 'clusters.getSource().getSource().addFeatures([' . implode(',', $jsMarkerFeatureBatch) . ']);' . "\n";
+        }
+
         return $jsMarker;
     }
 
@@ -391,18 +410,18 @@ class Openlayers extends BaseProvider
                     'uid' => $item['uid']
                 ];
 
-            // define style from given color and width
-            $jsMarker .= 'var ' . $jsElementVar . '_style = new ol.style.Style({
-                stroke: new ol.style.Stroke({
-                    color: \''.$item['color'].'\',
-                    width: '.($item['width'] ?: 1).'
-                }),
-                fill: new ol.style.Fill({
-                    color: \''.$item['rgba'].'\'
-                }),
-            });';
+                // define style from given color and width
+                $jsMarker .= 'var ' . $jsElementVar . '_style = new ol.style.Style({
+                    stroke: new ol.style.Stroke({
+                        color: \''.$item['color'].'\',
+                        width: '.($item['width'] ?: 1).'
+                    }),
+                    fill: new ol.style.Fill({
+                        color: \''.$item['rgba'].'\'
+                    }),
+                });';
 
-            switch (strtolower(pathinfo($file->getName(), PATHINFO_EXTENSION))) {
+                switch (strtolower(pathinfo($file->getName(), PATHINFO_EXTENSION))) {
                     case 'kml':
                         $jsMarker .= 'var ' . $jsElementVar . '_gpx = new ol.layer.Vector({
                             title: \'' .$item['title'] . '\',
@@ -497,28 +516,68 @@ class Openlayers extends BaseProvider
                     $marker['size_y'] = 41;
                 }
 
-                if (!empty($icon)) {
-                    $jsMarker .= "
-                    const " . $jsElementVar . "_style = new ol.style.Style({
-                        image: new ol.style.Icon({
-                          anchor: [0.5, 46],
-                          anchorXUnits: 'fraction',
-                          anchorYUnits: 'pixels',
-                          src: '" . $icon ."',
-                          width: " . (int)$marker['size_x'] . ",
-                          height: " . (int)$marker['size_y'] . "
-                        }),
+                $markerStyle = "const " . $jsElementVar . "_style = new ol.style.Style({
+                    image: new ol.style.Icon({
+                        anchor: [0.5, 46],
+                        anchorXUnits: 'fraction',
+                        anchorYUnits: 'pixels',
+                        src: '" . $icon ."',
+                        width: " . (int)$marker['size_x'] . ",
+                        height: " . (int)$marker['size_y'] . "
+                    }),
+                });";
+
+                // It's a group of markers
+                if ($item['group_title'] ?? false) {
+
+                    if (empty($jsMarkerGroup)) {
+
+                        $jsMarker .= $markerStyle;
+
+                        $group_title = ($marker['type'] == 'html' ? $icon : "<img class='marker-icon' src='" . $icon . "' />") . ' ' . $item['group_title'];
+                        $jsMarkerGroup = "
+                        var " . $item['group_uid'] . " = new ol.layer.Vector({
+                            title: \"" . $group_title . "\",
+                            source: new ol.source.Vector({
+                                features: []
+                            }),
+                            style: " . $jsElementVar . "_style
+                        });";
+
+                        $this->layers[2][$item['group_uid']]['layer'] = $jsMarkerGroup;
+
+                    }
+
+                    $jsMarkerFeature = "
+                    new ol.Feature({
+                        geometry: new ol.geom.Point(ol.proj.fromLonLat([" . $item['longitude'] . ", " . $item['latitude'] . "])),
+                        type: 'Point',
+                        desc: " . json_encode($item['popup']) . ",
+                        style: " . $jsElementVar . "_style
                     });";
+
+                    $this->layers[2][$item['group_uid']]['jsMarkerFeatures'][] = $jsMarkerFeature;
+
+                } else {
+
+                    $jsMarker .= $markerStyle;
+                    $jsMarker .= "var " . $jsElementVar . " = new ol.layer.Vector({
+                        title: '<img src=\"" .$icon . "\" class=\"marker-icon\" /> " . ($item['group_title'] ?? $item['name']) . "',
+                        source: new ol.source.Vector({
+                            features: [
+                                 new ol.Feature({
+                                    geometry: new ol.geom.Point(ol.proj.fromLonLat([" . $item['longitude'] . ", " . $item['latitude'] . "])),
+                                    type: 'Point',
+                                    desc: " . json_encode($item['popup']) . "
+                                })
+                                ]
+                            }),
+                            style: " . $jsElementVar . "_style
+                        });";
+
+                    $jsMarker .= 'overlaygroup.getLayers().push(' . $jsElementVar . ');' . "\n";
                 }
 
-                $jsMarker .= "var " . $jsElementVar . " = new ol.Feature({
-                    geometry: new ol.geom.Point(ol.proj.fromLonLat([" . $item['longitude'] . ", " . $item['latitude'] . "])),
-                    type: 'Point',
-                    desc: " . json_encode($item['popup']) . ",
-                    style: " . $jsElementVar . "_style
-                });
-                ";
-                $jsMarker .= "clusters.getSource().getSource().addFeature(" . $jsElementVar . ");";
                 break;
             }
 
