@@ -18,6 +18,9 @@
 			<trans-unit id="openlayers.hideLayerList" xml:space="preserve">
 				<source>Hide layer list</source>
 			</trans-unit>
+			<trans-unit id="openlayers.clusterLayer" xml:space="preserve">
+				<source>Cluster Layer</source>
+			</trans-unit>
 			<trans-unit id="base_layer" xml:space="preserve">
 				<source>Base Layer</source>
 			</trans-unit>

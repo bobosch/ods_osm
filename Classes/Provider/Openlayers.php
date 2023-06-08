@@ -117,6 +117,7 @@ class Openlayers extends BaseProvider
         const styleCache = {};
         clusters = new ol.layer.Vector({
             name: 'clusters',
+            title: '" . LocalizationUtility::translate('openlayers.clusterLayer', 'ods_osm') . "',
             source: new ol.source.Cluster({
                 distance: " . (int)$this->config['cluster_radius']  . ",
                 minDistance: 10,
@@ -154,7 +155,6 @@ class Openlayers extends BaseProvider
 
         layers = [
             baselayergroup,
-            clusters,
             overlaygroup
         ];
 
@@ -286,7 +286,6 @@ class Openlayers extends BaseProvider
     {
         $jsMarker = parent::getMarkers($markers);
 
-
         // open popup? If yes, with click or hover?
         switch ($this->config['show_popups']) {
             case 1:
@@ -374,7 +373,11 @@ class Openlayers extends BaseProvider
                 $jsMarker .= $group_uid . '.getSource().addFeatures([' . implode(',', $jsMarkerFeatureBatch) . ']);' . "\n";
                 $jsMarker .= 'overlaygroup.getLayers().push(' . $group_uid . ');' . "\n";
             }
-            // $jsMarker .= 'clusters.getSource().getSource().addFeatures([' . implode(',', $jsMarkerFeatureBatch) . ']);' . "\n";
+        }
+
+        if ($this->config['cluster']) {
+            // add cluster layer in overlaygroup
+            $jsMarker .= 'overlaygroup.getLayers().push(clusters);' . "\n";
         }
 
         return $jsMarker;
