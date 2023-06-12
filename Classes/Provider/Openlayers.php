@@ -434,7 +434,7 @@ class Openlayers extends BaseProvider
                             title: \'' .$item['title'] . '\',
                             source: new ol.source.Vector({
                                 projection: \'EPSG:3857\',
-                                url: \'' . $this->getAbsRefPrefix() . $file->getPublicUrl() . '\',
+                                url: \'' .  $file->getPublicUrl() . '\',
                                 format: new ol.format.KML()
                             }),
                             style: ' . $jsElementVar . '_style
@@ -447,7 +447,7 @@ class Openlayers extends BaseProvider
                             title: \'' .$item['title'] . '\',
                             source: new ol.source.Vector({
                                 projection: \'EPSG:3857\',
-                                url: \'' . $this->getAbsRefPrefix() . $file->getPublicUrl() . '\',
+                                url: \'' .  $file->getPublicUrl() . '\',
                                 format: new ol.format.GPX()
                             }),
                             style: ' . $jsElementVar . '_style
@@ -473,7 +473,7 @@ class Openlayers extends BaseProvider
 
                 if ($fileObjects) {
                     $file = $fileObjects[0];
-                    $filename = $this->getAbsRefPrefix() . $file->getPublicUrl();
+                    $filename =  $file->getPublicUrl();
 
 
                     $jsMarker .= 'var ' . $jsElementVar . '_file = new ol.layer.Vector({
@@ -514,7 +514,7 @@ class Openlayers extends BaseProvider
                     if ($marker['type'] == 'html') {
                         $markerOptions['icon'] = 'icon: new L.divIcon(' . json_encode($marker['icon']) . ')';
                     } else {
-                        $icon = $this->getAbsRefPrefix() . $marker['icon']->getPublicUrl();
+                        $icon =  $marker['icon']->getPublicUrl();
                         $markerOptions['icon'] = 'icon: new L.Icon(' . json_encode($icon) . ')';
                     }
                 } else {
