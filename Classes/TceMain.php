@@ -82,7 +82,7 @@ class TceMain
                     // If extension is installed via composer, the class geoPHP is already known.
                     // Otherwise we use the (older) copy out of the extension folder.
                     if (!class_exists(geoPHP::class)) {
-                        require_once ExtensionManagementUtility::extPath('ods_osm', 'Resources/Public/geoPHP/geoPHP.inc');
+                        require_once ExtensionManagementUtility::extPath('ods_osm', 'Resources/Private/Contrib/geoPHP/geoPHP.inc');
                     }
                     $polygon = geoPHP::load(file_get_contents($filename), pathinfo($filename, PATHINFO_EXTENSION));
                     $box = $polygon->getBBox();
