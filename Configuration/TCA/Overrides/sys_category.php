@@ -13,7 +13,6 @@ $tempColumns = [
         'label' => 'LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xlf:tt_address_group.tx_odsosm_marker',
         'config' => [
             'type' => 'group',
-            'internal_type' => 'db',
             'allowed' => 'tx_odsosm_marker',
             'size' => 1,
             'minitems' => 0,
