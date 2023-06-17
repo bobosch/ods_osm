@@ -2,6 +2,7 @@
 defined('TYPO3') || die();
 
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+use Bobosch\OdsOsm\Evaluation\LonLat;
 
 $tempColumns = [
     'tx_odsosm_lon' => [ // DECIMAL(9,6)
@@ -12,7 +13,7 @@ $tempColumns = [
             'size' => 11,
             'max' => 11,
             'checkbox' => '0.000000',
-            'eval' => 'Bobosch\\OdsOsm\\Evaluation\\LonLat',
+            'eval' => LonLat::class,
             'fieldControl' => [
 	            'locationMap' => [
 		            'renderType' => 'coordinatepickerWizard'
@@ -28,7 +29,7 @@ $tempColumns = [
             'type' => 'input',
             'size' => 10,
             'max' => 10,
-            'eval' => 'Bobosch\\OdsOsm\\Evaluation\\LonLat',
+            'eval' => LonLat::class,
             'default' => 0.000000,
         ]
     ],

@@ -47,14 +47,11 @@ class Div
                 $languageAspect = GeneralUtility::makeInstance(Context::class)->getAspect('language');
 
                 if ($languageAspect->getContentId() && $ctrl['transOrigPointerField']) {
-                    $orConstraints[] = $queryBuilder->expr()->andX(
-                        $queryBuilder->expr()->eq($table . '.' . $ctrl['languageField'],
-                            $queryBuilder->createNamedParameter((int) $languageAspect->getContentId(), \PDO::PARAM_INT)),
-                        $queryBuilder->expr()->eq($table . '.' . $ctrl['transOrigPointerField'],
-                            $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT))
-                    );
+                    $orConstraints[] = $queryBuilder->expr()->and($queryBuilder->expr()->eq($table . '.' . $ctrl['languageField'],
+                        $queryBuilder->createNamedParameter((int) $languageAspect->getContentId(), \PDO::PARAM_INT)), $queryBuilder->expr()->eq($table . '.' . $ctrl['transOrigPointerField'],
+                        $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)));
                 }
-                $constraints[] = $queryBuilder->expr()->orX(...$orConstraints);
+                $constraints[] = $queryBuilder->expr()->or(...$orConstraints);
             }
         }
         return $constraints;

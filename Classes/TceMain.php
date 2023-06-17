@@ -99,7 +99,7 @@ class TceMain
                         ->set('min_lat', sprintf('%01.6f', $box['miny']))
                         ->set('max_lon', sprintf('%01.6f', $box['maxx']))
                         ->set('max_lat', sprintf('%01.6f', $box['maxy']))
-                        ->execute();
+                        ->executeStatement();
                 }
                 break;
             case 'tx_odsosm_marker':
@@ -130,7 +130,7 @@ class TceMain
                             ->set('size_y', $size[1])
                             ->set('offset_x', -round($size[0] / 2))
                             ->set('offset_y', -$size[1])
-                            ->execute();
+                            ->executeStatement();
                     }
                 }
                 break;
@@ -169,7 +169,7 @@ class TceMain
                             ->set('min_lat', sprintf('%01.6f', $box['miny']))
                             ->set('max_lon', sprintf('%01.6f', $box['maxx']))
                             ->set('max_lat', sprintf('%01.6f', $box['maxy']))
-                            ->execute();
+                            ->executeStatement();
                     }
                 }
                 break;
@@ -202,29 +202,6 @@ class TceMain
                     }
                }
                 break;
-            // case 'tx_calendarize_domain_model_event':
-            //     $tc = Div::getTableConfig($table);
-            //     if (!empty($fieldArray['location'])) {
-            //         $this->lon = [];
-            //         $this->lat = [];
-
-            //         $config = Div::getConfig(array('autocomplete'));
-            //         // Search coordinates
-            //         if ($config['autocomplete']) {
-            //             // Generate address array with standard keys
-            //             $address = [];
-
-            //             $address['type'] = 'unstructured';
-            //             $address['address'] = $fieldArray['location'];
-
-            //             $ll = Div::updateAddress($address);
-            //             if ($ll) {
-            //                 $fieldArray['tx_odsosm_lon'] = $address['lon'];
-            //                 $fieldArray['tx_odsosm_lat'] = $address['lat'];
-            //             }
-            //         }
-            //     }
-            //     break;
             default:
                 $tc = Div::getTableConfig($table);
                 if ($tc['lon'] ?? false) {
