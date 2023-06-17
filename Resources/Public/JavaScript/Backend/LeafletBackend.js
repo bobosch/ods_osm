@@ -21,8 +21,8 @@ define(['jquery', 'TYPO3/CMS/Backend/Icons', 'TYPO3/CMS/Backend/FormEngine', 'TY
     };
 
     // Load icon via TYPO3 Icon-API and requireJS
-    Icons.getIcon('actions-close', Icons.sizes.small).done(function (actionsClose) {
-        LeafBE['$iconClose'] = actionsClose;
+    Icons.getIcon('actions-close', Icons.sizes.small, null, null).then(function(markup) {
+        LeafBE['$iconClose']= markup;
     });
 
     LeafBE.init = function (element) {
@@ -57,7 +57,7 @@ define(['jquery', 'TYPO3/CMS/Backend/Icons', 'TYPO3/CMS/Backend/FormEngine', 'TY
             '<div class="btn-group"><a href="#" class="btn btn-icon btn-default" title="' + LeafBE.$labelClose + '" id="t3js-ttaddress-close-map">' +
             LeafBE.$iconClose +
             '</a>' +
-            '<a class="btn btn-default" href="#" id="t3js-ttaddress-import-position">' +
+            '<a class="btn btn-default" href="#" title="' + LeafBE.$labelImport + '" id="t3js-ttaddress-import-position">' +
             LeafBE.$labelImport +
             '</a></div>' +
             LeafBE.$labelTitle +
@@ -91,6 +91,8 @@ define(['jquery', 'TYPO3/CMS/Backend/Icons', 'TYPO3/CMS/Backend/FormEngine', 'TY
         LeafBE.$marker = L.marker([LeafBE.$latitude, LeafBE.$longitude], {
             draggable: true
         }).addTo(LeafBE.$map);
+
+        let position = LeafBE.$marker.getLatLng();
 
         LeafBE.$marker.on('dragend', function (event) {
             LeafBE.$marker = event.target;

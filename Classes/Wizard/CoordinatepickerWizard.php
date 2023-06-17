@@ -13,7 +13,11 @@ namespace Bobosch\OdsOsm\Wizard;
 
 use Bobosch\OdsOsm\Div;
 use TYPO3\CMS\Backend\Form\AbstractNode;
+use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Page\JavaScriptModuleInstruction;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\StringUtility;
 
 /**
  * Adds a wizard for location selection via map
@@ -85,8 +89,20 @@ class CoordinatepickerWizard extends AbstractNode
         $resultArray['linkAttributes']['data-copy'] = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors';
         $resultArray['stylesheetFiles'][] = 'EXT:ods_osm/Resources/Public/JavaScript/Leaflet/Core/leaflet.css';
         $resultArray['stylesheetFiles'][] = 'EXT:ods_osm/Resources/Public/Css/Backend/leafletBackend.css';
-        $resultArray['requireJsModules'][] = 'TYPO3/CMS/OdsOsm/Leaflet/Core/leaflet';
-        $resultArray['requireJsModules'][] = 'TYPO3/CMS/OdsOsm/Backend/LeafletBackend';
+
+        $versionInformation = GeneralUtility::makeInstance(Typo3Version::class)->getMajorVersion();
+        if ($versionInformation > 11) {
+            $id = StringUtility::getUniqueId('t3js-formengine-fieldcontrol-');
+            $resultArray['requireJsModules'][] = JavaScriptModuleInstruction::forRequireJS(
+                'TYPO3/CMS/OdsOsm/Leaflet/Core/leaflet'
+            )->instance($id);
+            $resultArray['requireJsModules'][] = JavaScriptModuleInstruction::forRequireJS(
+                'TYPO3/CMS/OdsOsm/Backend/LeafletBackend'
+            )->instance($id);
+        } else {
+            $resultArray['requireJsModules'][] = 'TYPO3/CMS/OdsOsm/Leaflet/Core/leaflet';
+            $resultArray['requireJsModules'][] = 'TYPO3/CMS/OdsOsm/Backend/LeafletBackend';
+        }
 
         return $resultArray;
     }
