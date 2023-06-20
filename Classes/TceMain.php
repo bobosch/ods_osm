@@ -4,13 +4,12 @@ namespace Bobosch\OdsOsm;
 
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
-use \geoPHP;
+use \geoPHP\geoPHP;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Resource\FileRepository;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-
 
 class TceMain
 {
@@ -79,12 +78,12 @@ class TceMain
 
                 $filename = Environment::getPublicPath() . '/' . $file->getPublicUrl();
                 if (file_exists($filename)) {
-                    // If extension is installed via composer, the class geoPHP is already known.
-                    // Otherwise we use the (older) copy out of the extension folder.
-                    if (!class_exists(geoPHP::class)) {
-                        require_once ExtensionManagementUtility::extPath('ods_osm', 'Resources/Private/Contrib/geoPHP/geoPHP.inc');
+                    try {
+                        $polygon = geoPHP::load(file_get_contents($filename), pathinfo($filename, PATHINFO_EXTENSION));
+                    } catch (\Exception $e) {
+                        // silently ignore failure of parsing data
+                        break;
                     }
-                    $polygon = geoPHP::load(file_get_contents($filename), pathinfo($filename, PATHINFO_EXTENSION));
                     $box = $polygon->getBBox();
 
                     // unfortunately we cannot pass the new values by reference in this hook, because the database operation is already done.

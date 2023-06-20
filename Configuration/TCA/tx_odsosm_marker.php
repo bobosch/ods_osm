@@ -33,7 +33,6 @@ return array(
                     'foreign_match_fields' => [
                         'fieldname' => 'icon',
                         'tablenames' => 'tx_odsosm_marker',
-                        'table_local' => 'sys_file',
                     ],
                     'default' => 0,
                 ],

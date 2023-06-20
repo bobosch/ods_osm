@@ -79,7 +79,6 @@ return array(
                     'foreign_match_fields' => [
                         'fieldname' => 'file',
                         'tablenames' => 'tx_odsosm_track',
-                        'table_local' => 'sys_file',
                     ],
                     'default' => 0,
                 ],
