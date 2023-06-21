@@ -75,11 +75,11 @@ class VectordrawWizard extends AbstractNode
                 'TYPO3/CMS/OdsOsm/Leaflet/Core/leaflet'
             )->instance($id);
             $resultArray['requireJsModules'][] = JavaScriptModuleInstruction::forRequireJS(
-                'TYPO3/CMS/OdsOsm/Backend/LeafletBackend'
+                'TYPO3/CMS/OdsOsm/Backend/Vectordraw'
             )->instance($id);
         } else {
             $resultArray['requireJsModules'][] = 'TYPO3/CMS/OdsOsm/Leaflet/Core/leaflet';
-            $resultArray['requireJsModules'][] = 'TYPO3/CMS/OdsOsm/Backend/LeafletBackend';
+            $resultArray['requireJsModules'][] = 'TYPO3/CMS/OdsOsm/Backend/Vectordraw';
         }
 
         return $resultArray;
