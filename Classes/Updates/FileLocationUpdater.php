@@ -208,9 +208,7 @@ class FileLocationUpdater implements UpgradeWizardInterface, ChattyInterface, Lo
                             ExpressionBuilder::NEQ,
                             'CAST(' . $queryBuilder->quoteIdentifier($this->fieldsToMigrate[$table]) . ' AS CHAR)'
                         )
-                    )
-                    ->orderBy('uid')
-                    ->execute()
+                    )->orderBy('uid')->executeQuery()
                     ->fetchAll();
                 if ($countOnly === true) {
                     $numResults += count($result);
@@ -297,20 +295,16 @@ class FileLocationUpdater implements UpgradeWizardInterface, ChattyInterface, Lo
             $fileSha1 = sha1_file($sourcePath);
 
             $queryBuilder = $connectionPool->getQueryBuilderForTable('sys_file');
-            $existingFileRecord = $queryBuilder->select('uid')->from('sys_file')->where(
-                $queryBuilder->expr()->eq(
-                    'missing',
-                    $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
-                ),
-                $queryBuilder->expr()->eq(
-                    'sha1',
-                    $queryBuilder->createNamedParameter($fileSha1, \PDO::PARAM_STR)
-                ),
-                $queryBuilder->expr()->eq(
-                    'storage',
-                    $queryBuilder->createNamedParameter($storageUid, \PDO::PARAM_INT)
-                )
-            )->execute()->fetch();
+            $existingFileRecord = $queryBuilder->select('uid')->from('sys_file')->where($queryBuilder->expr()->eq(
+                'missing',
+                $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
+            ), $queryBuilder->expr()->eq(
+                'sha1',
+                $queryBuilder->createNamedParameter($fileSha1, \PDO::PARAM_STR)
+            ), $queryBuilder->expr()->eq(
+                'storage',
+                $queryBuilder->createNamedParameter($storageUid, \PDO::PARAM_INT)
+            ))->executeQuery()->fetch();
 
             // the file exists, the file does not have to be moved again
             if (is_array($existingFileRecord)) {
@@ -367,9 +361,7 @@ class FileLocationUpdater implements UpgradeWizardInterface, ChattyInterface, Lo
             $queryBuilder = $connectionPool->getQueryBuilderForTable('sys_file_reference');
 
             $result = $queryBuilder
-                ->insert('sys_file_reference')
-                ->values($fields)
-                ->execute();
+                ->insert('sys_file_reference')->values($fields)->executeStatement();
 
             ++$i;
         }
@@ -383,7 +375,7 @@ class FileLocationUpdater implements UpgradeWizardInterface, ChattyInterface, Lo
                     'uid',
                     $queryBuilder->createNamedParameter($row['uid'], \PDO::PARAM_INT)
                 )
-            )->set($this->fieldsToMigrate[$table], $i)->execute();
+            )->set($this->fieldsToMigrate[$table], $i)->executeStatement();
         }
     }
 

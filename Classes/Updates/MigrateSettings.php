@@ -85,12 +85,7 @@ class MigrateSettings implements UpgradeWizardInterface
         $queryBuilder = $connection->createQueryBuilder();
         $statement = $queryBuilder->select('uid')
             ->addSelect('pi_flexform')
-            ->from('tt_content')
-            ->where(
-                $queryBuilder->expr()->eq('CType', $queryBuilder->createNamedParameter('list')),
-                $queryBuilder->expr()->like('list_type', $queryBuilder->createNamedParameter('ods_osm_%'))
-            )
-            ->execute();
+            ->from('tt_content')->where($queryBuilder->expr()->eq('CType', $queryBuilder->createNamedParameter('list')), $queryBuilder->expr()->like('list_type', $queryBuilder->createNamedParameter('ods_osm_%')))->executeQuery();
 
         // Update the found record sets
         while ($record = $statement->fetch()) {
@@ -114,9 +109,7 @@ class MigrateSettings implements UpgradeWizardInterface
                         'uid',
                         $queryBuilder->createNamedParameter($record['uid'], \PDO::PARAM_INT)
                     )
-                )
-                ->set('pi_flexform', $newXml)
-                ->execute();
+                )->set('pi_flexform', $newXml)->executeStatement();
 
             // exit if at least one update statement is not successful
             if (!((bool) $updateResult)) {
@@ -144,12 +137,7 @@ class MigrateSettings implements UpgradeWizardInterface
         $queryBuilder = $connection->createQueryBuilder();
         $statement = $queryBuilder->select('uid')
             ->addSelect('pi_flexform')
-            ->from('tt_content')
-            ->where(
-                $queryBuilder->expr()->eq('CType', $queryBuilder->createNamedParameter('list')),
-                $queryBuilder->expr()->like('list_type', $queryBuilder->createNamedParameter('ods_osm_%'))
-            )
-            ->execute();
+            ->from('tt_content')->where($queryBuilder->expr()->eq('CType', $queryBuilder->createNamedParameter('list')), $queryBuilder->expr()->like('list_type', $queryBuilder->createNamedParameter('ods_osm_%')))->executeQuery();
 
         // Update the found record sets
         while ($record = $statement->fetch()) {

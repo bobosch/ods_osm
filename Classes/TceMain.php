@@ -4,13 +4,12 @@ namespace Bobosch\OdsOsm;
 
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
-use \geoPHP;
+use \geoPHP\geoPHP;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Resource\FileRepository;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-
 
 class TceMain
 {
@@ -79,12 +78,12 @@ class TceMain
 
                 $filename = Environment::getPublicPath() . '/' . $file->getPublicUrl();
                 if (file_exists($filename)) {
-                    // If extension is installed via composer, the class geoPHP is already known.
-                    // Otherwise we use the (older) copy out of the extension folder.
-                    if (!class_exists(geoPHP::class)) {
-                        require_once ExtensionManagementUtility::extPath('ods_osm', 'Resources/Public/geoPHP/geoPHP.inc');
+                    try {
+                        $polygon = geoPHP::load(file_get_contents($filename), pathinfo($filename, PATHINFO_EXTENSION));
+                    } catch (\Exception $e) {
+                        // silently ignore failure of parsing data
+                        break;
                     }
-                    $polygon = geoPHP::load(file_get_contents($filename), pathinfo($filename, PATHINFO_EXTENSION));
                     $box = $polygon->getBBox();
 
                     // unfortunately we cannot pass the new values by reference in this hook, because the database operation is already done.
@@ -99,7 +98,7 @@ class TceMain
                         ->set('min_lat', sprintf('%01.6f', $box['miny']))
                         ->set('max_lon', sprintf('%01.6f', $box['maxx']))
                         ->set('max_lat', sprintf('%01.6f', $box['maxy']))
-                        ->execute();
+                        ->executeStatement();
                 }
                 break;
             case 'tx_odsosm_marker':
@@ -130,7 +129,7 @@ class TceMain
                             ->set('size_y', $size[1])
                             ->set('offset_x', -round($size[0] / 2))
                             ->set('offset_y', -$size[1])
-                            ->execute();
+                            ->executeStatement();
                     }
                 }
                 break;
@@ -169,7 +168,7 @@ class TceMain
                             ->set('min_lat', sprintf('%01.6f', $box['miny']))
                             ->set('max_lon', sprintf('%01.6f', $box['maxx']))
                             ->set('max_lat', sprintf('%01.6f', $box['maxy']))
-                            ->execute();
+                            ->executeStatement();
                     }
                 }
                 break;
@@ -202,29 +201,6 @@ class TceMain
                     }
                }
                 break;
-            // case 'tx_calendarize_domain_model_event':
-            //     $tc = Div::getTableConfig($table);
-            //     if (!empty($fieldArray['location'])) {
-            //         $this->lon = [];
-            //         $this->lat = [];
-
-            //         $config = Div::getConfig(array('autocomplete'));
-            //         // Search coordinates
-            //         if ($config['autocomplete']) {
-            //             // Generate address array with standard keys
-            //             $address = [];
-
-            //             $address['type'] = 'unstructured';
-            //             $address['address'] = $fieldArray['location'];
-
-            //             $ll = Div::updateAddress($address);
-            //             if ($ll) {
-            //                 $fieldArray['tx_odsosm_lon'] = $address['lon'];
-            //                 $fieldArray['tx_odsosm_lat'] = $address['lat'];
-            //             }
-            //         }
-            //     }
-            //     break;
             default:
                 $tc = Div::getTableConfig($table);
                 if ($tc['lon'] ?? false) {

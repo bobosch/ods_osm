@@ -210,22 +210,6 @@ abstract class BaseProvider
         }
     }
 
-
-    /**
-     * Get absRefPrefix in case of TYPO3 10.4
-     *
-     * @return string
-     */
-    protected function getAbsRefPrefix()
-    {
-        $absRefPrefix = '';
-        $versionInformation = GeneralUtility::makeInstance(Typo3Version::class);
-        if ($versionInformation->getMajorVersion() == 10) {
-            $absRefPrefix = $GLOBALS['TSFE']->absRefPrefix;
-        }
-        return $absRefPrefix;
-    }
-
     public function setContentObjectRenderer(ContentObjectRenderer $cObj): void
     {
         $this->cObj = $cObj;

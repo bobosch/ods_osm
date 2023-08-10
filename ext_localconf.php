@@ -3,7 +3,7 @@ defined('TYPO3') || die();
 
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPItoST43(
     'ods_osm',
-    null,
+    '',
     '_pi1',
     'list_type',
     1

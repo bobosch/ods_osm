@@ -24,6 +24,7 @@
 
 namespace Bobosch\OdsOsm\Controller;
 
+use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\Plugin\AbstractPlugin;
 use Bobosch\OdsOsm\Div;
 use Bobosch\OdsOsm\Provider\BaseProvider;
@@ -218,7 +219,7 @@ class PluginController extends AbstractPlugin
                         )
                     )
                     ->setMaxResults(1)
-                    ->execute();
+                    ->executeQuery();
 
                 if ($row = $result->fetch()) {
                     $this->config['marker']['tx_calendarize_domain_model_event'][] = $row['foreign_uid'];
@@ -303,17 +304,13 @@ class PluginController extends AbstractPlugin
 
                     $result = $queryBuilder
                         ->select($table . '.uid')
-                        ->from($table)
-                        ->where(
-                            $queryBuilder->expr()->in(
-                                $table . '.pid',
-                                $queryBuilder->createNamedParameter(
-                                    $record_ids['pages'],
-                                    Connection::PARAM_INT_ARRAY
-                                )
-                            )
+                        ->from($table)->where($queryBuilder->expr()->in(
+                        $table . '.pid',
+                        $queryBuilder->createNamedParameter(
+                            $record_ids['pages'],
+                            Connection::PARAM_INT_ARRAY
                         )
-                        ->execute();
+                    ))->executeQuery();
 
                     while ($resArray = $result->fetch()) {
                         if (!in_array($resArray['uid'],  $record_ids[$table] ?? [])) {
@@ -352,9 +349,7 @@ class PluginController extends AbstractPlugin
                             $table . '.uid',
                             $queryBuilder->createNamedParameter((int) $item, Connection::PARAM_INT)
                         )
-                    )
-                    ->setMaxResults(1)
-                    ->execute();
+                    )->setMaxResults(1)->executeQuery();
 
                 if ($row = $result->fetch()) {
                     // Group with relation to a field
@@ -374,8 +369,7 @@ class PluginController extends AbstractPlugin
                                             Connection::PARAM_INT
                                         )
                                     )
-                                )
-                                ->execute();
+                                )->executeQuery();
 
                             while ($resArray = $result->fetch()) {
                                 $records[$t][$resArray['uid']] = $resArray;
@@ -416,10 +410,7 @@ class PluginController extends AbstractPlugin
                                     $local,
                                     $local,
                                     $queryBuilder->expr()->eq($local . '.uid', $queryBuilder->quoteIdentifier($mm . '.uid_local'))
-                                )
-
-                                ->where(...$constraints)
-                                ->execute()
+                                )->where(...$constraints)->executeQuery()
                                 ->fetchAll();
 
                             foreach($rows as $r) {
@@ -506,9 +497,7 @@ class PluginController extends AbstractPlugin
 
         $result = $queryBuilder
             ->select('*')
-            ->from('tx_odsosm_marker')
-            ->where(1)
-            ->execute();
+            ->from('tx_odsosm_marker')->where(1)->executeQuery();
 
         $icons = [];
         while ($resArray = $result->fetch()) {
@@ -517,7 +506,7 @@ class PluginController extends AbstractPlugin
 
         // Prepare markers
         $markers = $this->config['marker'];
-        $local_cObj = GeneralUtility::makeInstance('TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer');
+        $local_cObj = GeneralUtility::makeInstance(ContentObjectRenderer::class);
         foreach ($markers as $table => &$items) {
             foreach ($items as $key => &$item) {
                 $popup = is_string($this->config['popup.'][$table] ?? null) && is_array($this->config['popup.'][$table . '.'] ?? null) && $this->config['show_popups'];
@@ -600,7 +589,7 @@ class PluginController extends AbstractPlugin
                     ),
                 )
                 ->add('orderBy', 'FIELD(uid, ' . implode(',', $this->config['layer']) . ')', true)
-                ->execute();
+                ->executeQuery();
 
             while ($resArray = $result->fetch()) {
                 $baselayers[$resArray['uid']] =  $resArray;

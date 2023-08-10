@@ -7,7 +7,6 @@ return array(
         'label' => 'title',
         'tstamp' => 'tstamp',
         'crdate' => 'crdate',
-        'cruser_id' => 'cruser_id',
         'default_sortby' => 'ORDER BY title',
         'delete' => 'deleted',
         'enablecolumns' => array(
@@ -95,7 +94,6 @@ return array(
                     'foreign_match_fields' => [
                         'fieldname' => 'file',
                         'tablenames' => 'tx_odsosm_vector',
-                        'table_local' => 'sys_file',
                     ],
                     'default' => 0,
                 ],

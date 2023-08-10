@@ -7,7 +7,6 @@ return array(
         'label' => 'title',
         'tstamp' => 'tstamp',
         'crdate' => 'crdate',
-        'cruser_id' => 'cruser_id',
         'default_sortby' => 'ORDER BY title',
         'delete' => 'deleted',
         'iconfile' => 'EXT:ods_osm/Resources/Public/Icons/icon_tx_odsosm_marker.png',
@@ -34,7 +33,6 @@ return array(
                     'foreign_match_fields' => [
                         'fieldname' => 'icon',
                         'tablenames' => 'tx_odsosm_marker',
-                        'table_local' => 'sys_file',
                     ],
                     'default' => 0,
                 ],

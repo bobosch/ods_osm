@@ -25,11 +25,11 @@
   ],
   "license": "GPL-2.0-or-later",
   "require": {
-    "typo3/cms-core": "^10.4 || ^11.5",
-    "phayes/geophp": "^1.2"
+    "typo3/cms-core": "^11.5 || ^12.4",
+    "funiq/geophp": "^2"
   },
   "suggest": {
-    "friendsoftypo3/tt-address": "^6.1",
+    "friendsoftypo3/tt-address": "^8.0",
     "lochmueller/calendarize": "^12.4"
   },
   "autoload": {
@@ -44,8 +44,8 @@
     }
   },
   "require-dev": {
-    "friendsoftypo3/tt-address": "^6.0",
-    "helhum/typo3-console": "^7.0",
+    "friendsoftypo3/tt-address": "^8.0",
+    "helhum/typo3-console": "^8.0",
     "typo3/cms-backend": "^11.5.6",
     "typo3/cms-extbase": "^11.5.6",
     "typo3/cms-extensionmanager": "^11.5.6",

@@ -1,11 +1,12 @@
 <?php
+
+use Bobosch\OdsOsm\Evaluation\LonLat;
 return array(
     'ctrl' => array(
         'title' => 'LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xlf:tx_odsosm_geocache',
         'label' => 'zip',
         'tstamp' => 'tstamp',
         'crdate' => 'crdate',
-        'cruser_id' => '',
         'default_sortby' => 'ORDER BY zip',
         'delete' => 'deleted',
         'rootLevel' => 1,
@@ -102,7 +103,7 @@ return array(
                 'type' => 'input',
                 'size' => 11,
                 'max' => 11,
-                'eval' => 'Bobosch\\OdsOsm\\Evaluation\\LonLat',
+                'eval' => LonLat::class,
             )
         ),
         'lat' => array(
@@ -112,7 +113,7 @@ return array(
                 'type' => 'input',
                 'size' => 11,
                 'max' => 10,
-                'eval' => 'Bobosch\\OdsOsm\\Evaluation\\LonLat',
+                'eval' => LonLat::class,
             )
         ),
     ),
