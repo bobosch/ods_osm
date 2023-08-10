@@ -304,13 +304,38 @@ class Openlayers extends BaseProvider
                     var feature = " . $this->config['id'] . ".forEachFeatureAtPixel(event.pixel, function (feat, layer) {
                         return feat;
                     });
+                    var layer = " . $this->config['id'] . ".forEachFeatureAtPixel(event.pixel, function (feat, layer) {
+                        return layer;
+                    });
 
                     if (feature === undefined) {
                         return;
                     }
                     if (feature.get('features') === undefined) {
                         var coordinate = event.coordinate;
-                        content.innerHTML = feature.get('desc');
+                        if (feature.get('desc') !== undefined) {
+                            content.innerHTML = feature.get('desc');
+                        } else {
+                            // this might be some geoJSON data with properties set
+
+                            console.log(layer);
+                            var osm_popup = layer.get('popup') + '<br />';
+
+                            var props = feature.values_,
+                            ll = Object.keys(props),
+                            attribute, value = '';
+
+                            var osm_filter = layer.get('properties').split(',').map(item=>item.trim());
+
+                            console.log(osm_filter);
+
+                            osm_filter.forEach((osm_prop) => {
+                                if (typeof feature.get(osm_prop) !== 'undefined') {
+                                    value += '<strong>' + osm_prop + '</strong>: ' + feature.get(osm_prop) + '<br />';
+                                }
+                            });
+                            content.innerHTML = osm_popup + value;
+                        }
                         popup.setPosition(coordinate);
                     } else if (feature.get('features').length === 1) {
                         var singleFeature = feature.get('features')[0];
@@ -475,7 +500,12 @@ class Openlayers extends BaseProvider
                     $file = $fileObjects[0];
                     $filename =  $file->getPublicUrl();
 
+                    $properties = [
+                        'popup' => $item['popup'],
+                        'properties' => $item['properties'],
+                    ];
 
+                    $jsMarker .= 'var ' . $jsElementVar . '_properties = ' . json_encode($properties) . ';';
                     $jsMarker .= 'var ' . $jsElementVar . '_file = new ol.layer.Vector({
                         title: \'' .$item['title'] . ' ('. LocalizationUtility::translate('file', 'ods_osm') .')\',
                         source: new ol.source.Vector({
@@ -483,9 +513,11 @@ class Openlayers extends BaseProvider
                             url: \'' . $filename . '\',
                             format: new ol.format.GeoJSON()
                         }),
-                        style: ' . $jsElementVar . '_style
+                        style: ' . $jsElementVar . '_style,
+                        properties: ' . $jsElementVar . '_properties,
                     });' . "\n";
 
+                    $jsMarker .= $jsElementVar . "_file.getSource().setProperties(" . $jsElementVar . "_properties);";
                     $jsMarker .= "overlaygroup.getLayers().push(" . $jsElementVar . "_file);";
                 }
 
@@ -554,6 +586,23 @@ class Openlayers extends BaseProvider
                         $this->layers[2][$item['group_uid']]['layer'] = $jsMarkerGroup;
 
                     }
+
+
+                    $popupJsCode = "
+                    function (layer) {
+                        var osm_popup = '" . ($item['popup'] ?? '') . "<br />';
+
+                        var feature = layer.feature,
+                        props = feature.properties,
+                        ll = Object.keys(props),
+                        attribute, value = '';
+
+                        for (attribute in props) {
+                            value += '<strong>' + attribute + '</strong>: ' + props[attribute] + '<br />';
+                        }
+                        return osm_popup + value;
+                    }
+                ";
 
                     $jsMarkerFeature = "
                     new ol.Feature({
