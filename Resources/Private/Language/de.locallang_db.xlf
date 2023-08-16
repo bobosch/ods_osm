@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <xliff version="1.0">
-	<file source-language="en" target-language="de" datatype="plaintext" original="messages" date="2022-10-01T19:38:03Z">
+	<file source-language="en" target-language="de" datatype="plaintext" original="messages" date="2023-08-16T19:15:41Z">
 		<header>
 			<generator>LFEditor</generator>
 		</header>
@@ -101,7 +101,7 @@
 				<target><![CDATA[Standard]]></target>
 			</trans-unit>
 			<trans-unit id="tt_content.pi_flexform.show_fullscreen" approved="yes">
-				<source><![CDATA[Show FullScreen Button]]></source>
+				<source><![CDATA[Show Fullscreen Button]]></source>
 				<target><![CDATA[Vollbild anzeigen]]></target>
 			</trans-unit>
 			<trans-unit id="tt_content.pi_flexform.show_layerswitcher" approved="yes">
@@ -339,6 +339,14 @@
 			<trans-unit id="tx_odsosm_vector.file.add" approved="yes">
 				<source><![CDATA[Add geo data file]]></source>
 				<target><![CDATA[GeoJSON-Datei hinzufügen]]></target>
+			</trans-unit>
+			<trans-unit id="tx_odsosm_vector.properties" approved="yes">
+				<source><![CDATA[Properties to show in popup]]></source>
+				<target><![CDATA[Eigenschaften, die im Popup ausgegeben werden sollen]]></target>
+			</trans-unit>
+			<trans-unit id="tx_odsosm_vector.properties_from_file" approved="yes">
+				<source><![CDATA[Read properties from file]]></source>
+				<target><![CDATA[Lese Eigenschaften aus der Datei]]></target>
 			</trans-unit>
 			<trans-unit id="tx_odsosm_vector.title" approved="yes">
 				<source><![CDATA[Title]]></source>
