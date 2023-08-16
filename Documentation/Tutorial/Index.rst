@@ -7,7 +7,7 @@ The following steps are tested with TYPO3 11.5 LTS.
 
 1. Install ods_osm
 
-   ``composer require bobosch/ods-osm:^4.1``
+   ``composer require bobosch/ods-osm:^4.2``
 
 2. Install tt_address (optional)
 

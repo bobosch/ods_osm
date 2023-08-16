@@ -7,6 +7,7 @@ What does it do?
 - Store coordinates in fe_users and tt_address tables and show as markers in the map.
 - Show record information in popup window.
 - Display gps tracks (GPX, KML).
+- Display of GeoJSON vector files.
 
 Screenshots
 -----------
@@ -23,19 +24,22 @@ The example shows the output of the frontend plugin with the following settings:
 Demo Instance
 -------------
 
-At https://osm.bigga.de a demo instance of EXT:ods_osm is available which presents multiple use cases of this extension.
+At https://osm.bigga.de a demo instance of EXT:ods_osm is available which presents multiple
+use cases of this extension.
 
 Donation
 --------
 
 This extension was only possible with the help of many other free projects.
 
-You're likely using one of the main map “Mapnik”, “Osmarender” or “Cyclemap” - feel free to donate to the OpenStreetMap project http://donate.openstreetmap.org/
+You're likely using one of the main map “Mapnik”, “Osmarender” or “Cyclemap” - feel free to
+donate to the OpenStreetMap project https://supporting.openstreetmap.org/donate/
 
-If you are using the address search (autocomplete longitude and latitude in address records), please donate the service you use:
+If you are using the address search (autocomplete longitude and latitude in address records),
+please donate the service you use:
 
-Geonames: http://www.geonames.org/donations.html or buy some credits there.
+Geonames: https://www.geonames.org/donations.html or buy some credits there.
 
-Nominatim: http://donate.openstreetmap.org/
+Nominatim: https://supporting.openstreetmap.org/donate/
 
-And don't forget the main components: http://typo3.org/ and http://openlayers.org/ or http://leaflet.org/
+And don't forget the main components: https://typo3.org/ and https://openlayers.org/ or https://leaflet.org/
