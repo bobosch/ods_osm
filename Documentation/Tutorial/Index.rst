@@ -3,6 +3,7 @@ Tutorial
 
 Install Extensions via Composer
 -------------------------------
+
 The following steps are tested with TYPO3 11.5 LTS.
 
 1. Install ods_osm

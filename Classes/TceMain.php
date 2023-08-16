@@ -236,6 +236,39 @@ class TceMain
                         $fieldArray['min_lat'] = sprintf('%01.6f', $box['miny']);
                         $fieldArray['max_lon'] = sprintf('%01.6f', $box['maxx']);
                         $fieldArray['max_lat'] = sprintf('%01.6f', $box['maxy']);
+
+                        // handle properties
+                        $properties = [];
+                        $properties = (array)$polygon->getData();
+                        if (empty($properties)) {
+                            // seems to contain multiple polygones
+                            $components = $polygon->getComponents();
+                            // take the properties of the first polygon
+                            $properties = (array)$components[0]->getData();
+                        }
+
+                        if (! empty($properties)) {
+
+                            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+                                ->getQueryBuilderForTable($table);
+
+                            $result = $queryBuilder
+                                ->select('properties', 'properties_from_file')
+                                ->from('tx_odsosm_vector')
+                                ->where(
+                                    $queryBuilder->expr()->eq('uid', $id)
+                                )
+                                ->setMaxResults(1)
+                                ->executeQuery();
+
+                            if ($row = $result->fetch()) {
+                                if ($row['properties_from_file'] && !empty($properties)) {
+
+                                    $fieldArray['properties'] = implode(', ', array_keys($properties));
+                                    $fieldArray['properties_from_file'] = 0;
+                                }
+                            }
+                        }
                     } else {
                         $fieldArray['min_lon'] = 0;
                         $fieldArray['min_lat'] = 0;
