@@ -318,23 +318,19 @@ class Openlayers extends BaseProvider
                         } else {
                             // this might be some geoJSON data with properties set
 
-                            console.log(layer);
-                            var osm_popup = layer.get('popup') + '<br />';
-
+                            var osm_popup = layer.get('popup');
                             var props = feature.values_,
                             ll = Object.keys(props),
                             attribute, value = '';
 
                             var osm_filter = layer.get('properties').split(',').map(item=>item.trim());
 
-                            console.log(osm_filter);
-
                             osm_filter.forEach((osm_prop) => {
                                 if (typeof feature.get(osm_prop) !== 'undefined') {
-                                    value += '<strong>' + osm_prop + '</strong>: ' + feature.get(osm_prop) + '<br />';
+                                    value += '<dt>' + osm_prop + '</dt> <dd>' + feature.get(osm_prop) + '</dd>';
                                 }
                             });
-                            content.innerHTML = osm_popup + value;
+                            content.innerHTML = osm_popup + '<dl>' + value + '</dl>';
                         }
                         popup.setPosition(coordinate);
                     } else if (feature.get('features').length === 1) {
@@ -505,7 +501,7 @@ class Openlayers extends BaseProvider
                         'properties' => $item['properties'],
                     ];
 
-                    $jsMarker .= 'var ' . $jsElementVar . '_properties = ' . json_encode($properties) . ';';
+                    $jsMarker .= 'var ' . $jsElementVar . '_file_properties = ' . json_encode($properties) . ';';
                     $jsMarker .= 'var ' . $jsElementVar . '_file = new ol.layer.Vector({
                         title: \'' .$item['title'] . ' ('. LocalizationUtility::translate('file', 'ods_osm') .')\',
                         source: new ol.source.Vector({
@@ -514,17 +510,23 @@ class Openlayers extends BaseProvider
                             format: new ol.format.GeoJSON()
                         }),
                         style: ' . $jsElementVar . '_style,
-                        properties: ' . $jsElementVar . '_properties,
+                        properties: ' . $jsElementVar . '_file_properties,
                     });' . "\n";
 
-                    $jsMarker .= $jsElementVar . "_file.getSource().setProperties(" . $jsElementVar . "_properties);";
+                    $jsMarker .= $jsElementVar . "_file.getSource().setProperties(" . $jsElementVar . "_file_properties);";
                     $jsMarker .= "overlaygroup.getLayers().push(" . $jsElementVar . "_file);";
                 }
 
                 // add geojson from data field as well
                 if ($item['data']) {
+                    $properties = [
+                        'popup' => $item['popup'] ? $item['popup'] . '<br />' : '',
+                        'properties' => $item['properties'],
+                    ];
+
                     $jsMarker .= 'const ' . $jsElementVar . '_geojsonObject = '. $item['data'] . ';';
 
+                    $jsMarker .= 'var ' . $jsElementVar . '_data_properties = ' . json_encode($properties) . ';';
                     $jsMarker .= 'var ' . $jsElementVar . '_data = new ol.layer.Vector({
                         title: \'' .$item['title'] . '\',
                         source: new ol.source.Vector({
@@ -535,6 +537,7 @@ class Openlayers extends BaseProvider
                         style: ' . $jsElementVar . '_style
                     });';
 
+                    $jsMarker .= $jsElementVar . "_data.setProperties(" . $jsElementVar . "_data_properties);";
                     $jsMarker .= "overlaygroup.getLayers().push(" . $jsElementVar . "_data);";
                 }
 
@@ -587,10 +590,9 @@ class Openlayers extends BaseProvider
 
                     }
 
-
                     $popupJsCode = "
                     function (layer) {
-                        var osm_popup = '" . ($item['popup'] ?? '') . "<br />';
+                        var osm_popup = '" . ($item['popup'] ?? '') . "';
 
                         var feature = layer.feature,
                         props = feature.properties,

@@ -318,13 +318,13 @@ class Leaflet extends BaseProvider
         }
 
         foreach ($jsElementVarsForPopup as $jsElementVar) {
-            if ($item['popup'] ?? null) {
                 // is there a properties attribute from geoJSON? If so, we will show the given properties
+                $popupJsCode = '';
                 if ($item['properties'] ?? null) {
                     $geojsonProperties = json_encode(explode(', ', $item['properties']));
                     $popupJsCode = "
                         function (layer) {
-                            var osm_popup = '" . ($item['popup'] ?? '') . "<br />';
+                            var osm_popup = '" . ($item['popup'] ?? '') . "';
 
                             var feature = layer.feature,
                             props = feature.properties,
@@ -341,7 +341,7 @@ class Leaflet extends BaseProvider
                             return osm_popup + value;
                         }
                     ";
-                } else {
+                } else if ($item['popup'] ?? null) {
                     $popupJsCode = json_encode($item['popup'] ?? '');
                 }
                 if ($this->config['show_popups'] == 1) {
@@ -352,7 +352,6 @@ class Leaflet extends BaseProvider
                 } else if ($this->config['show_popups'] == 2) {
                     $jsMarker .= $jsElementVar . '.bindTooltip(' . $popupJsCode . ");\n";
                 }
-            }
         }
 
         return $jsMarker;
