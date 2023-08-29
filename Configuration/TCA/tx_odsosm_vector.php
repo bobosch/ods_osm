@@ -100,6 +100,30 @@ return array(
                 'geojson,json'
             )
         ),
+        'properties' => [
+            'exclude' => 0,
+            'label' => 'LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xlf:tx_odsosm_vector.properties',
+            'config' => [
+                'type' => 'text',
+                'rows' => 5,
+                'cols' => 60,
+                'max' => 2000,
+            ]
+        ],
+        'properties_from_file' => [
+            'exclude' => true,
+            'label' => 'LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xlf:tx_odsosm_vector.properties_from_file',
+            'config' => [
+                'type' => 'check',
+                'renderType' => 'checkboxToggle',
+                'default' => 1,
+                'items' => [
+                    [
+                        0 => '',
+                        1 => ''                    ]
+                ],
+            ]
+        ],
         'min_lon' => array(
             'exclude' => 0,
             'label' => 'LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xlf:tx_odsosm_track.min_lon',
@@ -135,7 +159,7 @@ return array(
     ),
     'types' => [
         '0' => [
-            'showitem' => 'hidden, title, data, color, width, file,
+            'showitem' => 'hidden, title, data, color, width, file, properties, properties_from_file,
             --palette--;;lonlatinfo'
         ]
     ],

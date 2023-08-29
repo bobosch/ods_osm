@@ -318,16 +318,40 @@ class Leaflet extends BaseProvider
         }
 
         foreach ($jsElementVarsForPopup as $jsElementVar) {
-            if ($item['popup'] ?? null) {
+                // is there a properties attribute from geoJSON? If so, we will show the given properties
+                $popupJsCode = '';
+                if ($item['properties'] ?? null) {
+                    $geojsonProperties = json_encode(explode(', ', $item['properties']));
+                    $popupJsCode = "
+                        function (layer) {
+                            var osm_popup = '" . ($item['popup'] ?? '') . "';
+
+                            var feature = layer.feature,
+                            props = feature.properties,
+                            ll = Object.keys(props),
+                            attribute, value = '';
+
+                            var osm_filter = " . $geojsonProperties . ";
+
+                            osm_filter.forEach((osm_prop) => {
+                                if (typeof props[osm_prop] !== 'undefined') {
+                                    value += '<strong>' + osm_prop + '</strong>: ' + props[osm_prop] + '<br />';
+                                }
+                            });
+                            return osm_popup + value;
+                        }
+                    ";
+                } else if ($item['popup'] ?? null) {
+                    $popupJsCode = json_encode($item['popup'] ?? '');
+                }
                 if ($this->config['show_popups'] == 1) {
-                    $jsMarker .= $jsElementVar . '.bindPopup(' . json_encode($item['popup']) . '); ' . "\n";
+                    $jsMarker .= $jsElementVar . '.bindPopup(' . $popupJsCode . '); ' . "\n";
                     if ($item['initial_popup'] ?? null) {
                         $jsMarker .= $jsElementVar . ".openPopup();\n";
                     }
                 } else if ($this->config['show_popups'] == 2) {
-                    $jsMarker .= $jsElementVar . '.bindTooltip(' . json_encode($item['popup']) . ");\n";
+                    $jsMarker .= $jsElementVar . '.bindTooltip(' . $popupJsCode . ");\n";
                 }
-            }
         }
 
         return $jsMarker;
