@@ -4,7 +4,7 @@ defined('TYPO3') || die();
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 
 /* --------------------------------------------------
-	Extend existing tables
+Extend existing tables
 -------------------------------------------------- */
 
 $tempColumns = [
@@ -18,7 +18,7 @@ $tempColumns = [
             'minitems' => 0,
             'maxitems' => 1,
             'default' => 0,
-        ]
+        ],
     ],
 ];
 

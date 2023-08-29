@@ -24,18 +24,17 @@
 
 namespace Bobosch\OdsOsm\Controller;
 
-use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
-use TYPO3\CMS\Frontend\Plugin\AbstractPlugin;
 use Bobosch\OdsOsm\Div;
 use Bobosch\OdsOsm\Provider\BaseProvider;
-use Doctrine\DBAL\FetchMode;
-use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Connection;
+use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Page\PageRenderer;
+use TYPO3\CMS\Core\Resource\FileRepository;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Resource\FileRepository;
+use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
+use TYPO3\CMS\Frontend\Plugin\AbstractPlugin;
 
 /**
  * Plugin 'OpenStreetMap' for the 'ods_osm' extension.
@@ -60,16 +59,16 @@ class PluginController extends AbstractPlugin
      */
     public $extKey = 'ods_osm';
 
-    var $config;
-    var $hooks;
-    var $lats = [];
-    var $lons = [];
+    public $config;
+    public $hooks;
+    public $lats = [];
+    public $lons = [];
     /** @var ConnectionPool */
-    var $connectionPool = null;
+    public $connectionPool = null;
     /** @var BaseProvider */
     protected $library;
 
-    function init($conf)
+    public function init($conf)
     {
         $this->pi_setPiVarDefaults();
         $this->pi_loadLL();
@@ -85,14 +84,14 @@ class PluginController extends AbstractPlugin
         $this->connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
 
         /* --------------------------------------------------
-            Configuration may be done in different places
-            - FlexForm ($flex)
-            - TypoScript ($conf)
-            - extension settings
+        Configuration may be done in different places
+        - FlexForm ($flex)
+        - TypoScript ($conf)
+        - extension settings
         -------------------------------------------------- */
 
         $flex = [];
-        $options = array(
+        $options = [
             'cluster',
             'cluster_radius',
             'height',
@@ -119,8 +118,8 @@ class PluginController extends AbstractPlugin
             'width',
             'zoom',
             'enable_scrollwheelzoom',
-            'enable_dragging'
-        );
+            'enable_dragging',
+        ];
         // fill flex array, if there is a flexform data available
         if ($this->cObj->data['pi_flexform'] ?? null) {
             foreach ($options as $option) {
@@ -227,7 +226,7 @@ class PluginController extends AbstractPlugin
             }
         }
 
-        $this->config['id'] = 'osm_' . ($this->cObj->data['uid'] ?? uniqid()) ;
+        $this->config['id'] = 'osm_' . ($this->cObj->data['uid'] ?? uniqid());
 
         $this->config['marker'] = $this->extractGroup($this->config['marker']);
 
@@ -270,7 +269,7 @@ class PluginController extends AbstractPlugin
         return $this->pi_wrapInBaseClass($content);
     }
 
-    function splitGroup($group, $default = '')
+    public function splitGroup($group, $default = '')
     {
         $groups = explode(',', $group);
         foreach ($groups as $group) {
@@ -292,7 +291,7 @@ class PluginController extends AbstractPlugin
         // if no markers are set, select current page to find records on it
         if (count($record_ids) == 0) {
             //@extensionScannerIgnoreLine
-            $record_ids['pages'] = array($GLOBALS['TSFE']->id);
+            $record_ids['pages'] = [$GLOBALS['TSFE']->id];
         }
 
         // get all marker records on configured page.
@@ -313,8 +312,8 @@ class PluginController extends AbstractPlugin
                     ))->executeQuery();
 
                     while ($resArray = $result->fetch()) {
-                        if (!in_array($resArray['uid'],  $record_ids[$table] ?? [])) {
-                            $record_ids[$table][] =  $resArray['uid'];
+                        if (!in_array($resArray['uid'], $record_ids[$table] ?? [])) {
+                            $record_ids[$table][] = $resArray['uid'];
                         }
                     }
                 }
@@ -338,7 +337,7 @@ class PluginController extends AbstractPlugin
                 $item = intval($item);
 
                 $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-                ->getQueryBuilderForTable($table);
+                    ->getQueryBuilderForTable($table);
 
                 // hint: language overlay e.g. of tt_address records is done automatically
                 $result = $queryBuilder
@@ -356,7 +355,7 @@ class PluginController extends AbstractPlugin
                     if (is_array($tc['FIND_IN_SET'] ?? null)) {
                         foreach ($tc['FIND_IN_SET'] as $t => $f) {
                             $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-                            ->getQueryBuilderForTable($table);
+                                ->getQueryBuilderForTable($table);
 
                             $result = $queryBuilder
                                 ->select('*')
@@ -413,7 +412,7 @@ class PluginController extends AbstractPlugin
                                 )->where(...$constraints)->executeQuery()
                                 ->fetchAll();
 
-                            foreach($rows as $r) {
+                            foreach ($rows as $r) {
                                 $records[$t][$r['uid']] = $r;
                                 $records[$t][$r['uid']]['group_uid'] = $table . '_' . $row['uid'];
                                 $records[$t][$r['uid']]['group_title'] = $row['title'];
@@ -486,10 +485,10 @@ class PluginController extends AbstractPlugin
         return ($records);
     }
 
-    function getMap()
+    public function getMap()
     {
         /* ==================================================
-            Marker
+        Marker
         ================================================== */
         // Get icon records
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
@@ -501,7 +500,7 @@ class PluginController extends AbstractPlugin
 
         $icons = [];
         while ($resArray = $result->fetch()) {
-            $icons[$resArray['uid']] =  $resArray;
+            $icons[$resArray['uid']] = $resArray;
         }
 
         // Prepare markers
@@ -540,35 +539,35 @@ class PluginController extends AbstractPlugin
                             $this->config['icon.'][$table . '.']
                         );
                         $info = $GLOBALS['TSFE']->lastImageInfo;
-                        $item['tx_odsosm_marker'] = array(
+                        $item['tx_odsosm_marker'] = [
                             'icon' => $info['processedFile'],
                             'type' => 'image',
                             'size_x' => $info[0],
                             'size_y' => $info[1],
                             'offset_x' => -$info[0] / 2,
                             'offset_y' => -$info[1],
-                        );
+                        ];
                     } elseif ($this->config['icon.'][$table] == 'TEXT') {
                         $conf = $this->config['icon.'][$table . '.'];
                         $html = $local_cObj->cObjGetSingle(
                             $this->config['icon.'][$table],
                             $this->config['icon.'][$table . '.']
                         );
-                        $item['tx_odsosm_marker'] = array(
+                        $item['tx_odsosm_marker'] = [
                             'icon' => $html,
                             'type' => 'html',
                             'size_x' => $conf['size_x'],
                             'size_y' => $conf['size_y'],
                             'offset_x' => $conf['offset_x'],
                             'offset_y' => $conf['offset_y'],
-                        );
+                        ];
                     }
                 }
             }
         }
 
         /* ==================================================
-            Layers
+        Layers
         ================================================== */
         $layers = [];
         $baselayers = [];
@@ -592,7 +591,7 @@ class PluginController extends AbstractPlugin
                 ->executeQuery();
 
             while ($resArray = $result->fetch()) {
-                $baselayers[$resArray['uid']] =  $resArray;
+                $baselayers[$resArray['uid']] = $resArray;
                 $baselayers[$resArray['uid']]['visible'] = false;
             }
 
@@ -625,7 +624,7 @@ class PluginController extends AbstractPlugin
         $layers[2] = []; // markers will be filled in provider classes
 
         /* ==================================================
-            Map center
+        Map center
         ================================================== */
         if ($this->config['lon'] ?? false || $this->config['use_coords_only_nomarker'] ?? false) {
             $lon = array_sum($this->lons) / count($this->lons);
@@ -637,7 +636,7 @@ class PluginController extends AbstractPlugin
         $zoom = intval($this->config['zoom']);
 
         /* ==================================================
-            Map
+        Map
         ================================================== */
         $content = $this->library->getMap($layers, $markers, $lon, $lat, $zoom);
         $script = $this->library->getScript();

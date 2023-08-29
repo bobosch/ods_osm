@@ -43,13 +43,13 @@ class Staticmap extends BaseProvider
         }
 
 
-        $markerUrl = array(
+        $markerUrl = [
             '###lon###' => $lon,
             '###lat###' => $lat,
             '###zoom###' => $zoom,
             '###width###' => intval($this->config['width']),
             '###height###' => intval($this->config['height']),
-        );
+        ];
 
         $layer = array_shift($layers);
         $url = strtr($layer[0]['static_url'], $markerUrl);
@@ -68,11 +68,11 @@ class Staticmap extends BaseProvider
         }
         if (!$cache) {
             $referer = $_SERVER['HTTP_REFERER'];
-            $opts = array(
-                'http'=>array(
-                    'header'=>array("Referer: $referer\r\n")
-                )
-            );
+            $opts = [
+                'http'=>[
+                    'header'=>["Referer: $referer\r\n"]
+                ]
+            ];
             $context = stream_context_create($opts);
             $image = file_get_contents($url, false, $context);
             if ($image) {

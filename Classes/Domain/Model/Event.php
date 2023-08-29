@@ -22,7 +22,7 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-declare(strict_types=1);
+declare (strict_types = 1);
 
 namespace Bobosch\OdsOsm\Domain\Model;
 
@@ -32,6 +32,7 @@ namespace Bobosch\OdsOsm\Domain\Model;
  * @DatabaseTable
  */
 class Event extends \HDNET\Calendarize\Domain\Model\Event
+
 {
     /**
      * Title.

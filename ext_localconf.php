@@ -1,7 +1,23 @@
 <?php
 defined('TYPO3') || die();
 
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPItoST43(
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+use Bobosch\OdsOsm\TceMain;
+use Bobosch\OdsOsm\Evaluation\LonLat;
+use Bobosch\OdsOsm\Backend\FormDataProvider\FlexFormManipulation;
+use TYPO3\CMS\Backend\Form\FormDataProvider\TcaFlexPrepare;
+use TYPO3\CMS\Backend\Form\FormDataProvider\TcaFlexProcess;
+use Bobosch\OdsOsm\Wizard\CoordinatepickerWizard;
+use Bobosch\OdsOsm\Wizard\VectordrawWizard;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Imaging\IconRegistry;
+use TYPO3\CMS\Core\Imaging\IconProvider\BitmapIconProvider;
+use Bobosch\OdsOsm\Updates\FileLocationUpdater;
+use Bobosch\OdsOsm\Updates\MigrateSettings;
+use HDNET\Calendarize\Domain\Model\Event;
+use TYPO3\CMS\Extbase\Object\Container\Container;
+
+ExtensionManagementUtility::addPItoST43(
     'ods_osm',
     '',
     '_pi1',
@@ -9,7 +25,7 @@ defined('TYPO3') || die();
     1
 );
 
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPageTSConfig('
+ExtensionManagementUtility::addPageTSConfig('
 mod.wizards.newContentElement.wizardItems.plugins.elements.odsosm {
     iconIdentifier = ods_osm
     title = LLL:EXT:ods_osm/Resources/Private/Language/locallang.xlf:pi1_title
@@ -23,20 +39,20 @@ mod.wizards.newContentElement.wizardItems.plugins.elements.odsosm {
 mod.wizards.newContentElement.wizardItems.plugins.show := addToList(odsosm)
 ');
 
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addUserTSConfig('
+ExtensionManagementUtility::addUserTSConfig('
     options.saveDocNew.tx_odsosm_track=1
 ');
 
-$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processDatamapClass'][] = \Bobosch\OdsOsm\TceMain::class;
-$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tce']['formevals'][\Bobosch\OdsOsm\Evaluation\LonLat::class] = '';
+$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processDatamapClass'][] = TceMain::class;
+$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tce']['formevals'][LonLat::class] = '';
 
 // Modify flexform fields since core 8.5 via formEngine: Inject a data provider between TcaFlexPrepare and TcaFlexProcess
-$GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['formDataGroup']['tcaDatabaseRecord'][\Bobosch\OdsOsm\Backend\FormDataProvider\FlexFormManipulation::class] = [
+$GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['formDataGroup']['tcaDatabaseRecord'][FlexFormManipulation::class] = [
     'depends' => [
-        \TYPO3\CMS\Backend\Form\FormDataProvider\TcaFlexPrepare::class,
+        TcaFlexPrepare::class,
     ],
     'before' => [
-        \TYPO3\CMS\Backend\Form\FormDataProvider\TcaFlexProcess::class,
+        TcaFlexProcess::class,
     ],
 ];
 
@@ -44,14 +60,14 @@ $GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['formDataGroup']['tcaDatabaseRe
 $GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['nodeRegistry'][1616876515] = [
     'nodeName' => 'coordinatepickerWizard',
     'priority' => 30,
-    'class' => \Bobosch\OdsOsm\Wizard\CoordinatepickerWizard::class
+    'class' => CoordinatepickerWizard::class
 ];
 
 // Add wizard with map for drawing GeoJSON data
 $GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['nodeRegistry'][1616968355] = [
     'nodeName' => 'vectordrawWizard',
     'priority' => 30,
-    'class' => \Bobosch\OdsOsm\Wizard\VectordrawWizard::class
+    'class' => VectordrawWizard::class
 ];
 
 // Register icons
@@ -60,33 +76,33 @@ $icons = [
     'vectordraw-wizard' => 'vector.png',
     'ods_osm' => 'osm.png'
 ];
-$iconRegistry = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Imaging\IconRegistry::class);
+$iconRegistry = GeneralUtility::makeInstance(IconRegistry::class);
 foreach ($icons as $identifier => $path) {
     $iconRegistry->registerIcon(
         $identifier,
-        \TYPO3\CMS\Core\Imaging\IconProvider\BitmapIconProvider::class,
+        BitmapIconProvider::class,
         ['source' => 'EXT:ods_osm/Resources/Public/Icons/' . $path]
     );
 }
 
 # add migration wizards
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update']['odsOsmFileLocationUpdater']
-    = \Bobosch\OdsOsm\Updates\FileLocationUpdater::class;
+    = FileLocationUpdater::class;
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update']['odsOsmMigrateSettings']
-    = \Bobosch\OdsOsm\Updates\MigrateSettings::class;
+    = MigrateSettings::class;
 
 call_user_func(
     function () {
-        if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('calendarize')) {
+        if (ExtensionManagementUtility::isLoaded('calendarize')) {
             // XCLASS event
-            $GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects'][HDNET\Calendarize\Domain\Model\Event::class] = [
+            $GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects'][Event::class] = [
                 'className' => \Bobosch\OdsOsm\Domain\Model\Event::class
             ];
 
             // Register extended domain class
-            \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Object\Container\Container::class)
+            GeneralUtility::makeInstance(Container::class)
                 ->registerImplementation(
-                    \HDNET\Calendarize\Domain\Model\Event::class,
+                    Event::class,
                     \Bobosch\OdsOsm\Domain\Model\Event::class
                 );
         }

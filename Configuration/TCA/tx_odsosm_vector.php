@@ -1,20 +1,20 @@
 <?php
 
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
-return array(
-    'ctrl' => array(
+return [
+    'ctrl' => [
         'title' => 'LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xlf:tx_odsosm_vector',
         'label' => 'title',
         'tstamp' => 'tstamp',
         'crdate' => 'crdate',
         'default_sortby' => 'ORDER BY title',
         'delete' => 'deleted',
-        'enablecolumns' => array(
+        'enablecolumns' => [
             'disabled' => 'hidden',
-        ),
+        ],
         'iconfile' => 'EXT:ods_osm/Resources/Public/Icons/icon_tx_odsosm_vector.png',
-    ),
-    'columns' => array(
+    ],
+    'columns' => [
         'hidden' => [
             'exclude' => true,
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.enabled',
@@ -31,18 +31,18 @@ return array(
                 ],
             ]
         ],
-        'title' => array(
+        'title' => [
             'exclude' => 0,
             'label' => 'LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xlf:tx_odsosm_vector.title',
-            'config' => array(
+            'config' => [
                 'type' => 'input',
                 'size' => 30,
-            )
-        ),
-        'data' => array(
+            ]
+        ],
+        'data' => [
             'exclude' => 0,
             'label' => 'LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xlf:tx_odsosm_vector.data',
-            'config' => array(
+            'config' => [
                 'type' => 'text',
                 'rows' => 10,
                 'cols' => 60,
@@ -52,36 +52,36 @@ return array(
                         'renderType' => 'vectordrawWizard'
                     ]
                 ]
-            )
-        ),
-        'color' => array(
+            ]
+        ],
+        'color' => [
             'exclude' => 0,
             'label' => 'LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xlf:tx_odsosm_track.color',
-            'config' => array(
+            'config' => [
                 'type' => 'input',
                 'size' => 10,
                 'max' => 10,
                 'default' => '#3388ff',
                 'eval' => 'nospace,trim',
                 'renderType' => 'colorpicker',
-            )
-        ),
-        'width' => array(
+            ]
+        ],
+        'width' => [
             'exclude' => 0,
             'label' => 'LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xlf:tx_odsosm_track.width',
-            'config' => array(
+            'config' => [
                 'type' => 'input',
                 'size' => 3,
                 'max' => 3,
                 'default' => 3,
-                'range' => array(
+                'range' => [
                     'lower' => 0,
                     'upper' => 255
-                ),
+                ],
                 'eval' => 'int',
-            )
-        ),
-        'file' => array(
+            ]
+        ],
+        'file' => [
             'exclude' => 0,
             'label' => 'LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xlf:tx_odsosm_vector.file',
             'config' => ExtensionManagementUtility::getFileFieldTCAConfig(
@@ -99,40 +99,69 @@ return array(
                 ],
                 'geojson,json'
             )
+<<<<<<< Updated upstream
         ),
         'min_lon' => array(
+=======
+        ],
+        'properties' => [
+            'exclude' => 0,
+            'label' => 'LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xlf:tx_odsosm_vector.properties',
+            'config' => [
+                'type' => 'text',
+                'rows' => 5,
+                'cols' => 60,
+                'max' => 2000,
+            ]
+        ],
+        'properties_from_file' => [
+            'exclude' => true,
+            'label' => 'LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xlf:tx_odsosm_vector.properties_from_file',
+            'config' => [
+                'type' => 'check',
+                'renderType' => 'checkboxToggle',
+                'default' => 1,
+                'items' => [
+                    [
+                        0 => '',
+                        1 => ''                    ]
+                ],
+            ]
+        ],
+        'min_lon' => [
+>>>>>>> Stashed changes
             'exclude' => 0,
             'label' => 'LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xlf:tx_odsosm_track.min_lon',
-            'config' => array(
+            'config' => [
                 'type' => 'none',
                 'size' => 8,
-            )
-        ),
-        'min_lat' => array(
+            ]
+        ],
+        'min_lat' => [
             'exclude' => 0,
             'label' => 'LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xlf:tx_odsosm_track.min_lat',
-            'config' => array(
+            'config' => [
                 'type' => 'none',
                 'size' => 8,
-            )
-        ),
-        'max_lon' => array(
+            ]
+        ],
+        'max_lon' => [
             'exclude' => 0,
             'label' => 'LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xlf:tx_odsosm_track.max_lon',
-            'config' => array(
+            'config' => [
                 'type' => 'none',
                 'size' => 8,
-            )
-        ),
-        'max_lat' => array(
+            ]
+        ],
+        'max_lat' => [
             'exclude' => 0,
             'label' => 'LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xlf:tx_odsosm_track.max_lat',
-            'config' => array(
+            'config' => [
                 'type' => 'none',
                 'size' => 8,
-            )
-        ),
-    ),
+            ]
+        ],
+    ],
     'types' => [
         '0' => [
             'showitem' => 'hidden, title, data, color, width, file,
@@ -144,4 +173,4 @@ return array(
             'showitem' => 'min_lon, min_lat, max_lon, max_lat'
         ]
     ]
-);
+];

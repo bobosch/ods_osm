@@ -5,10 +5,8 @@ namespace Bobosch\OdsOsm\Provider;
 use Bobosch\OdsOsm\Div;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Resource\FileRepository;
-use TYPO3\CMS\Core\Resource\StorageRepository;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
-use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 
 class Leaflet extends BaseProvider
@@ -211,18 +209,18 @@ class Leaflet extends BaseProvider
                         $this->scripts['leaflet-gpx'] = [
                             'src' => $this->path_res . 'leaflet-gpx/gpx.js'
                         ];
-                        $options = array(
+                        $options = [
                             'clickable' => 'false',
-                            'polyline_options' => array(
+                            'polyline_options' => [
                                 'color' => $item['color'],
                                 'weight' => $item['width'] ?: 1,
-                            ),
-                            'marker_options' => array(
+                            ],
+                            'marker_options' => [
                                 'startIconUrl' => $this->path_res . 'leaflet-gpx/pin-icon-start.png',
                                 'endIconUrl' => $this->path_res . 'leaflet-gpx/pin-icon-end.png',
                                 'shadowUrl' => $this->path_res . 'leaflet-gpx/pin-shadow.png',
-                            ),
-                        );
+                            ],
+                        ];
                         $jsMarker .= 'var ' . $jsElementVar . ' = new L.GPX("' . $file->getPublicUrl() . '",';
 
                         $jsMarker .= json_encode($options) . ");\n";
@@ -284,11 +282,11 @@ class Leaflet extends BaseProvider
                 $markerOptions = [];
                 if ($item['tx_odsosm_marker'] ?? false) {
                     $marker = $item['tx_odsosm_marker'];
-                    $iconOptions = array(
-                        'iconSize' => array((int)$marker['size_x'], (int)$marker['size_y']),
-                        'iconAnchor' => array(-(int)$marker['offset_x'], -(int)$marker['offset_y']),
-                        'popupAnchor' => array(0, (int)$marker['offset_y'])
-                    );
+                    $iconOptions = [
+                        'iconSize' => [(int)$marker['size_x'], (int)$marker['size_y']],
+                        'iconAnchor' => [-(int)$marker['offset_x'], -(int)$marker['offset_y']],
+                        'popupAnchor' => [0, (int)$marker['offset_y']]
+                    ];
                     if ($marker['type'] == 'html') {
                         $iconOptions['html'] = $marker['icon'];
                         $markerOptions['icon'] = 'icon: new L.divIcon(' . json_encode($iconOptions) . ')';

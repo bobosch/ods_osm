@@ -1,8 +1,8 @@
 <?php
 
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
-return array(
-    'ctrl' => array(
+return [
+    'ctrl' => [
         'title' => 'LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xlf:tx_odsosm_marker',
         'label' => 'title',
         'tstamp' => 'tstamp',
@@ -10,17 +10,17 @@ return array(
         'default_sortby' => 'ORDER BY title',
         'delete' => 'deleted',
         'iconfile' => 'EXT:ods_osm/Resources/Public/Icons/icon_tx_odsosm_marker.png',
-    ),
-    'columns' => array(
-        'title' => array(
+    ],
+    'columns' => [
+        'title' => [
             'exclude' => 0,
             'label' => 'LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xlf:tx_odsosm_marker.title',
-            'config' => array(
+            'config' => [
                 'type' => 'input',
                 'size' => '30',
-            )
-        ),
-        'icon' => array(
+            ]
+        ],
+        'icon' => [
             'exclude' => 0,
             'label' => 'LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xlf:tx_odsosm_marker.icon',
             'config' => ExtensionManagementUtility::getFileFieldTCAConfig(
@@ -38,72 +38,72 @@ return array(
                 ],
                 $GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext']
             )
-        ),
-        'size_x' => array(
+        ],
+        'size_x' => [
             'exclude' => 0,
             'label' => 'LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xlf:tx_odsosm_marker.size_x',
-            'config' => array(
+            'config' => [
                 'type' => 'input',
                 'size' => 4,
                 'max' => 4,
                 'eval' => 'int',
                 'checkbox' => 0,
-                'range' => array(
+                'range' => [
                     'lower' => 0,
                     'upper' => 9999,
-                ),
+                ],
                 'default' => 0
-            )
-        ),
-        'size_y' => array(
+            ]
+        ],
+        'size_y' => [
             'exclude' => 0,
             'label' => 'LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xlf:tx_odsosm_marker.size_y',
-            'config' => array(
+            'config' => [
                 'type' => 'input',
                 'size' => 4,
                 'max' => 4,
                 'eval' => 'int',
                 'checkbox' => 0,
-                'range' => array(
+                'range' => [
                     'lower' => 0,
                     'upper' => 9999,
-                ),
+                ],
                 'default' => 0
-            )
-        ),
-        'offset_x' => array(
+            ]
+        ],
+        'offset_x' => [
             'exclude' => 0,
             'label' => 'LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xlf:tx_odsosm_marker.offset_x',
-            'config' => array(
+            'config' => [
                 'type' => 'input',
                 'size' => 5,
                 'max' => 5,
                 'eval' => 'int',
                 'checkbox' => 0,
-                'range' => array(
+                'range' => [
                     'lower' => -9999,
                     'upper' => 9999,
-                ),
+                ],
                 'default' => 0
-            )
-        ),
-        'offset_y' => array(
+            ]
+        ],
+        'offset_y' => [
             'exclude' => 0,
             'label' => 'LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xlf:tx_odsosm_marker.offset_y',
-            'config' => array(
+            'config' => [
                 'type' => 'input',
                 'size' => 5,
                 'max' => 5,
                 'eval' => 'int',
                 'checkbox' => 0,
-                'range' => array(
+                'range' => [
                     'lower' => -9999,
                     'upper' => 9999,
-                ),
+                ],
                 'default' => 0
-            )
-        ),
-    ),
+            ]
+        ],
+    ],
     'types' => [
         '0' => [
             'showitem' => 'title, icon,
@@ -115,4 +115,4 @@ return array(
             'showitem' => 'size_x, size_y, offset_x, offset_y'
         ]
     ]
-);
+];

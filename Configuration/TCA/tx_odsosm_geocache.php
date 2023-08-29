@@ -1,8 +1,8 @@
 <?php
 
 use Bobosch\OdsOsm\Evaluation\LonLat;
-return array(
-    'ctrl' => array(
+return [
+    'ctrl' => [
         'title' => 'LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xlf:tx_odsosm_geocache',
         'label' => 'zip',
         'tstamp' => 'tstamp',
@@ -11,112 +11,112 @@ return array(
         'delete' => 'deleted',
         'rootLevel' => 1,
         'iconfile' => 'EXT:ods_osm/Resources/Public/Icons/icon_tx_odsosm_geocache.png',
-    ),
-    'columns' => array(
-        'cache_hit' => array(
+    ],
+    'columns' => [
+        'cache_hit' => [
             'exclude' => 0,
             'label' => 'LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xlf:tx_odsosm_geocache.cache_hit',
-            'config' => array(
+            'config' => [
                 'type' => 'input',
                 'size' => 10,
                 'max' => 10,
                 'eval' => '',
-            )
-        ),
-        'service_hit' => array(
+            ]
+        ],
+        'service_hit' => [
             'exclude' => 0,
             'label' => 'LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xlf:tx_odsosm_geocache.service_hit',
-            'config' => array(
+            'config' => [
                 'type' => 'input',
                 'size' => 10,
                 'max' => 10,
                 'eval' => '',
-            )
-        ),
-        'search_city' => array(
+            ]
+        ],
+        'search_city' => [
             'exclude' => 0,
             'label' => 'LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xlf:tx_odsosm_geocache.city',
-            'config' => array(
+            'config' => [
                 'type' => 'input',
                 'size' => 30,
                 'max' => 255,
-            )
-        ),
-        'country' => array(
+            ]
+        ],
+        'country' => [
             'exclude' => 0,
             'label' => 'LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xlf:tx_odsosm_geocache.country',
-            'config' => array(
+            'config' => [
                 'type' => 'input',
                 'size' => 2,
                 'max' => 2,
-            )
-        ),
-        'state' => array(
+            ]
+        ],
+        'state' => [
             'exclude' => 0,
             'label' => 'LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xlf:tx_odsosm_geocache.state',
-            'config' => array(
+            'config' => [
                 'type' => 'input',
                 'size' => 30,
                 'max' => 255,
-            )
-        ),
-        'city' => array(
+            ]
+        ],
+        'city' => [
             'exclude' => 0,
             'label' => 'LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xlf:tx_odsosm_geocache.city',
-            'config' => array(
+            'config' => [
                 'type' => 'input',
                 'size' => 30,
                 'max' => 255,
-            )
-        ),
-        'zip' => array(
+            ]
+        ],
+        'zip' => [
             'exclude' => 0,
             'label' => 'LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xlf:tx_odsosm_geocache.zip',
-            'config' => array(
+            'config' => [
                 'type' => 'input',
                 'size' => 5,
                 'max' => 5,
-            )
-        ),
-        'street' => array(
+            ]
+        ],
+        'street' => [
             'exclude' => 0,
             'label' => 'LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xlf:tx_odsosm_geocache.street',
-            'config' => array(
+            'config' => [
                 'type' => 'input',
                 'size' => 30,
                 'max' => 255,
-            )
-        ),
-        'housenumber' => array(
+            ]
+        ],
+        'housenumber' => [
             'exclude' => 0,
             'label' => 'LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xlf:tx_odsosm_geocache.housenumber',
-            'config' => array(
+            'config' => [
                 'type' => 'input',
                 'size' => 5,
                 'max' => 5,
-            )
-        ),
-        'lon' => array(
+            ]
+        ],
+        'lon' => [
             'exclude' => 0,
             'label' => 'LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xlf:tx_odsosm_geocache.lon',
-            'config' => array(
+            'config' => [
                 'type' => 'input',
                 'size' => 11,
                 'max' => 11,
                 'eval' => LonLat::class,
-            )
-        ),
-        'lat' => array(
+            ]
+        ],
+        'lat' => [
             'exclude' => 0,
             'label' => 'LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xlf:tx_odsosm_geocache.lat',
-            'config' => array(
+            'config' => [
                 'type' => 'input',
                 'size' => 11,
                 'max' => 10,
                 'eval' => LonLat::class,
-            )
-        ),
-    ),
+            ]
+        ],
+    ],
     'types' => [
         '0' => [
             'showitem' => 'cache_hit,service_hit,search_city,country,state,city,zip,street,housenumber,lon,
@@ -128,4 +128,4 @@ return array(
             'showitem' => 'lat'
         ]
     ]
-);
+];

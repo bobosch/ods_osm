@@ -134,7 +134,7 @@ class Div
         $email = GeneralUtility::validEmail($config['geo_service_email']) ? $config['geo_service_email'] : ($_SERVER['SERVER_ADMIN'] ?? 'unkown@example.com');
 
         if ($GLOBALS['TYPO3_CONF_VARS']['BE']['debug']) {
-            $service_names = array(0 => 'cache', 1 => 'geonames', 2 => 'nominatim');
+            $service_names = [0 => 'cache', 1 => 'geonames', 2 => 'nominatim'];
             self::getLogger()->debug('Search address using ' . $service_names[$service], $address);
         }
 
@@ -172,10 +172,10 @@ class Div
                     if ($row) {
                         $ll = true;
 
-                        $set = array(
+                        $set = [
                             'tstamp' => time(),
                             'cache_hit' => $row['cache_hit'] + 1,
-                        );
+                        ];
                         $connection->update('tx_odsosm_geocache', $set, ['uid' => intval($row['uid'])]);
 
                         $address['lat'] = $row['lat'];
@@ -397,7 +397,7 @@ class Div
 
     public static function updateCache($address, $search = [])
     {
-        $set = array(
+        $set = [
             'search_city' => $search['city'] ?? '',
             'country' => $address['country'] ?? '',
             'state' => $address['state'] ?? '',
@@ -405,7 +405,7 @@ class Div
             'zip' => $address['zip'] ?? '',
             'street' => $address['street'] ?? '',
             'housenumber' => $address['housenumber'] ?? '',
-        );
+        ];
 
         /** @var ConnectionPool $connectionPool */
         $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
@@ -416,10 +416,10 @@ class Div
         );
         $row = $res->fetch(FetchMode::ASSOCIATIVE);
         if ($row) {
-            $set = array(
+            $set = [
                 'tstamp' => time(),
                 'service_hit' => $row['service_hit'] + 1,
-            );
+            ];
             $connection->update('tx_odsosm_geocache', $set, ['uid' => intval($row['uid'])]);
         } else {
             $set['tstamp'] = time();
