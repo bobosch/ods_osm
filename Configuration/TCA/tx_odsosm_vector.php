@@ -99,10 +99,6 @@ return [
                 ],
                 'geojson,json'
             )
-<<<<<<< Updated upstream
-        ),
-        'min_lon' => array(
-=======
         ],
         'properties' => [
             'exclude' => 0,
@@ -129,7 +125,6 @@ return [
             ]
         ],
         'min_lon' => [
->>>>>>> Stashed changes
             'exclude' => 0,
             'label' => 'LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xlf:tx_odsosm_track.min_lon',
             'config' => [
