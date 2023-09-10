@@ -159,7 +159,7 @@ return [
     ],
     'types' => [
         '0' => [
-            'showitem' => 'hidden, title, data, color, width, file,
+            'showitem' => 'hidden, title, data, color, width, file, properties, properties_from_file,
             --palette--;;lonlatinfo'
         ]
     ],

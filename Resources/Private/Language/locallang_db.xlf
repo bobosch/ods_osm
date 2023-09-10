@@ -270,6 +270,12 @@
 			<trans-unit id="tx_odsosm_vector.file.add" xml:space="preserve">
 				<source>Add geo data file</source>
 			</trans-unit>
+			<trans-unit id="tx_odsosm_vector.properties_from_file" xml:space="preserve">
+				<source>Read properties from file</source>
+			</trans-unit>
+			<trans-unit id="tx_odsosm_vector.properties" xml:space="preserve">
+				<source>Properties to show in popup</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>
