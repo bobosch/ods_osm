@@ -25,13 +25,10 @@
 namespace Bobosch\OdsOsm\Provider;
 
 use Bobosch\OdsOsm\Div;
-use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Resource\FileRepository;
-use TYPO3\CMS\Core\Resource\StorageRepository;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
-use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 
 class Openlayers extends BaseProvider
@@ -210,7 +207,7 @@ class Openlayers extends BaseProvider
             $layer['subdomains'] = 'abc';
         }
         $layer['subdomains'] = substr($layer['subdomains'], 0, 1) . '-' . substr($layer['subdomains'], -1, 1);
-        $layer['tile_url'] = strtr($this->getTileUrl($layer), array('{s}' => '{' . $layer['subdomains'] . '}'));
+        $layer['tile_url'] = strtr($this->getTileUrl($layer), ['{s}' => '{' . $layer['subdomains'] . '}']);
 
         if ($layer['overlay'] == 1) {
 
@@ -416,7 +413,7 @@ class Openlayers extends BaseProvider
             $item['color'] = '#0009ff';
         }
         if (strlen($item['color']) == 7) {
-            $hex = array( $item['color'][1] . $item['color'][2], $item['color'][3] . $item['color'][4], $item['color'][5] . $item['color'][6] );
+            $hex = [ $item['color'][1] . $item['color'][2], $item['color'][3] . $item['color'][4], $item['color'][5] . $item['color'][6] ];
             $rgb = array_map('hexdec', $hex);
             $opacity = '0.2';
             $item['rgba'] = 'rgba('.implode(",", $rgb).','.$opacity.')';

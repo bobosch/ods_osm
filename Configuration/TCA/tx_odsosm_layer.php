@@ -1,6 +1,6 @@
 <?php
-return array(
-    'ctrl' => array(
+return [
+    'ctrl' => [
         'title' => 'LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xlf:tx_odsosm_layer',
         'label' => 'title',
         'tstamp' => 'tstamp',
@@ -8,12 +8,12 @@ return array(
         'sortby' => 'sorting',
         'delete' => 'deleted',
         'rootLevel' => 1,
-        'enablecolumns' => array(
+        'enablecolumns' => [
             'disabled' => 'hidden',
-        ),
+        ],
         'iconfile' => 'EXT:ods_osm/Resources/Public/Icons/icon_tx_odsosm_layer.png',
-    ),
-    'columns' => array(
+    ],
+    'columns' => [
         'hidden' => [
             'exclude' => true,
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.enabled',
@@ -30,110 +30,110 @@ return array(
                 ],
             ]
         ],
-        'title' => array(
+        'title' => [
             'exclude' => 0,
             'label' => 'LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xlf:tx_odsosm_layer.title',
-            'config' => array(
+            'config' => [
                 'type' => 'input',
                 'size' => '30',
-            )
-        ),
-        'overlay' => array(
+            ]
+        ],
+        'overlay' => [
             'exclude' => 0,
             'label' => 'LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xlf:tx_odsosm_layer.overlay',
-            'config' => array(
+            'config' => [
                 'type' => 'check',
                 'default' => '0'
-            )
-        ),
-        'javascript_include' => array(
+            ]
+        ],
+        'javascript_include' => [
             'exclude' => 0,
             'label' => 'LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xlf:tx_odsosm_layer.javascript_include',
-            'config' => array(
+            'config' => [
                 'type' => 'input',
                 'size' => '30',
                 'checkbox' => '',
-            )
-        ),
-        'javascript_openlayers' => array(
+            ]
+        ],
+        'javascript_openlayers' => [
             'exclude' => 0,
             'label' => 'LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xlf:tx_odsosm_layer.javascript_openlayers',
-            'config' => array(
+            'config' => [
                 'type' => 'input',
                 'size' => '30',
-            )
-        ),
-        'static_url' => array(
+            ]
+        ],
+        'static_url' => [
             'exclude' => 0,
             'label' => 'LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xlf:tx_odsosm_layer.static_url',
-            'config' => array(
+            'config' => [
                 'type' => 'input',
                 'size' => '30',
-            )
-        ),
-        'tile_url' => array(
+            ]
+        ],
+        'tile_url' => [
             'exclude' => 0,
             'label' => 'LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xlf:tx_odsosm_layer.tile_url',
-            'config' => array(
+            'config' => [
                 'type' => 'input',
                 'size' => '30',
-            )
-        ),
-        'tile_https' => array(
+            ]
+        ],
+        'tile_https' => [
             'exclude' => 0,
             'label' => 'LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xlf:tx_odsosm_layer.tile_https',
-            'config' => array(
+            'config' => [
                 'type' => 'check',
                 'default' => '0',
-            )
-        ),
-        'min_zoom' => array(
+            ]
+        ],
+        'min_zoom' => [
             'exclude' => 0,
             'label' => 'LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xlf:tx_odsosm_layer.min_zoom',
-            'config' => array(
+            'config' => [
                 'type' => 'input',
                 'size' => '2',
                 'eval' => 'num',
-            )
-        ),
-        'max_zoom' => array(
+            ]
+        ],
+        'max_zoom' => [
             'exclude' => 0,
             'label' => 'LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xlf:tx_odsosm_layer.max_zoom',
-            'config' => array(
+            'config' => [
                 'type' => 'input',
                 'size' => '2',
                 'eval' => 'num',
-            )
-        ),
-        'subdomains' => array(
+            ]
+        ],
+        'subdomains' => [
             'exclude' => 0,
             'label' => 'LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xlf:tx_odsosm_layer.subdomains',
-            'config' => array(
+            'config' => [
                 'type' => 'input',
                 'size' => '5',
-            )
-        ),
-        'attribution' => array(
+            ]
+        ],
+        'attribution' => [
             'exclude' => 0,
             'label' => 'LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xlf:tx_odsosm_layer.attribution',
-            'config' => array(
+            'config' => [
                 'type' => 'input',
                 'size' => '30',
-            )
-        ),
-        'homepage' => array(
+            ]
+        ],
+        'homepage' => [
             'exclude' => 0,
             'label' => 'LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xlf:tx_odsosm_layer.homepage',
-            'config' => array(
+            'config' => [
                 'type' => 'input',
                 'size' => '30',
-            )
-        ),
-    ),
-    'types' => array(
-        '0' => array('showitem' => 'hidden, title, overlay, javascript_include, javascript_openlayers, static_url, tile_url, tile_https, min_zoom, max_zoom, subdomains, attribution, homepage')
-    ),
-    'palettes' => array(
-        '1' => array('showitem' => '')
-    )
-);
+            ]
+        ],
+    ],
+    'types' => [
+        '0' => ['showitem' => 'hidden, title, overlay, javascript_include, javascript_openlayers, static_url, tile_url, tile_https, min_zoom, max_zoom, subdomains, attribution, homepage']
+    ],
+    'palettes' => [
+        '1' => ['showitem' => '']
+    ]
+];

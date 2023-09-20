@@ -2,7 +2,6 @@
 
 namespace Bobosch\OdsOsm\Provider;
 
-use TYPO3\CMS\Core\Information\Typo3Version;
 use Bobosch\OdsOsm\Div;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
