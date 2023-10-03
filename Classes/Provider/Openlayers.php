@@ -46,12 +46,12 @@ class Openlayers extends BaseProvider
                 GeneralUtility::getFileAbsFileName(Div::RESOURCE_BASE_PATH . 'OpenLayers/')
             )
         );
-        $pathOl = ($this->config['local_js'] ? $path : 'https://cdn.jsdelivr.net/npm/ol@v7.4.0/');
+        $pathOl = ($this->config['local_js'] ? $path : 'https://cdn.jsdelivr.net/npm/ol@v8.1.0/');
         $pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
         $pageRenderer->addCssFile($pathOl . 'ol.css');
         $this->scripts['OpenLayers'] = [
             'src' => $pathOl . 'dist/ol.js',
-            'sri' => 'sha512-xNjQ0wwgnfMHTwV4EkQjeUb49GIrLSjObebqJ+4j7zuOobmBgWFE+nW27WDU/CTndOjQtWkZMTEOZFiy3L31ng=='
+            'sri' => 'sha512-7BxMviUlJVAJOF4l717SzPknm3Y5nLAm3PPtRdrWlCu4GLaW+RhBxYuOJ1MkVNAcPu+lRWn4gtWx0PAxvTzD0g=='
         ];
 
         // Do we need the layerswitcher? If so, some extra plugin is required.
