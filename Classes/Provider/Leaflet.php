@@ -333,10 +333,10 @@ class Leaflet extends BaseProvider
 
                             osm_filter.forEach((osm_prop) => {
                                 if (typeof props[osm_prop] !== 'undefined') {
-                                    value += '<strong>' + osm_prop + '</strong>: ' + props[osm_prop] + '<br />';
+                                    value += '<dt>' + osm_prop + '</dt> <dd>' + props[osm_prop] + '</dd>';
                                 }
                             });
-                            return osm_popup + value;
+                            return osm_popup + '<dl>' + value + '</dl>';
                         }
                     ";
                 } else if ($item['popup'] ?? null) {
