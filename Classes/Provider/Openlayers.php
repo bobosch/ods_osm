@@ -494,7 +494,7 @@ class Openlayers extends BaseProvider
                     $filename =  $file->getPublicUrl();
 
                     $properties = [
-                        'popup' => $item['popup'],
+                        'popup' => $item['popup'] ?? '',
                         'properties' => $item['properties'],
                     ];
 
