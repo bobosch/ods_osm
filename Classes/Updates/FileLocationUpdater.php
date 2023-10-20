@@ -58,11 +58,6 @@ class FileLocationUpdater implements UpgradeWizardInterface, ChattyInterface, Lo
     protected $storage;
 
     /**
-     * @var Logger
-     */
-    protected $logger;
-
-    /**
      * Array with table and fields to migrate
      *
      * @var string
