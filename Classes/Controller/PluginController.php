@@ -533,12 +533,10 @@ class PluginController extends AbstractPlugin
                     $item['tx_odsosm_marker']['type'] = 'image';
                 } elseif ($icon) {
                     if ($this->config['icon.'][$table] == 'IMAGE') {
-                        // rendering is necessary to have image information in $GLOBALS['TSFE']->lastImageInfo
-                        $imageDummy = $local_cObj->cObjGetSingle(
-                            $this->config['icon.'][$table],
-                            $this->config['icon.'][$table . '.']
+                        $info = $this->cObj->getImgResource(
+                            $this->config['icon.'][$table . '.']['file'] ?? '',
+                            $this->config['icon.'][$table . '.']['file.'] ?? []
                         );
-                        $info = $GLOBALS['TSFE']->lastImageInfo;
                         $item['tx_odsosm_marker'] = [
                             'icon' => $info['processedFile'],
                             'type' => 'image',
