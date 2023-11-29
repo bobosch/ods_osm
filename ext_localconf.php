@@ -93,18 +93,12 @@ $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update']['odsOsmMigrat
 
 call_user_func(
     function () {
-        if (ExtensionManagementUtility::isLoaded('calendarize')) {
+        $extendCalendarize = \Bobosch\OdsOsm\Div::getConfig(['extend_calendarize'])['extend_calendarize'] ?? false;
+        if (ExtensionManagementUtility::isLoaded('calendarize') && $extendCalendarize) {
             // XCLASS event
             $GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects'][Event::class] = [
                 'className' => \Bobosch\OdsOsm\Domain\Model\Event::class
             ];
-
-            // Register extended domain class
-            GeneralUtility::makeInstance(Container::class)
-                ->registerImplementation(
-                    Event::class,
-                    \Bobosch\OdsOsm\Domain\Model\Event::class
-                );
         }
     }
 );

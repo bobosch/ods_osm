@@ -19,6 +19,9 @@ cache_enabled = 1
 # cat=basic; type=boolean; label=Use local javascripts and images: Do not use files from http://www.openlayers.org/ and http://leafletjs.com/
 local_js = 1
 
+# cat=basic; type=boolean; label=Extend the calendarize event model if loaded.
+extend_calendarize = 0
+
 # cat=BE; type=string; label=Default longitude: Default longitude for BE-maps
 default_lon = 10.41
 
@@ -27,3 +30,4 @@ default_lat = 51.27
 
 # cat=BE; type=integer; label=Default zoom: Default zoom for BE-maps
 default_zoom = 8
+
