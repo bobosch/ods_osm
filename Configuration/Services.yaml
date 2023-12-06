@@ -1,0 +1,16 @@
+# PSR-14 EventListener for eventExtendedMultiple() in CalendarController
+services:
+  _defaults:
+    autowire: true
+    autoconfigure: true
+    public: false
+
+  Bobosch\OdsOsm\:
+    resource: '../Classes/*'
+
+  Bobosch\OdsOsm\EventListener\CalendarizeOdsOsmSqlListener:
+    tags:
+      - name: event.listener
+        identifier: 'calendarizeOdsOsmSql'
+        event: TYPO3\CMS\Core\Database\Event\AlterTableDefinitionStatementsEvent
+        after: 'calendarizeField'

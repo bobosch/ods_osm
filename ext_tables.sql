@@ -21,14 +21,6 @@ CREATE TABLE sys_category (
 );
 
 --
--- Table structure for table 'tx_calendarize_domain_model_event'
---
-CREATE TABLE tx_calendarize_domain_model_event (
-	tx_odsosm_lon decimal(9,6) NOT NULL DEFAULT '0.000000',
-	tx_odsosm_lat decimal(8,6) NOT NULL DEFAULT '0.000000'
-);
-
---
 -- Table structure for table 'tx_odsosm_geocache'
 --
 CREATE TABLE tx_odsosm_geocache (
