@@ -89,22 +89,4 @@ foreach ($icons as $identifier => $path) {
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update']['odsOsmFileLocationUpdater']
     = FileLocationUpdater::class;
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update']['odsOsmMigrateSettings']
-    = MigrateSettings::class;
-
-call_user_func(
-    function () {
-        if (ExtensionManagementUtility::isLoaded('calendarize')) {
-            // XCLASS event
-            $GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects'][Event::class] = [
-                'className' => \Bobosch\OdsOsm\Domain\Model\Event::class
-            ];
-
-            // Register extended domain class
-            GeneralUtility::makeInstance(Container::class)
-                ->registerImplementation(
-                    Event::class,
-                    \Bobosch\OdsOsm\Domain\Model\Event::class
-                );
-        }
-    }
-);
+    = \Bobosch\OdsOsm\Updates\MigrateSettings::class;
