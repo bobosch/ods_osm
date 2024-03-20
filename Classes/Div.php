@@ -9,6 +9,7 @@ use TYPO3\CMS\Core\Log\Logger;
 use Doctrine\DBAL\FetchMode;
 use Doctrine\DBAL\ParameterType;
 use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\FrontendRestrictionContainer;
 use TYPO3\CMS\Core\Http\RequestFactory;
@@ -35,21 +36,21 @@ class Div
 
             // Version
             $constraints[] =
-                $queryBuilder->expr()->gte($table . '.pid', $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT));
+                $queryBuilder->expr()->gte($table . '.pid', $queryBuilder->createNamedParameter(0, Connection::PARAM_INT));
 
             // Translation
             if ($ctrl['languageField'] ?? null) {
                 $orConstraints = [
-                        $queryBuilder->expr()->eq($table . '.' . $ctrl['languageField'], $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)),
-                        $queryBuilder->expr()->eq($table . '.' . $ctrl['languageField'], $queryBuilder->createNamedParameter(-1, \PDO::PARAM_INT))
+                        $queryBuilder->expr()->eq($table . '.' . $ctrl['languageField'], $queryBuilder->createNamedParameter(0, Connection::PARAM_INT)),
+                        $queryBuilder->expr()->eq($table . '.' . $ctrl['languageField'], $queryBuilder->createNamedParameter(-1, Connection::PARAM_INT))
                     ];
 
                 $languageAspect = GeneralUtility::makeInstance(Context::class)->getAspect('language');
 
                 if ($languageAspect->getContentId() && $ctrl['transOrigPointerField']) {
                     $orConstraints[] = $queryBuilder->expr()->and($queryBuilder->expr()->eq($table . '.' . $ctrl['languageField'],
-                        $queryBuilder->createNamedParameter((int) $languageAspect->getContentId(), \PDO::PARAM_INT)), $queryBuilder->expr()->eq($table . '.' . $ctrl['transOrigPointerField'],
-                        $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)));
+                        $queryBuilder->createNamedParameter((int) $languageAspect->getContentId(), Connection::PARAM_INT)), $queryBuilder->expr()->eq($table . '.' . $ctrl['transOrigPointerField'],
+                        $queryBuilder->createNamedParameter(0, Connection::PARAM_INT)));
                 }
                 $constraints[] = $queryBuilder->expr()->or(...$orConstraints);
             }
