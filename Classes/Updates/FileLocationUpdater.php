@@ -197,7 +197,7 @@ class FileLocationUpdater implements UpgradeWizardInterface, ChattyInterface, Lo
                         $queryBuilder->expr()->isNotNull($this->fieldsToMigrate[$table]),
                         $queryBuilder->expr()->neq(
                             $this->fieldsToMigrate[$table],
-                            $queryBuilder->createNamedParameter('', \PDO::PARAM_STR)
+                            $queryBuilder->createNamedParameter('', Connection::PARAM_STR)
                         ),
                         $queryBuilder->expr()->comparison(
                             'CAST(CAST(' . $queryBuilder->quoteIdentifier($this->fieldsToMigrate[$table]) . ' AS DECIMAL) AS CHAR)',
@@ -296,7 +296,7 @@ class FileLocationUpdater implements UpgradeWizardInterface, ChattyInterface, Lo
                 $queryBuilder->createNamedParameter(0, Connection::PARAM_INT)
             ), $queryBuilder->expr()->eq(
                 'sha1',
-                $queryBuilder->createNamedParameter($fileSha1, \PDO::PARAM_STR)
+                $queryBuilder->createNamedParameter($fileSha1, Connection::PARAM_STR)
             ), $queryBuilder->expr()->eq(
                 'storage',
                 $queryBuilder->createNamedParameter($storageUid, Connection::PARAM_INT)
