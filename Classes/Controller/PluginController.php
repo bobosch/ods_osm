@@ -393,7 +393,7 @@ class PluginController extends AbstractPlugin
                             $constraints = Div::getConstraintsForQueryBuilder($foreign, $this->cObj, $queryBuilder);
 
                             // set uid
-                            $constraints[] = $queryBuilder->expr()->eq($local . '.uid', $queryBuilder->createNamedParameter($item, \PDO::PARAM_INT));
+                            $constraints[] = $queryBuilder->expr()->eq($local . '.uid', $queryBuilder->createNamedParameter($item, Connection::PARAM_INT));
 
                             $rows = $queryBuilder
                                 ->select($foreign . '.*')

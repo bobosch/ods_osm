@@ -34,6 +34,7 @@ use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use Symfony\Component\Console\Output\OutputInterface;
 use TYPO3\CMS\Core\Core\Environment;
+use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder;
 use TYPO3\CMS\Core\Resource\File;
@@ -292,13 +293,13 @@ class FileLocationUpdater implements UpgradeWizardInterface, ChattyInterface, Lo
             $queryBuilder = $connectionPool->getQueryBuilderForTable('sys_file');
             $existingFileRecord = $queryBuilder->select('uid')->from('sys_file')->where($queryBuilder->expr()->eq(
                 'missing',
-                $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
+                $queryBuilder->createNamedParameter(0, Connection::PARAM_INT)
             ), $queryBuilder->expr()->eq(
                 'sha1',
                 $queryBuilder->createNamedParameter($fileSha1, \PDO::PARAM_STR)
             ), $queryBuilder->expr()->eq(
                 'storage',
-                $queryBuilder->createNamedParameter($storageUid, \PDO::PARAM_INT)
+                $queryBuilder->createNamedParameter($storageUid, Connection::PARAM_INT)
             ))->executeQuery()->fetch();
 
             // the file exists, the file does not have to be moved again
@@ -368,7 +369,7 @@ class FileLocationUpdater implements UpgradeWizardInterface, ChattyInterface, Lo
             $queryBuilder->update($table)->where(
                 $queryBuilder->expr()->eq(
                     'uid',
-                    $queryBuilder->createNamedParameter($row['uid'], \PDO::PARAM_INT)
+                    $queryBuilder->createNamedParameter($row['uid'], Connection::PARAM_INT)
                 )
             )->set($this->fieldsToMigrate[$table], $i)->executeStatement();
         }
