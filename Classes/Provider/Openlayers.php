@@ -180,7 +180,6 @@ class Openlayers extends BaseProvider
             closer.blur();
             return false;
         };
-
         ";
     }
 
@@ -210,7 +209,6 @@ class Openlayers extends BaseProvider
         $layer['tile_url'] = strtr($this->getTileUrl($layer), ['{s}' => '{' . $layer['subdomains'] . '}']);
 
         if ($layer['overlay'] == 1) {
-
             $jsLayer = $this->config['id'] . "_" . $i . "_overlayLayer =
                     new ol.layer.Tile({
                         visible: " . ($layer['visible'] == true ? 'true' : 'false') . ",
@@ -568,9 +566,7 @@ class Openlayers extends BaseProvider
 
                 // It's a group of markers
                 if ($item['group_title'] ?? false) {
-
                     if (empty($jsMarkerGroup)) {
-
                         $jsMarker .= $markerStyle;
 
                         $group_title = ($marker['type'] == 'html' ? $icon : "<img class='marker-icon' src='" . $icon . "' />") . ' ' . $item['group_title'];
@@ -584,7 +580,6 @@ class Openlayers extends BaseProvider
                         });";
 
                         $this->layers[2][$item['group_uid']]['layer'] = $jsMarkerGroup;
-
                     }
 
                     $popupJsCode = "
@@ -612,9 +607,7 @@ class Openlayers extends BaseProvider
                     });";
 
                     $this->layers[2][$item['group_uid']]['jsMarkerFeatures'][] = $jsMarkerFeature;
-
                 } else {
-
                     $jsMarker .= $markerStyle;
                     $jsMarker .= "var " . $jsElementVar . " = new ol.layer.Vector({
                         title: '<img src=\"" .$icon . "\" class=\"marker-icon\" /> " . ($item['group_title'] ?? $item['name']) . "',
@@ -638,5 +631,4 @@ class Openlayers extends BaseProvider
 
         return $jsMarker;
     }
-
 }

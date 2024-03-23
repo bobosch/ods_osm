@@ -24,9 +24,11 @@ class Div
 {
     const RESOURCE_BASE_PATH = 'EXT:ods_osm/Resources/Public/';
 
-    public static function getConstraintsForQueryBuilder($table, ContentObjectRenderer $cObj,
-        QueryBuilder $queryBuilder) : array
-    {
+    public static function getConstraintsForQueryBuilder(
+        $table,
+        ContentObjectRenderer $cObj,
+        QueryBuilder $queryBuilder
+    ): array {
         $constraints = [];
 
         if (is_string($table)) {
@@ -41,9 +43,15 @@ class Div
             // Translation
             if ($ctrl['languageField'] ?? null) {
                 $orConstraints = [
-                        $queryBuilder->expr()->eq($table . '.' . $ctrl['languageField'], $queryBuilder->createNamedParameter(0, Connection::PARAM_INT)),
-                        $queryBuilder->expr()->eq($table . '.' . $ctrl['languageField'], $queryBuilder->createNamedParameter(-1, Connection::PARAM_INT))
-                    ];
+                    $queryBuilder->expr()->eq(
+                        $table . '.' . $ctrl['languageField'],
+                        $queryBuilder->createNamedParameter(0, Connection::PARAM_INT)
+                    ),
+                    $queryBuilder->expr()->eq(
+                        $table . '.' . $ctrl['languageField'],
+                        $queryBuilder->createNamedParameter(-1, Connection::PARAM_INT)
+                    ),
+                ];
 
                 $languageAspect = GeneralUtility::makeInstance(Context::class)->getAspect('language');
 

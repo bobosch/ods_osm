@@ -4,13 +4,13 @@ namespace Bobosch\OdsOsm\Evaluation;
 
 class LonLat
 {
-    function returnFieldJS()
+    public function returnFieldJS(): string
     {
-        return ("return value;");
+        return "return value;";
     }
 
-    function evaluateFieldValue($value, $is_in, &$set)
+    public function evaluateFieldValue($value, $is_in, &$set): string
     {
-        return (sprintf('%01.6f', $value));
+        return sprintf('%01.6f', $value);
     }
 }

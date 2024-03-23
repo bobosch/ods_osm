@@ -235,7 +235,6 @@ class FileLocationUpdater implements UpgradeWizardInterface, ChattyInterface, Lo
     protected function falPerformUpdate(): bool
     {
         $result = true;
-        $title = "Perform Update";
 
         try {
             $storages = GeneralUtility::makeInstance(StorageRepository::class)->findAll();
@@ -281,8 +280,6 @@ class FileLocationUpdater implements UpgradeWizardInterface, ChattyInterface, Lo
 
         // maybe the file was already moved, so check if the original file still exists
         if (file_exists($sourcePath)) {
-            $title = 'Migrate field ' . $sourcePath;
-
             if (!is_dir($targetDirectory)) {
                 GeneralUtility::mkdir_deep($targetDirectory);
             }
@@ -337,7 +334,7 @@ class FileLocationUpdater implements UpgradeWizardInterface, ChattyInterface, Lo
                     $row['uid'],
                     $fieldItem
                 ));
-                return false;
+                return;
             }
         }
 
@@ -355,9 +352,7 @@ class FileLocationUpdater implements UpgradeWizardInterface, ChattyInterface, Lo
             ];
 
             $queryBuilder = $connectionPool->getQueryBuilderForTable('sys_file_reference');
-
-            $result = $queryBuilder
-                ->insert('sys_file_reference')->values($fields)->executeStatement();
+            $queryBuilder->insert('sys_file_reference')->values($fields)->executeStatement();
 
             ++$i;
         }
@@ -374,6 +369,4 @@ class FileLocationUpdater implements UpgradeWizardInterface, ChattyInterface, Lo
             )->set($this->fieldsToMigrate[$table], $i)->executeStatement();
         }
     }
-
-
 }

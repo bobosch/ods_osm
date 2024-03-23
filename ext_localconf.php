@@ -1,21 +1,19 @@
 <?php
 defined('TYPO3') || die();
 
-use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
-use Bobosch\OdsOsm\TceMain;
-use Bobosch\OdsOsm\Evaluation\LonLat;
 use Bobosch\OdsOsm\Backend\FormDataProvider\FlexFormManipulation;
-use TYPO3\CMS\Backend\Form\FormDataProvider\TcaFlexPrepare;
-use TYPO3\CMS\Backend\Form\FormDataProvider\TcaFlexProcess;
-use Bobosch\OdsOsm\Wizard\CoordinatepickerWizard;
-use Bobosch\OdsOsm\Wizard\VectordrawWizard;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Imaging\IconRegistry;
-use TYPO3\CMS\Core\Imaging\IconProvider\BitmapIconProvider;
+use Bobosch\OdsOsm\Evaluation\LonLat;
+use Bobosch\OdsOsm\TceMain;
 use Bobosch\OdsOsm\Updates\FileLocationUpdater;
 use Bobosch\OdsOsm\Updates\MigrateSettings;
-use HDNET\Calendarize\Domain\Model\Event;
-use TYPO3\CMS\Extbase\Object\Container\Container;
+use Bobosch\OdsOsm\Wizard\CoordinatepickerWizard;
+use Bobosch\OdsOsm\Wizard\VectordrawWizard;
+use TYPO3\CMS\Backend\Form\FormDataProvider\TcaFlexPrepare;
+use TYPO3\CMS\Backend\Form\FormDataProvider\TcaFlexProcess;
+use TYPO3\CMS\Core\Imaging\IconProvider\BitmapIconProvider;
+use TYPO3\CMS\Core\Imaging\IconRegistry;
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 ExtensionManagementUtility::addPItoST43(
     'ods_osm',
@@ -86,7 +84,5 @@ foreach ($icons as $identifier => $path) {
 }
 
 # add migration wizards
-$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update']['odsOsmFileLocationUpdater']
-    = FileLocationUpdater::class;
-$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update']['odsOsmMigrateSettings']
-    = \Bobosch\OdsOsm\Updates\MigrateSettings::class;
+$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update']['odsOsmFileLocationUpdater'] = FileLocationUpdater::class;
+$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update']['odsOsmMigrateSettings'] = MigrateSettings::class;
