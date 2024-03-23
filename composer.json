@@ -1,16 +1,13 @@
 {
   "name": "bobosch/ods-osm",
   "description": "Add an interactive OpenStreetMap map to your website. Can also show other OpenLayers compatible maps.",
+  "license": "GPL-2.0-or-later",
   "type": "typo3-cms-extension",
   "keywords": [
     "TYPO3",
     "OSM",
     "OpenStreetMap"
   ],
-  "homepage": "https://github.com/bobosch/ods_osm",
-  "support": {
-    "issues": "https://github.com/bobosch/ods_osm/issues"
-  },
   "authors": [
     {
       "name": "Robert Heel",
@@ -23,10 +20,28 @@
       "role": "Developer"
     }
   ],
-  "license": "GPL-2.0-or-later",
+  "homepage": "https://github.com/bobosch/ods_osm",
+  "support": {
+    "issues": "https://github.com/bobosch/ods_osm/issues"
+  },
   "require": {
     "typo3/cms-core": "^11.5 || ^12.4",
     "wgirhad/geophp": "^3.0"
+  },
+  "require-dev": {
+    "friendsoftypo3/tt-address": "^8.0",
+    "helhum/typo3-console": "^7.0 || ^8.0",
+    "typo3/cms-backend": "^11.5.6 || ^12.4",
+    "typo3/cms-extbase": "^11.5.6 || ^12.4",
+    "typo3/cms-extensionmanager": "^11.5.6 || ^12.4",
+    "typo3/cms-filelist": "^11.5.6 || ^12.4",
+    "typo3/cms-fluid": "^11.5.6 || ^12.4",
+    "typo3/cms-fluid-styled-content": "^11.5.6 || ^12.4",
+    "typo3/cms-frontend": "^11.5.6 || ^12.4",
+    "typo3/cms-install": "^11.5.6 || ^12.4",
+    "typo3/cms-lowlevel": "^11.5.6 || ^12.4",
+    "typo3/cms-setup": "^11.5.6 || ^12.4",
+    "typo3/cms-tstemplate": "^11.5.6 || ^12.4"
   },
   "suggest": {
     "friendsoftypo3/tt-address": "^8.0",
@@ -37,34 +52,18 @@
       "Bobosch\\OdsOsm\\": "Classes/"
     }
   },
+  "config": {
+    "allow-plugins": {
+      "typo3/class-alias-loader": true,
+      "typo3/cms-composer-installers": true
+    },
+    "bin-dir": ".Build/bin",
+    "vendor-dir": ".Build/vendor"
+  },
   "extra": {
     "typo3/cms": {
       "extension-key": "ods_osm",
       "web-dir": ".Build/public"
-    }
-  },
-  "require-dev": {
-    "friendsoftypo3/tt-address": "^8.0",
-    "helhum/typo3-console": "^8.0",
-    "typo3/cms-backend": "^11.5.6",
-    "typo3/cms-extbase": "^11.5.6",
-    "typo3/cms-extensionmanager": "^11.5.6",
-    "typo3/cms-filelist": "^11.5.6",
-    "typo3/cms-fluid": "dev-master",
-    "typo3/cms-fluid-styled-content": "^11.5.6",
-    "typo3/cms-frontend": "^11.5.6",
-    "typo3/cms-install": "^11.5.6",
-    "typo3/cms-recordlist": "^11.5.6",
-    "typo3/cms-setup": "^11.5.6",
-    "typo3/cms-tstemplate": "^11.5.6",
-    "typo3/cms-lowlevel": "^11.5.6"
-  },
-  "config": {
-    "vendor-dir": ".Build/vendor",
-    "bin-dir": ".Build/bin",
-    "allow-plugins": {
-      "typo3/cms-composer-installers": true,
-      "typo3/class-alias-loader": true
     }
   }
 }
