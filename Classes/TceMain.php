@@ -15,11 +15,11 @@ class TceMain
     var $lat = [];
 
     // ['t3lib/class.t3lib_tcemain.php']['processDatamapClass']
-    function processDatamap_preProcessFieldArray(&$incomingFieldArray, $table, $id, $obj)
+    public function processDatamap_preProcessFieldArray(&$incomingFieldArray, $table, $id, $obj)
     {
     }
 
-   /**
+    /**
      * Generate a different preview link     *
      *
      * @param string $status status
@@ -35,8 +35,7 @@ class TceMain
         array $fieldArray,
         DataHandler $parentObject
     ) {
-
-        /**
+        /*
          * The id may be integer already or the temporary NEW id. This depends, how the record was created
          *
          * case 1:
@@ -171,7 +170,6 @@ class TceMain
                             ->executeStatement();
 
                         // handle properties
-                        $properties = [];
                         $properties = (array)$polygon->getData();
                         if (empty($properties)) {
                             // seems to contain multiple polygones
@@ -180,7 +178,7 @@ class TceMain
                             $properties = (array)$components[0]->getData();
                         }
 
-                        if (! empty($properties)) {
+                        if (!empty($properties)) {
 
                             $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
                                 ->getQueryBuilderForTable($table);
@@ -197,7 +195,7 @@ class TceMain
                             if ($row = $result->fetch()) {
                                 if ($row['properties_from_file'] && !empty($properties)) {
                                     $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-                                    ->getQueryBuilderForTable($table);
+                                        ->getQueryBuilderForTable($table);
 
                                     $queryBuilder
                                         ->update('tx_odsosm_vector')
@@ -213,14 +211,13 @@ class TceMain
                     }
                 }
                 break;
-            }
+        }
     }
 
     // ['t3lib/class.t3lib_tcemain.php']['processDatamapClass']
-    function processDatamap_postProcessFieldArray($status, $table, $id, &$fieldArray, $obj)
+    public function processDatamap_postProcessFieldArray($status, $table, $id, &$fieldArray, $obj)
     {
         switch ($table) {
-
             case 'tx_odsosm_vector':
                 if (!empty($fieldArray['data'] ?? false)) {
                     $this->lon = [];
@@ -245,7 +242,7 @@ class TceMain
                             $properties = (array)$components[0]->getData();
                         }
 
-                        if (! empty($properties)) {
+                        if (!empty($properties)) {
 
                             $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
                                 ->getQueryBuilderForTable($table);
@@ -273,16 +270,16 @@ class TceMain
                         $fieldArray['max_lon'] = 0;
                         $fieldArray['max_lat'] = 0;
                     }
-               }
+                }
                 break;
             default:
                 $tc = Div::getTableConfig($table);
                 if ($tc['lon'] ?? false) {
                     if (
-                        (isset($tc['address']) && ($fieldArray[$tc['address']] ?? null)) ||
-                        (isset($tc['street']) && ($fieldArray[$tc['street']] ?? null)) ||
-                        (isset($tc['zip']) && ($fieldArray[$tc['zip']] ?? null)) ||
-                        (isset($tc['city']) && ($fieldArray[$tc['city']] ?? null))
+                        (isset($tc['address']) && ($fieldArray[$tc['address']] ?? null))
+                        || (isset($tc['street']) && ($fieldArray[$tc['street']] ?? null))
+                        || (isset($tc['zip']) && ($fieldArray[$tc['zip']] ?? null))
+                        || (isset($tc['city']) && ($fieldArray[$tc['city']] ?? null))
                     ) {
                         $config = Div::getConfig(['autocomplete']);
                         // Search coordinates
