@@ -334,7 +334,7 @@ class PluginController extends AbstractPlugin
                 break;
             }
             foreach ($items as $item) {
-                $item = intval($item);
+                $item = (int) $item;
 
                 $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
                     ->getQueryBuilderForTable($table);
@@ -453,17 +453,17 @@ class PluginController extends AbstractPlugin
                     case 'tx_odsosm_track':
                     case 'tx_odsosm_vector':
                         if ($row['min_lon']) {
-                            $this->lons[] = floatval($row['min_lon']);
-                            $this->lats[] = floatval($row['min_lat']);
-                            $this->lons[] = floatval($row['max_lon']);
-                            $this->lats[] = floatval($row['max_lat']);
+                            $this->lons[] = (float) $row['min_lon'];
+                            $this->lats[] = (float) $row['min_lat'];
+                            $this->lons[] = (float) $row['max_lon'];
+                            $this->lats[] = (float) $row['max_lat'];
                         } else {
                             unset($records[$table][$uid]);
                         }
                         break;
                     default:
-                        $this->lons[] = floatval($row['longitude']);
-                        $this->lats[] = floatval($row['latitude']);
+                        $this->lons[] = (float) $row['longitude'];
+                        $this->lats[] = (float) $row['latitude'];
                         break;
                 }
             }
@@ -628,10 +628,10 @@ class PluginController extends AbstractPlugin
             $lon = array_sum($this->lons) / count($this->lons);
             $lat = array_sum($this->lats) / count($this->lats);
         } else {
-            $lon = floatval($this->config['lon'] ?? $this->config['default_lon']);
-            $lat = floatval($this->config['lat'] ?? $this->config['default_lat']);
+            $lon = (float)($this->config['lon'] ?? $this->config['default_lon']);
+            $lat = (float)($this->config['lat'] ?? $this->config['default_lat']);
         }
-        $zoom = intval($this->config['zoom']);
+        $zoom = (int)$this->config['zoom'];
 
         /* ==================================================
         Map

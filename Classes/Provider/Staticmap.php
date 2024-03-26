@@ -35,10 +35,10 @@ class Staticmap extends BaseProvider
         }
 
         // set reasonable defaults for width and height (100% and vh/vw does not work with staticmap)
-        if (intval($this->config['width']) <= 100) {
+        if ((int)$this->config['width'] <= 100) {
             $this->config['width'] = 640;
         }
-        if (intval($this->config['height']) <= 100) {
+        if ((int)$this->config['height'] <= 100) {
             $this->config['height'] = 480;
         }
 
@@ -47,8 +47,8 @@ class Staticmap extends BaseProvider
             '###lon###' => $lon,
             '###lat###' => $lat,
             '###zoom###' => $zoom,
-            '###width###' => intval($this->config['width']),
-            '###height###' => intval($this->config['height']),
+            '###width###' => (int)$this->config['width'],
+            '###height###' => (int)$this->config['height'],
         ];
 
         $layer = array_shift($layers);

@@ -185,7 +185,7 @@ class Div
                             'tstamp' => time(),
                             'cache_hit' => $row['cache_hit'] + 1,
                         ];
-                        $connection->update('tx_odsosm_geocache', $set, ['uid' => intval($row['uid'])]);
+                        $connection->update('tx_odsosm_geocache', $set, ['uid' => (int) $row['uid']]);
 
                         $address['lat'] = $row['lat'];
                         $address['lon'] = $row['lon'];
@@ -429,7 +429,7 @@ class Div
                 'tstamp' => time(),
                 'service_hit' => $row['service_hit'] + 1,
             ];
-            $connection->update('tx_odsosm_geocache', $set, ['uid' => intval($row['uid'])]);
+            $connection->update('tx_odsosm_geocache', $set, ['uid' => (int) $row['uid']]);
         } else {
             $set['tstamp'] = time();
             $set['crdate'] = time();
