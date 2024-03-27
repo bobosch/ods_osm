@@ -253,7 +253,7 @@ class Leaflet extends BaseProvider
 
                     // Add vector file to layerswitcher
                     $this->layers[1][] = [
-                        'title' => $item['title'] . ' ('. LocalizationUtility::translate('file', 'ods_osm') .')',
+                        'title' => $item['title'] . ' ('. LocalizationUtility::translate('file', 'OdsOsm') .')',
                         'table' => $table,
                         'uid' => $item['uid'] . '_file'
                     ];

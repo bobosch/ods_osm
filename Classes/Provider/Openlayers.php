@@ -96,7 +96,7 @@ class Openlayers extends BaseProvider
 
         baselayergroup = new ol.layer.Group({
             name: 'baselayergroup',
-            title: '" . LocalizationUtility::translate('base_layer', 'ods_osm') . "',
+            title: '" . LocalizationUtility::translate('base_layer', 'OdsOsm') . "',
             layers: [
                 new ol.layer.Tile({
                     type: 'base',
@@ -107,14 +107,14 @@ class Openlayers extends BaseProvider
 
         overlaygroup = new ol.layer.Group({
             name: 'overlaygroup',
-            title: '" . LocalizationUtility::translate('overlays', 'ods_osm') . "',
+            title: '" . LocalizationUtility::translate('overlays', 'OdsOsm') . "',
             layers: []
         });
 
         const styleCache = {};
         clusters = new ol.layer.Vector({
             name: 'clusters',
-            title: '" . LocalizationUtility::translate('openlayers.clusterLayer', 'ods_osm') . "',
+            title: '" . LocalizationUtility::translate('openlayers.clusterLayer', 'OdsOsm') . "',
             source: new ol.source.Cluster({
                 distance: " . (int)$this->config['cluster_radius']  . ",
                 minDistance: 10,
@@ -255,8 +255,8 @@ class Openlayers extends BaseProvider
          var layerSwitcher = new ol.control.LayerSwitcher({
             activationMode: \'' . ($this->config['layerswitcher_activationMode'] == '1' ? 'click' : 'mouseover') . '\',
             startActive: ' . ($this->config['show_layerswitcher'] == '2' ? 'true' : 'false') . ',
-            tipLabel: \'' . LocalizationUtility::translate('openlayers.showLayerList', 'ods_osm') . '\',
-            collapseTipLabel: \'' . LocalizationUtility::translate('openlayers.hideLayerList', 'ods_osm') . '\',
+            tipLabel: \'' . LocalizationUtility::translate('openlayers.showLayerList', 'OdsOsm') . '\',
+            collapseTipLabel: \'' . LocalizationUtility::translate('openlayers.hideLayerList', 'OdsOsm') . '\',
             groupSelectStyle: \'children\',
             reverse: false
           });
@@ -498,7 +498,7 @@ class Openlayers extends BaseProvider
 
                     $jsMarker .= 'var ' . $jsElementVar . '_file_properties = ' . json_encode($properties) . ';';
                     $jsMarker .= 'var ' . $jsElementVar . '_file = new ol.layer.Vector({
-                        title: \'' .$item['title'] . ' ('. LocalizationUtility::translate('file', 'ods_osm') .')\',
+                        title: \'' .$item['title'] . ' ('. LocalizationUtility::translate('file', 'OdsOsm') .')\',
                         source: new ol.source.Vector({
                             projection: \'EPSG:3857\',
                             url: \'' . $filename . '\',

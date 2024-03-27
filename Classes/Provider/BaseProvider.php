@@ -182,7 +182,7 @@ abstract class BaseProvider
         $popupcode = '';
         if ($this->config['library'] == 'openlayers') {
             if ($this->config['mouse_position']) {
-                $mousePosition = '<div id="mouse-position-' . $this->config['id'] . '">' . LocalizationUtility::translate('mouse_position', 'ods_osm') . ':&nbsp;</div>';
+                $mousePosition = '<div id="mouse-position-' . $this->config['id'] . '">' . LocalizationUtility::translate('mouse_position', 'OdsOsm') . ':&nbsp;</div>';
             }
             $popupcode = '
                 <div id="popup" class="ol-popup">
