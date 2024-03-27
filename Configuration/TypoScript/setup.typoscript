@@ -30,8 +30,10 @@ plugin.tx_odsosm_pi1 {
 		tx_odsosm_vector = COA
 		tx_odsosm_vector {
 			10 = TEXT
-			10.field = title
-			10.wrap = <h2>|</h2>
+			10 {
+				field = title
+				wrap = <h2>|</h2>
+			}
 		}
 		fe_users = COA
 		fe_users {
@@ -63,8 +65,10 @@ plugin.tx_odsosm_pi1 {
 				override.if.isFalse.field = name
 			}
 			20 = TEXT
-			20.field = description
-			20.htmlSpecialChars = 1
+			20 {
+				field = description
+				htmlSpecialChars = 1
+			}
 		}
 		tt_address = COA
 		tt_address {
@@ -88,17 +92,23 @@ plugin.tx_odsosm_pi1 {
 				}
 			}
 			10 = TEXT
-			10.field = name
-			10.wrap = <h2>|</h2>
+			10 {
+				field = name
+				wrap = <h2>|</h2>
+			}
 			20 = TEXT
-			20.field = description
-			20.htmlSpecialChars = 0
+			20 {
+				field = description
+				htmlSpecialChars = 0
+			}
 		}
 		tx_calendarize_domain_model_event = COA
 		tx_calendarize_domain_model_event {
 			10 = TEXT
-			10.field = location
-			10.wrap = <h2>|</h2>
+			10 {
+				field = location
+				wrap = <h2>|</h2>
+			}
 		}
 	}
 
@@ -124,16 +134,15 @@ plugin.tx_odsosm_pi1 {
 
 	show_fullscreen = {$plugin.tx_odsosm_pi1.show_fullscreen}
 
-# 	Leaflet only
+	# Leaflet only
 	enable_scrollwheelzoom = 1
 	enable_dragging = 1
 	position = 0
 
-#	OpenLayers only
+	# OpenLayers only
 	layerswitcher_activationMode = 1
 	mouse_position = 0
 }
-
 
 page {
 	includeCSS {
