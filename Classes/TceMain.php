@@ -291,7 +291,7 @@ class TceMain
                                     $address[$def] = $obj->datamap[$table][$id][$field];
                                 }
                             }
-                            if ($config['autocomplete'] == 2 || floatval($address['longitude'] ?? 0) == 0) {
+                            if ($config['autocomplete'] == 2 || (float) ($address['longitude'] ?? 0) == 0) {
                                 $ll = Div::updateAddress($address);
                                 if ($ll) {
                                     // Optimize address
