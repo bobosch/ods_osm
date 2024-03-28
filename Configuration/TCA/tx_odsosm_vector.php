@@ -25,7 +25,6 @@ return [
                 'items' => [
                     [
                         0 => '',
-                        1 => '',
                         'invertStateDisplay' => true
                     ]
                 ],
@@ -117,11 +116,6 @@ return [
                 'type' => 'check',
                 'renderType' => 'checkboxToggle',
                 'default' => 1,
-                'items' => [
-                    [
-                        0 => '',
-                        1 => ''                    ]
-                ],
             ]
         ],
         'min_lon' => [
