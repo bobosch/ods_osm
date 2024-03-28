@@ -14,7 +14,7 @@ class Leaflet extends BaseProvider
     protected $path_res;
     protected $path_leaflet;
 
-    public function getMapCore($backpath = '')
+    public function getMapCore($backpath = ''): void
     {
         $this->path_res = ($backpath ? $backpath :
             PathUtility::getAbsoluteWebPath(

@@ -66,7 +66,7 @@ class Div
         return $constraints;
     }
 
-    public static function addJsFiles($scripts, $doc)
+    public static function addJsFiles($scripts, $doc): void
     {
         $pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
         foreach ($scripts as $script) {
@@ -389,7 +389,7 @@ class Div
         return $ll;
     }
 
-    public static function flashMessage($message, $title, $status)
+    public static function flashMessage($message, $title, $status): void
     {
         /** @var FlashMessage $flashMessage */
         $flashMessage = GeneralUtility::makeInstance(
@@ -404,7 +404,7 @@ class Div
         $flashMessageQueue->addMessage($flashMessage);
     }
 
-    public static function updateCache($address, $search = [])
+    public static function updateCache($address, $search = []): void
     {
         $set = [
             'search_city' => $search['city'] ?? '',
@@ -440,7 +440,7 @@ class Div
         }
     }
 
-    public static function splitAddressField(&$address)
+    public static function splitAddressField(&$address): void
     {
         // Address field contains street if country, city or zip is set
         if (($address['country'] ?? false) || ($address['city'] ?? false) || ($address['zip'] ?? false)) {
