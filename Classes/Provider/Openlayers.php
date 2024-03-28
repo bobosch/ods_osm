@@ -39,7 +39,7 @@ class Openlayers extends BaseProvider
         2 => [], // Marker
     ];
 
-    public function getMapCore($backpath = '')
+    public function getMapCore($backpath = ''): void
     {
         $path = ($backpath ? $backpath :
             PathUtility::getAbsoluteWebPath(

@@ -68,7 +68,7 @@ class PluginController extends AbstractPlugin
     /** @var BaseProvider */
     protected $library;
 
-    public function init($conf)
+    public function init($conf): void
     {
         $this->pi_setPiVarDefaults();
         $this->pi_loadLL();
