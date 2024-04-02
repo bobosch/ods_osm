@@ -34,7 +34,7 @@ class TceMain
         $id,
         array $fieldArray,
         DataHandler $parentObject
-    ) {
+    ): void {
         /*
          * The id may be integer already or the temporary NEW id. This depends, how the record was created
          *
@@ -215,7 +215,7 @@ class TceMain
     }
 
     // ['t3lib/class.t3lib_tcemain.php']['processDatamapClass']
-    public function processDatamap_postProcessFieldArray($status, $table, $id, &$fieldArray, $obj)
+    public function processDatamap_postProcessFieldArray($status, $table, $id, &$fieldArray, $obj): void
     {
         switch ($table) {
             case 'tx_odsosm_vector':

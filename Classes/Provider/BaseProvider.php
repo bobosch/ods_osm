@@ -68,7 +68,7 @@ abstract class BaseProvider
         return '';
     }
 
-    public function init($config)
+    public function init($config): void
     {
         $this->config = $config;
         $this->pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
