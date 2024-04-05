@@ -261,10 +261,8 @@ class Div
                                 $address['country'] = (string)$result['postalCodes'][0]['countryCode'];
                             }
                         }
-                    } else {
-                        if ($GLOBALS['TYPO3_CONF_VARS']['BE']['debug'] ?? false) {
-                            self::getLogger()->error('No valid response from GeoNames service.');
-                        }
+                    } elseif ($GLOBALS['TYPO3_CONF_VARS']['BE']['debug'] ?? false) {
+                        self::getLogger()->error('No valid response from GeoNames service.');
                     }
                 }
                 break;
@@ -380,10 +378,8 @@ class Div
                     $address['country'] = strtoupper((string)$result[0]['address']['country_code']);
                 }
             }
-        } else {
-            if ($GLOBALS['TYPO3_CONF_VARS']['BE']['debug'] ?? false) {
-                self::getLogger()->error('No valid response from Nominatim service.');
-            }
+        } elseif ($GLOBALS['TYPO3_CONF_VARS']['BE']['debug'] ?? false) {
+            self::getLogger()->error('No valid response from Nominatim service.');
         }
 
         return $ll;

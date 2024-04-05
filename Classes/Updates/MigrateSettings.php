@@ -198,7 +198,7 @@ class MigrateSettings implements UpgradeWizardInterface
                 $overlays = $xml->data->sheet->language->addChild('field');
                 $overlays->addAttribute('index', 'overlays');
                 $overlays->addChild('value', $field->value)->addAttribute('index', 'vDEF');
-            } else if ($field['index'] != $library[0]->value . '_layer' && ($field['index'] == 'layer' ||
+            } elseif ($field['index'] != $library[0]->value . '_layer' && ($field['index'] == 'layer' ||
                     $field['index'] == 'openlayers_layer' ||
                     $field['index'] == 'openlayers3_layer' || $field['index'] == 'leaflet_layer')) {
                 // remove all other, unused layer fields from flexform xml
