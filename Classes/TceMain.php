@@ -11,8 +11,8 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 class TceMain
 {
-    var $lon = [];
-    var $lat = [];
+    public $lon = [];
+    public $lat = [];
 
     // ['t3lib/class.t3lib_tcemain.php']['processDatamapClass']
     public function processDatamap_preProcessFieldArray(&$incomingFieldArray, $table, $id, $obj)
