@@ -306,16 +306,14 @@ class TceMain
                                                 }
                                             }
                                         }
-                                    } else {
-                                        if ($tc['address'] ?? false) {
-                                            if ($address['street'] ?? false) {
-                                                $address['address'] = $address['street'];
-                                                if ($address['housenumber'] ?? false) {
-                                                    $address['address'] .= ' ' . $address['housenumber'];
-                                                }
-                                                $address['address'] .= ', ' . $address['zip'] . ' ' . $address['city'];
-                                                $address['address'] .= ', ' . $address['country'];
+                                    } elseif ($tc['address'] ?? false) {
+                                        if ($address['street'] ?? false) {
+                                            $address['address'] = $address['street'];
+                                            if ($address['housenumber'] ?? false) {
+                                                $address['address'] .= ' ' . $address['housenumber'];
                                             }
+                                            $address['address'] .= ', ' . $address['zip'] . ' ' . $address['city'];
+                                            $address['address'] .= ', ' . $address['country'];
                                         }
                                     }
 

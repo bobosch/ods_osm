@@ -339,7 +339,7 @@ class Leaflet extends BaseProvider
                         return osm_popup + '<dl>' + value + '</dl>';
                     }
                 ";
-            } else if ($item['popup'] ?? null) {
+            } elseif ($item['popup'] ?? null) {
                 $popupJsCode = json_encode($item['popup'] ?? '');
             }
             if ($this->config['show_popups'] == 1) {
@@ -347,7 +347,7 @@ class Leaflet extends BaseProvider
                 if ($item['initial_popup'] ?? null) {
                     $jsMarker .= $jsElementVar . ".openPopup();\n";
                 }
-            } else if ($this->config['show_popups'] == 2) {
+            } elseif ($this->config['show_popups'] == 2) {
                 $jsMarker .= $jsElementVar . '.bindTooltip(' . $popupJsCode . ");\n";
             }
         }

@@ -142,7 +142,7 @@ class PluginController extends AbstractPlugin
             }
             if ($flex['library'] == 'staticmap' && !empty($flex['staticmap_layer'])) {
                 $flex['layer'] = $flex['staticmap_layer'];
-            } else if (!empty($flex['base_layer'])) {
+            } elseif (!empty($flex['base_layer'])) {
                 $flex['layer'] = $flex['base_layer'];
             }
         }
