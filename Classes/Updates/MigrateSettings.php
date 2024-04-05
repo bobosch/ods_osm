@@ -145,7 +145,7 @@ class MigrateSettings implements UpgradeWizardInterface
                 continue;
             }
             $oldSettingsFound = $this->checkForOldSettings($record['pi_flexform']);
-            if ($oldSettingsFound === true) {
+            if ($oldSettingsFound) {
                 // We found at least one field to be updated --> break here
                 break;
             }
