@@ -319,11 +319,13 @@ class TceMain
 
                                     // Update fieldArray if address is set
                                     foreach ($tc as $def => $field) {
-                                        if ($def == strtolower($def)) {
-                                            if ($address[$def]) {
-                                                $fieldArray[$field] = $address[$def];
-                                            }
+                                        if ($def != strtolower($def)) {
+                                            continue;
                                         }
+                                        if (!$address[$def]) {
+                                            continue;
+                                        }
+                                        $fieldArray[$field] = $address[$def];
                                     }
                                 }
                             }

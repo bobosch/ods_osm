@@ -209,7 +209,7 @@ class Openlayers extends BaseProvider
         $layer['tile_url'] = strtr($this->getTileUrl($layer), ['{s}' => '{' . $layer['subdomains'] . '}']);
 
         if ($layer['overlay'] == 1) {
-            $jsLayer = $this->config['id'] . "_" . $i . "_overlayLayer =
+            return $this->config['id'] . "_" . $i . "_overlayLayer =
                     new ol.layer.Tile({
                         visible: " . ($layer['visible'] == true ? 'true' : 'false') . ",
                         opacity: 0.99,
@@ -223,8 +223,9 @@ class Openlayers extends BaseProvider
                     });
                 overlaygroup.getLayers().push(" . $this->config['id'] . "_" . $i . "_overlayLayer);
             ";
-        } else {
-            $jsLayer = $this->config['id'] . "_" . $i . "_baselayergroup =
+        }
+
+        return $this->config['id'] . "_" . $i . "_baselayergroup =
                     new ol.layer.Tile({
                         type: 'base',
                         combine: 'true',
@@ -239,9 +240,6 @@ class Openlayers extends BaseProvider
                     });
                 baselayergroup.getLayers().push(" . $this->config['id'] . "_" . $i . "_baselayergroup);
         ";
-        }
-
-        return $jsLayer;
     }
 
     /**

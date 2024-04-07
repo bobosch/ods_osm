@@ -221,9 +221,8 @@ class FileLocationUpdater implements UpgradeWizardInterface, ChattyInterface, Lo
 
         if ($countOnly === true) {
             return $numResults;
-        } else {
-            return $allResults;
         }
+        return $allResults;
     }
 
 
