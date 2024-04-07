@@ -108,12 +108,10 @@ class Leaflet extends BaseProvider
         }
 
         if (empty($base) && empty($overlay)) {
-            $layerString = '';
-        } else {
-            $layerString = 'var layersControl=new L.Control.Layers({' . implode(',', $base) . '},{' . implode(',', $overlay) . '}' . ($this->config['show_layerswitcher'] == 2 ? ',{collapsed:false}' : '') . ');
-			' . $this->config['id'] . '.addControl(layersControl);';
+            return '';
         }
-        return $layerString;
+        return 'var layersControl=new L.Control.Layers({' . implode(',', $base) . '},{' . implode(',', $overlay) . '}' . ($this->config['show_layerswitcher'] == 2 ? ',{collapsed:false}' : '') . ');
+			' . $this->config['id'] . '.addControl(layersControl);';
     }
 
     /**

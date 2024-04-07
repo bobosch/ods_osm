@@ -204,9 +204,8 @@ abstract class BaseProvider
         // if protocoll is missing, we add http:// or https://
         if ($layer['tile_https'] == 1) {
             return 'https://' . $layer['tile_url'];
-        } else {
-            return 'http://' . $layer['tile_url'];
         }
+        return 'http://' . $layer['tile_url'];
     }
 
     public function setContentObjectRenderer(ContentObjectRenderer $cObj): void
