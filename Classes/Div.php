@@ -364,8 +364,10 @@ class Div
                 if ($result[0]['address']['postcode'] ?? false) {
                     $address['zip'] = (string)$result[0]['address']['postcode'];
                 }
-                if (($result[0]['address']['city'] ?? false) || ($result[0]['address']['village'] ?? false)) {
-                    $address['city'] = $result[0]['address']['city'] ? (string)$result[0]['address']['city'] : (string)$result[0]['address']['village'];
+                if ($result[0]['address']['city'] ?? false) {
+                    $address['city'] = $result[0]['address']['city'];
+                } else if ($result[0]['address']['village'] ?? false) {
+                    $address['city'] = (string)$result[0]['address']['village'];
                 }
                 if ($result[0]['address']['state'] ?? false) {
                     $address['state'] = (string)$result[0]['address']['state'];
