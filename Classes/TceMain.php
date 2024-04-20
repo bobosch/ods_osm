@@ -250,11 +250,11 @@ class TceMain
                                     // Optimize address
                                     $address['lon'] = sprintf($tc['FORMAT'], $address['lon']);
                                     $address['lat'] = sprintf($tc['FORMAT'], $address['lat']);
-                                    if ($address['structured'] ?? false) {
+                                    if (($address['type'] ?? false) == 'structured') {
                                         if (isset($tc['address']) && !isset($tc['street'])) {
-                                            if ($address['street']) {
+                                            if ($address['street'] ?? false) {
                                                 $address['address'] = $address['street'];
-                                                if ($address['housenumber']) {
+                                                if ($address['housenumber'] ?? false) {
                                                     $address['address'] .= ' ' . $address['housenumber'];
                                                 }
                                             }
