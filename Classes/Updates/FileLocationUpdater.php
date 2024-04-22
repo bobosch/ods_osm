@@ -299,7 +299,7 @@ class FileLocationUpdater implements UpgradeWizardInterface, ChattyInterface, Lo
             ), $queryBuilder->expr()->eq(
                 'storage',
                 $queryBuilder->createNamedParameter($storageUid, Connection::PARAM_INT)
-            ))->executeQuery()->fetch();
+            ))->executeQuery()->fetchAssociative();
 
             // the file exists, the file does not have to be moved again
             if (is_array($existingFileRecord)) {

@@ -192,7 +192,7 @@ class TceMain
                                 ->setMaxResults(1)
                                 ->executeQuery();
 
-                            if ($row = $result->fetch()) {
+                            if ($row = $result->fetchAssociative()) {
                                 if ($row['properties_from_file'] && !empty($properties)) {
                                     $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
                                         ->getQueryBuilderForTable($table);
@@ -256,7 +256,7 @@ class TceMain
                                 ->setMaxResults(1)
                                 ->executeQuery();
 
-                            if ($row = $result->fetch()) {
+                            if ($row = $result->fetchAssociative()) {
                                 if ($row['properties_from_file'] && !empty($properties)) {
 
                                     $fieldArray['properties'] = implode(', ', array_keys($properties));
