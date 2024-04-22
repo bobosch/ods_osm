@@ -409,8 +409,10 @@ class PluginController extends AbstractPlugin
                                     $local,
                                     $local,
                                     $queryBuilder->expr()->eq($local . '.uid', $queryBuilder->quoteIdentifier($mm . '.uid_local'))
-                                )->where(...$constraints)->executeQuery()
-                                ->fetchAll();
+                                )
+                                ->where(...$constraints)
+                                ->executeQuery()
+                                ->fetchAllAssociative();
 
                             foreach ($rows as $r) {
                                 $records[$t][$r['uid']] = $r;
