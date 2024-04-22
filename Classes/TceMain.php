@@ -7,6 +7,7 @@ use \geoPHP\geoPHP;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Resource\FileRepository;
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 class TceMain
@@ -59,6 +60,14 @@ class TceMain
 
         if (!is_int($id)) {
             return;
+        }
+
+        /*
+         * If ods_osm is installed via composer, the class geoPHP is already known.
+         * Otherwise we use the copy in the local folder which is only available in the TER package.
+         */
+        if (!class_exists(geoPHP::class)) {
+            require_once 'phar://' . ExtensionManagementUtility::extPath('ods_osm', 'Resources/Private/geophp.phar/vendor/autoload.php');
         }
 
         switch ($table) {
@@ -223,7 +232,21 @@ class TceMain
                     $this->lon = [];
                     $this->lat = [];
 
-                    $polygon = geoPHP::load(($fieldArray['data']));
+                    /*
+                     * If ods_osm is installed via composer, the class geoPHP is already known.
+                     * Otherwise we use the copy in the local folder which is only available in the TER package.
+                     */
+                    if (!class_exists(geoPHP::class)) {
+                        require_once 'phar://' . ExtensionManagementUtility::extPath('ods_osm', 'Resources/Private/geophp.phar/vendor/autoload.php');
+                    }
+
+                    try {
+                        $polygon = geoPHP::load(($fieldArray['data']));
+                    } catch (\Exception $e) {
+                        // silently ignore failure of parsing geojson
+                        break;
+                    }
+
                     if ($polygon) {
                         $box = $polygon->getBBox();
 
