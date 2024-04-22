@@ -65,6 +65,14 @@ class TceMain
             return;
         }
 
+        /*
+         * If ods_osm is installed via composer, the class geoPHP is already known.
+         * Otherwise we use the copy in the local folder which is only available in the TER package.
+         */
+        if (!class_exists(geoPHP::class)) {
+            require_once 'phar://' . ExtensionManagementUtility::extPath('ods_osm', 'Resources/Private/geophp.phar/vendor/autoload.php');
+        }
+
         switch ($table) {
             case 'tx_odsosm_track':
                 if (is_int($id)) {
@@ -186,7 +194,21 @@ class TceMain
                     $this->lon = [];
                     $this->lat = [];
 
-                    $polygon = geoPHP::load(($fieldArray['data']));
+                    /*
+                     * If ods_osm is installed via composer, the class geoPHP is already known.
+                     * Otherwise we use the copy in the local folder which is only available in the TER package.
+                     */
+                    if (!class_exists(geoPHP::class)) {
+                        require_once 'phar://' . ExtensionManagementUtility::extPath('ods_osm', 'Resources/Private/geophp.phar/vendor/autoload.php');
+                    }
+
+                    try {
+                        $polygon = geoPHP::load(($fieldArray['data']));
+                    } catch (\Exception $e) {
+                        // silently ignore failure of parsing geojson
+                        break;
+                    }
+
                     if ($polygon) {
                         $box = $polygon->getBBox();
 
