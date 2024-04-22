@@ -326,7 +326,7 @@ class PluginController extends AbstractPlugin
             $tc = $tables[$table] ?? [];
             $connection = $this->connectionPool
                 ->getConnectionForTable($table)
-                ->getSchemaManager()
+                ->createSchemaManager()
                 ->tablesExist([$table]);
 
             // table seems not available --> break to avoid exceptions
