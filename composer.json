@@ -43,28 +43,12 @@
       "web-dir": ".Build/public"
     }
   },
-  "require-dev": {
-    "friendsoftypo3/tt-address": "^6.0",
-    "helhum/typo3-console": "^7.0",
-    "typo3/cms-backend": "^11.5.6",
-    "typo3/cms-extbase": "^11.5.6",
-    "typo3/cms-extensionmanager": "^11.5.6",
-    "typo3/cms-filelist": "^11.5.6",
-    "typo3/cms-fluid": "dev-master",
-    "typo3/cms-fluid-styled-content": "^11.5.6",
-    "typo3/cms-frontend": "^11.5.6",
-    "typo3/cms-install": "^11.5.6",
-    "typo3/cms-recordlist": "^11.5.6",
-    "typo3/cms-setup": "^11.5.6",
-    "typo3/cms-tstemplate": "^11.5.6",
-    "typo3/cms-lowlevel": "^11.5.6"
-  },
-  "config": {
-    "vendor-dir": ".Build/vendor",
-    "bin-dir": ".Build/bin",
-    "allow-plugins": {
-      "typo3/cms-composer-installers": true,
-      "typo3/class-alias-loader": true
-    }
+  "scripts": {
+    "build:ter-package": [
+      "@composer global require clue/phar-composer",
+      "(mkdir -p /tmp/vendors && cd /tmp/vendors && composer require wgirhad/geophp:^3.0 && composer global exec phar-composer build -v)",
+      "cp /tmp/vendors/vendors.phar ./Resources/Private/geophp.phar",
+      "(VERSION=$(git tag --sort=taggerdate | tail -1) && zip -r ../ods_osm-$VERSION.zip *)"
+    ]
   }
 }
