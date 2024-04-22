@@ -176,7 +176,7 @@ class Div
                     $res = $connection->executeQuery(
                         'SELECT * FROM tx_odsosm_geocache WHERE ' . implode(' AND ', $where)
                     );
-                    $row = $res->fetch(FetchMode::ASSOCIATIVE);
+                    $row = $res->fetchAssociative();
 
                     if ($row) {
                         $ll = true;
@@ -421,7 +421,7 @@ class Div
         $res = $connection->select(
             ['*'], 'tx_odsosm_geocache', $set
         );
-        $row = $res->fetch(FetchMode::ASSOCIATIVE);
+        $row = $res->fetchAssociative();
         if ($row) {
             $set = [
                 'tstamp' => time(),

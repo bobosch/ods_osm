@@ -220,7 +220,7 @@ class PluginController extends AbstractPlugin
                     ->setMaxResults(1)
                     ->executeQuery();
 
-                if ($row = $result->fetch()) {
+                if ($row = $result->fetchAssociative()) {
                     $this->config['marker']['tx_calendarize_domain_model_event'][] = $row['foreign_uid'];
                 }
             }
@@ -311,7 +311,7 @@ class PluginController extends AbstractPlugin
                         )
                     ))->executeQuery();
 
-                    while ($resArray = $result->fetch()) {
+                    while ($resArray = $result->fetchAssociative()) {
                         if (!in_array($resArray['uid'], $record_ids[$table] ?? [])) {
                             $record_ids[$table][] = $resArray['uid'];
                         }
@@ -350,7 +350,7 @@ class PluginController extends AbstractPlugin
                         )
                     )->setMaxResults(1)->executeQuery();
 
-                if ($row = $result->fetch()) {
+                if ($row = $result->fetchAssociative()) {
                     // Group with relation to a field
                     if (is_array($tc['FIND_IN_SET'] ?? null)) {
                         foreach ($tc['FIND_IN_SET'] as $t => $f) {
@@ -370,7 +370,7 @@ class PluginController extends AbstractPlugin
                                     )
                                 )->executeQuery();
 
-                            while ($resArray = $result->fetch()) {
+                            while ($resArray = $result->fetchAssociative()) {
                                 $records[$t][$resArray['uid']] = $resArray;
                                 $records[$t][$resArray['uid']]['group_uid'] = $table . '_' . $row['uid'];
                                 $records[$t][$resArray['uid']]['group_title'] = $row['title'];
@@ -499,7 +499,7 @@ class PluginController extends AbstractPlugin
             ->from('tx_odsosm_marker')->where(1)->executeQuery();
 
         $icons = [];
-        while ($resArray = $result->fetch()) {
+        while ($resArray = $result->fetchAssociative()) {
             $icons[$resArray['uid']] = $resArray;
         }
 
@@ -588,7 +588,7 @@ class PluginController extends AbstractPlugin
                 ->add('orderBy', 'FIELD(uid, ' . implode(',', $this->config['layer']) . ')', true)
                 ->executeQuery();
 
-            while ($resArray = $result->fetch()) {
+            while ($resArray = $result->fetchAssociative()) {
                 $baselayers[$resArray['uid']] = $resArray;
                 $baselayers[$resArray['uid']]['visible'] = false;
             }

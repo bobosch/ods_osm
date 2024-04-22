@@ -88,7 +88,7 @@ class MigrateSettings implements UpgradeWizardInterface
             ->from('tt_content')->where($queryBuilder->expr()->eq('CType', $queryBuilder->createNamedParameter('list')), $queryBuilder->expr()->like('list_type', $queryBuilder->createNamedParameter('ods_osm_%')))->executeQuery();
 
         // Update the found record sets
-        while ($record = $statement->fetch()) {
+        while ($record = $statement->fetchAssociative()) {
             // Robust error handling in case pi_flexform is NULL or empty
             if (!($record['pi_flexform'] ?? false)) {
                 continue;
@@ -140,7 +140,7 @@ class MigrateSettings implements UpgradeWizardInterface
             ->from('tt_content')->where($queryBuilder->expr()->eq('CType', $queryBuilder->createNamedParameter('list')), $queryBuilder->expr()->like('list_type', $queryBuilder->createNamedParameter('ods_osm_%')))->executeQuery();
 
         // Update the found record sets
-        while ($record = $statement->fetch()) {
+        while ($record = $statement->fetchAssociative()) {
             if (!($record['pi_flexform'] ?? false)) {
                 continue;
             }
