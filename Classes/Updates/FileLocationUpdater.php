@@ -204,8 +204,11 @@ class FileLocationUpdater implements UpgradeWizardInterface, ChattyInterface, Lo
                             ExpressionBuilder::NEQ,
                             'CAST(' . $queryBuilder->quoteIdentifier($this->fieldsToMigrate[$table]) . ' AS CHAR)'
                         )
-                    )->orderBy('uid')->executeQuery()
-                    ->fetchAll();
+                    )
+                    ->orderBy('uid')
+                    ->executeQuery()
+                    ->fetchAllAssociative();
+
                 if ($countOnly === true) {
                     $numResults += count($result);
                 } else {
