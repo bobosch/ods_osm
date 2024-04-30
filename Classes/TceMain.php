@@ -38,8 +38,11 @@ class TceMain
         array $fieldArray,
         DataHandler $parentObject
     ) {
-
-        /**
+        // guard statement, abort here if no ods_osm table
+        if (strpos($table, 'tx_odsosm_') !== 0) {
+            return;
+        }
+        /*
          * The id may be integer already or the temporary NEW id. This depends, how the record was created
          *
          * case 1:
@@ -58,7 +61,7 @@ class TceMain
          */
 
         if ($status == "new") {
-            $id = $parentObject->substNEWwithIDs[$id];
+            $id = $parentObject->substNEWwithIDs[$id] ?? '';
         }
 
         if (!is_int($id)) {
