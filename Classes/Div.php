@@ -264,12 +264,12 @@ class Div
                 break;
 
             case 2: // http://nominatim.openstreetmap.org/
-                $query['country'] = $country;
                 $query['email'] = $email;
                 $query['addressdetails'] = 1;
                 $query['format'] = 'jsonv2';
 
                 if ($address['type'] == 'structured') {
+                    $query['country'] = $country;
                     if ($address['city'] ?? false) {
                         $query['city'] = $address['city'];
                     }
