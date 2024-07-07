@@ -1,4 +1,5 @@
 <?php
+
 /***************************************************************
  *  Copyright notice
  *
@@ -41,8 +42,8 @@ class FlexFormManipulation implements FormDataProviderInterface
     /**
      * Manipulate data of ods_osm_pi plugin.
      *
-     * @param array $result
-     * @return array
+     * @param array<string, mixed> $result
+     * @return array<string, mixed>
      */
     public function addData(array $result): array
     {
@@ -73,12 +74,21 @@ class FlexFormManipulation implements FormDataProviderInterface
      */
     protected function fixAllowedTables(array $dataStructure): array
     {
-        $markerAllowedTables = [ 'fe_users', 'fe_groups', 'pages', 'sys_category', 'tx_odsosm_track', 'tx_odsosm_vector' ];
-        $markerPopupInitialAllowedTables = [ 'fe_users' ];
+        $markerAllowedTables = [
+            'fe_users',
+            'fe_groups',
+            'pages',
+            'sys_category',
+            'tx_odsosm_track',
+            'tx_odsosm_vector',
+        ];
+        $markerPopupInitialAllowedTables = [
+            'fe_users',
+        ];
 
         $extensions = [
             'tt_address' => 'tt_address',
-            'calendarize' => 'tx_calendarize_domain_model_event'
+            'calendarize' => 'tx_calendarize_domain_model_event',
         ];
 
         foreach ($extensions as $extension => $table) {
@@ -100,5 +110,4 @@ class FlexFormManipulation implements FormDataProviderInterface
 
         return $dataStructure;
     }
-
 }

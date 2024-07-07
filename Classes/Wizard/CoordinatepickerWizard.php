@@ -1,5 +1,6 @@
 <?php
-declare(strict_types = 1);
+
+declare(strict_types=1);
 
 namespace Bobosch\OdsOsm\Wizard;
 
@@ -24,10 +25,6 @@ use TYPO3\CMS\Core\Utility\StringUtility;
  */
 class CoordinatepickerWizard extends AbstractNode
 {
-
-    /**
-     * @return array
-     */
     public function render(): array
     {
         $row = $this->data['databaseRow'];
@@ -107,9 +104,6 @@ class CoordinatepickerWizard extends AbstractNode
         return $resultArray;
     }
 
-    /**
-     * @return LanguageService
-     */
     protected function getLanguageService(): LanguageService
     {
         return $GLOBALS['LANG'];

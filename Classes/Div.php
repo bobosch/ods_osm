@@ -22,7 +22,7 @@ use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 
 class Div
 {
-    const RESOURCE_BASE_PATH = 'EXT:ods_osm/Resources/Public/';
+    public const RESOURCE_BASE_PATH = 'EXT:ods_osm/Resources/Public/';
 
     public static function getConstraintsForQueryBuilder(
         $table,

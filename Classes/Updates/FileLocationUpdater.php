@@ -1,4 +1,5 @@
 <?php
+
 /***************************************************************
  *  Copyright notice
  *
@@ -24,11 +25,6 @@
 
 namespace Bobosch\OdsOsm\Updates;
 
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Install\Updates\DatabaseUpdatedPrerequisite;
-use TYPO3\CMS\Install\Updates\UpgradeWizardInterface;
-use TYPO3\CMS\Install\Updates\ChattyInterface;
-
 use Doctrine\DBAL\DBALException;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
@@ -40,6 +36,10 @@ use TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\ResourceStorage;
 use TYPO3\CMS\Core\Resource\StorageRepository;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Install\Updates\ChattyInterface;
+use TYPO3\CMS\Install\Updates\DatabaseUpdatedPrerequisite;
+use TYPO3\CMS\Install\Updates\UpgradeWizardInterface;
 
 /**
  * Migrate location of marker and track files to new, FAL-based location
@@ -60,34 +60,26 @@ class FileLocationUpdater implements UpgradeWizardInterface, ChattyInterface, Lo
 
     /**
      * Array with table and fields to migrate
-     *
-     * @var string
      */
-    protected $fieldsToMigrate = [
+    protected array $fieldsToMigrate = [
         'tx_odsosm_marker' => 'icon',
         'tx_odsosm_track' => 'file'
     ];
 
     /**
      * the source file resides here
-     *
-     * @var string
      */
-    protected $sourcePath = 'uploads/tx_odsosm/';
+    protected string $sourcePath = 'uploads/tx_odsosm/';
 
     /**
      * target folder after migration
      * Relative to fileadmin
-     *
-     * @var string
      */
-    protected $targetPath = '_migrated/tx_odsosm/';
+    protected string $targetPath = '_migrated/tx_odsosm/';
 
     /**
      * Return the identifier for this wizard
      * This must be the same string as used in the ext_localconf class registration
-     *
-     * @return string
      */
     public function getIdentifier(): string
     {
@@ -96,8 +88,6 @@ class FileLocationUpdater implements UpgradeWizardInterface, ChattyInterface, Lo
 
     /**
      * Return the speaking name of this wizard
-     *
-     * @return string
      */
     public function getTitle(): string
     {
@@ -106,8 +96,6 @@ class FileLocationUpdater implements UpgradeWizardInterface, ChattyInterface, Lo
 
     /**
      * Get description
-     *
-     * @return string Longer description of this updater
      */
     public function getDescription(): string
     {
@@ -119,16 +107,11 @@ class FileLocationUpdater implements UpgradeWizardInterface, ChattyInterface, Lo
      *
      * Is used to determine whether a wizard needs to be run.
      * Check if data for migration exists.
-     *
-     * @return bool
      */
     public function updateNecessary(): bool
     {
         $numRecords = $this->falGetRecordsFromTable(true);
-        if ($numRecords > 0) {
-            return true;
-        }
-        return false;
+        return $numRecords > 0;
     }
 
     /**
@@ -141,9 +124,6 @@ class FileLocationUpdater implements UpgradeWizardInterface, ChattyInterface, Lo
         ];
     }
 
-    /**
-     * @param OutputInterface $output
-     */
     public function setOutput(OutputInterface $output): void
     {
         $this->output = $output;
@@ -153,8 +133,6 @@ class FileLocationUpdater implements UpgradeWizardInterface, ChattyInterface, Lo
      * Execute the update
      *
      * Called when a wizard reports that an update is necessary
-     *
-     * @return bool
      */
     public function executeUpdate(): bool
     {
@@ -258,11 +236,9 @@ class FileLocationUpdater implements UpgradeWizardInterface, ChattyInterface, Lo
     /**
      * Migrates a single field.
      *
-     * @param string $table
-     * @param array $row
      * @throws \Exception
      */
-    protected function migrateField($table, $row)
+    protected function migrateField(string $table, array $row): void
     {
         $fieldItem = trim($row[$this->fieldsToMigrate[$table]]);
 

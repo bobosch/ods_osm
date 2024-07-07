@@ -12,8 +12,8 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 class TceMain
 {
-    public $lon = [];
-    public $lat = [];
+    public array $lon = [];
+    public array $lat = [];
 
     // ['t3lib/class.t3lib_tcemain.php']['processDatamapClass']
     public function processDatamap_preProcessFieldArray(&$incomingFieldArray, $table, $id, $obj)
@@ -58,7 +58,7 @@ class TceMain
          *   - in case 2 --> id is integer
          */
 
-        if ($status == "new") {
+        if ($status === 'new') {
             $id = $parentObject->substNEWwithIDs[$id] ?? '';
         }
 

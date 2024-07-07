@@ -46,8 +46,6 @@ use TYPO3\CMS\Frontend\Plugin\AbstractPlugin;
 class PluginController extends AbstractPlugin
 {
     /**
-     * Same as class name
-     *
      * @var string
      */
     public $prefixId = 'tx_odsosm_pi1';
@@ -59,14 +57,35 @@ class PluginController extends AbstractPlugin
      */
     public $extKey = 'ods_osm';
 
-    public $config;
-    public $hooks;
-    public $lats = [];
-    public $lons = [];
+    protected array $config = [];
+    protected array $hooks = [];
+    protected array $lats = [];
+    protected array $lons = [];
     /** @var ConnectionPool */
-    public $connectionPool = null;
+    protected $connectionPool = null;
     /** @var BaseProvider */
     protected $library;
+
+    /**
+     * The main method of the PlugIn
+     *
+     * @param string $content The PlugIn content
+     * @param array $conf The PlugIn configuration
+     *
+     * @return string The content that is displayed on the website
+     */
+    public function main(string $content, array $conf): string
+    {
+        $this->connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
+
+        $this->init($conf);
+
+        if ($this->config['marker'] || $this->config['no_marker']) {
+            $content = $this->getMap();
+        }
+
+        return $this->pi_wrapInBaseClass($content);
+    }
 
     public function init($conf): void
     {
@@ -74,14 +93,11 @@ class PluginController extends AbstractPlugin
         $this->pi_loadLL();
         $this->pi_initPIflexForm(); // Init FlexForm configuration for plugin
 
-        $this->hooks = [];
         if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ods_osm']['class.tx_odsosm_pi1.php'] ?? null)) {
             foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ods_osm']['class.tx_odsosm_pi1.php'] as $classRef) {
                 $this->hooks[] = GeneralUtility::makeInstance($classRef);
             }
         }
-
-        $this->connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
 
         /* --------------------------------------------------
         Configuration may be done in different places
@@ -140,7 +156,7 @@ class PluginController extends AbstractPlugin
                         break;
                 }
             }
-            if ($flex['library'] == 'staticmap' && !empty($flex['staticmap_layer'])) {
+            if ($flex['library'] === 'staticmap' && !empty($flex['staticmap_layer'])) {
                 $flex['layer'] = $flex['staticmap_layer'];
             } elseif (!empty($flex['base_layer'])) {
                 $flex['layer'] = $flex['base_layer'];
@@ -250,54 +266,36 @@ class PluginController extends AbstractPlugin
         $this->library->cObj = $this->cObj;
     }
 
-    /**
-     * The main method of the PlugIn
-     *
-     * @param    string $content : The PlugIn content
-     * @param    array $conf : The PlugIn configuration
-     *
-     * @return   string The content that is displayed on the website
-     */
-    public function main($content, $conf)
-    {
-        $this->init($conf);
-
-        if ($this->config['marker'] || $this->config['no_marker']) {
-            $content = $this->getMap();
-        }
-
-        return $this->pi_wrapInBaseClass($content);
-    }
-
-    public function splitGroup($group, $default = '')
+    protected function splitGroup($group, $default = ''): array
     {
         $groups = explode(',', $group);
-        foreach ($groups as $group) {
-            $item = GeneralUtility::revExplode('_', $group, 2);
-            if (count($item) == 1) {
-                $record_ids[$default][] = $item[0];
+        $recordIds = [];
+        foreach ($groups as $tempGroup) {
+            $item = GeneralUtility::revExplode('_', $tempGroup, 2);
+            if (count($item) === 1) {
+                $recordIds[$default][] = $item[0];
             } else {
-                $record_ids[$item[0]][] = $item[1];
+                $recordIds[$item[0]][] = $item[1];
             }
         }
 
-        return ($record_ids);
+        return $recordIds;
     }
 
-    private function extractGroup($record_ids)
+    private function extractGroup(array $recordIds): array
     {
         $tables = Div::getTableConfig();
 
         // if no markers are set, select current page to find records on it
-        if (count($record_ids) == 0) {
+        if ($recordIds === []) {
             //@extensionScannerIgnoreLine
-            $record_ids['pages'] = [$GLOBALS['TSFE']->id];
+            $recordIds['pages'] = [$GLOBALS['TSFE']->id];
         }
 
         // get all marker records on configured page.
-        if (!empty($record_ids['pages'])) {
+        if (!empty($recordIds['pages'])) {
             foreach (array_keys($tables) as $table) {
-                if ($table != 'tt_content') {
+                if ($table !== 'tt_content') {
                     $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
                         ->getQueryBuilderForTable($table);
 
@@ -306,14 +304,14 @@ class PluginController extends AbstractPlugin
                         ->from($table)->where($queryBuilder->expr()->in(
                         $table . '.pid',
                         $queryBuilder->createNamedParameter(
-                            $record_ids['pages'],
+                            $recordIds['pages'],
                             Connection::PARAM_INT_ARRAY
                         )
                     ))->executeQuery();
 
                     while ($resArray = $result->fetchAssociative()) {
-                        if (!in_array($resArray['uid'], $record_ids[$table] ?? [])) {
-                            $record_ids[$table][] = $resArray['uid'];
+                        if (!in_array($resArray['uid'], $recordIds[$table] ?? [])) {
+                            $recordIds[$table][] = $resArray['uid'];
                         }
                     }
                 }
@@ -322,7 +320,7 @@ class PluginController extends AbstractPlugin
 
         // get marker records from db
         $records = [];
-        foreach ($record_ids as $table => $items) {
+        foreach ($recordIds as $table => $items) {
             $tc = $tables[$table] ?? [];
             $connection = $this->connectionPool
                 ->getConnectionForTable($table)
@@ -444,7 +442,7 @@ class PluginController extends AbstractPlugin
         // Hook to change records
         foreach ($this->hooks as $hook) {
             if (method_exists($hook, 'changeRecords')) {
-                $hook->changeRecords($records, $record_ids, $this);
+                $hook->changeRecords($records, $recordIds, $this);
             }
         }
 
@@ -472,7 +470,7 @@ class PluginController extends AbstractPlugin
         }
 
         // No markers
-        if (count($this->lons) == 0) {
+        if ($this->lons === []) {
             if ($this->config['no_marker'] == 1) {
                 if (($this->config['lon'] ?? false) && ($this->config['lat'] ?? false)) {
                     $this->lons[] = $this->config['lon'];
@@ -484,10 +482,10 @@ class PluginController extends AbstractPlugin
             }
         }
 
-        return ($records);
+        return $records;
     }
 
-    public function getMap()
+    public function getMap(): string
     {
         /* ==================================================
         Marker
@@ -534,7 +532,7 @@ class PluginController extends AbstractPlugin
                     $item['tx_odsosm_marker']['icon'] = $file;
                     $item['tx_odsosm_marker']['type'] = 'image';
                 } elseif ($icon) {
-                    if ($this->config['icon.'][$table] == 'IMAGE') {
+                    if ($this->config['icon.'][$table] === 'IMAGE') {
                         $info = $this->cObj->getImgResource(
                             $this->config['icon.'][$table . '.']['file'] ?? '',
                             $this->config['icon.'][$table . '.']['file.'] ?? []
@@ -547,7 +545,7 @@ class PluginController extends AbstractPlugin
                             'offset_x' => -$info[0] / 2,
                             'offset_y' => -$info[1],
                         ];
-                    } elseif ($this->config['icon.'][$table] == 'TEXT') {
+                    } elseif ($this->config['icon.'][$table] === 'TEXT') {
                         $conf = $this->config['icon.'][$table . '.'];
                         $html = $local_cObj->cObjGetSingle(
                             $this->config['icon.'][$table],
@@ -570,7 +568,7 @@ class PluginController extends AbstractPlugin
         Layers
         ================================================== */
         $layers = [];
-        $baselayers = [];
+        $baseLayers = [];
         if (!empty(implode(',', $this->config['layer']))) {
             $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
                 ->getQueryBuilderForTable('tx_odsosm_layer');
@@ -588,38 +586,39 @@ class PluginController extends AbstractPlugin
                     ),
                 )
                 ->add('orderBy', 'FIELD(uid, ' . implode(',', $this->config['layer']) . ')', true)
+                ->orderBy('sorting')
                 ->executeQuery();
 
             while ($resArray = $result->fetchAssociative()) {
-                $baselayers[$resArray['uid']] = $resArray;
-                $baselayers[$resArray['uid']]['visible'] = false;
+                $baseLayers[$resArray['uid']] = $resArray;
+                $baseLayers[$resArray['uid']]['visible'] = false;
             }
 
             // set visible flag
             if (isset($this->config['layers_visible'])) {
                 foreach ($this->config['layers_visible'] as $key) {
-                    if ($baselayers[$key] ?? false) {
-                        $baselayers[$key]['visible'] = true;
+                    if ($baseLayers[$key] ?? false) {
+                        $baseLayers[$key]['visible'] = true;
                     }
                 }
             }
             if (isset($this->config['overlays_active'])) {
                 foreach (explode(',', $this->config['overlays_active']) as $key) {
-                    if ($baselayers[$key] ?? false) {
-                        $baselayers[$key]['visible'] = true;
+                    if ($baseLayers[$key] ?? false) {
+                        $baseLayers[$key]['visible'] = true;
                     }
                 }
             }
         }
 
-        foreach ($baselayers as $uid => $layer) {
+        foreach ($baseLayers as $uid => $layer) {
             if ($layer['overlay'] == 1) {
                 $layers[1][] = $layer;
             } else {
                 $layers[0][] = $layer;
             }
         }
-        // $layers[0] = $baselayers;
+        // $layers[0] = $baseLayers;
         // $layers[1] = $overlays;
         $layers[2] = []; // markers will be filled in provider classes
 
@@ -658,6 +657,6 @@ class PluginController extends AbstractPlugin
             }
         }
 
-        return ($content);
+        return $content;
     }
 }
