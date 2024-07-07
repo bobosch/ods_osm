@@ -7,9 +7,9 @@ use TYPO3\CMS\Core\Core\Environment;
 
 class Staticmap extends BaseProvider
 {
-    protected $uploadPath = 'fileadmin/tx_odsosm/staticmap';
+    protected string $uploadPath = 'fileadmin/tx_odsosm/staticmap';
 
-    public function getMap($layers, $markers, $lon, $lat, $zoom)
+    public function getMap($layers, array $markers, $lon, $lat, $zoom): string
     {
         $marker = [];
 
@@ -69,9 +69,9 @@ class Staticmap extends BaseProvider
         if (!$cache) {
             $referer = $_SERVER['HTTP_REFERER'];
             $opts = [
-                'http'=>[
-                    'header'=>["Referer: $referer\r\n"]
-                ]
+                'http' => [
+                    'header' => ["Referer: $referer\r\n"],
+                ],
             ];
             $context = stream_context_create($opts);
             $image = file_get_contents($url, false, $context);
@@ -101,8 +101,40 @@ class Staticmap extends BaseProvider
             ];
         }
 
-        $content = $this->cObj->cObjGetSingle('IMAGE', $config);
+        return $this->cObj->cObjGetSingle('IMAGE', $config);
+    }
 
-        return ($content);
+    public function getMapCore(string $backPath = ''): void
+    {
+    }
+
+    public function getMapMain(): string
+    {
+        return '';
+    }
+
+    public function getMapCenter($lat, $lon, $zoom): string
+    {
+        return '';
+    }
+
+    protected function getLayer($layer, $i, string $backPath = ''): string
+    {
+        return '';
+    }
+
+    protected function getMarker(array $item, string $table): string
+    {
+        return '';
+    }
+
+    protected function getFullScreen(): string
+    {
+        return '';
+    }
+
+    protected function getLayerSwitcher(): string
+    {
+        return '';
     }
 }

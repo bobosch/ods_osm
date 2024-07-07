@@ -10,85 +10,61 @@ use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 
 abstract class BaseProvider
 {
-    /** @var ContentObjectRenderer */
-    public $cObj; // Must set from instantiating class
-    protected $config;
-    protected $script;
+    public ContentObjectRenderer $cObj; // Must set from instantiating class
+    protected PageRenderer $pageRenderer;
+    protected array $config = [];
 
-    /**
-     *
-     */
-    protected $pageRenderer;
+    protected string $script = '';
 
-    /** @var array keeping all JavaScripts to be included */
-    protected $scripts = [];
+    /** keeping all JavaScripts to be included */
+    protected array $scripts = [];
 
-    protected $layers = [
+    protected array $layers = [
         0 => [], // Base
         1 => [], // Overlay
         2 => [], // Marker
     ];
 
+    public function __construct()
+    {
+        $this->pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
+    }
+
     // Implement these functions
-    public function getMapCore($backpath = '')
-    {
-    }
+    abstract public function getMapCore(string $backPath = ''): void;
 
-    public function getMapMain()
-    {
-    }
+    abstract public function getMapMain(): string;
 
-    public function getMapCenter($lat, $lon, $zoom)
-    {
-    }
+    abstract public function getMapCenter($lat, $lon, $zoom): string;
 
-    /**
-     * @return string
-     */
-    protected function getLayer($layer, $i, $backpath = '')
-    {
-        return '';
-    }
+    abstract protected function getLayer($layer, $i, string $backPath = ''): string;
 
-    /**
-     * @return string
-     */
-    protected function getMarker($item, $table)
-    {
-        return '';
-    }
+    abstract protected function getMarker(array $item, string $table): string;
 
     /**
      * Get JavaScript code for fulltext button
      *
      * @return string The JavaScript to add the fullscreen button
      */
-    protected function getFullScreen()
-    {
-        return '';
-    }
+    abstract protected function getFullScreen(): string;
 
     public function init($config): void
     {
         $this->config = $config;
-        $this->pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
     }
 
-    /**
-     * @return string
-     */
-    public function getMap($layers, $markers, $lon, $lat, $zoom)
+    public function getMap($layers, array $markers, $lon, $lat, $zoom): string
     {
         $this->getMapCore();
 
         $this->layers = $layers;
 
-        $baselayers = $layers[0] ?? null;
+        $baseLayers = $layers[0] ?? null;
         $overlays = $layers[1] ?? null;
 
         $this->script = "
 			" . $this->getMapMain() . "
-			" . $this->getBaseLayers($baselayers) . "
+			" . $this->getBaseLayers($baseLayers) . "
 		    " . $this->getOverlayLayers($overlays) . "
 			" . $this->getMapCenter($lat, $lon, $zoom) . "
 			" . $this->getMarkers($markers);
@@ -106,17 +82,14 @@ abstract class BaseProvider
         return $this->getHtml();
     }
 
-    /**
-     * @return string
-     */
-    public function getBaseLayers($layers, $backpath = '')
+    public function getBaseLayers($layers, $backPath = ''): string
     {
         // Main layer
         $i = 0;
         $jsBaseLayer = [];
         if (is_array($layers) && !empty($layers)) {
             foreach ($layers as $layer) {
-                $jsBaseLayer[] = $this->getLayer($layer, $i, $backpath);
+                $jsBaseLayer[] = $this->getLayer($layer, $i, $backPath);
                 $i++;
             }
         }
@@ -124,17 +97,14 @@ abstract class BaseProvider
         return implode("\n", ($jsBaseLayer));
     }
 
-    /**
-     * @return string
-     */
-    public function getOverlayLayers($layers, $backpath = '')
+    public function getOverlayLayers($layers, string $backPath = ''): string
     {
         // Main layer
         $i = 0;
         $jsOverlayLayer = [];
         if (is_array($layers) && !empty($layers)) {
             foreach ($layers as $layer) {
-                $jsOverlayLayer[] = $this->getLayer($layer, $i, $backpath);
+                $jsOverlayLayer[] = $this->getLayer($layer, $i, $backPath);
                 $i++;
             }
         }
@@ -142,18 +112,12 @@ abstract class BaseProvider
         return implode("\n", ($jsOverlayLayer));
     }
 
-    /**
-     * @return string
-     */
-    public function getScript()
+    public function getScript(): string
     {
         return $this->script;
     }
 
-    /**
-     * @return string
-     */
-    protected function getMarkers($markers)
+    protected function getMarkers(array $markers): string
     {
         $jsMarker = '';
         foreach ($markers as $table => $items) {
@@ -165,43 +129,31 @@ abstract class BaseProvider
         return $jsMarker;
     }
 
-    /**
-     * @return string
-     */
-    protected function getLayerSwitcher()
-    {
-        return '';
-    }
+    abstract protected function getLayerSwitcher(): string;
 
-    /**
-     * @return string
-     */
-    protected function getHtml()
+    protected function getHtml(): string
     {
         $mousePosition = '';
-        $popupcode = '';
-        if ($this->config['library'] == 'openlayers') {
+        $popupCode = '';
+        if ($this->config['library'] === 'openlayers') {
             if ($this->config['mouse_position']) {
                 $mousePosition = '<div id="mouse-position-' . $this->config['id'] . '">' . LocalizationUtility::translate('mouse_position', 'OdsOsm') . ':&nbsp;</div>';
             }
-            $popupcode = '
+            $popupCode = '
                 <div id="popup" class="ol-popup">
                 <a href="#" id="popup-closer" class="ol-popup-closer"></a>
                 <div id="popup-content"></div>
             </div>';
         }
-        return '<div style="width:' . $this->config['width'] . '; height:' . $this->config['height'] . '; " id="' . $this->config['id'] . '"></div>' . $mousePosition . $popupcode;
+        return '<div style="width:' . $this->config['width'] . '; height:' . $this->config['height'] . '; " id="' . $this->config['id'] . '"></div>' . $mousePosition . $popupCode;
     }
 
-    /**
-     * @return string
-     */
-    protected function getTileUrl($layer)
+    protected function getTileUrl(array $layer): string
     {
         if (strpos($layer['tile_url'], '://') !== false) {
             return $layer['tile_url'];
         }
-        // if protocoll is missing, we add http:// or https://
+        // if the protocol is missing, we add http:// or https://
         if ($layer['tile_https'] == 1) {
             return 'https://' . $layer['tile_url'];
         }

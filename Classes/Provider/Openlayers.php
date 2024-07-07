@@ -1,4 +1,5 @@
 <?php
+
 /***************************************************************
  *  Copyright notice
  *
@@ -33,15 +34,9 @@ use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 
 class Openlayers extends BaseProvider
 {
-    protected $layers = [
-        0 => [], // Base
-        1 => [], // Overlay
-        2 => [], // Marker
-    ];
-
-    public function getMapCore($backpath = ''): void
+    public function getMapCore($backPath = ''): void
     {
-        $path = ($backpath ? $backpath :
+        $path = ($backPath ? $backPath :
             PathUtility::getAbsoluteWebPath(
                 GeneralUtility::getFileAbsFileName(Div::RESOURCE_BASE_PATH . 'OpenLayers/')
             )
@@ -69,7 +64,7 @@ class Openlayers extends BaseProvider
         }
     }
 
-    public function getMapMain()
+    public function getMapMain(): string
     {
         $controls = [
             'new ol.control.Attribution()',
@@ -192,7 +187,7 @@ class Openlayers extends BaseProvider
      *
      * @return string The JavaScript to set the center and zoom level
      */
-    public function getMapCenter($lat, $lon, $zoom)
+    public function getMapCenter($lat, $lon, $zoom): string
     {
         return '
 			view.setCenter(ol.proj.transform([' . $lon . ', ' . $lat . '], \'EPSG:4326\', \'EPSG:3857\'));
@@ -200,7 +195,7 @@ class Openlayers extends BaseProvider
 		';
     }
 
-    protected function getLayer($layer, $i, $backpath = '')
+    protected function getLayer($layer, $i, $backPath = ''): string
     {
         if (empty($layer['subdomains'])) {
             $layer['subdomains'] = 'abc';
@@ -247,7 +242,7 @@ class Openlayers extends BaseProvider
      *
      * @return string The JavaScript to add the layerswitcher
      */
-    protected function getLayerSwitcher()
+    protected function getLayerSwitcher(): string
     {
         return '
          var layerSwitcher = new ol.control.LayerSwitcher({
@@ -267,7 +262,7 @@ class Openlayers extends BaseProvider
      *
      * @return string The JavaScript to add the fullscreen button
      */
-    protected function getFullScreen()
+    protected function getFullScreen(): string
     {
         return '
          var fullScreen = new ol.control.FullScreen();
@@ -275,7 +270,7 @@ class Openlayers extends BaseProvider
         ';
     }
 
-    protected function getMarkers($markers)
+    protected function getMarkers(array $markers): string
     {
         $jsMarker = parent::getMarkers($markers);
 
@@ -397,7 +392,7 @@ class Openlayers extends BaseProvider
         return $jsMarker;
     }
 
-    protected function getMarker($item, $table)
+    protected function getMarker(array $item, string $table): string
     {
         $jsMarker = '';
         $jsElementVar = $table . '_' . $item['uid'];

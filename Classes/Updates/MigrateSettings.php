@@ -1,4 +1,5 @@
 <?php
+
 /***************************************************************
  *  Copyright notice
  *
@@ -36,12 +37,9 @@ use TYPO3\CMS\Install\Updates\UpgradeWizardInterface;
  */
 class MigrateSettings implements UpgradeWizardInterface
 {
-
     /**
      * Return the identifier for this wizard
      * This must be the same string as used in the ext_localconf class registration
-     *
-     * @return string
      */
     public function getIdentifier(): string
     {
@@ -50,8 +48,6 @@ class MigrateSettings implements UpgradeWizardInterface
 
     /**
      * Return the speaking name of this wizard
-     *
-     * @return string
      */
     public function getTitle(): string
     {
@@ -60,8 +56,6 @@ class MigrateSettings implements UpgradeWizardInterface
 
     /**
      * Return the description for this wizard
-     *
-     * @return string
      */
     public function getDescription(): string
     {
@@ -73,8 +67,6 @@ class MigrateSettings implements UpgradeWizardInterface
      * Execute the update
      *
      * Called when a wizard reports that an update is necessary
-     *
-     * @return bool
      */
     public function executeUpdate(): bool
     {
@@ -124,8 +116,6 @@ class MigrateSettings implements UpgradeWizardInterface
      * Is an update necessary?
      *
      * Looks for ods_osm plugins in tt_content table to be migrated
-     *
-     * @return bool
      */
     public function updateNecessary(): bool
     {
@@ -174,7 +164,7 @@ class MigrateSettings implements UpgradeWizardInterface
      * @param string $oldValue
      * @return string|bool
      */
-    protected function migrateFlexformSettings(string $oldValue): ?string
+    protected function migrateFlexformSettings(string $oldValue)
     {
         $xml = simplexml_load_string($oldValue);
 
@@ -198,9 +188,12 @@ class MigrateSettings implements UpgradeWizardInterface
                 $overlays = $xml->data->sheet->language->addChild('field');
                 $overlays->addAttribute('index', 'overlays');
                 $overlays->addChild('value', $field->value)->addAttribute('index', 'vDEF');
-            } elseif ($field['index'] != $library[0]->value . '_layer' && ($field['index'] == 'layer' ||
-                    $field['index'] == 'openlayers_layer' ||
-                    $field['index'] == 'openlayers3_layer' || $field['index'] == 'leaflet_layer')) {
+            } elseif ($field['index'] != $library[0]->value . '_layer' && (
+                $field['index'] == 'layer' ||
+                $field['index'] == 'openlayers_layer' ||
+                $field['index'] == 'openlayers3_layer' ||
+                $field['index'] == 'leaflet_layer')
+            ) {
                 // remove all other, unused layer fields from flexform xml
                 unset($field[0]);
             }
@@ -209,10 +202,6 @@ class MigrateSettings implements UpgradeWizardInterface
         return $xml->asXML();
     }
 
-    /**
-     * @param string $flexFormXml
-     * @return bool
-     */
     protected function checkForOldSettings(string $flexFormXml): bool
     {
         $xml = simplexml_load_string($flexFormXml);
@@ -231,5 +220,4 @@ class MigrateSettings implements UpgradeWizardInterface
 
         return (bool) $fields;
     }
-
 }

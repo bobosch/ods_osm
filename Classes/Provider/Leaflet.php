@@ -14,9 +14,9 @@ class Leaflet extends BaseProvider
     protected $path_res;
     protected $path_leaflet;
 
-    public function getMapCore($backpath = ''): void
+    public function getMapCore($backPath = ''): void
     {
-        $this->path_res = ($backpath ? $backpath :
+        $this->path_res = ($backPath ? $backPath :
             PathUtility::getAbsoluteWebPath(
                 GeneralUtility::getFileAbsFileName(Div::RESOURCE_BASE_PATH . 'JavaScript/Leaflet/')
             )
@@ -29,7 +29,7 @@ class Leaflet extends BaseProvider
         ];
     }
 
-    public function getMapMain()
+    public function getMapMain(): string
     {
         $controls = [];
         if ($this->config['show_scalebar']) {
@@ -58,7 +58,7 @@ class Leaflet extends BaseProvider
         return $jsMain;
     }
 
-    protected function getLayer($layer, $i, $backpath = '')
+    protected function getLayer($layer, $i, $backPath = ''): string
     {
         if ($layer['tile_url']) {
             $options = [];
@@ -88,7 +88,7 @@ class Leaflet extends BaseProvider
         return $jsLayer;
     }
 
-    protected function getLayerSwitcher()
+    protected function getLayerSwitcher(): string
     {
         $base = [];
         if (is_array($this->layers[0] ?? null) && count($this->layers[0]) > 1) {
@@ -119,7 +119,7 @@ class Leaflet extends BaseProvider
      *
      * @return string The JavaScript to add the fullscreen button
      */
-    public function getFullScreen()
+    public function getFullScreen(): string
     {
         // load leaflet.fullscreen plugin
         $this->scripts['leaflet-fullscreen'] = [
@@ -138,7 +138,7 @@ class Leaflet extends BaseProvider
           }).addTo(" . $this->config['id'] . ");";
     }
 
-    public function getMapCenter($lat, $lon, $zoom)
+    public function getMapCenter($lat, $lon, $zoom): string
     {
         $return = 'var center = new L.LatLng(' . json_encode($lat) . ',' . json_encode($lon) . ');' . $this->config['id'] . '.setView(center,' . $zoom . ');';
         if ($this->config['position']) {
@@ -148,7 +148,7 @@ class Leaflet extends BaseProvider
         return $return;
     }
 
-    protected function getMarkers($markers)
+    protected function getMarkers(array $markers): string
     {
         $jsMarker = parent::getMarkers($markers);
 
@@ -167,7 +167,7 @@ class Leaflet extends BaseProvider
         return $jsMarker;
     }
 
-    protected function getMarker($item, $table)
+    protected function getMarker($item, $table): string
     {
         $jsMarker = '';
         $jsElementVar = $table . '_' . $item['uid'];

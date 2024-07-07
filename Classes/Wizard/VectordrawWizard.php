@@ -1,5 +1,6 @@
 <?php
-declare(strict_types = 1);
+
+declare(strict_types=1);
 
 namespace Bobosch\OdsOsm\Wizard;
 
@@ -24,7 +25,7 @@ use TYPO3\CMS\Core\Utility\StringUtility;
 class VectordrawWizard extends AbstractNode
 {
     /**
-     * @return array
+     * @return array<string, mixed>
      */
     public function render(): array
     {
@@ -85,9 +86,6 @@ class VectordrawWizard extends AbstractNode
         return $resultArray;
     }
 
-    /**
-     * @return LanguageService
-     */
     protected function getLanguageService(): LanguageService
     {
         return $GLOBALS['LANG'];
