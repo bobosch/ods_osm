@@ -25,7 +25,6 @@
 
 namespace Bobosch\OdsOsm\Updates;
 
-use Doctrine\DBAL\DBALException;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -192,7 +191,7 @@ class FileLocationUpdater implements UpgradeWizardInterface, ChattyInterface, Lo
                 } else {
                     $allResults[$table] = $result;
                 }
-            } catch (DBALException $e) {
+            } catch (\Doctrine\DBAL\Exception $e) {
                 throw new \RuntimeException(
                     'Database query failed. Error was: ' . $e->getPrevious()->getMessage(),
                     1511950673
