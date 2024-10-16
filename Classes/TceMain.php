@@ -315,7 +315,7 @@ class TceMain
                             $address = [];
                             foreach ($tc as $def => $field) {
                                 if ($def == strtolower($def)) {
-                                    $address[$def] = $obj->datamap[$table][$id][$field];
+                                    $address[$def] = $obj->datamap[$table][$id][$field] ?? null;
                                 }
                             }
                             if ($config['autocomplete'] == 2 || (float) ($address['longitude'] ?? 0) == 0) {
