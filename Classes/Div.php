@@ -56,9 +56,13 @@ class Div
                 $languageAspect = GeneralUtility::makeInstance(Context::class)->getAspect('language');
 
                 if ($languageAspect->getContentId() && $ctrl['transOrigPointerField']) {
-                    $orConstraints[] = $queryBuilder->expr()->and($queryBuilder->expr()->eq($table . '.' . $ctrl['languageField'],
-                        $queryBuilder->createNamedParameter((int) $languageAspect->getContentId(), Connection::PARAM_INT)), $queryBuilder->expr()->eq($table . '.' . $ctrl['transOrigPointerField'],
-                        $queryBuilder->createNamedParameter(0, Connection::PARAM_INT)));
+                    $orConstraints[] = $queryBuilder->expr()->and($queryBuilder->expr()->eq(
+                        $table . '.' . $ctrl['languageField'],
+                        $queryBuilder->createNamedParameter((int) $languageAspect->getContentId(), Connection::PARAM_INT)
+                    ), $queryBuilder->expr()->eq(
+                        $table . '.' . $ctrl['transOrigPointerField'],
+                        $queryBuilder->createNamedParameter(0, Connection::PARAM_INT)
+                    ));
                 }
                 $constraints[] = $queryBuilder->expr()->or(...$orConstraints);
             }
@@ -363,14 +367,14 @@ class Div
                     $address['street'] = (string)$result[0]['address']['road'];
                 }
                 if ($result[0]['address']['house_number'] ?? false) {
-                    $address['housenumber'] = (string)$result[0]['address']['house_number'];
+                    $address['housenumber'] = substr((string)$result[0]['address']['house_number'], 0, 10);
                 }
                 if ($result[0]['address']['postcode'] ?? false) {
-                    $address['zip'] = (string)$result[0]['address']['postcode'];
+                    $address['zip'] = substr((string)$result[0]['address']['postcode'], 0, 10);
                 }
                 if ($result[0]['address']['city'] ?? false) {
                     $address['city'] = $result[0]['address']['city'];
-                } else if ($result[0]['address']['village'] ?? false) {
+                } elseif ($result[0]['address']['village'] ?? false) {
                     $address['city'] = (string)$result[0]['address']['village'];
                 }
                 if ($result[0]['address']['state'] ?? false) {
@@ -419,7 +423,9 @@ class Div
         $connection = $connectionPool->getConnectionForTable('tx_odsosm_geocache');
 
         $res = $connection->select(
-            ['*'], 'tx_odsosm_geocache', $set
+            ['*'],
+            'tx_odsosm_geocache',
+            $set
         );
         $row = $res->fetchAssociative();
         if ($row) {
@@ -541,7 +547,7 @@ class Div
                 'address' => 'location',
             ];
         }
-            // load configuration for tt_address only if extension is loaded
+        // load configuration for tt_address only if extension is loaded
         if (ExtensionManagementUtility::isLoaded('tt_address')) {
             $tables['tt_address'] = [
                 'FORMAT' => '%01.11f',
