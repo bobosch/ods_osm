@@ -35,9 +35,9 @@ CREATE TABLE tx_odsosm_geocache (
 	country char(128) NOT NULL DEFAULT '',
 	state varchar(255) NOT NULL DEFAULT '',
 	city varchar(255) NOT NULL DEFAULT '',
-	zip char(5) NOT NULL DEFAULT '',
+	zip char(10) NOT NULL DEFAULT '',
 	street varchar(255) NOT NULL DEFAULT '',
-	housenumber varchar(5) NOT NULL DEFAULT '',
+	housenumber varchar(10) NOT NULL DEFAULT '',
 	lon decimal(9,6) NOT NULL DEFAULT '0.000000',
 	lat decimal(8,6) NOT NULL DEFAULT '0.000000',
 
