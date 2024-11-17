@@ -23,19 +23,7 @@ ExtensionManagementUtility::addPItoST43(
     1
 );
 
-ExtensionManagementUtility::addPageTSConfig('
-mod.wizards.newContentElement.wizardItems.plugins.elements.odsosm {
-    iconIdentifier = ods_osm
-    title = LLL:EXT:ods_osm/Resources/Private/Language/locallang.xlf:pi1_title
-    description = LLL:EXT:ods_osm/Resources/Private/Language/locallang.xlf:pi1_plus_wiz_description
-    tt_content_defValues {
-        CType = list
-        list_type = ods_osm_pi1
-    }
-}
-
-mod.wizards.newContentElement.wizardItems.plugins.show := addToList(odsosm)
-');
+ExtensionManagementUtility::addPageTSConfig('@import \'EXT:ods_osm/Configuration/page.tsconfig\'');
 
 ExtensionManagementUtility::addUserTSConfig('
     options.saveDocNew.tx_odsosm_track=1
