@@ -68,21 +68,6 @@ $GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['nodeRegistry'][1616968355] = [
     'class' => VectordrawWizard::class
 ];
 
-// Register icons
-$icons = [
-    'coordinate-picker-wizard' => 'ce_wiz.png',
-    'vectordraw-wizard' => 'vector.png',
-    'ods_osm' => 'osm.png'
-];
-$iconRegistry = GeneralUtility::makeInstance(IconRegistry::class);
-foreach ($icons as $identifier => $path) {
-    $iconRegistry->registerIcon(
-        $identifier,
-        BitmapIconProvider::class,
-        ['source' => 'EXT:ods_osm/Resources/Public/Icons/' . $path]
-    );
-}
-
 # add migration wizards
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update']['odsOsmFileLocationUpdater'] = FileLocationUpdater::class;
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update']['odsOsmMigrateSettings'] = MigrateSettings::class;
