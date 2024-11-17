@@ -37,9 +37,7 @@ mod.wizards.newContentElement.wizardItems.plugins.elements.odsosm {
 mod.wizards.newContentElement.wizardItems.plugins.show := addToList(odsosm)
 ');
 
-ExtensionManagementUtility::addUserTSConfig('
-    options.saveDocNew.tx_odsosm_track=1
-');
+ExtensionManagementUtility::addUserTSConfig('@import \'EXT:ods_osm/Configuration/user.tsconfig\'');
 
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processDatamapClass'][] = TceMain::class;
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tce']['formevals'][LonLat::class] = '';
