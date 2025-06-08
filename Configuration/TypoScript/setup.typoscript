@@ -99,6 +99,7 @@ plugin.tx_odsosm_pi1 {
 			20 = TEXT
 			20 {
 				field = description
+				stdWrap.parseFunc < lib.parseFunc_RTE
 				htmlSpecialChars = 0
 			}
 		}

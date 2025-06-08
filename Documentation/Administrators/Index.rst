@@ -274,6 +274,7 @@ Popups
 				10.wrap = <h2>|</h2>
 				20 = TEXT
 				20.field = description
+				20.stdWrap.parseFunc < lib.parseFunc_RTE
 				20.htmlSpecialChars = 0
 			}
 		}
