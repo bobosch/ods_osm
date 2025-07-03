@@ -33,8 +33,8 @@ use TYPO3\CMS\Core\Resource\FileRepository;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
-use TYPO3\CMS\Frontend\Plugin\AbstractPlugin;
 
 /**
  * Plugin 'OpenStreetMap' for the 'ods_osm' extension.
@@ -43,28 +43,28 @@ use TYPO3\CMS\Frontend\Plugin\AbstractPlugin;
  * @package    TYPO3
  * @subpackage    tx_odsosm
  */
-class PluginController extends AbstractPlugin
+class PluginController
 {
-    /**
-     * @var string
-     */
-    public $prefixId = 'tx_odsosm_pi1';
-
-    /**
-     * The extension key.
-     *
-     * @var string
-     */
-    public $extKey = 'ods_osm';
-
     protected array $config = [];
+
     protected array $hooks = [];
+
     protected array $lats = [];
+
     protected array $lons = [];
+
     /** @var ConnectionPool */
-    protected $connectionPool = null;
+    protected $connectionPool;
+
     /** @var BaseProvider */
     protected $library;
+
+    protected ContentObjectRenderer $contentObjectRenderer;
+
+    public function setContentObjectRenderer(ContentObjectRenderer $contentObjectRenderer): void
+    {
+        $this->contentObjectRenderer = $contentObjectRenderer;
+    }
 
     /**
      * The main method of the PlugIn
@@ -81,17 +81,15 @@ class PluginController extends AbstractPlugin
         $this->init($conf);
 
         if ($this->config['marker'] || $this->config['no_marker']) {
-            $content = $this->getMap();
+            return $this->getMap();
         }
 
-        return $this->pi_wrapInBaseClass($content);
+        return $content;
     }
 
     public function init($conf): void
     {
-        $this->pi_setPiVarDefaults();
-        $this->pi_loadLL();
-        $this->pi_initPIflexForm(); // Init FlexForm configuration for plugin
+        $this->initializeFlexFormOfPlugin(); // Init FlexForm configuration for plugin
 
         if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ods_osm']['class.tx_odsosm_pi1.php'] ?? null)) {
             foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ods_osm']['class.tx_odsosm_pi1.php'] as $classRef) {
@@ -137,15 +135,16 @@ class PluginController extends AbstractPlugin
             'enable_dragging',
         ];
         // fill flex array, if there is a flexform data available
-        if ($this->cObj->data['pi_flexform'] ?? null) {
+        if ($this->contentObjectRenderer->data['pi_flexform'] ?? null) {
             foreach ($options as $option) {
-                $value = $this->pi_getFFvalue($this->cObj->data['pi_flexform'] ?? null, $option, 'sDEF');
+                $value = $this->getValueFromFlexForm($this->contentObjectRenderer->data['pi_flexform'] ?? null, $option);
                 switch ($option) {
                     case 'lat':
                     case 'lon':
                         if ($value != 0) {
                             $flex[$option] = $value;
                         }
+
                         break;
                     case 'marker':
                     case 'marker_popup_initial':
@@ -156,6 +155,7 @@ class PluginController extends AbstractPlugin
                         break;
                 }
             }
+
             if ($flex['library'] === 'staticmap' && !empty($flex['staticmap_layer'])) {
                 $flex['layer'] = $flex['staticmap_layer'];
             } elseif (!empty($flex['base_layer'])) {
@@ -174,75 +174,74 @@ class PluginController extends AbstractPlugin
         if (!is_array($this->config['marker'] ?? null)) {
             $this->config['marker'] = [];
         }
+
         if (is_array($conf['marker.'])) {
             foreach ($conf['marker.'] as $name => $value) {
-                if (is_string($value) && !empty($value)) {
+                if (is_string($value) && ($value !== '' && $value !== '0')) {
                     if (!is_array($this->config['marker'][$name] ?? null)) {
                         $this->config['marker'][$name] = [];
                     }
+
                     $this->config['marker'][$name] = array_merge($this->config['marker'][$name], explode(',', $value));
                 }
             }
         }
 
-        $this->config['layer'] = explode(',', $this->config['layer'] . (!empty($this->config['overlays']) ? ',' . $this->config['overlays'] : ''));
+        $this->config['layer'] = explode(',', $this->config['layer'] . (empty($this->config['overlays']) ? '' : ',' . $this->config['overlays']));
 
         if (is_numeric($this->config['height'])) {
             $this->config['height'] .= 'px';
         }
+
         if (is_numeric($this->config['width'])) {
             $this->config['width'] .= 'px';
         }
 
-        if ($this->config['show_layerswitcher'] ?? false) {
-            $this->config['layers_visible'] = [];
-        } else {
-            $this->config['layers_visible'] = $this->config['layer'];
-        }
+        $this->config['layers_visible'] = $this->config['show_layerswitcher'] ?? false ? [] : $this->config['layer'];
 
         if ($this->config['external_control'] ?? false) {
-            if (GeneralUtility::_GP('lon')) {
-                $this->config['lon'] = GeneralUtility::_GP('lon');
+            if ($GLOBALS['TYPO3_REQUEST']->getParsedBody()['lon'] ?? $GLOBALS['TYPO3_REQUEST']->getQueryParams()['lon'] ?? null) {
+                $this->config['lon'] = $GLOBALS['TYPO3_REQUEST']->getParsedBody()['lon'] ?? $GLOBALS['TYPO3_REQUEST']->getQueryParams()['lon'] ?? null;
             }
-            if (GeneralUtility::_GP('lat')) {
-                $this->config['lat'] = GeneralUtility::_GP('lat');
+
+            if ($GLOBALS['TYPO3_REQUEST']->getParsedBody()['lat'] ?? $GLOBALS['TYPO3_REQUEST']->getQueryParams()['lat'] ?? null) {
+                $this->config['lat'] = $GLOBALS['TYPO3_REQUEST']->getParsedBody()['lat'] ?? $GLOBALS['TYPO3_REQUEST']->getQueryParams()['lat'] ?? null;
             }
-            if (GeneralUtility::_GP('zoom')) {
-                $this->config['zoom'] = GeneralUtility::_GP('zoom');
+
+            if ($GLOBALS['TYPO3_REQUEST']->getParsedBody()['zoom'] ?? $GLOBALS['TYPO3_REQUEST']->getQueryParams()['zoom'] ?? null) {
+                $this->config['zoom'] = $GLOBALS['TYPO3_REQUEST']->getParsedBody()['zoom'] ?? $GLOBALS['TYPO3_REQUEST']->getQueryParams()['zoom'] ?? null;
             }
-            if (GeneralUtility::_GP('layers')) {
-                $this->config['layers_visible'] = explode(',', GeneralUtility::_GP('layers'));
+
+            if ($GLOBALS['TYPO3_REQUEST']->getParsedBody()['layers'] ?? $GLOBALS['TYPO3_REQUEST']->getQueryParams()['layers'] ?? null) {
+                $this->config['layers_visible'] = explode(',', $GLOBALS['TYPO3_REQUEST']->getParsedBody()['layers'] ?? $GLOBALS['TYPO3_REQUEST']->getQueryParams()['layers'] ?? null);
             }
-            if (GeneralUtility::_GP('records')) {
-                $this->config['marker'] = $this->splitGroup(GeneralUtility::_GP('records'), 'tt_address');
+
+            if ($GLOBALS['TYPO3_REQUEST']->getParsedBody()['records'] ?? $GLOBALS['TYPO3_REQUEST']->getQueryParams()['records'] ?? null) {
+                $this->config['marker'] = $this->splitGroup($GLOBALS['TYPO3_REQUEST']->getParsedBody()['records'] ?? $GLOBALS['TYPO3_REQUEST']->getQueryParams()['records'] ?? null, 'tt_address');
             }
         }
 
         // If EXT:calendarize is installed and the single view is called, we try to fetch the right event.
-        if (ExtensionManagementUtility::isLoaded('calendarize')) {
-            if (GeneralUtility::_GP('tx_calendarize_calendar')['index'] ?? false) {
-                $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-                    ->getQueryBuilderForTable('tx_calendarize_domain_model_index');
-
-                $result = $queryBuilder
-                    ->select('foreign_uid')
-                    ->from('tx_calendarize_domain_model_index')
-                    ->where(
-                        $queryBuilder->expr()->eq(
-                            'tx_calendarize_domain_model_index.uid',
-                            $queryBuilder->createNamedParameter((int) GeneralUtility::_GP('tx_calendarize_calendar')['index'], Connection::PARAM_INT)
-                        )
+        if (ExtensionManagementUtility::isLoaded('calendarize') && (($GLOBALS['TYPO3_REQUEST']->getParsedBody()['tx_calendarize_calendar'] ?? $GLOBALS['TYPO3_REQUEST']->getQueryParams()['tx_calendarize_calendar'] ?? null)['index'] ?? false)) {
+            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+                ->getQueryBuilderForTable('tx_calendarize_domain_model_index');
+            $result = $queryBuilder
+                ->select('foreign_uid')
+                ->from('tx_calendarize_domain_model_index')
+                ->where(
+                    $queryBuilder->expr()->eq(
+                        'tx_calendarize_domain_model_index.uid',
+                        $queryBuilder->createNamedParameter((int) ($GLOBALS['TYPO3_REQUEST']->getParsedBody()['tx_calendarize_calendar'] ?? $GLOBALS['TYPO3_REQUEST']->getQueryParams()['tx_calendarize_calendar'] ?? null)['index'], Connection::PARAM_INT)
                     )
-                    ->setMaxResults(1)
-                    ->executeQuery();
-
-                if ($row = $result->fetchAssociative()) {
-                    $this->config['marker']['tx_calendarize_domain_model_event'][] = $row['foreign_uid'];
-                }
+                )
+                ->setMaxResults(1)
+                ->executeQuery();
+            if ($row = $result->fetchAssociative()) {
+                $this->config['marker']['tx_calendarize_domain_model_event'][] = $row['foreign_uid'];
             }
         }
 
-        $this->config['id'] = 'osm_' . ($this->cObj->data['uid'] ?? uniqid());
+        $this->config['id'] = 'osm_' . ($this->contentObjectRenderer->data['uid'] ?? uniqid());
 
         $this->config['marker'] = $this->extractGroup($this->config['marker']);
 
@@ -261,14 +260,82 @@ class PluginController extends AbstractPlugin
         if (empty($this->config['library'])) {
             $this->config['library'] = 'leaflet';
         }
+
         $this->library = GeneralUtility::makeInstance('Bobosch\\OdsOsm\\Provider\\' . GeneralUtility::underscoredToUpperCamelCase($this->config['library']));
         $this->library->init($this->config);
-        $this->library->cObj = $this->cObj;
+        $this->library->cObj = $this->contentObjectRenderer;
+    }
+
+    protected function initializeFlexFormOfPlugin()
+    {
+        $field = 'pi_flexform';
+        // Converting flexform data into array
+        $fieldData = $this->contentObjectRenderer->data[$field] ?? null;
+        if (!is_array($fieldData) && $fieldData) {
+            $this->contentObjectRenderer->data[$field] = GeneralUtility::xml2array((string)$fieldData);
+            if (!is_array($this->contentObjectRenderer->data[$field])) {
+                $this->contentObjectRenderer->data[$field] = [];
+            }
+        }
+    }
+
+    /**
+     * Return value from somewhere inside a FlexForm structure
+     *
+     * @param array $flexFormData FlexForm data
+     * @param string $fieldName Field name to extract. Can be given like "test/el/2/test/el/field_templateObject" where each part will dig a level deeper in the FlexForm data.
+     * @param string $sheet Sheet pointer, eg. "sDEF
+     * @param string $lang Language pointer, eg. "lDEF
+     * @param string $value Value pointer, eg. "vDEF
+     * @return string|null The content.
+     */
+    protected function getValueFromFlexForm(array $flexFormData, $fieldName, $sheet = 'sDEF', $lang = 'lDEF', $value = 'vDEF')
+    {
+        $sheetArray = $flexFormData['data'][$sheet][$lang] ?? '';
+        if (is_array($sheetArray)) {
+            return $this->getValueFromFlexFormSheetArray($sheetArray, explode('/', $fieldName), $value);
+        }
+
+        return null;
+    }
+
+    /**
+     * Returns part of $sheetArray pointed to by the keys in $fieldNameArray
+     *
+     * @param array $sheetArray Multidimensional array, typically FlexForm contents
+     * @param array $fieldNameArr Array where each value points to a key in the FlexForms content - the input array will have the value returned pointed to by these keys. All integer keys will not take their integer counterparts, but rather traverse the current position in the array and return element number X (whether this is right behavior is not settled yet...)
+     * @param string $value Value for outermost key, typ. "vDEF" depending on language.
+     * @return mixed The value, typ. string.
+     * @internal
+     * @see getValueFromFlexForm()
+     */
+    protected function getValueFromFlexFormSheetArray($sheetArray, $fieldNameArr, $value)
+    {
+        $tempArr = $sheetArray;
+        foreach ($fieldNameArr as $v) {
+            if (MathUtility::canBeInterpretedAsInteger($v)) {
+                if (is_array($tempArr)) {
+                    $c = 0;
+                    foreach ($tempArr as $values) {
+                        if ($c == $v) {
+                            $tempArr = $values;
+                            break;
+                        }
+
+                        $c++;
+                    }
+                }
+            } elseif (isset($tempArr[$v])) {
+                $tempArr = $tempArr[$v];
+            }
+        }
+
+        return $tempArr[$value] ?? '';
     }
 
     protected function splitGroup($group, $default = ''): array
     {
-        $groups = explode(',', $group);
+        $groups = explode(',', (string) $group);
         $recordIds = [];
         foreach ($groups as $tempGroup) {
             $item = GeneralUtility::revExplode('_', $tempGroup, 2);
@@ -289,7 +356,7 @@ class PluginController extends AbstractPlugin
         // if no markers are set, select current page to find records on it
         if ($recordIds === []) {
             //@extensionScannerIgnoreLine
-            $recordIds['pages'] = [$GLOBALS['TSFE']->id];
+            $recordIds['pages'] = [$GLOBALS['TYPO3_REQUEST']->getAttribute('frontend.page.information')->getId()];
         }
 
         // get all marker records on configured page.
@@ -331,6 +398,7 @@ class PluginController extends AbstractPlugin
             if ($connection === false) {
                 break;
             }
+
             foreach ($items as $item) {
                 $item = (int) $item;
 
@@ -344,7 +412,7 @@ class PluginController extends AbstractPlugin
                     ->where(
                         $queryBuilder->expr()->eq(
                             $table . '.uid',
-                            $queryBuilder->createNamedParameter((int) $item, Connection::PARAM_INT)
+                            $queryBuilder->createNamedParameter($item, Connection::PARAM_INT)
                         )
                     )->setMaxResults(1)->executeQuery();
 
@@ -362,7 +430,7 @@ class PluginController extends AbstractPlugin
                                     $queryBuilder->expr()->inSet(
                                         $f,
                                         $queryBuilder->createNamedParameter(
-                                            (int) $item,
+                                            $item,
                                             Connection::PARAM_INT
                                         )
                                     )
@@ -388,7 +456,7 @@ class PluginController extends AbstractPlugin
                             $foreign = $f['foreign'];
 
                             $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($foreign);
-                            $constraints = Div::getConstraintsForQueryBuilder($foreign, $this->cObj, $queryBuilder);
+                            $constraints = Div::getConstraintsForQueryBuilder($foreign, $this->contentObjectRenderer, $queryBuilder);
 
                             // set uid
                             $constraints[] = $queryBuilder->expr()->eq($local . '.uid', $queryBuilder->createNamedParameter($item, Connection::PARAM_INT));
@@ -460,6 +528,7 @@ class PluginController extends AbstractPlugin
                         } else {
                             unset($records[$table][$uid]);
                         }
+
                         break;
                     default:
                         $this->lons[] = (float) $row['longitude'];
@@ -470,15 +539,13 @@ class PluginController extends AbstractPlugin
         }
 
         // No markers
-        if ($this->lons === []) {
-            if ($this->config['no_marker'] == 1) {
-                if (($this->config['lon'] ?? false) && ($this->config['lat'] ?? false)) {
-                    $this->lons[] = $this->config['lon'];
-                    $this->lats[] = $this->config['lat'];
-                } else {
-                    $this->lons[] = $this->config['default_lon'];
-                    $this->lats[] = $this->config['default_lat'];
-                }
+        if ($this->lons === [] && $this->config['no_marker'] == 1) {
+            if (($this->config['lon'] ?? false) && ($this->config['lat'] ?? false)) {
+                $this->lons[] = $this->config['lon'];
+                $this->lats[] = $this->config['lat'];
+            } else {
+                $this->lons[] = $this->config['default_lon'];
+                $this->lats[] = $this->config['default_lat'];
             }
         }
 
@@ -496,7 +563,7 @@ class PluginController extends AbstractPlugin
 
         $result = $queryBuilder
             ->select('*')
-            ->from('tx_odsosm_marker')->where(1)->executeQuery();
+            ->from('tx_odsosm_marker')->executeQuery();
 
         $icons = [];
         while ($resArray = $result->fetchAssociative()) {
@@ -507,7 +574,7 @@ class PluginController extends AbstractPlugin
         $markers = $this->config['marker'];
         $local_cObj = GeneralUtility::makeInstance(ContentObjectRenderer::class);
         foreach ($markers as $table => &$items) {
-            foreach ($items as $key => &$item) {
+            foreach ($items as &$item) {
                 $popup = is_string($this->config['popup.'][$table] ?? null) && is_array($this->config['popup.'][$table . '.'] ?? null) && $this->config['show_popups'];
                 $icon = is_string($this->config['icon.'][$table] ?? null) && is_array($this->config['icon.'][$table . '.'] ?? null);
                 if ($popup || $icon) {
@@ -528,12 +595,13 @@ class PluginController extends AbstractPlugin
                     } else {
                         continue;
                     }
+
                     $item['tx_odsosm_marker'] = $icons[$item['tx_odsosm_marker']];
                     $item['tx_odsosm_marker']['icon'] = $file;
                     $item['tx_odsosm_marker']['type'] = 'image';
                 } elseif ($icon) {
                     if ($this->config['icon.'][$table] === 'IMAGE') {
-                        $info = $this->cObj->getImgResource(
+                        $info = $this->contentObjectRenderer->getImgResource(
                             $this->config['icon.'][$table . '.']['file'] ?? '',
                             $this->config['icon.'][$table . '.']['file.'] ?? []
                         );
@@ -569,12 +637,15 @@ class PluginController extends AbstractPlugin
         ================================================== */
         $layers = [];
         $baseLayers = [];
-        if (!empty(implode(',', $this->config['layer']))) {
+        if (!in_array(implode(',', $this->config['layer']), ['', '0'], true)) {
             $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
                 ->getQueryBuilderForTable('tx_odsosm_layer');
 
             $result = $queryBuilder
                 ->select('*')
+                ->addSelectLiteral(
+                    'FIELD(uid, ' . implode(',', $this->config['layer']) . ') as custom_sorting'
+                )
                 ->from('tx_odsosm_layer')
                 ->where(
                     $queryBuilder->expr()->in(
@@ -585,7 +656,7 @@ class PluginController extends AbstractPlugin
                         )
                     ),
                 )
-                ->add('orderBy', 'FIELD(uid, ' . implode(',', $this->config['layer']) . ')', true)
+                ->orderBy('custom_sorting')
                 ->orderBy('sorting')
                 ->executeQuery();
 
@@ -602,6 +673,7 @@ class PluginController extends AbstractPlugin
                     }
                 }
             }
+
             if (isset($this->config['overlays_active'])) {
                 foreach (explode(',', $this->config['overlays_active']) as $key) {
                     if ($baseLayers[$key] ?? false) {
@@ -611,13 +683,14 @@ class PluginController extends AbstractPlugin
             }
         }
 
-        foreach ($baseLayers as $uid => $layer) {
+        foreach ($baseLayers as $layer) {
             if ($layer['overlay'] == 1) {
                 $layers[1][] = $layer;
             } else {
                 $layers[0][] = $layer;
             }
         }
+
         // $layers[0] = $baseLayers;
         // $layers[1] = $overlays;
         $layers[2] = []; // markers will be filled in provider classes
@@ -632,6 +705,7 @@ class PluginController extends AbstractPlugin
             $lon = (float)($this->config['lon'] ?? $this->config['default_lon']);
             $lat = (float)($this->config['lat'] ?? $this->config['default_lat']);
         }
+
         $zoom = (int)$this->config['zoom'];
 
         /* ==================================================
@@ -641,20 +715,16 @@ class PluginController extends AbstractPlugin
         $script = $this->library->getScript();
         $pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
         if ($script) {
-            switch ($this->config['JSlibrary']) {
-                case 'jquery':
-                    $pageRenderer->addJsFooterInlineCode(
-                        $this->config['id'],
-                        '$(document).ready(function() {' . $script . '});'
-                    );
-                    break;
-                default:
-                    $pageRenderer->addJsFooterInlineCode(
-                        $this->config['id'],
-                        'document.addEventListener("DOMContentLoaded", function(){' . $script . '}, false);'
-                    );
-                    break;
-            }
+            match ($this->config['JSlibrary']) {
+                'jquery' => $pageRenderer->addJsFooterInlineCode(
+                    $this->config['id'],
+                    '$(document).ready(function() {' . $script . '});'
+                ),
+                default => $pageRenderer->addJsFooterInlineCode(
+                    $this->config['id'],
+                    'document.addEventListener("DOMContentLoaded", function(){' . $script . '}, false);'
+                ),
+            };
         }
 
         return $content;

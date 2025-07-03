@@ -1,3 +1,7 @@
+2025-xx-xx XXX
+	* Remove support for TYPO3 11.5, support for 13.4 LTS
+	* Breaking change: run update wizard for plugin migration.
+
 2023-10-06 Alexander Bigga <alexander@bigga.de>
 	* Remove support for TYPO3 10.4, support for 12.4 LTS
 	* Make geojson properties configurable to show in popup

@@ -15,28 +15,6 @@ use TYPO3\CMS\Core\Imaging\IconRegistry;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
-ExtensionManagementUtility::addPItoST43(
-    'ods_osm',
-    '',
-    '_pi1',
-    'list_type',
-    1
-);
-
-ExtensionManagementUtility::addPageTSConfig('
-mod.wizards.newContentElement.wizardItems.plugins.elements.odsosm {
-    iconIdentifier = ods_osm
-    title = LLL:EXT:ods_osm/Resources/Private/Language/locallang.xlf:pi1_title
-    description = LLL:EXT:ods_osm/Resources/Private/Language/locallang.xlf:pi1_plus_wiz_description
-    tt_content_defValues {
-        CType = list
-        list_type = ods_osm_pi1
-    }
-}
-
-mod.wizards.newContentElement.wizardItems.plugins.show := addToList(odsosm)
-');
-
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processDatamapClass'][] = TceMain::class;
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tce']['formevals'][LonLat::class] = '';
 
@@ -63,7 +41,3 @@ $GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['nodeRegistry'][1616968355] = [
     'priority' => 30,
     'class' => VectordrawWizard::class
 ];
-
-# add migration wizards
-$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update']['odsOsmFileLocationUpdater'] = FileLocationUpdater::class;
-$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update']['odsOsmMigrateSettings'] = MigrateSettings::class;

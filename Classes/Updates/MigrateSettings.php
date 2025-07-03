@@ -29,12 +29,14 @@ use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Install\Attribute\UpgradeWizard;
 use TYPO3\CMS\Install\Updates\DatabaseUpdatedPrerequisite;
 use TYPO3\CMS\Install\Updates\UpgradeWizardInterface;
 
 /**
  * Migrate flexform settings to keep existing configuration valid.
  */
+#[UpgradeWizard('odsOsmMigrateSettings')]
 class MigrateSettings implements UpgradeWizardInterface
 {
     /**
@@ -77,7 +79,16 @@ class MigrateSettings implements UpgradeWizardInterface
         $queryBuilder = $connection->createQueryBuilder();
         $statement = $queryBuilder->select('uid')
             ->addSelect('pi_flexform')
-            ->from('tt_content')->where($queryBuilder->expr()->eq('CType', $queryBuilder->createNamedParameter('list')), $queryBuilder->expr()->like('list_type', $queryBuilder->createNamedParameter('ods_osm_%')))->executeQuery();
+            ->from('tt_content')
+            ->where(
+                $queryBuilder->expr()->or(
+                    $queryBuilder->expr()->and(
+                        $queryBuilder->expr()->eq('CType', $queryBuilder->createNamedParameter('list')),
+                        $queryBuilder->expr()->like('list_type', $queryBuilder->createNamedParameter('ods_osm_%'))
+                    ),
+                    $queryBuilder->expr()->eq('CType', $queryBuilder->createNamedParameter('ods_osm_%'))
+                )
+            )->executeQuery();
 
         // Update the found record sets
         while ($record = $statement->fetchAssociative()) {
@@ -85,6 +96,7 @@ class MigrateSettings implements UpgradeWizardInterface
             if (!($record['pi_flexform'] ?? false)) {
                 continue;
             }
+
             $oldXml = $record['pi_flexform'];
             $newXml = $this->migrateFlexformSettings($record['pi_flexform']);
 
@@ -127,13 +139,23 @@ class MigrateSettings implements UpgradeWizardInterface
         $queryBuilder = $connection->createQueryBuilder();
         $statement = $queryBuilder->select('uid')
             ->addSelect('pi_flexform')
-            ->from('tt_content')->where($queryBuilder->expr()->eq('CType', $queryBuilder->createNamedParameter('list')), $queryBuilder->expr()->like('list_type', $queryBuilder->createNamedParameter('ods_osm_%')))->executeQuery();
+            ->from('tt_content')
+            ->where(
+                $queryBuilder->expr()->or(
+                    $queryBuilder->expr()->and(
+                        $queryBuilder->expr()->eq('CType', $queryBuilder->createNamedParameter('list')),
+                        $queryBuilder->expr()->like('list_type', $queryBuilder->createNamedParameter('ods_osm_%'))
+                    ),
+                    $queryBuilder->expr()->eq('CType', $queryBuilder->createNamedParameter('ods_osm_%'))
+                )
+            )->executeQuery();
 
         // Update the found record sets
         while ($record = $statement->fetchAssociative()) {
             if (!($record['pi_flexform'] ?? false)) {
                 continue;
             }
+
             $oldSettingsFound = $this->checkForOldSettings($record['pi_flexform']);
             if ($oldSettingsFound) {
                 // We found at least one field to be updated --> break here
@@ -160,11 +182,7 @@ class MigrateSettings implements UpgradeWizardInterface
     }
 
 
-    /**
-     * @param string $oldValue
-     * @return string|bool
-     */
-    protected function migrateFlexformSettings(string $oldValue)
+    protected function migrateFlexformSettings(string $oldValue): false|string
     {
         $xml = simplexml_load_string($oldValue);
 

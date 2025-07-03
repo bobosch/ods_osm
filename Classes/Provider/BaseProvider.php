@@ -10,8 +10,11 @@ use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 
 abstract class BaseProvider
 {
-    public ContentObjectRenderer $cObj; // Must set from instantiating class
+    // Must set from instantiating class
+    public ContentObjectRenderer $cObj;
+
     protected PageRenderer $pageRenderer;
+
     protected array $config = [];
 
     protected string $script = '';
@@ -48,12 +51,12 @@ abstract class BaseProvider
      */
     abstract protected function getFullScreen(): string;
 
-    public function init($config): void
+    public function init(array $config): void
     {
         $this->config = $config;
     }
 
-    public function getMap($layers, array $markers, $lon, $lat, $zoom): string
+    public function getMap(array $layers, array $markers, $lon, $lat, $zoom): string
     {
         $this->getMapCore();
 
@@ -82,12 +85,12 @@ abstract class BaseProvider
         return $this->getHtml();
     }
 
-    public function getBaseLayers($layers, $backPath = ''): string
+    public function getBaseLayers($layers, string $backPath = ''): string
     {
         // Main layer
         $i = 0;
         $jsBaseLayer = [];
-        if (is_array($layers) && !empty($layers)) {
+        if (is_array($layers) && $layers !== []) {
             foreach ($layers as $layer) {
                 $jsBaseLayer[] = $this->getLayer($layer, $i, $backPath);
                 $i++;
@@ -102,7 +105,7 @@ abstract class BaseProvider
         // Main layer
         $i = 0;
         $jsOverlayLayer = [];
-        if (is_array($layers) && !empty($layers)) {
+        if (is_array($layers) && $layers !== []) {
             foreach ($layers as $layer) {
                 $jsOverlayLayer[] = $this->getLayer($layer, $i, $backPath);
                 $i++;
@@ -139,24 +142,28 @@ abstract class BaseProvider
             if ($this->config['mouse_position']) {
                 $mousePosition = '<div id="mouse-position-' . $this->config['id'] . '">' . LocalizationUtility::translate('mouse_position', 'OdsOsm') . ':&nbsp;</div>';
             }
+
             $popupCode = '
                 <div id="popup" class="ol-popup">
                 <a href="#" id="popup-closer" class="ol-popup-closer"></a>
                 <div id="popup-content"></div>
             </div>';
         }
+
         return '<div style="width:' . $this->config['width'] . '; height:' . $this->config['height'] . '; " id="' . $this->config['id'] . '"></div>' . $mousePosition . $popupCode;
     }
 
     protected function getTileUrl(array $layer): string
     {
-        if (strpos($layer['tile_url'], '://') !== false) {
+        if (str_contains((string) $layer['tile_url'], '://')) {
             return $layer['tile_url'];
         }
+
         // if the protocol is missing, we add http:// or https://
         if ($layer['tile_https'] == 1) {
             return 'https://' . $layer['tile_url'];
         }
+
         return 'http://' . $layer['tile_url'];
     }
 

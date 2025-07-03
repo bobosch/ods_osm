@@ -36,6 +36,7 @@ use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\ResourceStorage;
 use TYPO3\CMS\Core\Resource\StorageRepository;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Install\Attribute\UpgradeWizard;
 use TYPO3\CMS\Install\Updates\ChattyInterface;
 use TYPO3\CMS\Install\Updates\DatabaseUpdatedPrerequisite;
 use TYPO3\CMS\Install\Updates\UpgradeWizardInterface;
@@ -43,6 +44,7 @@ use TYPO3\CMS\Install\Updates\UpgradeWizardInterface;
 /**
  * Migrate location of marker and track files to new, FAL-based location
  */
+#[UpgradeWizard('odsOsmFileLocationUpdater')]
 class FileLocationUpdater implements UpgradeWizardInterface, ChattyInterface, LoggerAwareInterface
 {
     use LoggerAwareTrait;
@@ -141,10 +143,11 @@ class FileLocationUpdater implements UpgradeWizardInterface, ChattyInterface, Lo
             if ($numRecords > 0) {
                 $this->falPerformUpdate();
             }
-        } catch (\Exception $e) {
+        } catch (\Exception) {
             // If something goes wrong, migrateField() logs an error
             $result = false;
         }
+
         return $result;
     }
 
@@ -155,10 +158,9 @@ class FileLocationUpdater implements UpgradeWizardInterface, ChattyInterface, Lo
      *
      * Work based on BackendLayoutIconUpdateWizard::class
      *
-     * @return array|int
      * @throws \RuntimeException
      */
-    protected function falGetRecordsFromTable($countOnly = false)
+    protected function falGetRecordsFromTable($countOnly = false): int|array
     {
         $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
         $allResults = [];
@@ -192,16 +194,14 @@ class FileLocationUpdater implements UpgradeWizardInterface, ChattyInterface, Lo
                     $allResults[$table] = $result;
                 }
             } catch (\Doctrine\DBAL\Exception $e) {
-                throw new \RuntimeException(
-                    'Database query failed. Error was: ' . $e->getPrevious()->getMessage(),
-                    1511950673
-                );
+                throw new \RuntimeException('Database query failed. Error was: ' . $e->getPrevious()->getMessage(), 1511950673, $e);
             }
         }
 
         if ($countOnly === true) {
             return $numResults;
         }
+
         return $allResults;
     }
 
@@ -225,7 +225,7 @@ class FileLocationUpdater implements UpgradeWizardInterface, ChattyInterface, Lo
                     $this->migrateField($table, $record);
                 }
             }
-        } catch (\Exception $e) {
+        } catch (\Exception) {
             $result = false;
         }
 
@@ -239,12 +239,13 @@ class FileLocationUpdater implements UpgradeWizardInterface, ChattyInterface, Lo
      */
     protected function migrateField(string $table, array $row): void
     {
-        $fieldItem = trim($row[$this->fieldsToMigrate[$table]]);
+        $fieldItem = trim((string) $row[$this->fieldsToMigrate[$table]]);
 
-        if (empty($fieldItem) || is_numeric($fieldItem)) {
+        if ($fieldItem === '' || $fieldItem === '0' || is_numeric($fieldItem)) {
             return;
         }
-        $fileadminDirectory = rtrim($GLOBALS['TYPO3_CONF_VARS']['BE']['fileadminDir'], '/') . '/';
+
+        $fileadminDirectory = rtrim((string) $GLOBALS['TYPO3_CONF_VARS']['BE']['fileadminDir'], '/') . '/';
         $i = 0;
 
         $storageUid = (int)$this->storage->getUid();
@@ -293,7 +294,7 @@ class FileLocationUpdater implements UpgradeWizardInterface, ChattyInterface, Lo
                 /** @var File $file */
                 $file = $this->storage->getFile($this->targetPath . $fieldItem);
                 $fileUid = $file->getUid();
-            } catch (\InvalidArgumentException $e) {
+            } catch (\InvalidArgumentException) {
                 // no file found, no reference can be set
                 $this->logger->notice(
                     'File ' . $this->sourcePath . $fieldItem . ' does not exist. Reference was not migrated.',

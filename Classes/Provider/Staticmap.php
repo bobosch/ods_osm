@@ -12,6 +12,7 @@ class Staticmap extends BaseProvider
     public function getMap($layers, array $markers, $lon, $lat, $zoom): string
     {
         $marker = [];
+        $icon = null;
 
         foreach ($markers as $table => $items) {
             foreach ($items as $item) {
@@ -29,6 +30,7 @@ class Staticmap extends BaseProvider
                             $marker = ['size_x' => 21, 'size_y' => 25, 'offset_x' => -11, 'offset_y' => -25];
                             $icon = 'EXT:ods_osm/Resources/Public/Icons/marker-icon.png';
                         }
+
                         break 3;
                 }
             }
@@ -38,6 +40,7 @@ class Staticmap extends BaseProvider
         if ((int)$this->config['width'] <= 100) {
             $this->config['width'] = 640;
         }
+
         if ((int)$this->config['height'] <= 100) {
             $this->config['height'] = 480;
         }
@@ -66,11 +69,12 @@ class Staticmap extends BaseProvider
         if (file_exists($filename)) {
             $cache = filectime($filename) > time() - 7 * 24 * 60 * 60;
         }
+
         if (!$cache) {
             $referer = $_SERVER['HTTP_REFERER'];
             $opts = [
                 'http' => [
-                    'header' => ["Referer: $referer\r\n"],
+                    'header' => ["Referer: {$referer}\r\n"],
                 ],
             ];
             $context = stream_context_create($opts);

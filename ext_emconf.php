@@ -1,5 +1,5 @@
 <?php
-$EM_CONF[$_EXTKEY] = [
+$EM_CONF['ods_osm'] = [
     'title' => 'OpenStreetMap',
     'description' => 'Add an interactive OpenStreetMap map to your website. Can also show other OpenLayers compatible maps.',
     'author' => 'Robert Heel',
@@ -7,7 +7,7 @@ $EM_CONF[$_EXTKEY] = [
     'category' => 'plugin',
     'constraints' => [
         'depends' => [
-            'typo3' => '11.5.0-12.4.99',
+            'typo3' => '12.4.0-13.4.99',
         ],
         'conflicts' => [],
         'suggests' =>  [],

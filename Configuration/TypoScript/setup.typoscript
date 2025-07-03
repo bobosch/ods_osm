@@ -1,3 +1,4 @@
+plugin.tx_odsosm_pi1 = USER
 plugin.tx_odsosm_pi1 {
 	userFunc = Bobosch\OdsOsm\Controller\PluginController->main
 
@@ -149,4 +150,10 @@ page {
 	includeCSS {
 		ods-osm = EXT:ods_osm/Resources/Public/Css/ods_osm.css
 	}
+}
+
+tt_content.ods_osm_pi1 =< lib.contentElement
+tt_content.ods_osm_pi1 {
+    templateName = Generic
+    20 =< plugin.tx_odsosm_pi1
 }

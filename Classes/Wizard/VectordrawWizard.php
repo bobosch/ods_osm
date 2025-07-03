@@ -13,11 +13,7 @@ namespace Bobosch\OdsOsm\Wizard;
 
 use Bobosch\OdsOsm\Div;
 use TYPO3\CMS\Backend\Form\AbstractNode;
-use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Core\Localization\LanguageService;
-use TYPO3\CMS\Core\Page\JavaScriptModuleInstruction;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\StringUtility;
 
 /**
  * Adds a wizard for drawing vectors on a map
@@ -61,7 +57,7 @@ class VectordrawWizard extends AbstractNode
         $resultArray['linkAttributes']['data-maxlon'] = empty((float)$row['max_lon']) ? null : $row['max_lon'];
         $resultArray['linkAttributes']['data-lat'] = $lat;
         $resultArray['linkAttributes']['data-lon'] = $lon;
-        $resultArray['linkAttributes']['data-fieldName'] = htmlspecialchars($nameDataField);
+        $resultArray['linkAttributes']['data-fieldName'] = htmlspecialchars((string) $nameDataField);
         $resultArray['linkAttributes']['data-fieldValue'] = $row['data'];
         $resultArray['linkAttributes']['data-tiles'] = htmlspecialchars('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png');
         $resultArray['linkAttributes']['data-copy'] = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors';
@@ -69,19 +65,8 @@ class VectordrawWizard extends AbstractNode
         $resultArray['stylesheetFiles'][] = 'EXT:ods_osm/Resources/Public/JavaScript/Leaflet/Core/leaflet.css';
         $resultArray['stylesheetFiles'][] = 'EXT:ods_osm/Resources/Public/Css/Backend/drawvectorWizard.css';
 
-        $versionInformation = GeneralUtility::makeInstance(Typo3Version::class)->getMajorVersion();
-        if ($versionInformation > 11) {
-            $id = StringUtility::getUniqueId('t3js-formengine-fieldcontrol-');
-            $resultArray['requireJsModules'][] = JavaScriptModuleInstruction::forRequireJS(
-                'TYPO3/CMS/OdsOsm/Leaflet/Core/leaflet'
-            )->instance($id);
-            $resultArray['requireJsModules'][] = JavaScriptModuleInstruction::forRequireJS(
-                'TYPO3/CMS/OdsOsm/Backend/Vectordraw'
-            )->instance($id);
-        } else {
-            $resultArray['requireJsModules'][] = 'TYPO3/CMS/OdsOsm/Leaflet/Core/leaflet';
-            $resultArray['requireJsModules'][] = 'TYPO3/CMS/OdsOsm/Backend/Vectordraw';
-        }
+        $resultArray['requireJsModules'][] = 'TYPO3/CMS/OdsOsm/Leaflet/Core/leaflet';
+        $resultArray['requireJsModules'][] = 'TYPO3/CMS/OdsOsm/Backend/Vectordraw';
 
         return $resultArray;
     }

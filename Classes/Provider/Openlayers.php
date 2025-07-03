@@ -36,10 +36,9 @@ class Openlayers extends BaseProvider
 {
     public function getMapCore($backPath = ''): void
     {
-        $path = ($backPath ? $backPath :
-            PathUtility::getAbsoluteWebPath(
-                GeneralUtility::getFileAbsFileName(Div::RESOURCE_BASE_PATH . 'OpenLayers/')
-            )
+        $path = ($backPath ?: PathUtility::getAbsoluteWebPath(
+            GeneralUtility::getFileAbsFileName(Div::RESOURCE_BASE_PATH . 'OpenLayers/')
+        )
         );
         $pathOl = ($this->config['local_js'] ? $path : 'https://cdn.jsdelivr.net/npm/ol@v8.1.0/');
         $pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
@@ -79,6 +78,7 @@ class Openlayers extends BaseProvider
                 target: document.getElementById('mouse-position-" . $this->config['id'] . "')
             })";
         }
+
         if ($this->config['show_scalebar']) {
             $controls[] = "new ol.control.ScaleLine()";
         }
@@ -200,7 +200,8 @@ class Openlayers extends BaseProvider
         if (empty($layer['subdomains'])) {
             $layer['subdomains'] = 'abc';
         }
-        $layer['subdomains'] = substr($layer['subdomains'], 0, 1) . '-' . substr($layer['subdomains'], -1, 1);
+
+        $layer['subdomains'] = substr((string) $layer['subdomains'], 0, 1) . '-' . substr((string) $layer['subdomains'], -1, 1);
         $layer['tile_url'] = strtr($this->getTileUrl($layer), ['{s}' => '{' . $layer['subdomains'] . '}']);
 
         if ($layer['overlay'] == 1) {
@@ -275,16 +276,11 @@ class Openlayers extends BaseProvider
         $jsMarker = parent::getMarkers($markers);
 
         // open popup? If yes, with click or hover?
-        switch ($this->config['show_popups']) {
-            case 1:
-                $eventMethod = 'singleclick';
-                break;
-            case 2:
-                $eventMethod = 'pointermove';
-                break;
-            default:
-                $eventMethod = false;
-        }
+        $eventMethod = match ($this->config['show_popups']) {
+            1 => 'singleclick',
+            2 => 'pointermove',
+            default => false,
+        };
 
         if ($eventMethod !== false) {
             $jsMarker .= "
@@ -403,7 +399,8 @@ class Openlayers extends BaseProvider
             // set default blue, if nothing is given
             $item['color'] = '#0009ff';
         }
-        if (strlen($item['color']) == 7) {
+
+        if (strlen((string) $item['color']) == 7) {
             $hex = [ $item['color'][1] . $item['color'][2], $item['color'][3] . $item['color'][4], $item['color'][5] . $item['color'][6] ];
             $rgb = array_map('hexdec', $hex);
             $opacity = '0.2';
@@ -465,6 +462,7 @@ class Openlayers extends BaseProvider
                         $jsMarker .= "overlaygroup.getLayers().push(" . $jsElementVar . "_gpx);";
                         break;
                 }
+
                 break;
             case 'tx_odsosm_vector':
                 $fileObjects = $fileRepository->findByRelation('tx_odsosm_vector', 'file', $item['uid']);
@@ -532,6 +530,7 @@ class Openlayers extends BaseProvider
                 break;
             default:
                 $markerOptions = [];
+                $icon = null;
                 if ($item['tx_odsosm_marker'] ?? false) {
                     $marker = $item['tx_odsosm_marker'];
                     if ($marker['type'] == 'html') {
@@ -559,21 +558,19 @@ class Openlayers extends BaseProvider
 
                 // It's a group of markers
                 if ($item['group_title'] ?? false) {
-                    if (empty($jsMarkerGroup)) {
-                        $jsMarker .= $markerStyle;
+                    $jsMarker .= $markerStyle;
 
-                        $group_title = ($marker['type'] == 'html' ? $icon : "<img class='marker-icon' src='" . $icon . "' />") . ' ' . $item['group_title'];
-                        $jsMarkerGroup = "
-                        var " . $item['group_uid'] . " = new ol.layer.Vector({
-                            title: \"" . $group_title . "\",
-                            source: new ol.source.Vector({
-                                features: []
-                            }),
-                            style: " . $jsElementVar . "_style
-                        });";
+                    $group_title = ($marker['type'] == 'html' ? $icon : "<img class='marker-icon' src='" . $icon . "' />") . ' ' . $item['group_title'];
+                    $jsMarkerGroup = "
+                    var " . $item['group_uid'] . " = new ol.layer.Vector({
+                        title: \"" . $group_title . "\",
+                        source: new ol.source.Vector({
+                            features: []
+                        }),
+                        style: " . $jsElementVar . "_style
+                    });";
 
-                        $this->layers[2][$item['group_uid']]['layer'] = $jsMarkerGroup;
-                    }
+                    $this->layers[2][$item['group_uid']]['layer'] = $jsMarkerGroup;
 
                     $popupJsCode = "
                     function (layer) {

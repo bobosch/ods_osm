@@ -30,7 +30,7 @@
 			<trans-unit id="tt_address_group.tx_odsosm_marker" xml:space="preserve">
 				<source>Marker</source>
 			</trans-unit>
-			<trans-unit id="tt_content.list_type_pi1" xml:space="preserve">
+			<trans-unit id="tt_content.CType.ods_osm_pi1" xml:space="preserve">
 				<source>OpenStreetMap</source>
 			</trans-unit>
 			<trans-unit id="tt_content.pi_flexform.sheet_sDEF" xml:space="preserve">

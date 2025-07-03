@@ -1,0 +1,13 @@
+parameters:
+    level: 1
+    paths:
+        - %currentWorkingDirectory%/Classes
+        - %currentWorkingDirectory%/ext_localconf.php
+        - %currentWorkingDirectory%/ext_emconf.php
+    reportUnmatchedIgnoredErrors: true
+    ignoreErrors:
+        -
+            message: '#^Constant LF not found\.$#'
+            identifier: constant.notFound
+            count: 1
+            path: Classes/EventListener/CalendarizeOdsOsmSqlListener.php
