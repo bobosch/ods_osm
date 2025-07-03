@@ -25,27 +25,29 @@
     "issues": "https://github.com/bobosch/ods_osm/issues"
   },
   "require": {
-    "typo3/cms-core": "^11.5 || ^12.4",
+    "typo3/cms-core": "^12.4 || ^13.4",
     "wgirhad/geophp": "^3.0"
   },
   "require-dev": {
-    "friendsoftypo3/tt-address": "^8.0",
+    "friendsoftypo3/tt-address": "^8.0 || ^9.0",
     "helhum/typo3-console": "^7.0 || ^8.0",
-    "typo3/cms-backend": "^11.5.6 || ^12.4",
-    "typo3/cms-extbase": "^11.5.6 || ^12.4",
-    "typo3/cms-extensionmanager": "^11.5.6 || ^12.4",
-    "typo3/cms-filelist": "^11.5.6 || ^12.4",
-    "typo3/cms-fluid": "^11.5.6 || ^12.4",
-    "typo3/cms-fluid-styled-content": "^11.5.6 || ^12.4",
-    "typo3/cms-frontend": "^11.5.6 || ^12.4",
-    "typo3/cms-install": "^11.5.6 || ^12.4",
-    "typo3/cms-lowlevel": "^11.5.6 || ^12.4",
-    "typo3/cms-setup": "^11.5.6 || ^12.4",
-    "typo3/cms-tstemplate": "^11.5.6 || ^12.4"
+    "lochmueller/calendarize": "*",
+    "ssch/typo3-rector": "^2.8 | ^3.1",
+    "typo3/cms-backend": "^12.4 || ^13.4",
+    "typo3/cms-extbase": "^12.4 || ^13.4",
+    "typo3/cms-extensionmanager": "^12.4 || ^13.4",
+    "typo3/cms-filelist": "^12.4 || ^13.4",
+    "typo3/cms-fluid": "^12.4 || ^13.4",
+    "typo3/cms-fluid-styled-content": "^12.4 || ^13.4",
+    "typo3/cms-frontend": "^12.4 || ^13.4",
+    "typo3/cms-install": "^12.4 || ^13.4",
+    "typo3/cms-lowlevel": "^12.4 || ^13.4",
+    "typo3/cms-setup": "^12.4 || ^13.4",
+    "typo3/cms-tstemplate": "^12.4 || ^13.4"
   },
   "suggest": {
-    "friendsoftypo3/tt-address": "^8.0",
-    "lochmueller/calendarize": "^12.4"
+    "friendsoftypo3/tt-address": "^8.0 || ^9.0",
+    "lochmueller/calendarize": "^12.4 || ^13.0 || ^14.0"
   },
   "autoload": {
     "psr-4": {
@@ -72,6 +74,22 @@
       "(mkdir -p /tmp/vendors && cd /tmp/vendors && composer require wgirhad/geophp:^3.0 && composer global exec phar-composer build -v)",
       "cp /tmp/vendors/vendors.phar ./Resources/Private/geophp.phar",
       "(VERSION=$(git tag --sort=taggerdate | tail -1) && zip -r ../ods_osm-$VERSION.zip *)"
+    ],
+    "test:rector": [
+      "[ -e .Build/bin/rector ] || composer update",
+      ".Build/bin/rector process --dry-run"
+    ],
+    "test:phpstan": [
+      "[ -e .Build/bin/phpstan ] || composer update --ansi",
+      ".Build/bin/phpstan analyse -c phpstan.neon --memory-limit=512M --ansi"
+    ],
+    "test": [
+      "@test:rector",
+      "@test:phpstan"
+    ],
+    "fix:rector": [
+      "[ -e .Build/bin/rector ] || composer update",
+      ".Build/bin/rector process"
     ]
   }
 }

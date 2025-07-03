@@ -25,7 +25,7 @@
 				<source><![CDATA[Marker]]></source>
 				<target><![CDATA[Marker]]></target>
 			</trans-unit>
-			<trans-unit id="tt_content.list_type_pi1" approved="yes">
+			<trans-unit id="tt_content.CType.ods_osm_pi1" approved="yes">
 				<source><![CDATA[OpenStreetMap]]></source>
 				<target><![CDATA[OpenStreetMap]]></target>
 			</trans-unit>

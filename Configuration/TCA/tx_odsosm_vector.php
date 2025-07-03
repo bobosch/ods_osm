@@ -13,6 +13,9 @@ return [
             'disabled' => 'hidden',
         ],
         'iconfile' => 'EXT:ods_osm/Resources/Public/Icons/icon_tx_odsosm_vector.png',
+        'security' => [
+            'ignorePageTypeRestriction' => true,
+        ],
     ],
     'columns' => [
         'hidden' => [
@@ -24,7 +27,7 @@ return [
                 'default' => 0,
                 'items' => [
                     [
-                        0 => '',
+                        'label' => '',
                         'invertStateDisplay' => true
                     ]
                 ],
@@ -57,19 +60,16 @@ return [
             'exclude' => 0,
             'label' => 'LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xlf:tx_odsosm_track.color',
             'config' => [
-                'type' => 'input',
+                'type' => 'color',
                 'size' => 10,
-                'max' => 10,
                 'default' => '#3388ff',
-                'eval' => 'nospace,trim',
-                'renderType' => 'colorpicker',
             ]
         ],
         'width' => [
             'exclude' => 0,
             'label' => 'LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xlf:tx_odsosm_track.width',
             'config' => [
-                'type' => 'input',
+                'type' => 'number',
                 'size' => 3,
                 'max' => 3,
                 'default' => 3,
@@ -77,27 +77,19 @@ return [
                     'lower' => 0,
                     'upper' => 255
                 ],
-                'eval' => 'int',
             ]
         ],
         'file' => [
             'exclude' => 0,
             'label' => 'LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xlf:tx_odsosm_vector.file',
-            'config' => ExtensionManagementUtility::getFileFieldTCAConfig(
-                'file',
-                [
-                    'maxitems' => 1,
-                    'appearance' => [
-                        'createNewRelationLinkTitle' => 'LLL:EXT:ods_osm/Resources/Private/Language/locallang_db:tx_odsosm_vector.file.add'
-                    ],
-                    'foreign_match_fields' => [
-                        'fieldname' => 'file',
-                        'tablenames' => 'tx_odsosm_vector',
-                    ],
-                    'default' => 0,
+            'config' => [
+                'type' => 'file',
+                'allowed' => 'geojson,json',
+                'maxitems' => 1,
+                'appearance' => [
+                    'createNewRelationLinkTitle' => 'LLL:EXT:ods_osm/Resources/Private/Language/locallang_db:tx_odsosm_vector.file.add'
                 ],
-                'geojson,json'
-            )
+            ]
         ],
         'properties' => [
             'exclude' => 0,

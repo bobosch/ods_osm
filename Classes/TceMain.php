@@ -13,6 +13,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class TceMain
 {
     public array $lon = [];
+
     public array $lat = [];
 
     // ['t3lib/class.t3lib_tcemain.php']['processDatamapClass']
@@ -37,9 +38,10 @@ class TceMain
         DataHandler $parentObject
     ): void {
         // guard statement, abort here if no ods_osm table
-        if (strpos($table, 'tx_odsosm_') !== 0) {
+        if (!str_starts_with($table, 'tx_odsosm_')) {
             return;
         }
+
         /*
          * The id may be integer already or the temporary NEW id. This depends, how the record was created
          *
@@ -76,10 +78,9 @@ class TceMain
 
         switch ($table) {
             case 'tx_odsosm_track':
-                if (is_int($id)) {
-                    $fileRepository = GeneralUtility::makeInstance(FileRepository::class);
-                    $fileObjects = $fileRepository->findByRelation('tx_odsosm_track', 'file', $id);
-                }
+                $fileRepository = GeneralUtility::makeInstance(FileRepository::class);
+                $fileObjects = $fileRepository->findByRelation('tx_odsosm_track', 'file', $id);
+
                 if ($fileObjects) {
                     $file = $fileObjects[0];
                 } else {
@@ -90,10 +91,11 @@ class TceMain
                 if (file_exists($filename)) {
                     try {
                         $polygon = geoPHP::load(file_get_contents($filename), pathinfo($filename, PATHINFO_EXTENSION));
-                    } catch (\Exception $e) {
+                    } catch (\Exception) {
                         // silently ignore failure of parsing data
                         break;
                     }
+
                     $box = $polygon->getBBox();
 
                     // unfortunately we cannot pass the new values by reference in this hook, because the database operation is already done.
@@ -110,12 +112,12 @@ class TceMain
                         ->set('max_lat', sprintf('%01.6f', $box['maxy']))
                         ->executeStatement();
                 }
+
                 break;
             case 'tx_odsosm_marker':
-                if (is_int($id)) {
-                    $fileRepository = GeneralUtility::makeInstance(FileRepository::class);
-                    $fileObjects = $fileRepository->findByRelation('tx_odsosm_marker', 'icon', $id);
-                }
+                $fileRepository = GeneralUtility::makeInstance(FileRepository::class);
+                $fileObjects = $fileRepository->findByRelation('tx_odsosm_marker', 'icon', $id);
+
                 if ($fileObjects) {
                     $file = $fileObjects[0];
                 } else {
@@ -142,12 +144,12 @@ class TceMain
                             ->executeStatement();
                     }
                 }
+
                 break;
             case 'tx_odsosm_vector':
-                if (is_int($id)) {
-                    $fileRepository = GeneralUtility::makeInstance(FileRepository::class);
-                    $fileObjects = $fileRepository->findByRelation('tx_odsosm_vector', 'file', $id);
-                }
+                $fileRepository = GeneralUtility::makeInstance(FileRepository::class);
+                $fileObjects = $fileRepository->findByRelation('tx_odsosm_vector', 'file', $id);
+
                 if ($fileObjects) {
                     $file = $fileObjects[0];
                 } else {
@@ -159,13 +161,13 @@ class TceMain
 
                     try {
                         $polygon = geoPHP::load(file_get_contents($filename), pathinfo($filename, PATHINFO_EXTENSION));
-                    } catch (\Exception $e) {
+                    } catch (\Exception) {
                         // silently ignore failure of parsing geojson
                         break;
                     }
 
                     $box = $polygon->getBBox();
-                    if ($box) {
+                    if ($box !== null && $box !== []) {
                         // unfortunately we cannot pass the new values by reference in this hook, because the database operation is already done.
                         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
                             ->getQueryBuilderForTable($table);
@@ -184,14 +186,14 @@ class TceMain
 
                         // handle properties
                         $properties = (array)$polygon->getData();
-                        if (empty($properties)) {
+                        if ($properties === []) {
                             // seems to contain multiple polygones
                             $components = $polygon->getComponents();
                             // take the properties of the first polygon
                             $properties = (array)$components[0]->getData();
                         }
 
-                        if (!empty($properties)) {
+                        if ($properties !== []) {
 
                             $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
                                 ->getQueryBuilderForTable($table);
@@ -205,24 +207,22 @@ class TceMain
                                 ->setMaxResults(1)
                                 ->executeQuery();
 
-                            if ($row = $result->fetchAssociative()) {
-                                if ($row['properties_from_file'] && !empty($properties)) {
-                                    $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-                                        ->getQueryBuilderForTable($table);
-
-                                    $queryBuilder
-                                        ->update('tx_odsosm_vector')
-                                        ->where(
-                                            $queryBuilder->expr()->eq('uid', $id)
-                                        )
-                                        ->set('properties', implode(', ', array_keys($properties)))
-                                        ->set('properties_from_file', 0)
-                                        ->executeStatement();
-                                }
+                            if (($row = $result->fetchAssociative()) && ($row['properties_from_file'] && $properties !== [])) {
+                                $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+                                    ->getQueryBuilderForTable($table);
+                                $queryBuilder
+                                    ->update('tx_odsosm_vector')
+                                    ->where(
+                                        $queryBuilder->expr()->eq('uid', $id)
+                                    )
+                                    ->set('properties', implode(', ', array_keys($properties)))
+                                    ->set('properties_from_file', 0)
+                                    ->executeStatement();
                             }
                         }
                     }
                 }
+
                 break;
         }
     }
@@ -246,7 +246,7 @@ class TceMain
 
                     try {
                         $polygon = geoPHP::load(($fieldArray['data']));
-                    } catch (\Exception $e) {
+                    } catch (\Exception) {
                         // silently ignore failure of parsing geojson
                         break;
                     }
@@ -258,18 +258,15 @@ class TceMain
                         $fieldArray['min_lat'] = sprintf('%01.6f', $box['miny']);
                         $fieldArray['max_lon'] = sprintf('%01.6f', $box['maxx']);
                         $fieldArray['max_lat'] = sprintf('%01.6f', $box['maxy']);
-
-                        // handle properties
-                        $properties = [];
                         $properties = (array)$polygon->getData();
-                        if (empty($properties)) {
+                        if ($properties === []) {
                             // seems to contain multiple polygones
                             $components = $polygon->getComponents();
                             // take the properties of the first polygon
                             $properties = (array)$components[0]->getData();
                         }
 
-                        if (!empty($properties)) {
+                        if ($properties !== []) {
 
                             $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
                                 ->getQueryBuilderForTable($table);
@@ -283,12 +280,9 @@ class TceMain
                                 ->setMaxResults(1)
                                 ->executeQuery();
 
-                            if ($row = $result->fetchAssociative()) {
-                                if ($row['properties_from_file'] && !empty($properties)) {
-
-                                    $fieldArray['properties'] = implode(', ', array_keys($properties));
-                                    $fieldArray['properties_from_file'] = 0;
-                                }
+                            if (($row = $result->fetchAssociative()) && ($row['properties_from_file'] && $properties !== [])) {
+                                $fieldArray['properties'] = implode(', ', array_keys($properties));
+                                $fieldArray['properties_from_file'] = 0;
                             }
                         }
                     } else {
@@ -298,67 +292,64 @@ class TceMain
                         $fieldArray['max_lat'] = 0;
                     }
                 }
+
                 break;
             default:
                 $tc = Div::getTableConfig($table);
-                if ($tc['lon'] ?? false) {
-                    if (
-                        (isset($tc['address']) && ($fieldArray[$tc['address']] ?? null))
-                        || (isset($tc['street']) && ($fieldArray[$tc['street']] ?? null))
-                        || (isset($tc['zip']) && ($fieldArray[$tc['zip']] ?? null))
-                        || (isset($tc['city']) && ($fieldArray[$tc['city']] ?? null))
-                    ) {
-                        $config = Div::getConfig(['autocomplete']);
-                        // Search coordinates
-                        if ($config['autocomplete']) {
-                            // Generate address array with standard keys
-                            $address = [];
-                            foreach ($tc as $def => $field) {
-                                if ($def == strtolower($def)) {
-                                    $address[$def] = $obj->datamap[$table][$id][$field] ?? null;
-                                }
+                if (($tc['lon'] ?? false) && (isset($tc['address']) && ($fieldArray[$tc['address']] ?? null) || isset($tc['street']) && ($fieldArray[$tc['street']] ?? null) || isset($tc['zip']) && ($fieldArray[$tc['zip']] ?? null) || isset($tc['city']) && ($fieldArray[$tc['city']] ?? null))) {
+                    $config = Div::getConfig(['autocomplete']);
+                    // Search coordinates
+                    if ($config['autocomplete']) {
+                        // Generate address array with standard keys
+                        $address = [];
+                        foreach ($tc as $def => $field) {
+                            if ($def == strtolower((string) $def)) {
+                                $address[$def] = $obj->datamap[$table][$id][$field] ?? null;
                             }
-                            if ($config['autocomplete'] == 2 || (float) ($address['lon'] ?? 0) == 0) {
-                                $ll = Div::updateAddress($address);
-                                if ($ll) {
-                                    // Optimize address
-                                    $address['lon'] = sprintf($tc['FORMAT'], $address['lon']);
-                                    $address['lat'] = sprintf($tc['FORMAT'], $address['lat']);
-                                    if (($address['type'] ?? false) == 'structured') {
-                                        if (isset($tc['address']) && !isset($tc['street'])) {
-                                            if ($address['street'] ?? false) {
-                                                $address['address'] = $address['street'];
-                                                if ($address['housenumber'] ?? false) {
-                                                    $address['address'] .= ' ' . $address['housenumber'];
-                                                }
-                                            }
+                        }
+
+                        if ($config['autocomplete'] == 2 || (float) ($address['lon'] ?? 0) == 0) {
+                            $ll = Div::updateAddress($address);
+                            if ($ll) {
+                                // Optimize address
+                                $address['lon'] = sprintf($tc['FORMAT'], $address['lon']);
+                                $address['lat'] = sprintf($tc['FORMAT'], $address['lat']);
+                                if (($address['type'] ?? false) == 'structured') {
+                                    if (isset($tc['address']) && !isset($tc['street']) && ($address['street'] ?? false)) {
+                                        $address['address'] = $address['street'];
+                                        if ($address['housenumber'] ?? false) {
+                                            $address['address'] .= ' ' . $address['housenumber'];
                                         }
-                                    } elseif ($tc['address'] ?? false) {
-                                        if ($address['street'] ?? false) {
-                                            $address['address'] = $address['street'];
-                                            if ($address['housenumber'] ?? false) {
-                                                $address['address'] .= ' ' . $address['housenumber'];
-                                            }
-                                            $address['address'] .= ', ' . $address['zip'] . ' ' . $address['city'];
-                                            $address['address'] .= ', ' . $address['country'];
+                                    }
+                                } elseif ($tc['address'] ?? false) {
+                                    if ($address['street'] ?? false) {
+                                        $address['address'] = $address['street'];
+                                        if ($address['housenumber'] ?? false) {
+                                            $address['address'] .= ' ' . $address['housenumber'];
                                         }
+
+                                        $address['address'] .= ', ' . $address['zip'] . ' ' . $address['city'];
+                                        $address['address'] .= ', ' . $address['country'];
+                                    }
+                                }
+
+                                // Update fieldArray if address is set
+                                foreach ($tc as $def => $field) {
+                                    if ($def != strtolower((string) $def)) {
+                                        continue;
                                     }
 
-                                    // Update fieldArray if address is set
-                                    foreach ($tc as $def => $field) {
-                                        if ($def != strtolower($def)) {
-                                            continue;
-                                        }
-                                        if (!$address[$def]) {
-                                            continue;
-                                        }
-                                        $fieldArray[$field] = $address[$def];
+                                    if (!$address[$def]) {
+                                        continue;
                                     }
+
+                                    $fieldArray[$field] = $address[$def];
                                 }
                             }
                         }
                     }
                 }
+
                 break;
         }
     }

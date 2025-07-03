@@ -48,8 +48,7 @@ class FlexFormManipulation implements FormDataProviderInterface
     public function addData(array $result): array
     {
         if ($result['tableName'] === 'tt_content'
-            && $result['databaseRow']['CType'] === 'list'
-            && $result['databaseRow']['list_type'] === 'ods_osm_pi1'
+            && $result['databaseRow']['CType'] === 'ods_osm_pi1'
             && is_array($result['processedTca']['columns']['pi_flexform']['config']['ds'])
         ) {
             // get flexform data structure

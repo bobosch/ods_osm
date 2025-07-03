@@ -12,14 +12,14 @@ use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 class Leaflet extends BaseProvider
 {
     protected $path_res;
+
     protected $path_leaflet;
 
     public function getMapCore($backPath = ''): void
     {
-        $this->path_res = ($backPath ? $backPath :
-            PathUtility::getAbsoluteWebPath(
-                GeneralUtility::getFileAbsFileName(Div::RESOURCE_BASE_PATH . 'JavaScript/Leaflet/')
-            )
+        $this->path_res = ($backPath ?: PathUtility::getAbsoluteWebPath(
+            GeneralUtility::getFileAbsFileName(Div::RESOURCE_BASE_PATH . 'JavaScript/Leaflet/')
+        )
         );
         $this->path_leaflet = ($this->config['local_js'] ? $this->path_res . 'Core/' : 'https://unpkg.com/leaflet@1.9.4/dist/');
         $this->pageRenderer->addCssFile($this->path_leaflet . 'leaflet.css');
@@ -37,7 +37,7 @@ class Leaflet extends BaseProvider
         }
 
         $vars = '';
-        foreach ($controls as $var => $obj) {
+        foreach ($controls as $obj) {
             $vars .= "\n\t\t\t" . $this->config['id'] . '.addControl(' . $obj . ");";
         }
 
@@ -60,17 +60,21 @@ class Leaflet extends BaseProvider
 
     protected function getLayer($layer, $i, $backPath = ''): string
     {
+        $jsLayer = '';
         if ($layer['tile_url']) {
             $options = [];
             if ($layer['min_zoom']) {
                 $options['minZoom'] = $layer['min_zoom'];
             }
+
             if ($layer['max_zoom']) {
                 $options['maxZoom'] = $layer['max_zoom'];
             }
+
             if ($layer['subdomains']) {
                 $options['subdomains'] = $layer['subdomains'];
             }
+
             if ($layer['attribution']) {
                 $options['attribution'] = $layer['attribution'];
             }
@@ -96,6 +100,7 @@ class Leaflet extends BaseProvider
                 $base[] = '"' . $layer['title'] . '":' . ($layer['table'] ?? 'layer') . '_' . $layer['uid'];
             }
         }
+
         $overlay = [];
         if (is_array($this->layers[1] ?? null)) {
             foreach ($this->layers[1] as $layer) {
@@ -107,9 +112,10 @@ class Leaflet extends BaseProvider
             }
         }
 
-        if (empty($base) && empty($overlay)) {
+        if ($base === [] && $overlay === []) {
             return '';
         }
+
         return 'var layersControl=new L.Control.Layers({' . implode(',', $base) . '},{' . implode(',', $overlay) . '}' . ($this->config['show_layerswitcher'] == 2 ? ',{collapsed:false}' : '') . ');
 			' . $this->config['id'] . '.addControl(layersControl);';
     }
@@ -119,7 +125,7 @@ class Leaflet extends BaseProvider
      *
      * @return string The JavaScript to add the fullscreen button
      */
-    public function getFullScreen(): string
+    protected function getFullScreen(): string
     {
         // load leaflet.fullscreen plugin
         $this->scripts['leaflet-fullscreen'] = [
@@ -161,6 +167,7 @@ class Leaflet extends BaseProvider
             } else {
                 $jsMarker .= 'var ' . $group_uid . ' = L.layerGroup([' . implode(',', $group) . ']);' . "\n";
             }
+
             $jsMarker .= $this->config['id'] . '.addLayer(' . $group_uid . ');' . "\n";
         }
 
@@ -225,6 +232,7 @@ class Leaflet extends BaseProvider
                         $jsMarker .= $this->config['id'] . '.addLayer(' . $jsElementVar . ');' . "\n";
                         break;
                 }
+
                 $jsElementVarsForPopup[] = $jsElementVar;
                 break;
             case 'tx_odsosm_vector':
@@ -278,6 +286,7 @@ class Leaflet extends BaseProvider
                 break;
             default:
                 $markerOptions = [];
+                $icon = null;
                 if ($item['tx_odsosm_marker'] ?? false) {
                     $marker = $item['tx_odsosm_marker'];
                     $iconOptions = [
@@ -297,6 +306,7 @@ class Leaflet extends BaseProvider
                     $marker = [ 'type' => 'image' ];
                     $icon = $this->path_leaflet . 'images/marker-icon.png';
                 }
+
                 $jsMarker .= 'var ' . $jsElementVar . ' = new L.Marker([' . $item['latitude'] . ', ' . $item['longitude'] . '], {' . implode(',', $markerOptions) . "});\n";
                 // Add group to layer switch
                 if ($item['group_title'] ?? false) {
@@ -340,6 +350,7 @@ class Leaflet extends BaseProvider
             } elseif ($item['popup'] ?? null) {
                 $popupJsCode = json_encode($item['popup'] ?? '');
             }
+
             if ($this->config['show_popups'] == 1) {
                 $jsMarker .= $jsElementVar . '.bindPopup(' . $popupJsCode . '); ' . "\n";
                 if ($item['initial_popup'] ?? null) {

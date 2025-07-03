@@ -13,6 +13,9 @@ return [
             'disabled' => 'hidden',
         ],
         'iconfile' => 'EXT:ods_osm/Resources/Public/Icons/icon_tx_odsosm_track.png',
+        'security' => [
+            'ignorePageTypeRestriction' => true,
+        ],
     ],
     'columns' => [
         'hidden' => [
@@ -24,7 +27,7 @@ return [
                 'default' => 0,
                 'items' => [
                     [
-                        0 => '',
+                        'label' => '',
                         'invertStateDisplay' => true
                     ]
                 ],
@@ -42,19 +45,16 @@ return [
             'exclude' => 0,
             'label' => 'LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xlf:tx_odsosm_track.color',
             'config' => [
-                'type' => 'input',
+                'type' => 'color',
                 'size' => 10,
-                'max' => 10,
                 'default' => '#37b7ff',
-                'eval' => 'nospace,trim',
-                'renderType' => 'colorpicker',
             ]
         ],
         'width' => [
             'exclude' => 0,
             'label' => 'LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xlf:tx_odsosm_track.width',
             'config' => [
-                'type' => 'input',
+                'type' => 'number',
                 'size' => 3,
                 'max' => 3,
                 'default' => 5,
@@ -62,27 +62,19 @@ return [
                     'lower' => 1,
                     'upper' => 255
                 ],
-                'eval' => 'int',
             ]
         ],
         'file' => [
             'exclude' => 0,
             'label' => 'LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xlf:tx_odsosm_track.file',
-            'config' => ExtensionManagementUtility::getFileFieldTCAConfig(
-                'file',
-                [
-                    'maxitems' => 1,
-                    'appearance' => [
-                        'createNewRelationLinkTitle' => 'LLL:EXT:ods_osm/Resources/Private/Language/locallang_db:tx_odsosm_track.file.add'
-                    ],
-                    'foreign_match_fields' => [
-                        'fieldname' => 'file',
-                        'tablenames' => 'tx_odsosm_track',
-                    ],
-                    'default' => 0,
+            'config' => [
+                'type' => 'file',
+                'allowed' => 'gpx,kml',
+                'maxitems' => 1,
+                'appearance' => [
+                    'createNewRelationLinkTitle' => 'LLL:EXT:ods_osm/Resources/Private/Language/locallang_db:tx_odsosm_track.file.add'
                 ],
-                'gpx,kml'
-            )
+            ]
         ],
         'min_lon' => [
             'exclude' => 0,
