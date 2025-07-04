@@ -14,9 +14,7 @@ use Ssch\TYPO3Rector\Configuration\Typo3Option;
 use Ssch\TYPO3Rector\Set\Typo3LevelSetList;
 
 return static function (RectorConfig $rectorConfig): void {
-    $rectorConfig->paths([__DIR__]);
-
-    $rectorConfig->phpVersion(PhpVersion::PHP_81);
+    $rectorConfig->paths([__DIR__.'/../..']);
 
     $rectorConfig->sets([
         LevelSetList::UP_TO_PHP_84,
@@ -31,6 +29,8 @@ return static function (RectorConfig $rectorConfig): void {
         Typo3LevelSetList::UP_TO_TYPO3_13,
     ]);
 
+    $rectorConfig->phpVersion(PhpVersion::PHP_81);
+
     $rectorConfig->rule(InlineConstructorDefaultToPropertyRector::class);
     $rectorConfig->ruleWithConfiguration(
         ExtEmConfRector::class,
@@ -43,17 +43,9 @@ return static function (RectorConfig $rectorConfig): void {
     $rectorConfig->rule(ConvertImplicitVariablesToExplicitGlobalsRector::class);
 
     $rectorConfig->phpstanConfig(Typo3Option::PHPSTAN_FOR_RECTOR_PATH);
-    $rectorConfig->phpstanConfig(__DIR__.'/phpstan.neon');
+    $rectorConfig->phpstanConfig(__DIR__.'/../phpstan/phpstan.neon');
 
     $rectorConfig->skip([
-        // no namespace imports for these files:
-        NameImportingPostRector::class => [
-            'ext_localconf.php',
-            'ext_tables.php',
-            __DIR__.'/Configuration/*.php',
-            __DIR__.'/Configuration/**/*.php',
-        ],
-
         // makes double-quoted strings, we don't want this at the moment.
         Rector\CodingStyle\Rector\String_\SymplifyQuoteEscapeRector::class,
     ]);

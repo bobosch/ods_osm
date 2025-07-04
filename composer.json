@@ -32,6 +32,7 @@
     "friendsoftypo3/tt-address": "^8.0 || ^9.0",
     "helhum/typo3-console": "^7.0 || ^8.0",
     "lochmueller/calendarize": "*",
+    "saschaegerer/phpstan-typo3": "^1.0 || ^2.0",
     "ssch/typo3-rector": "^2.8 | ^3.1",
     "typo3/cms-backend": "^12.4 || ^13.4",
     "typo3/cms-extbase": "^12.4 || ^13.4",
@@ -77,11 +78,11 @@
     ],
     "test:rector": [
       "[ -e .Build/bin/rector ] || composer update",
-      ".Build/bin/rector process --dry-run"
+      ".Build/bin/rector process --dry-run -c Build/rector/rector.php"
     ],
     "test:phpstan": [
       "[ -e .Build/bin/phpstan ] || composer update --ansi",
-      ".Build/bin/phpstan analyse -c phpstan.neon --memory-limit=512M --ansi"
+      ".Build/bin/phpstan analyse -c Build/phpstan/phpstan.neon --memory-limit=512M --ansi"
     ],
     "test": [
       "@test:rector",
@@ -89,7 +90,7 @@
     ],
     "fix:rector": [
       "[ -e .Build/bin/rector ] || composer update",
-      ".Build/bin/rector process"
+      ".Build/bin/rector process -c Build/rector/rector.php"
     ]
   }
 }

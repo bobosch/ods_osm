@@ -1,0 +1,30 @@
+parameters:
+    level: 1
+    paths:
+        - %currentWorkingDirectory%/Classes
+        - %currentWorkingDirectory%/ext_localconf.php
+        - %currentWorkingDirectory%/ext_emconf.php
+    reportUnmatchedIgnoredErrors: true
+    ignoreErrors:
+        -
+            message: '#^Constant LF not found\.$#'
+            identifier: constant.notFound
+            count: 1
+            path: ../../Classes/EventListener/CalendarizeOdsOsmSqlListener.php
+        -
+            message: '#^Call to an undefined static method TYPO3\\CMS\\Core\\Page\\JavaScriptModuleInstruction\:\:forRequireJS\(\)\.$#'
+            identifier: staticMethod.notFound
+            count: 2
+            path: ../../Classes/Wizard/CoordinatepickerWizard.php
+
+        -
+            message: '#^Call to an undefined static method TYPO3\\CMS\\Core\\Page\\JavaScriptModuleInstruction\:\:forRequireJS\(\)\.$#'
+            identifier: staticMethod.notFound
+            count: 2
+            path: ../../Classes/Wizard/VectordrawWizard.php
+
+        -
+            message: '#^Variable \$_EXTKEY might not be defined\.$#'
+            identifier: variable.undefined
+            count: 1
+            path: ../../ext_emconf.php
