@@ -13,7 +13,12 @@ namespace Bobosch\OdsOsm\Wizard;
 
 use Bobosch\OdsOsm\Div;
 use TYPO3\CMS\Backend\Form\AbstractNode;
+use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Page\JavaScriptModuleInstruction;
+use TYPO3\CMS\Core\Page\PageRenderer;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\StringUtility;
 
 /**
  * Adds a wizard for drawing vectors on a map
@@ -65,8 +70,20 @@ class VectordrawWizard extends AbstractNode
         $resultArray['stylesheetFiles'][] = 'EXT:ods_osm/Resources/Public/JavaScript/Leaflet/Core/leaflet.css';
         $resultArray['stylesheetFiles'][] = 'EXT:ods_osm/Resources/Public/Css/Backend/drawvectorWizard.css';
 
-        $resultArray['requireJsModules'][] = 'TYPO3/CMS/OdsOsm/Leaflet/Core/leaflet';
-        $resultArray['requireJsModules'][] = 'TYPO3/CMS/OdsOsm/Backend/Vectordraw';
+        $versionInformation = GeneralUtility::makeInstance(Typo3Version::class)->getMajorVersion();
+        if ($versionInformation > 12) {
+            $pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
+            $pageRenderer->loadJavaScriptModule('@bobosch/ods_osm/Leaflet/Core/leaflet.js');
+            $pageRenderer->loadJavaScriptModule('@bobosch/ods_osm/Backend/Vectordraw.js');
+        } else {
+            $id = StringUtility::getUniqueId('t3js-formengine-fieldcontrol-');
+            $resultArray['requireJsModules'][] = JavaScriptModuleInstruction::forRequireJS(
+                'TYPO3/CMS/OdsOsm/Leaflet/Core/leaflet'
+            )->instance($id);
+            $resultArray['requireJsModules'][] = JavaScriptModuleInstruction::forRequireJS(
+                'TYPO3/CMS/OdsOsm/Backend/Vectordraw'
+            )->instance($id);
+        }
 
         return $resultArray;
     }
