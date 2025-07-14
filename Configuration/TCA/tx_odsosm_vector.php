@@ -86,6 +86,7 @@ return [
                 'type' => 'file',
                 'allowed' => 'geojson,json',
                 'maxitems' => 1,
+                'default' => 0,
                 'appearance' => [
                     'createNewRelationLinkTitle' => 'LLL:EXT:ods_osm/Resources/Private/Language/locallang_db:tx_odsosm_vector.file.add'
                 ],

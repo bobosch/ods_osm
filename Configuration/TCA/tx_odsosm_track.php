@@ -71,6 +71,7 @@ return [
                 'type' => 'file',
                 'allowed' => 'gpx,kml',
                 'maxitems' => 1,
+                'default' => 0,
                 'appearance' => [
                     'createNewRelationLinkTitle' => 'LLL:EXT:ods_osm/Resources/Private/Language/locallang_db:tx_odsosm_track.file.add'
                 ],

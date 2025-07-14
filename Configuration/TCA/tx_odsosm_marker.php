@@ -28,11 +28,9 @@ return [
             'label' => 'LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xlf:tx_odsosm_marker.icon',
             'config' => [
                 'type' => 'file',
-                'allowed' => $GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'],
                 'maxitems' => 1,
-                'appearance' => [
-                    'createNewRelationLinkTitle' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:images.addFileReference'
-                ],
+                'allowed' => 'common-image-types',
+                'default' => 0,
             ]
         ],
         'size_x' => [
