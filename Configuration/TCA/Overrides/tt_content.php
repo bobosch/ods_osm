@@ -19,7 +19,7 @@ ExtensionManagementUtility::addPlugin(
 ExtensionManagementUtility::addPiFlexFormValue(
 	'*',
 	'FILE:EXT:ods_osm/Configuration/Flexform/flexform_basic.xml',
-    'ods_osm_pi1'
+	'ods_osm_pi1'
 );
 
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addToAllTCAtypes('tt_content', '--div--;Configuration,pi_flexform,', 'ods_osm_pi1', 'after:subheader');
