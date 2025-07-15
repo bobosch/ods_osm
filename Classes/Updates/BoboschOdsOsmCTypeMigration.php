@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Bobosch\OdsOsm\Updates;
 
+use Linawolf\ListTypeMigration\Upgrades\AbstractListTypeToCTypeUpdate;
 use TYPO3\CMS\Install\Attribute\UpgradeWizard;
-use TYPO3\CMS\Install\Updates\AbstractListTypeToCTypeUpdate;
 
-#[UpgradeWizard('boboschOdsOsmCTypeMigration')]
+#[UpgradeWizard('odsOsmPluginMigration')]
 final class BoboschOdsOsmCTypeMigration extends AbstractListTypeToCTypeUpdate
 {
     public function getTitle(): string
