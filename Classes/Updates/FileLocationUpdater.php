@@ -241,7 +241,7 @@ class FileLocationUpdater implements UpgradeWizardInterface, ChattyInterface, Lo
     {
         $fieldItem = trim((string) $row[$this->fieldsToMigrate[$table]]);
 
-        if ($fieldItem === '' || $fieldItem === '0' || is_numeric($fieldItem)) {
+        if ($fieldItem === '' || is_numeric($fieldItem)) {
             return;
         }
 
