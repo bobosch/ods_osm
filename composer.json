@@ -25,8 +25,9 @@
     "issues": "https://github.com/bobosch/ods_osm/issues"
   },
   "require": {
-    "typo3/cms-core": "^12.4 || ^13.4",
-    "wgirhad/geophp": "^3.0"
+    "linawolf/list-type-migration": "^1.0",
+    "wgirhad/geophp": "^3.0",
+    "typo3/cms-core": "^12.4 || ^13.4"
   },
   "require-dev": {
     "friendsoftypo3/tt-address": "^8.0 || ^9.0",
