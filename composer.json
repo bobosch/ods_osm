@@ -1,97 +1,103 @@
 {
-  "name": "bobosch/ods-osm",
-  "description": "Add an interactive OpenStreetMap map to your website. Can also show other OpenLayers compatible maps.",
-  "license": "GPL-2.0-or-later",
-  "type": "typo3-cms-extension",
-  "keywords": [
-    "TYPO3",
-    "OSM",
-    "OpenStreetMap"
-  ],
-  "authors": [
-    {
-      "name": "Robert Heel",
-      "email": "typo3@bobosch.de",
-      "role": "Developer"
-    },
-    {
-      "name": "Alexander Bigga",
-      "email": "alexander@bigga.de",
-      "role": "Developer"
-    }
-  ],
-  "homepage": "https://github.com/bobosch/ods_osm",
-  "support": {
-    "issues": "https://github.com/bobosch/ods_osm/issues"
-  },
-  "require": {
-    "linawolf/list-type-migration": "^1.0",
-    "wgirhad/geophp": "^3.0",
-    "typo3/cms-core": "^12.4 || ^13.4"
-  },
-  "require-dev": {
-    "friendsoftypo3/tt-address": "^8.0 || ^9.0",
-    "helhum/typo3-console": "^7.0 || ^8.0",
-    "lochmueller/calendarize": "*",
-    "saschaegerer/phpstan-typo3": "^1.0 || ^2.0",
-    "ssch/typo3-rector": "^2.8 | ^3.1",
-    "typo3/cms-backend": "^12.4 || ^13.4",
-    "typo3/cms-extbase": "^12.4 || ^13.4",
-    "typo3/cms-extensionmanager": "^12.4 || ^13.4",
-    "typo3/cms-filelist": "^12.4 || ^13.4",
-    "typo3/cms-fluid": "^12.4 || ^13.4",
-    "typo3/cms-fluid-styled-content": "^12.4 || ^13.4",
-    "typo3/cms-frontend": "^12.4 || ^13.4",
-    "typo3/cms-install": "^12.4 || ^13.4",
-    "typo3/cms-lowlevel": "^12.4 || ^13.4",
-    "typo3/cms-setup": "^12.4 || ^13.4",
-    "typo3/cms-tstemplate": "^12.4 || ^13.4"
-  },
-  "suggest": {
-    "friendsoftypo3/tt-address": "^8.0 || ^9.0",
-    "lochmueller/calendarize": "^12.4 || ^13.0 || ^14.0"
-  },
-  "autoload": {
-    "psr-4": {
-      "Bobosch\\OdsOsm\\": "Classes/"
-    }
-  },
-  "config": {
-    "allow-plugins": {
-      "typo3/class-alias-loader": true,
-      "typo3/cms-composer-installers": true
-    },
-    "bin-dir": ".Build/bin",
-    "vendor-dir": ".Build/vendor"
-  },
-  "extra": {
-    "typo3/cms": {
-      "extension-key": "ods_osm",
-      "web-dir": ".Build/public"
-    }
-  },
-  "scripts": {
-    "build:ter-package": [
-      "@composer global require clue/phar-composer",
-      "(mkdir -p /tmp/vendors && cd /tmp/vendors && composer require wgirhad/geophp:^3.0 && composer global exec phar-composer build -v)",
-      "cp /tmp/vendors/vendors.phar ./Resources/Private/geophp.phar",
-      "(VERSION=$(git tag --sort=taggerdate | tail -1) && zip -r ../ods_osm-$VERSION.zip *)"
-    ],
-    "test:rector": [
-      "[ -e .Build/bin/rector ] || composer update",
-      ".Build/bin/rector process --dry-run -c Build/rector/rector.php"
-    ],
-    "test:phpstan": [
-      "[ -e .Build/bin/phpstan ] || composer update --ansi",
-      ".Build/bin/phpstan analyse -c Build/phpstan/phpstan.neon --memory-limit=512M --ansi"
-    ],
-    "test": [
-      "@test:rector",
-      "@test:phpstan"
-    ],
-    "fix:rector": [
-      "[ -e .Build/bin/rector ] || composer update",
-      ".Build/bin/rector process -c Build/rector/rector.php"
-    ]
-  }
+	"name": "bobosch/ods-osm",
+	"description": "Add an interactive OpenStreetMap map to your website. Can also show other OpenLayers compatible maps.",
+	"license": "GPL-2.0-or-later",
+	"type": "typo3-cms-extension",
+	"keywords": [
+		"TYPO3",
+		"OSM",
+		"OpenStreetMap"
+	],
+	"authors": [
+		{
+			"name": "Robert Heel",
+			"email": "typo3@bobosch.de",
+			"role": "Developer"
+		},
+		{
+			"name": "Alexander Bigga",
+			"email": "alexander@bigga.de",
+			"role": "Developer"
+		}
+	],
+	"homepage": "https://github.com/bobosch/ods_osm",
+	"support": {
+		"issues": "https://github.com/bobosch/ods_osm/issues"
+	},
+	"require": {
+		"linawolf/list-type-migration": "^1.0",
+		"typo3/cms-core": "^12.4 || ^13.4",
+		"wgirhad/geophp": "^3.0"
+	},
+	"require-dev": {
+		"ergebnis/composer-normalize": "^2.47",
+		"friendsoftypo3/tt-address": "^8.0 || ^9.0",
+		"helhum/typo3-console": "^7.0 || ^8.0",
+		"lochmueller/calendarize": "*",
+		"saschaegerer/phpstan-typo3": "^1.0 || ^2.0",
+		"ssch/typo3-rector": "^2.8 || ^3.1",
+		"typo3/cms-backend": "^12.4 || ^13.4",
+		"typo3/cms-extbase": "^12.4 || ^13.4",
+		"typo3/cms-extensionmanager": "^12.4 || ^13.4",
+		"typo3/cms-filelist": "^12.4 || ^13.4",
+		"typo3/cms-fluid": "^12.4 || ^13.4",
+		"typo3/cms-fluid-styled-content": "^12.4 || ^13.4",
+		"typo3/cms-frontend": "^12.4 || ^13.4",
+		"typo3/cms-install": "^12.4 || ^13.4",
+		"typo3/cms-lowlevel": "^12.4 || ^13.4",
+		"typo3/cms-setup": "^12.4 || ^13.4",
+		"typo3/cms-tstemplate": "^12.4 || ^13.4"
+	},
+	"suggest": {
+		"friendsoftypo3/tt-address": "^8.0 || ^9.0",
+		"lochmueller/calendarize": "^12.4 || ^13.0 || ^14.0"
+	},
+	"autoload": {
+		"psr-4": {
+			"Bobosch\\OdsOsm\\": "Classes/"
+		}
+	},
+	"config": {
+		"allow-plugins": {
+			"ergebnis/composer-normalize": true,
+			"typo3/class-alias-loader": true,
+			"typo3/cms-composer-installers": true
+		},
+		"bin-dir": ".Build/bin",
+		"vendor-dir": ".Build/vendor"
+	},
+	"extra": {
+		"composer-normalize": {
+			"indent-size": 1,
+			"indent-style": "tab"
+		},
+		"typo3/cms": {
+			"extension-key": "ods_osm",
+			"web-dir": ".Build/public"
+		}
+	},
+	"scripts": {
+		"build:ter-package": [
+			"@composer global require clue/phar-composer",
+			"(mkdir -p /tmp/vendors && cd /tmp/vendors && composer require wgirhad/geophp:^3.0 && composer global exec phar-composer build -v)",
+			"cp /tmp/vendors/vendors.phar ./Resources/Private/geophp.phar",
+			"(VERSION=$(git tag --sort=taggerdate | tail -1) && zip -r ../ods_osm-$VERSION.zip *)"
+		],
+		"fix:rector": [
+			"[ -e .Build/bin/rector ] || composer update",
+			".Build/bin/rector process -c Build/rector/rector.php"
+		],
+		"test": [
+			"@test:rector",
+			"@test:phpstan"
+		],
+		"test:phpstan": [
+			"[ -e .Build/bin/phpstan ] || composer update --ansi",
+			".Build/bin/phpstan analyse -c Build/phpstan/phpstan.neon --memory-limit=512M --ansi"
+		],
+		"test:rector": [
+			"[ -e .Build/bin/rector ] || composer update",
+			".Build/bin/rector process --dry-run -c Build/rector/rector.php"
+		]
+	}
 }
