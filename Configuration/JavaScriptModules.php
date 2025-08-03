@@ -1,8 +1,12 @@
 <?php
 
+defined('TYPO3') || die;
+
 return [
-    'dependencies' => ['core', 'backend'],
+    'dependencies' => [
+        'backend',
+    ],
     'imports' => [
-        '@bobosch/ods_osm/' => 'EXT:ods_osm/Resources/Public/JavaScript/',
+        '@bobosch/ods-osm/' => 'EXT:ods_osm/Resources/Public/JavaScript/',
     ],
 ];

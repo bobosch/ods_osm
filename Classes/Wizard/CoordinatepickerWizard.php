@@ -12,39 +12,40 @@ namespace Bobosch\OdsOsm\Wizard;
  * LICENSE.txt file that was distributed with this source code.
  */
 
-use Bobosch\OdsOsm\Div;
+use Bobosch\OdsOsm\Traits\SettingsTrait;
 use TYPO3\CMS\Backend\Form\AbstractNode;
-use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Core\Localization\LanguageService;
-use TYPO3\CMS\Core\Page\JavaScriptModuleInstruction;
-use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\StringUtility;
 
 /**
  * Adds a wizard for location selection via map
  */
 class CoordinatepickerWizard extends AbstractNode
 {
+    use SettingsTrait;
+
+    /**
+     * @return array<string, mixed>
+     */
     public function render(): array
     {
         $row = $this->data['databaseRow'];
         $paramArray = $this->data['parameterArray'];
         $resultArray = $this->initializeResultArray();
-        $extConfig = Div::getConfig();
+        $extConfig = $this->getSettings();
 
         $nameLongitude = $paramArray['itemFormElName'];
 
         if (strpos((string) $nameLongitude, '[pi_flexform]') > 0) {
             // it's a call inside a flexform
-            $lon = $row["pi_flexform"]["data"]["sDEF"]["lDEF"]["lon"]["vDEF"] != '' ? htmlspecialchars((string) $row["pi_flexform"]["data"]["sDEF"]["lDEF"]["lon"]["vDEF"]) : '';
-            $lat = $row["pi_flexform"]["data"]["sDEF"]["lDEF"]["lat"]["vDEF"] != '' ? htmlspecialchars((string) $row["pi_flexform"]["data"]["sDEF"]["lDEF"]["lat"]["vDEF"]) : '';
+            $lon = $row['pi_flexform']['data']['sDEF']['lDEF']['lon']['vDEF'] != '' ? htmlspecialchars((string) $row['pi_flexform']['data']['sDEF']['lDEF']['lon']['vDEF']) : '';
+            $lat = $row['pi_flexform']['data']['sDEF']['lDEF']['lat']['vDEF'] != '' ? htmlspecialchars((string) $row['pi_flexform']['data']['sDEF']['lDEF']['lat']['vDEF']) : '';
         } else {
             $lat = $row['tx_odsosm_lat'] != '' ? htmlspecialchars((string) $row['tx_odsosm_lat']) : '';
             $lon = $row['tx_odsosm_lon'] != '' ? htmlspecialchars((string) $row['tx_odsosm_lon']) : '';
         }
 
-        $nameLatitude = str_replace('lon', 'lat', $nameLongitude);
+        $nameLatitude = (string)str_replace('lon', 'lat', $nameLongitude);
         $nameLatitudeActive = str_replace('data', 'control[active]', $nameLatitude);
         $geoCodeUrl = '';
         $geoCodeUrlShort = '';
@@ -75,9 +76,9 @@ class CoordinatepickerWizard extends AbstractNode
         $resultArray['linkAttributes']['data-label-import'] = $this->getLanguageService()->sL('LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xlf:coordinatepickerWizard.import');
         $resultArray['linkAttributes']['data-lat'] = $lat;
         $resultArray['linkAttributes']['data-lon'] = $lon;
-        $resultArray['linkAttributes']['data-default-lat'] = $extConfig['default_lat'];
-        $resultArray['linkAttributes']['data-default-lon'] = $extConfig['default_lon'];
-        $resultArray['linkAttributes']['data-default-zoom'] = $extConfig['default_zoom'];
+        $resultArray['linkAttributes']['data-glat'] = $extConfig['default_lat'];
+        $resultArray['linkAttributes']['data-glon'] = $extConfig['default_lon'];
+        $resultArray['linkAttributes']['data-zoom'] = $extConfig['default_zoom'];
         $resultArray['linkAttributes']['data-geocodeurl'] = $geoCodeUrl;
         $resultArray['linkAttributes']['data-geocodeurlshort'] = $geoCodeUrlShort;
         $resultArray['linkAttributes']['data-namelat'] = htmlspecialchars($nameLatitude);
@@ -88,20 +89,8 @@ class CoordinatepickerWizard extends AbstractNode
         $resultArray['stylesheetFiles'][] = 'EXT:ods_osm/Resources/Public/JavaScript/Leaflet/Core/leaflet.css';
         $resultArray['stylesheetFiles'][] = 'EXT:ods_osm/Resources/Public/Css/Backend/leafletBackend.css';
 
-        $versionInformation = GeneralUtility::makeInstance(Typo3Version::class)->getMajorVersion();
-        if ($versionInformation > 12) {
-            $pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
-            $pageRenderer->loadJavaScriptModule('@bobosch/ods_osm/Leaflet/Core/leaflet.js');
-            $pageRenderer->loadJavaScriptModule('@bobosch/ods_osm/Backend/LeafletBackend.js');
-        } else {
-            $id = StringUtility::getUniqueId('t3js-formengine-fieldcontrol-');
-            $resultArray['requireJsModules'][] = JavaScriptModuleInstruction::forRequireJS(
-                'TYPO3/CMS/OdsOsm/Leaflet/Core/leaflet'
-            )->instance($id);
-            $resultArray['requireJsModules'][] = JavaScriptModuleInstruction::forRequireJS(
-                'TYPO3/CMS/OdsOsm/Backend/LeafletBackend'
-            )->instance($id);
-        }
+        $pageRenderer = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Page\PageRenderer::class);
+        $pageRenderer->loadJavaScriptModule('@bobosch/ods-osm/esm/leaflet-backend.js');
 
         return $resultArray;
     }

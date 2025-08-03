@@ -1,0 +1,43 @@
+name: Code Quality Checks
+
+on: [push, pull_request]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        php: ['8.2', '8.3']
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up PHP Version
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          tools: composer:v2
+
+      - name: Validate composer.json
+        run: |
+          composer validate
+
+      - name: Cache dependencies
+        uses: actions/cache@v4
+        with:
+          path: ~/.composer/cache
+          key: dependencies-composer-${{ hashFiles('composer.json') }}
+
+      - name: Install composer dependencies (build)
+        run: |
+          composer install --no-interaction --prefer-dist --no-progress
+
+      - name: Run phpstan checks
+        run: |
+          composer run test:phpstan
+
+      - name: Run rector checks
+        run: |
+          composer run test:rector
