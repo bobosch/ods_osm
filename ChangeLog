@@ -1,5 +1,5 @@
-2025-xx-xx XXX
-	* Remove support for TYPO3 11.5, support for 13.4 LTS
+2025-08-15 Alexander Bigga <alexander@bigga.de>
+	* Remove support for TYPO3 11.5, support for 13.4 LTS (Thanks to Hannes Bochmann)
 	* Breaking change: run update wizard for plugin migration.
 
 2023-10-06 Alexander Bigga <alexander@bigga.de>
