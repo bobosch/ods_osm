@@ -277,8 +277,8 @@ class Openlayers extends BaseProvider
 
         // open popup? If yes, with click or hover?
         $eventMethod = match ($this->config['show_popups']) {
-            1 => 'singleclick',
-            2 => 'pointermove',
+            '1' => 'singleclick',
+            '2' => 'pointermove',
             default => false,
         };
 
