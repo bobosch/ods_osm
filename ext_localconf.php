@@ -1,19 +1,14 @@
 <?php
+
 defined('TYPO3') || die();
 
 use Bobosch\OdsOsm\Backend\FormDataProvider\FlexFormManipulation;
 use Bobosch\OdsOsm\Evaluation\LonLat;
 use Bobosch\OdsOsm\TceMain;
-use Bobosch\OdsOsm\Updates\FileLocationUpdater;
-use Bobosch\OdsOsm\Updates\MigrateSettings;
 use Bobosch\OdsOsm\Wizard\CoordinatepickerWizard;
 use Bobosch\OdsOsm\Wizard\VectordrawWizard;
 use TYPO3\CMS\Backend\Form\FormDataProvider\TcaFlexPrepare;
 use TYPO3\CMS\Backend\Form\FormDataProvider\TcaFlexProcess;
-use TYPO3\CMS\Core\Imaging\IconProvider\BitmapIconProvider;
-use TYPO3\CMS\Core\Imaging\IconRegistry;
-use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processDatamapClass'][] = TceMain::class;
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tce']['formevals'][LonLat::class] = '';
