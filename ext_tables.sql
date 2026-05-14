@@ -84,7 +84,7 @@ CREATE TABLE tx_odsosm_marker (
 	crdate int(10) unsigned NOT NULL DEFAULT '0',
 	deleted tinyint(1) unsigned NOT NULL DEFAULT '0',
 	title tinytext NOT NULL,
-	icon text NOT NULL,
+	icon int(11) unsigned NOT NULL DEFAULT '0',
 	size_x smallint(10) unsigned NOT NULL DEFAULT '0',
 	size_y smallint(10) unsigned NOT NULL DEFAULT '0',
 	offset_x smallint(11) NOT NULL DEFAULT '0',
