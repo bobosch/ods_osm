@@ -606,12 +606,12 @@ class PluginController
                             $this->config['icon.'][$table . '.']['file.'] ?? []
                         );
                         $item['tx_odsosm_marker'] = [
-                            'icon' => $info['processedFile'],
+                            'icon' => $info->getProcessedFile(),
                             'type' => 'image',
-                            'size_x' => $info[0],
-                            'size_y' => $info[1],
-                            'offset_x' => -$info[0] / 2,
-                            'offset_y' => -$info[1],
+                            'size_x' => $info->getWidth(),
+                            'size_y' => $info->getHeight(),
+                            'offset_x' => -$info->getWidth() / 2,
+                            'offset_y' => -$info->getHeight(),
                         ];
                     } elseif ($this->config['icon.'][$table] === 'TEXT') {
                         $conf = $this->config['icon.'][$table . '.'];
