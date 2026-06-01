@@ -36,28 +36,36 @@ class Openlayers extends BaseProvider
 {
     public function getMapCore($backPath = ''): void
     {
-        $path = ($backPath ?: PathUtility::getAbsoluteWebPath(
-            GeneralUtility::getFileAbsFileName(Div::RESOURCE_BASE_PATH . 'OpenLayers/')
-        )
-        );
-        $pathOl = ($this->config['local_js'] ? $path : 'https://cdn.jsdelivr.net/npm/ol@v8.1.0/');
+        $localOL = 'EXT:ods_osm/Resources/Public/OpenLayers/';
+        $remoteOL = 'https://cdn.jsdelivr.net/npm/ol@v8.1.0/';
+        $remoteLS = 'https://unpkg.com/ol-layerswitcher@4.1.1/';
         $pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
-        $pageRenderer->addCssFile($pathOl . 'ol.css');
+
+        if ($this->config['local_js']) {
+            $pageRenderer->addCssFile($localOL . 'ol.css');
+        } else {
+            $pageRenderer->addCssFile($remoteOL . 'ol.css');
+        }
+
         $this->scripts['OpenLayers'] = [
-            'src' => $pathOl . 'dist/ol.js',
+            'src' => $this->config['local_js']
+                ? $localOL . 'dist/ol.js'
+                : $remoteOL . 'dist/ol.js',
             'sri' => 'sha512-7BxMviUlJVAJOF4l717SzPknm3Y5nLAm3PPtRdrWlCu4GLaW+RhBxYuOJ1MkVNAcPu+lRWn4gtWx0PAxvTzD0g=='
         ];
 
-        // Do we need the layerswitcher? If so, some extra plugin is required.
         if ($this->config['show_layerswitcher']) {
-            $pathContrib = ($this->config['local_js'] ? $path . 'Contrib/ol-layerswitcher/' : 'https://unpkg.com/ol-layerswitcher@4.1.1/dist/');
-            $pathCustom = $path . 'Custom/';
-
-            $pageRenderer->addCssFile($pathContrib . 'ol-layerswitcher.css');
-            $pageRenderer->addCssFile($pathCustom . 'ol-layerswitcher.css');
+            if ($this->config['local_js']) {
+                $pageRenderer->addCssFile($localOL . 'Contrib/ol-layerswitcher/ol-layerswitcher.css');
+            } else {
+                $pageRenderer->addCssFile($remoteLS . 'dist/ol-layerswitcher.css');
+            }
+            $pageRenderer->addCssFile($localOL . 'Custom/ol-layerswitcher.css');
 
             $this->scripts['OpenLayersSwitch'] = [
-                'src' => $pathContrib . 'ol-layerswitcher.js',
+                'src' => $this->config['local_js']
+                    ? $localOL . 'Contrib/ol-layerswitcher/ol-layerswitcher.js'
+                    : $remoteLS . 'dist/ol-layerswitcher.js',
                 'sri' => 'sha512-HhCrrWOoQb5HSpRe1fsk9ugZQEOokbJsLioPuUhfXlr5ccRTZVg3UpnfRsTJzrdKLejmx7uvY62n2fp5qLdYQg=='
             ];
         }
