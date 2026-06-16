@@ -45,6 +45,8 @@ use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
  */
 class PluginController
 {
+    public string $prefixId = 'tx_odsosm_pi1';
+
     protected array $config = [];
 
     protected array $hooks = [];
@@ -84,7 +86,7 @@ class PluginController
             return $this->getMap();
         }
 
-        return $content;
+        return $this->wrapInBaseClass($content);
     }
 
     public function init($conf): void
@@ -728,5 +730,18 @@ class PluginController
         }
 
         return $content;
+    }
+
+    /**
+     * Wraps the input string in a <div> tag with the class attribute set to the prefixId.
+     * All content returned from your plugins should be returned through this function
+     * so all content from your plugin is encapsulated in a <div>-tag nicely identifying the content of your plugin.
+     *
+     * @param string $str HTML content to wrap in the div-tags with the "main class" of the plugin
+     * @return string HTML content wrapped, ready to return to the parent object.
+     */
+    public function wrapInBaseClass(string $str): string
+    {
+        return '<div class="' . str_replace('_', '-', $this->prefixId) . '">' . $str . '</div>';
     }
 }
