@@ -139,7 +139,7 @@ class Div
      *
      * @return boolean True if the address got updated, false if not.
      */
-    public static function searchAddress(&$address, $service = 0)
+    public static function searchAddress(&$address, int $service = 0)
     {
         $config = self::getConfig(['default_country', 'geo_service_email', 'geo_service_user']);
         $ll = false;
