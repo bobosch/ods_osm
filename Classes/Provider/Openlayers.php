@@ -643,7 +643,6 @@ class Openlayers extends BaseProvider
     private static function escapeEntities(string $text): string
     {
         $escaped = str_replace("'", "&apos;", $text);
-        $escaped = str_replace('"', "&quot;", $escaped);
-        return $escaped;
+        return str_replace('"', "&quot;", $escaped);
     }
 }
