@@ -60,6 +60,7 @@ class Openlayers extends BaseProvider
             } else {
                 $pageRenderer->addCssFile($remoteLS . 'dist/ol-layerswitcher.css');
             }
+
             $pageRenderer->addCssFile($localOL . 'Custom/ol-layerswitcher.css');
 
             $this->scripts['OpenLayersSwitch'] = [
