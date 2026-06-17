@@ -144,7 +144,7 @@ class Div
         $config = self::getConfig(['default_country', 'geo_service_email', 'geo_service_user']);
         $ll = false;
 
-        $country = strtoupper(strlen($address['country'] ?? false) == 2 ? $address['country'] : $config['default_country']);
+        $country = strtoupper(strlen($address['country'] ?? false) === 2 ? $address['country'] : $config['default_country']);
         $email = GeneralUtility::validEmail($config['geo_service_email']) ? $config['geo_service_email'] : ($_SERVER['SERVER_ADMIN'] ?? 'unkown@example.com');
 
         if ($GLOBALS['TYPO3_CONF_VARS']['BE']['debug']) {

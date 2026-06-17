@@ -410,7 +410,7 @@ class Openlayers extends BaseProvider
             $item['color'] = '#0009ff';
         }
 
-        if (strlen((string) $item['color']) == 7) {
+        if (strlen((string) $item['color']) === 7) {
             $hex = [$item['color'][1] . $item['color'][2], $item['color'][3] . $item['color'][4], $item['color'][5] . $item['color'][6]];
             $rgb = array_map('hexdec', $hex);
             $opacity = '0.2';
