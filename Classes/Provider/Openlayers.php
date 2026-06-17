@@ -412,7 +412,7 @@ class Openlayers extends BaseProvider
 
         if (strlen((string) $item['color']) === 7) {
             $hex = [$item['color'][1] . $item['color'][2], $item['color'][3] . $item['color'][4], $item['color'][5] . $item['color'][6]];
-            $rgb = array_map('hexdec', $hex);
+            $rgb = array_map(hexdec(...), $hex);
             $opacity = '0.2';
             $item['rgba'] = 'rgba(' . implode(",", $rgb) . ',' . $opacity . ')';
         }
