@@ -96,7 +96,7 @@ class PluginController
         return $this->wrapInBaseClass($content);
     }
 
-    public function init($conf): void
+    public function init(array $conf): void
     {
         $this->initializeFlexFormOfPlugin(); // Init FlexForm configuration for plugin
 

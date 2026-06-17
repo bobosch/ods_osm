@@ -230,7 +230,7 @@ class TceMain
     }
 
     // ['t3lib/class.t3lib_tcemain.php']['processDatamapClass']
-    public function processDatamap_postProcessFieldArray($status, $table, $id, &$fieldArray, $obj): void
+    public function processDatamap_postProcessFieldArray($status, $table, $id, array &$fieldArray, $obj): void
     {
         switch ($table) {
             case 'tx_odsosm_vector':

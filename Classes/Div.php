@@ -139,7 +139,7 @@ class Div
      *
      * @return boolean True if the address got updated, false if not.
      */
-    public static function searchAddress(&$address, int $service = 0)
+    public static function searchAddress(array &$address, int $service = 0)
     {
         $config = self::getConfig(['default_country', 'geo_service_email', 'geo_service_user']);
         $ll = false;
@@ -361,7 +361,7 @@ class Div
      *
      * @return boolean True if the address was found and got updated.
      */
-    protected static function searchAddressNominatim($query, &$address)
+    protected static function searchAddressNominatim($query, array &$address)
     {
         $ll = false;
 
@@ -434,7 +434,7 @@ class Div
         $flashMessageQueue->addMessage($flashMessage);
     }
 
-    public static function updateCache($address, $search = []): void
+    public static function updateCache(array $address, array $search = []): void
     {
         $set = [
             'search_city' => $search['city'] ?? '',
@@ -474,7 +474,7 @@ class Div
         }
     }
 
-    public static function splitAddressField(&$address): void
+    public static function splitAddressField(array &$address): void
     {
         // Address field contains street if country, city or zip is set
         if (($address['country'] ?? false) || ($address['city'] ?? false) || ($address['zip'] ?? false)) {
