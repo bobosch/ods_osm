@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Bobosch\OdsOsm\Traits;
 
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;

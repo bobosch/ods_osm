@@ -36,13 +36,13 @@ class VectordrawWizard extends AbstractNode
         $nameDataField = $paramArray['itemFormElName'];
 
         // calculate center point or use Kopenhagen as fallback
-        if (!empty((float)$row['max_lon']) && !empty((float)$row['min_lon'])) {
+        if (! empty((float) $row['max_lon']) && ! empty((float) $row['min_lon'])) {
             $lon = ($row['max_lon'] + $row['min_lon']) / 2;
         } else {
             $lon = $extConfig['default_lon'];
         }
 
-        if (!empty((float)$row['max_lat']) && !empty((float)$row['min_lat'])) {
+        if (! empty((float) $row['max_lat']) && ! empty((float) $row['min_lat'])) {
             $lat = ($row['max_lat'] + $row['min_lat']) / 2;
         } else {
             $lat = $extConfig['default_lat'];
@@ -54,10 +54,10 @@ class VectordrawWizard extends AbstractNode
         $resultArray['linkAttributes']['data-label-title'] = $this->getLanguageService()->sL('LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xlf:vectordrawWizard.title');
         $resultArray['linkAttributes']['data-label-close'] = $this->getLanguageService()->sL('LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xlf:vectordrawWizard.close');
         $resultArray['linkAttributes']['data-label-import'] = $this->getLanguageService()->sL('LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xlf:vectordrawWizard.import');
-        $resultArray['linkAttributes']['data-minlat'] = empty((float)$row['min_lat']) ? null : $row['min_lat'];
-        $resultArray['linkAttributes']['data-maxlat'] = empty((float)$row['max_lat']) ? null : $row['max_lat'];
-        $resultArray['linkAttributes']['data-minlon'] = empty((float)$row['min_lon']) ? null : $row['min_lon'];
-        $resultArray['linkAttributes']['data-maxlon'] = empty((float)$row['max_lon']) ? null : $row['max_lon'];
+        $resultArray['linkAttributes']['data-minlat'] = empty((float) $row['min_lat']) ? null : $row['min_lat'];
+        $resultArray['linkAttributes']['data-maxlat'] = empty((float) $row['max_lat']) ? null : $row['max_lat'];
+        $resultArray['linkAttributes']['data-minlon'] = empty((float) $row['min_lon']) ? null : $row['min_lon'];
+        $resultArray['linkAttributes']['data-maxlon'] = empty((float) $row['max_lon']) ? null : $row['max_lon'];
         $resultArray['linkAttributes']['data-lat'] = $lat;
         $resultArray['linkAttributes']['data-lon'] = $lon;
         $resultArray['linkAttributes']['data-fieldName'] = htmlspecialchars((string) $nameDataField);

@@ -36,6 +36,7 @@
 		"lochmueller/calendarize": "*",
 		"saschaegerer/phpstan-typo3": "^1.0 || ^2.0",
 		"ssch/typo3-rector": "^2.8 || ^3.1",
+		"symplify/easy-coding-standard": "^13.2",
 		"typo3/cms-backend": "^12.4 || ^13.4",
 		"typo3/cms-extbase": "^12.4 || ^13.4",
 		"typo3/cms-extensionmanager": "^12.4 || ^13.4",
@@ -83,6 +84,10 @@
 			"cp /tmp/vendors/vendors.phar ./Resources/Private/geophp.phar",
 			"(VERSION=$(git tag --sort=taggerdate | tail -1) && zip -r ../ods_osm-$VERSION.zip *)"
 		],
+		"fix:ecs": [
+			"[ -e .Build/bin/ecs ] || composer update",
+			".Build/bin/ecs --fix --config=Build/ecs/ecs.php"
+		],
 		"fix:rector": [
 			"[ -e .Build/bin/rector ] || composer update",
 			".Build/bin/rector process -c Build/rector/rector.php"
@@ -94,6 +99,10 @@
 		"test:phpstan": [
 			"[ -e .Build/bin/phpstan ] || composer update --ansi",
 			".Build/bin/phpstan analyse -c Build/phpstan/phpstan.neon --memory-limit=512M --ansi"
+		],
+		"test:ecs": [
+			"[ -e .Build/bin/ecs ] || composer update",
+			".Build/bin/ecs --config=Build/ecs/ecs.php"
 		],
 		"test:rector": [
 			"[ -e .Build/bin/rector ] || composer update",

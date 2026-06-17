@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /***************************************************************
  *  Copyright notice
  *
@@ -61,8 +63,8 @@ class MigrateSettings implements UpgradeWizardInterface
      */
     public function getDescription(): string
     {
-        return 'This wizard migrates some flexform settings which has changed in ods_osm' .
-            ' extension. This makes the full reconfiguration of all used plugins obsolete.';
+        return 'This wizard migrates some flexform settings which has changed in ods_osm'
+            . ' extension. This makes the full reconfiguration of all used plugins obsolete.';
     }
 
     /**
@@ -93,7 +95,7 @@ class MigrateSettings implements UpgradeWizardInterface
         // Update the found record sets
         while ($record = $statement->fetchAssociative()) {
             // Robust error handling in case pi_flexform is NULL or empty
-            if (!($record['pi_flexform'] ?? false)) {
+            if (! ($record['pi_flexform'] ?? false)) {
                 continue;
             }
 
@@ -116,7 +118,7 @@ class MigrateSettings implements UpgradeWizardInterface
                 )->set('pi_flexform', $newXml)->executeStatement();
 
             // exit if at least one update statement is not successful
-            if (!((bool) $updateResult)) {
+            if (! ((bool) $updateResult)) {
                 return false;
             }
         }
@@ -152,7 +154,7 @@ class MigrateSettings implements UpgradeWizardInterface
 
         // Update the found record sets
         while ($record = $statement->fetchAssociative()) {
-            if (!($record['pi_flexform'] ?? false)) {
+            if (! ($record['pi_flexform'] ?? false)) {
                 continue;
             }
 
@@ -177,10 +179,9 @@ class MigrateSettings implements UpgradeWizardInterface
     public function getPrerequisites(): array
     {
         return [
-            DatabaseUpdatedPrerequisite::class
+            DatabaseUpdatedPrerequisite::class,
         ];
     }
-
 
     protected function migrateFlexformSettings(string $oldValue): false|string
     {
@@ -207,10 +208,8 @@ class MigrateSettings implements UpgradeWizardInterface
                 $overlays->addAttribute('index', 'overlays');
                 $overlays->addChild('value', $field->value)->addAttribute('index', 'vDEF');
             } elseif ($field['index'] != $library[0]->value . '_layer' && (
-                $field['index'] == 'layer' ||
-                $field['index'] == 'openlayers_layer' ||
-                $field['index'] == 'openlayers3_layer' ||
-                $field['index'] == 'leaflet_layer')
+                in_array($field['index'], ['layer', 'openlayers_layer', 'openlayers3_layer', 'leaflet_layer'])
+            )
             ) {
                 // remove all other, unused layer fields from flexform xml
                 unset($field[0]);

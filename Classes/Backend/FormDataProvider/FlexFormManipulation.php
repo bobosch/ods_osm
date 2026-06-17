@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /***************************************************************
  *  Copyright notice
  *
@@ -68,7 +70,7 @@ class FlexFormManipulation implements FormDataProviderInterface
      * Check for optionally installed extensions and add the
      * corresponding tables to the list of allowed tables for marker.
      *
-     * @param array &$dataStructure flexform structure
+     * @param array $dataStructure flexform structure
      * @return array Modified structure
      */
     protected function fixAllowedTables(array $dataStructure): array

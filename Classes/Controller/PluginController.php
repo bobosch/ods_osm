@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 /***************************************************************
  *  Copyright notice
  *
@@ -55,10 +58,14 @@ class PluginController
 
     protected array $lons = [];
 
-    /** @var ConnectionPool */
+    /**
+     * @var ConnectionPool
+     */
     protected $connectionPool;
 
-    /** @var BaseProvider */
+    /**
+     * @var BaseProvider
+     */
     protected $library;
 
     protected ContentObjectRenderer $contentObjectRenderer;
@@ -89,7 +96,7 @@ class PluginController
         return $this->wrapInBaseClass($content);
     }
 
-    public function init($conf): void
+    public function init(array $conf): void
     {
         $this->initializeFlexFormOfPlugin(); // Init FlexForm configuration for plugin
 
@@ -158,9 +165,9 @@ class PluginController
                 }
             }
 
-            if ($flex['library'] === 'staticmap' && !empty($flex['staticmap_layer'])) {
+            if ($flex['library'] === 'staticmap' && ! empty($flex['staticmap_layer'])) {
                 $flex['layer'] = $flex['staticmap_layer'];
-            } elseif (!empty($flex['base_layer'])) {
+            } elseif (! empty($flex['base_layer'])) {
                 $flex['layer'] = $flex['base_layer'];
             }
         }
@@ -173,14 +180,14 @@ class PluginController
         // 3. merge Flexform settings, but skip empty values.
         ArrayUtility::mergeRecursiveWithOverrule($this->config, $flex, true, false);
 
-        if (!is_array($this->config['marker'] ?? null)) {
+        if (! is_array($this->config['marker'] ?? null)) {
             $this->config['marker'] = [];
         }
 
         if (is_array($conf['marker.'])) {
             foreach ($conf['marker.'] as $name => $value) {
                 if (is_string($value) && ($value !== '' && $value !== '0')) {
-                    if (!is_array($this->config['marker'][$name] ?? null)) {
+                    if (! is_array($this->config['marker'][$name] ?? null)) {
                         $this->config['marker'][$name] = [];
                     }
 
@@ -273,9 +280,9 @@ class PluginController
         $field = 'pi_flexform';
         // Converting flexform data into array
         $fieldData = $this->contentObjectRenderer->data[$field] ?? null;
-        if (!is_array($fieldData) && $fieldData) {
-            $this->contentObjectRenderer->data[$field] = GeneralUtility::xml2array((string)$fieldData);
-            if (!is_array($this->contentObjectRenderer->data[$field])) {
+        if (! is_array($fieldData) && $fieldData) {
+            $this->contentObjectRenderer->data[$field] = GeneralUtility::xml2array((string) $fieldData);
+            if (! is_array($this->contentObjectRenderer->data[$field])) {
                 $this->contentObjectRenderer->data[$field] = [];
             }
         }
@@ -362,7 +369,7 @@ class PluginController
         }
 
         // get all marker records on configured page.
-        if (!empty($recordIds['pages'])) {
+        if (! empty($recordIds['pages'])) {
             foreach (array_keys($tables) as $table) {
                 if ($table !== 'tt_content') {
                     $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
@@ -371,15 +378,15 @@ class PluginController
                     $result = $queryBuilder
                         ->select($table . '.uid')
                         ->from($table)->where($queryBuilder->expr()->in(
-                        $table . '.pid',
-                        $queryBuilder->createNamedParameter(
-                            $recordIds['pages'],
-                            Connection::PARAM_INT_ARRAY
-                        )
-                    ))->executeQuery();
+                            $table . '.pid',
+                            $queryBuilder->createNamedParameter(
+                                $recordIds['pages'],
+                                Connection::PARAM_INT_ARRAY
+                            )
+                        ))->executeQuery();
 
                     while ($resArray = $result->fetchAssociative()) {
-                        if (!in_array($resArray['uid'], $recordIds[$table] ?? [])) {
+                        if (! in_array($resArray['uid'], $recordIds[$table] ?? [])) {
                             $recordIds[$table][] = $resArray['uid'];
                         }
                     }
@@ -639,7 +646,7 @@ class PluginController
         ================================================== */
         $layers = [];
         $baseLayers = [];
-        if (!in_array(implode(',', $this->config['layer']), ['', '0'], true)) {
+        if (! in_array(implode(',', $this->config['layer']), ['', '0'], true)) {
             $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
                 ->getQueryBuilderForTable('tx_odsosm_layer');
 
@@ -704,11 +711,11 @@ class PluginController
             $lon = array_sum($this->lons) / count($this->lons);
             $lat = array_sum($this->lats) / count($this->lats);
         } else {
-            $lon = (float)($this->config['lon'] ?? $this->config['default_lon']);
-            $lat = (float)($this->config['lat'] ?? $this->config['default_lat']);
+            $lon = (float) ($this->config['lon'] ?? $this->config['default_lon']);
+            $lat = (float) ($this->config['lat'] ?? $this->config['default_lat']);
         }
 
-        $zoom = (int)$this->config['zoom'];
+        $zoom = (int) $this->config['zoom'];
 
         /* ==================================================
         Map

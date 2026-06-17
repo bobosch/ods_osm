@@ -1,21 +1,20 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Bobosch\OdsOsm;
 
-use TYPO3\CMS\Core\Database\Query\QueryBuilder;
-use TYPO3\CMS\Core\Page\PageRenderer;
-use TYPO3\CMS\Core\Messaging\AbstractMessage;
-use TYPO3\CMS\Core\Log\Logger;
-use Doctrine\DBAL\FetchMode;
-use Doctrine\DBAL\ParameterType;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Database\Query\Restriction\FrontendRestrictionContainer;
 use TYPO3\CMS\Core\Http\RequestFactory;
+use TYPO3\CMS\Core\Log\Logger;
 use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
+use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
@@ -37,8 +36,7 @@ class Div
             $queryBuilder->setRestrictions(GeneralUtility::makeInstance(FrontendRestrictionContainer::class));
 
             // Version
-            $constraints[] =
-                $queryBuilder->expr()->gte($table . '.pid', $queryBuilder->createNamedParameter(0, Connection::PARAM_INT));
+            $constraints[] = $queryBuilder->expr()->gte($table . '.pid', $queryBuilder->createNamedParameter(0, Connection::PARAM_INT));
 
             // Translation
             if ($ctrl['languageField'] ?? null) {
@@ -97,13 +95,13 @@ class Div
      *
      * Note that the record does not get update in database.
      *
-     * @param array &$address Address record from database
+     * @param array $address Address record from database
      *
      * @return boolean True if the address got updated, false if not.
      *
      * @uses searchAddress()
      */
-    public static function updateAddress(&$address)
+    public static function updateAddress(array &$address)
     {
         $config = self::getConfig(['cache_enabled', 'geo_service']);
 
@@ -115,7 +113,7 @@ class Div
             $ll = self::searchAddress($address, 0);
         }
 
-        if (!$ll) {
+        if (! $ll) {
             $search = $address;
             $ll = self::searchAddress($address, $config['geo_service']);
             // Update cache when enabled or needed for statistic
@@ -133,7 +131,7 @@ class Div
      *
      * Data lat, lon, zip and city may get updated.
      *
-     * @param array &$address Address record from database
+     * @param array $address Address record from database
      * @param integer $service Geocoding service to use
      *                          - 0: internal caching database table
      *                          - 1: geonames.org
@@ -141,16 +139,20 @@ class Div
      *
      * @return boolean True if the address got updated, false if not.
      */
-    public static function searchAddress(&$address, $service = 0)
+    public static function searchAddress(array &$address, int $service = 0)
     {
         $config = self::getConfig(['default_country', 'geo_service_email', 'geo_service_user']);
         $ll = false;
 
-        $country = strtoupper(strlen($address['country'] ?? false) == 2 ? $address['country'] : $config['default_country']);
+        $country = strtoupper(strlen($address['country'] ?? false) === 2 ? $address['country'] : $config['default_country']);
         $email = GeneralUtility::validEmail($config['geo_service_email']) ? $config['geo_service_email'] : ($_SERVER['SERVER_ADMIN'] ?? 'unkown@example.com');
 
         if ($GLOBALS['TYPO3_CONF_VARS']['BE']['debug']) {
-            $service_names = [0 => 'cache', 1 => 'geonames', 2 => 'nominatim'];
+            $service_names = [
+                0 => 'cache',
+                1 => 'geonames',
+                2 => 'nominatim',
+            ];
             self::getLogger()->debug('Search address using ' . $service_names[$service], $address);
         }
 
@@ -196,7 +198,9 @@ class Div
                             'tstamp' => time(),
                             'cache_hit' => $row['cache_hit'] + 1,
                         ];
-                        $connection->update('tx_odsosm_geocache', $set, ['uid' => (int) $row['uid']]);
+                        $connection->update('tx_odsosm_geocache', $set, [
+                            'uid' => (int) $row['uid'],
+                        ]);
 
                         $address['lat'] = $row['lat'];
                         $address['lon'] = $row['lon'];
@@ -241,21 +245,21 @@ class Div
                     'timeout' => 60,
                     'headers' => [
                         'Accept' => 'application/json',
-                        'User-Agent' => 'TYPO3 extension ods_osm/' . ExtensionManagementUtility::getExtensionVersion('ods_osm')
+                        'User-Agent' => 'TYPO3 extension ods_osm/' . ExtensionManagementUtility::getExtensionVersion('ods_osm'),
                     ],
                 ];
                 // secure endpoint available, too: https://secure.geonames.org/postalCodeSearchJSON?
                 $response = $requestFactory->request('http://api.geonames.org/postalCodeSearchJSON?' . http_build_query($query, '', '&'), 'GET', $configuration);
-                $content  = $response->getBody()->getContents();
+                $content = $response->getBody()->getContents();
                 $result = json_decode($content, true);
                 if ($result) {
                     if ($result['status'] ?? false) {
                         if ($GLOBALS['TYPO3_CONF_VARS']['BE']['debug']) {
-                            self::getLogger()->debug('GeoNames message', (array)$result['status']['message']);
+                            self::getLogger()->debug('GeoNames message', (array) $result['status']['message']);
                         }
 
                         self::flashMessage(
-                            (string)$result['status']['message'],
+                            (string) $result['status']['message'],
                             'GeoNames message',
                             \TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::WARNING
                         );
@@ -263,18 +267,18 @@ class Div
 
                     if ($result['postalCodes'][0] ?? false) {
                         $ll = true;
-                        $address['lat'] = (string)$result['postalCodes'][0]['lat'];
-                        $address['lon'] = (string)$result['postalCodes'][0]['lng'];
+                        $address['lat'] = (string) $result['postalCodes'][0]['lat'];
+                        $address['lon'] = (string) $result['postalCodes'][0]['lng'];
                         if ($result['postalCodes'][0]['postalCode'] ?? false) {
-                            $address['zip'] = (string)$result['postalCodes'][0]['postalCode'];
+                            $address['zip'] = (string) $result['postalCodes'][0]['postalCode'];
                         }
 
                         if ($result['postalCodes'][0]['placeName'] ?? false) {
-                            $address['city'] = (string)$result['postalCodes'][0]['placeName'];
+                            $address['city'] = (string) $result['postalCodes'][0]['placeName'];
                         }
 
                         if (empty($address['country'] ?? false)) {
-                            $address['country'] = (string)$result['postalCodes'][0]['countryCode'];
+                            $address['country'] = (string) $result['postalCodes'][0]['countryCode'];
                         }
                     }
                 } elseif ($GLOBALS['TYPO3_CONF_VARS']['BE']['debug'] ?? false) {
@@ -312,7 +316,7 @@ class Div
 
                     $ll = self::searchAddressNominatim($query, $address);
 
-                    if (!$ll && ($query['postalcode'] ?? false)) {
+                    if (! $ll && ($query['postalcode'] ?? false)) {
                         unset($query['postalcode']);
 
                         if ($GLOBALS['TYPO3_CONF_VARS']['BE']['debug'] ?? false) {
@@ -353,11 +357,11 @@ class Div
      * Data lat, lon, zip and city may get updated.
      *
      * @param array $query The query sent to the nominatim API
-     * @param array &$address Address record from database
+     * @param array $address Address record from database
      *
      * @return boolean True if the address was found and got updated.
      */
-    protected static function searchAddressNominatim($query, &$address)
+    protected static function searchAddressNominatim($query, array &$address)
     {
         $ll = false;
 
@@ -367,12 +371,12 @@ class Div
             'timeout' => 60,
             'headers' => [
                 'Accept' => 'application/json',
-                'User-Agent' => 'TYPO3 extension ods_osm/' . ExtensionManagementUtility::getExtensionVersion('ods_osm')
+                'User-Agent' => 'TYPO3 extension ods_osm/' . ExtensionManagementUtility::getExtensionVersion('ods_osm'),
             ],
         ];
 
         $response = $requestFactory->request('https://nominatim.openstreetmap.org/search?' . http_build_query($query, '', '&'), 'GET', $configuration);
-        $content  = $response->getBody()->getContents();
+        $content = $response->getBody()->getContents();
         $result = json_decode($content, true);
 
         // Save value in cache
@@ -380,32 +384,32 @@ class Div
             // take the first result
             if ($result[0] ?? false) {
                 $ll = true;
-                $address['lat'] = (string)$result[0]['lat'];
-                $address['lon'] = (string)$result[0]['lon'];
+                $address['lat'] = (string) $result[0]['lat'];
+                $address['lon'] = (string) $result[0]['lon'];
                 if ($result[0]['address']['road'] ?? false) {
-                    $address['street'] = (string)$result[0]['address']['road'];
+                    $address['street'] = (string) $result[0]['address']['road'];
                 }
 
                 if ($result[0]['address']['house_number'] ?? false) {
-                    $address['housenumber'] = substr((string)$result[0]['address']['house_number'], 0, 10);
+                    $address['housenumber'] = substr((string) $result[0]['address']['house_number'], 0, 10);
                 }
 
                 if ($result[0]['address']['postcode'] ?? false) {
-                    $address['zip'] = substr((string)$result[0]['address']['postcode'], 0, 10);
+                    $address['zip'] = substr((string) $result[0]['address']['postcode'], 0, 10);
                 }
 
                 if ($result[0]['address']['city'] ?? false) {
                     $address['city'] = $result[0]['address']['city'];
                 } elseif ($result[0]['address']['village'] ?? false) {
-                    $address['city'] = (string)$result[0]['address']['village'];
+                    $address['city'] = (string) $result[0]['address']['village'];
                 }
 
                 if ($result[0]['address']['state'] ?? false) {
-                    $address['state'] = (string)$result[0]['address']['state'];
+                    $address['state'] = (string) $result[0]['address']['state'];
                 }
 
                 if (($result[0]['address']['country_code'] ?? false) && empty($address['country'] ?? false)) {
-                    $address['country'] = strtoupper((string)$result[0]['address']['country_code']);
+                    $address['country'] = strtoupper((string) $result[0]['address']['country_code']);
                 }
             }
         } elseif ($GLOBALS['TYPO3_CONF_VARS']['BE']['debug'] ?? false) {
@@ -430,7 +434,7 @@ class Div
         $flashMessageQueue->addMessage($flashMessage);
     }
 
-    public static function updateCache($address, $search = []): void
+    public static function updateCache(array $address, array $search = []): void
     {
         $set = [
             'search_city' => $search['city'] ?? '',
@@ -457,7 +461,9 @@ class Div
                 'tstamp' => time(),
                 'service_hit' => $row['service_hit'] + 1,
             ];
-            $connection->update('tx_odsosm_geocache', $set, ['uid' => (int) $row['uid']]);
+            $connection->update('tx_odsosm_geocache', $set, [
+                'uid' => (int) $row['uid'],
+            ]);
         } else {
             $set['tstamp'] = time();
             $set['crdate'] = time();
@@ -468,16 +474,16 @@ class Div
         }
     }
 
-    public static function splitAddressField(&$address): void
+    public static function splitAddressField(array &$address): void
     {
         // Address field contains street if country, city or zip is set
         if (($address['country'] ?? false) || ($address['city'] ?? false) || ($address['zip'] ?? false)) {
             $address['type'] = 'structured';
-            if ($address['address'] && !($address['street'] ?? false)) {
+            if ($address['address'] && ! ($address['street'] ?? false)) {
                 $address['street'] = $address['address'];
             }
 
-            if (!($address['housenumber'] ?? false) && ($address['street'] ?? false)) {
+            if (! ($address['housenumber'] ?? false) && ($address['street'] ?? false)) {
                 // Split street and house number
                 preg_match('/^(.+)\s(\d+(\s*[^\d\s]+)*)$/', $address['street'], $matches);
                 if ($matches !== []) {
@@ -508,7 +514,7 @@ class Div
 
         if ($config && is_array($values) && count($values)) {
             foreach ($values as $value) {
-                if (!isset($config[$value])) {
+                if (! isset($config[$value])) {
                     $getDefault[] = $value;
                 }
             }
@@ -557,10 +563,10 @@ class Div
                     'tt_address' => [
                         'local' => 'sys_category',
                         'mm' => 'sys_category_record_mm',
-                        'foreign' => 'tt_address'
-                    ]
-                ]
-            ]
+                        'foreign' => 'tt_address',
+                    ],
+                ],
+            ],
         ];
 
         // load configuration for calendarize only if extension is loaded
@@ -599,10 +605,9 @@ class Div
      */
     protected static function getLogger(): \Psr\Log\LoggerInterface
     {
-        /** @var $loggerManager LogManager */
+        /** @var LogManager $loggerManager */
         $loggerManager = GeneralUtility::makeInstance(LogManager::class);
 
         return $loggerManager->getLogger(static::class);
     }
-
 }

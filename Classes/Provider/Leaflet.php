@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Bobosch\OdsOsm\Provider;
 
 use Bobosch\OdsOsm\Div;
@@ -17,15 +19,16 @@ class Leaflet extends BaseProvider
 
     public function getMapCore($backPath = ''): void
     {
-        $this->path_res = ($backPath ?: PathUtility::getAbsoluteWebPath(
-            GeneralUtility::getFileAbsFileName(Div::RESOURCE_BASE_PATH . 'JavaScript/Leaflet/')
-        )
+        $this->path_res = (
+            $backPath ?: PathUtility::getAbsoluteWebPath(
+                GeneralUtility::getFileAbsFileName(Div::RESOURCE_BASE_PATH . 'JavaScript/Leaflet/')
+            )
         );
         $this->path_leaflet = ($this->config['local_js'] ? $this->path_res . 'Core/' : 'https://unpkg.com/leaflet@1.9.4/dist/');
         $this->pageRenderer->addCssFile($this->path_leaflet . 'leaflet.css');
         $this->scripts['leaflet'] = [
             'src' => $this->path_leaflet . 'leaflet.js',
-            'sri' => 'sha384-cxOPjt7s7Iz04uaHJceBmS+qpjv2JkIHNVcuOrM+YHwZOmJGBXI00mdUXEq65HTH'
+            'sri' => 'sha384-cxOPjt7s7Iz04uaHJceBmS+qpjv2JkIHNVcuOrM+YHwZOmJGBXI00mdUXEq65HTH',
         ];
     }
 
@@ -41,17 +44,16 @@ class Leaflet extends BaseProvider
             $vars .= "\n\t\t\t" . $this->config['id'] . '.addControl(' . $obj . ");";
         }
 
-        $jsMain =
-            $this->config['id'] . "=new L.Map('" . $this->config['id'] . "',
-                {scrollWheelZoom: " .((!isset($this->config['enable_scrollwheelzoom']) || $this->config['enable_scrollwheelzoom'] == '1') ? 'true' : 'false'). ",
-                dragging: " .((!isset($this->config['enable_dragging']) || $this->config['enable_dragging'] == '1') ? 'true' : 'false'). "});
+        $jsMain = $this->config['id'] . "=new L.Map('" . $this->config['id'] . "',
+                {scrollWheelZoom: " . ((! isset($this->config['enable_scrollwheelzoom']) || $this->config['enable_scrollwheelzoom'] == '1') ? 'true' : 'false') . ",
+                dragging: " . ((! isset($this->config['enable_dragging']) || $this->config['enable_dragging'] == '1') ? 'true' : 'false') . "});
 			L.Icon.Default.imagePath='" . $this->path_leaflet . "images/';"
             . $vars;
         if ($this->config['cluster']) {
             $this->pageRenderer->addCssFile($this->path_res . 'leaflet-markercluster/MarkerCluster.css');
             $this->pageRenderer->addCssFile($this->path_res . 'leaflet-markercluster/MarkerCluster.Default.css');
             $this->scripts['leaflet-markercluster'] = [
-                'src' => $this->path_res . 'leaflet-markercluster/leaflet.markercluster.js'
+                'src' => $this->path_res . 'leaflet-markercluster/leaflet.markercluster.js',
             ];
         }
 
@@ -104,10 +106,10 @@ class Leaflet extends BaseProvider
         $overlay = [];
         if (is_array($this->layers[1] ?? null)) {
             foreach ($this->layers[1] as $layer) {
-                if (!empty($layer['gid'])) {
+                if (! empty($layer['gid'])) {
                     $overlay[] = '"' . $layer['title'] . '":' . $layer['gid'];
                 } else {
-                    $overlay[] = '"' . $layer['title'] . '":' . ($layer['table'] ?? 'layer')  . '_' . $layer['uid'];
+                    $overlay[] = '"' . $layer['title'] . '":' . ($layer['table'] ?? 'layer') . '_' . $layer['uid'];
                 }
             }
         }
@@ -130,7 +132,7 @@ class Leaflet extends BaseProvider
         // load leaflet.fullscreen plugin
         $this->scripts['leaflet-fullscreen'] = [
             'src' => $this->path_res . 'leaflet-fullscreen/Control.FullScreen.js',
-            'sri' => 'sha384-TqFtkYBnYsrP2JCfIv/oLQxS9L6xpaIV9xnaI2UGMK25cJsTtQXZIU6WGQ7daT0Z'
+            'sri' => 'sha384-TqFtkYBnYsrP2JCfIv/oLQxS9L6xpaIV9xnaI2UGMK25cJsTtQXZIU6WGQ7daT0Z',
         ];
         $this->pageRenderer->addCssFile($this->path_res . 'leaflet-fullscreen/Control.FullScreen.css');
 
@@ -160,7 +162,7 @@ class Leaflet extends BaseProvider
 
         foreach ($this->layers[2] as $group_uid => $group) {
             if ($this->config['cluster']) {
-                $jsMarker .= 'var ' . $group_uid . ' = new L.MarkerClusterGroup({maxClusterRadius:' . (int)$this->config['cluster_radius'] . '});' . "\n";
+                $jsMarker .= 'var ' . $group_uid . ' = new L.MarkerClusterGroup({maxClusterRadius:' . (int) $this->config['cluster_radius'] . '});' . "\n";
                 foreach ($group as $jsElementVar) {
                     $jsMarker .= $group_uid . '.addLayer(' . $jsElementVar . ');' . "\n";
                 }
@@ -194,14 +196,14 @@ class Leaflet extends BaseProvider
                 $this->layers[1][] = [
                     'title' => $item['title'],
                     'table' => $table,
-                    'uid' => $item['uid']
+                    'uid' => $item['uid'],
                 ];
 
                 switch (strtolower(pathinfo($file->getName(), PATHINFO_EXTENSION))) {
                     case 'kml':
                         // include javascript file for KML support
                         $this->scripts['leaflet-plugins'] = [
-                            'src' => $this->path_res . 'leaflet-plugins/layer/vector/KML.js'
+                            'src' => $this->path_res . 'leaflet-plugins/layer/vector/KML.js',
                         ];
 
                         $jsMarker .= 'var ' . $jsElementVar . ' = new L.KML(';
@@ -212,7 +214,7 @@ class Leaflet extends BaseProvider
                     case 'gpx':
                         // include javascript file for GPX support
                         $this->scripts['leaflet-gpx'] = [
-                            'src' => $this->path_res . 'leaflet-gpx/gpx.js'
+                            'src' => $this->path_res . 'leaflet-gpx/gpx.js',
                         ];
                         $options = [
                             'clickable' => 'false',
@@ -237,10 +239,10 @@ class Leaflet extends BaseProvider
                 break;
             case 'tx_odsosm_vector':
                 // add styles from record if both are set - color and width
-                if (!empty($item['color']) && !empty($item['width'])) {
+                if (! empty($item['color']) && ! empty($item['width'])) {
                     $jsMarker .= 'var myStyle = {
-                        "color": "'.$item['color'].'",
-                        "weight": '.$item['width'].',
+                        "color": "' . $item['color'] . '",
+                        "weight": ' . $item['width'] . ',
                         "opacity": 1
                     };';
                 } else {
@@ -259,9 +261,9 @@ class Leaflet extends BaseProvider
 
                     // Add vector file to layerswitcher
                     $this->layers[1][] = [
-                        'title' => $item['title'] . ' ('. LocalizationUtility::translate('file', 'OdsOsm') .')',
+                        'title' => $item['title'] . ' (' . LocalizationUtility::translate('file', 'OdsOsm') . ')',
                         'table' => $table,
-                        'uid' => $item['uid'] . '_file'
+                        'uid' => $item['uid'] . '_file',
                     ];
                     $jsElementVarsForPopup[] = $jsElementVar . '_file';
                 }
@@ -278,7 +280,7 @@ class Leaflet extends BaseProvider
                     $this->layers[1][] = [
                         'title' => $item['title'],
                         'table' => $table,
-                        'uid' => $item['uid'] . '_data'
+                        'uid' => $item['uid'] . '_data',
                     ];
                     $jsElementVarsForPopup[] = $jsElementVar . '_data';
                 }
@@ -290,20 +292,22 @@ class Leaflet extends BaseProvider
                 if ($item['tx_odsosm_marker'] ?? false) {
                     $marker = $item['tx_odsosm_marker'];
                     $iconOptions = [
-                        'iconSize' => [(int)$marker['size_x'], (int)$marker['size_y']],
-                        'iconAnchor' => [-(int)$marker['offset_x'], -(int)$marker['offset_y']],
-                        'popupAnchor' => [0, (int)$marker['offset_y']]
+                        'iconSize' => [(int) $marker['size_x'], (int) $marker['size_y']],
+                        'iconAnchor' => [-(int) $marker['offset_x'], -(int) $marker['offset_y']],
+                        'popupAnchor' => [0, (int) $marker['offset_y']],
                     ];
                     if ($marker['type'] == 'html') {
                         $iconOptions['html'] = $marker['icon'];
                         $markerOptions['icon'] = 'icon: new L.divIcon(' . json_encode($iconOptions) . ')';
                     } else {
-                        $icon =  $marker['icon']->getPublicUrl();
+                        $icon = $marker['icon']->getPublicUrl();
                         $iconOptions['iconUrl'] = $icon;
                         $markerOptions['icon'] = 'icon: new L.Icon(' . json_encode($iconOptions) . ')';
                     }
                 } else {
-                    $marker = [ 'type' => 'image' ];
+                    $marker = [
+                        'type' => 'image',
+                    ];
                     $icon = $this->path_leaflet . 'images/marker-icon.png';
                 }
 
@@ -312,7 +316,7 @@ class Leaflet extends BaseProvider
                 if ($item['group_title'] ?? false) {
                     $this->layers[1][] = [
                         'title' => ($marker['type'] == 'html' ? $marker['icon'] : "<img class='marker-icon' src='" . $icon . "' />") . ' ' . $item['group_title'],
-                        'gid' => $item['group_uid']
+                        'gid' => $item['group_uid'],
                     ];
                     $this->layers[2][$item['group_uid']][] = $jsElementVar;
                 } else {

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /***************************************************************
  *  Copyright notice
  *
@@ -25,11 +27,9 @@
 
 namespace Bobosch\OdsOsm\Provider;
 
-use Bobosch\OdsOsm\Div;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Resource\FileRepository;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 
 class Openlayers extends BaseProvider
@@ -51,7 +51,7 @@ class Openlayers extends BaseProvider
             'src' => $this->config['local_js']
                 ? $localOL . 'dist/ol.js'
                 : $remoteOL . 'dist/ol.js',
-            'sri' => 'sha512-7BxMviUlJVAJOF4l717SzPknm3Y5nLAm3PPtRdrWlCu4GLaW+RhBxYuOJ1MkVNAcPu+lRWn4gtWx0PAxvTzD0g=='
+            'sri' => 'sha512-7BxMviUlJVAJOF4l717SzPknm3Y5nLAm3PPtRdrWlCu4GLaW+RhBxYuOJ1MkVNAcPu+lRWn4gtWx0PAxvTzD0g==',
         ];
 
         if ($this->config['show_layerswitcher']) {
@@ -60,13 +60,14 @@ class Openlayers extends BaseProvider
             } else {
                 $pageRenderer->addCssFile($remoteLS . 'dist/ol-layerswitcher.css');
             }
+
             $pageRenderer->addCssFile($localOL . 'Custom/ol-layerswitcher.css');
 
             $this->scripts['OpenLayersSwitch'] = [
                 'src' => $this->config['local_js']
                     ? $localOL . 'Contrib/ol-layerswitcher/ol-layerswitcher.js'
                     : $remoteLS . 'dist/ol-layerswitcher.js',
-                'sri' => 'sha512-HhCrrWOoQb5HSpRe1fsk9ugZQEOokbJsLioPuUhfXlr5ccRTZVg3UpnfRsTJzrdKLejmx7uvY62n2fp5qLdYQg=='
+                'sri' => 'sha512-HhCrrWOoQb5HSpRe1fsk9ugZQEOokbJsLioPuUhfXlr5ccRTZVg3UpnfRsTJzrdKLejmx7uvY62n2fp5qLdYQg==',
             ];
         }
     }
@@ -76,7 +77,7 @@ class Openlayers extends BaseProvider
         $controls = [
             'new ol.control.Attribution()',
             'new ol.control.Zoom()',
-            'new ol.control.Rotate()'
+            'new ol.control.Rotate()',
         ];
         if ($this->config['mouse_position']) {
             $controls[] = "new ol.control.MousePosition({
@@ -119,7 +120,7 @@ class Openlayers extends BaseProvider
             name: 'clusters',
             title: '" . LocalizationUtility::translate('openlayers.clusterLayer', 'OdsOsm') . "',
             source: new ol.source.Cluster({
-                distance: " . (int)$this->config['cluster_radius']  . ",
+                distance: " . (int) $this->config['cluster_radius'] . ",
                 minDistance: 10,
                 source: new ol.source.Vector({
                     name: 'source',
@@ -210,7 +211,9 @@ class Openlayers extends BaseProvider
         }
 
         $layer['subdomains'] = substr((string) $layer['subdomains'], 0, 1) . '-' . substr((string) $layer['subdomains'], -1, 1);
-        $layer['tile_url'] = strtr($this->getTileUrl($layer), ['{s}' => '{' . $layer['subdomains'] . '}']);
+        $layer['tile_url'] = strtr($this->getTileUrl($layer), [
+            '{s}' => '{' . $layer['subdomains'] . '}',
+        ]);
 
         if ($layer['overlay'] == 1) {
             return $this->config['id'] . "_" . $i . "_overlayLayer =
@@ -221,7 +224,7 @@ class Openlayers extends BaseProvider
                         source: new ol.source.OSM({
                             url: '" . $layer['tile_url'] . "',
                             attributions: [
-                                '" . $layer['attribution']. "'
+                                '" . $layer['attribution'] . "'
                             ]
                         })
                     });
@@ -238,7 +241,7 @@ class Openlayers extends BaseProvider
                         source: new ol.source.OSM({
                             url: '" . $layer['tile_url'] . "',
                             attributions: [
-                                '" . $layer['attribution']. "'
+                                '" . $layer['attribution'] . "'
                             ]
                         })
                     });
@@ -408,11 +411,11 @@ class Openlayers extends BaseProvider
             $item['color'] = '#0009ff';
         }
 
-        if (strlen((string) $item['color']) == 7) {
-            $hex = [ $item['color'][1] . $item['color'][2], $item['color'][3] . $item['color'][4], $item['color'][5] . $item['color'][6] ];
-            $rgb = array_map('hexdec', $hex);
+        if (strlen((string) $item['color']) === 7) {
+            $hex = [$item['color'][1] . $item['color'][2], $item['color'][3] . $item['color'][4], $item['color'][5] . $item['color'][6]];
+            $rgb = array_map(hexdec(...), $hex);
             $opacity = '0.2';
-            $item['rgba'] = 'rgba('.implode(",", $rgb).','.$opacity.')';
+            $item['rgba'] = 'rgba(' . implode(",", $rgb) . ',' . $opacity . ')';
         }
 
         switch ($table) {
@@ -428,27 +431,27 @@ class Openlayers extends BaseProvider
                 $this->layers[1][] = [
                     'title' => $item['title'],
                     'table' => $table,
-                    'uid' => $item['uid']
+                    'uid' => $item['uid'],
                 ];
 
                 // define style from given color and width
                 $jsMarker .= 'var ' . $jsElementVar . '_style = new ol.style.Style({
                     stroke: new ol.style.Stroke({
-                        color: \''.$item['color'].'\',
-                        width: '.($item['width'] ?: 1).'
+                        color: \'' . $item['color'] . '\',
+                        width: ' . ($item['width'] ?: 1) . '
                     }),
                     fill: new ol.style.Fill({
-                        color: \''.$item['rgba'].'\'
+                        color: \'' . $item['rgba'] . '\'
                     }),
                 });';
 
                 switch (strtolower(pathinfo($file->getName(), PATHINFO_EXTENSION))) {
                     case 'kml':
                         $jsMarker .= 'var ' . $jsElementVar . '_gpx = new ol.layer.Vector({
-                            title: \'' .$item['title'] . '\',
+                            title: \'' . $item['title'] . '\',
                             source: new ol.source.Vector({
                                 projection: \'EPSG:3857\',
-                                url: \'' .  $file->getPublicUrl() . '\',
+                                url: \'' . $file->getPublicUrl() . '\',
                                 format: new ol.format.KML()
                             }),
                             style: ' . $jsElementVar . '_style
@@ -458,10 +461,10 @@ class Openlayers extends BaseProvider
                         break;
                     case 'gpx':
                         $jsMarker .= 'var ' . $jsElementVar . '_gpx = new ol.layer.Vector({
-                            title: \'' .$item['title'] . '\',
+                            title: \'' . $item['title'] . '\',
                             source: new ol.source.Vector({
                                 projection: \'EPSG:3857\',
-                                url: \'' .  $file->getPublicUrl() . '\',
+                                url: \'' . $file->getPublicUrl() . '\',
                                 format: new ol.format.GPX()
                             }),
                             style: ' . $jsElementVar . '_style
@@ -478,17 +481,17 @@ class Openlayers extends BaseProvider
                 // define style from given color and width
                 $jsMarker .= 'var ' . $jsElementVar . '_style = new ol.style.Style({
                     stroke: new ol.style.Stroke({
-                        color: \''.$item['color'].'\',
-                        width: '.($item['width'] ?: 1).'
+                        color: \'' . $item['color'] . '\',
+                        width: ' . ($item['width'] ?: 1) . '
                     }),
                     fill: new ol.style.Fill({
-                        color: \''.$item['rgba'].'\'
+                        color: \'' . $item['rgba'] . '\'
                     }),
                 });' . "\n";
 
                 if ($fileObjects) {
                     $file = $fileObjects[0];
-                    $filename =  $file->getPublicUrl();
+                    $filename = $file->getPublicUrl();
 
                     $properties = [
                         'popup' => $item['popup'] ?? '',
@@ -497,7 +500,7 @@ class Openlayers extends BaseProvider
 
                     $jsMarker .= 'var ' . $jsElementVar . '_file_properties = ' . json_encode($properties) . ';';
                     $jsMarker .= 'var ' . $jsElementVar . '_file = new ol.layer.Vector({
-                        title: \'' .$item['title'] . ' ('. LocalizationUtility::translate('file', 'OdsOsm') .')\',
+                        title: \'' . $item['title'] . ' (' . LocalizationUtility::translate('file', 'OdsOsm') . ')\',
                         source: new ol.source.Vector({
                             projection: \'EPSG:3857\',
                             url: \'' . $filename . '\',
@@ -518,11 +521,11 @@ class Openlayers extends BaseProvider
                         'properties' => $item['properties'],
                     ];
 
-                    $jsMarker .= 'const ' . $jsElementVar . '_geojsonObject = '. $item['data'] . ';';
+                    $jsMarker .= 'const ' . $jsElementVar . '_geojsonObject = ' . $item['data'] . ';';
 
                     $jsMarker .= 'var ' . $jsElementVar . '_data_properties = ' . json_encode($properties) . ';';
                     $jsMarker .= 'var ' . $jsElementVar . '_data = new ol.layer.Vector({
-                        title: \'' .$item['title'] . '\',
+                        title: \'' . $item['title'] . '\',
                         source: new ol.source.Vector({
                             features: new ol.format.GeoJSON({
                                 featureProjection:"EPSG:3857"
@@ -544,7 +547,7 @@ class Openlayers extends BaseProvider
                     if ($marker['type'] == 'html') {
                         $markerOptions['icon'] = 'icon: new L.divIcon(' . json_encode($marker['icon']) . ')';
                     } else {
-                        $icon =  $marker['icon']->getPublicUrl();
+                        $icon = $marker['icon']->getPublicUrl();
                         $markerOptions['icon'] = 'icon: new L.Icon(' . json_encode($icon) . ')';
                     }
                 } else {
@@ -558,9 +561,9 @@ class Openlayers extends BaseProvider
                         anchor: [0.5, 46],
                         anchorXUnits: 'fraction',
                         anchorYUnits: 'pixels',
-                        src: '" . $icon ."',
-                        width: " . (int)$marker['size_x'] . ",
-                        height: " . (int)$marker['size_y'] . "
+                        src: '" . $icon . "',
+                        width: " . (int) $marker['size_x'] . ",
+                        height: " . (int) $marker['size_y'] . "
                     }),
                 });";
 
@@ -608,7 +611,7 @@ class Openlayers extends BaseProvider
                 } else {
                     $jsMarker .= $markerStyle;
                     $jsMarker .= "var " . $jsElementVar . " = new ol.layer.Vector({
-                        title: '<img src=\"" .$icon . "\" class=\"marker-icon\" /> " . Openlayers::escapeEntities($item['group_title'] ?? $item['name']) . "',
+                        title: '<img src=\"" . $icon . "\" class=\"marker-icon\" /> " . Openlayers::escapeEntities($item['group_title'] ?? $item['name']) . "',
                         source: new ol.source.Vector({
                             features: [
                                  new ol.Feature({
@@ -625,11 +628,11 @@ class Openlayers extends BaseProvider
                 }
 
                 break;
-            }
+        }
 
         return $jsMarker;
     }
-    
+
     /**
      * Replaces ' and " charactes with HTML entities.
      *
@@ -638,10 +641,9 @@ class Openlayers extends BaseProvider
      * @return string
      *              Text with HTML entities for ' and " characters.
      */
-    private static function escapeEntities(string $text) : string
+    private static function escapeEntities(string $text): string
     {
         $escaped = str_replace("'", "&apos;", $text);
-        $escaped = str_replace('"', "&quot;", $escaped);
-        return $escaped;
+        return str_replace('"', "&quot;", $escaped);
     }
 }

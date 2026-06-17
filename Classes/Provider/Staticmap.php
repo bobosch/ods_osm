@@ -1,9 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Bobosch\OdsOsm\Provider;
 
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Core\Environment;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 class Staticmap extends BaseProvider
 {
@@ -27,7 +29,12 @@ class Staticmap extends BaseProvider
                             $marker = $item['tx_odsosm_marker'];
                             $icon = $marker['icon'];
                         } else {
-                            $marker = ['size_x' => 21, 'size_y' => 25, 'offset_x' => -11, 'offset_y' => -25];
+                            $marker = [
+                                'size_x' => 21,
+                                'size_y' => 25,
+                                'offset_x' => -11,
+                                'offset_y' => -25,
+                            ];
                             $icon = 'EXT:ods_osm/Resources/Public/Icons/marker-icon.png';
                         }
 
@@ -37,28 +44,27 @@ class Staticmap extends BaseProvider
         }
 
         // set reasonable defaults for width and height (100% and vh/vw does not work with staticmap)
-        if ((int)$this->config['width'] <= 100) {
+        if ((int) $this->config['width'] <= 100) {
             $this->config['width'] = 640;
         }
 
-        if ((int)$this->config['height'] <= 100) {
+        if ((int) $this->config['height'] <= 100) {
             $this->config['height'] = 480;
         }
-
 
         $markerUrl = [
             '###lon###' => $lon,
             '###lat###' => $lat,
             '###zoom###' => $zoom,
-            '###width###' => (int)$this->config['width'],
-            '###height###' => (int)$this->config['height'],
+            '###width###' => (int) $this->config['width'],
+            '###height###' => (int) $this->config['height'],
         ];
 
         $layer = array_shift($layers);
         $url = strtr($layer[0]['static_url'], $markerUrl);
 
-        $this->uploadPath = Environment::getPublicPath() . '/'  . $this->uploadPath;
-        if (!is_dir($this->uploadPath)) {
+        $this->uploadPath = Environment::getPublicPath() . '/' . $this->uploadPath;
+        if (! is_dir($this->uploadPath)) {
             GeneralUtility::mkdir_deep($this->uploadPath);
         }
 
@@ -70,7 +76,7 @@ class Staticmap extends BaseProvider
             $cache = filectime($filename) > time() - 7 * 24 * 60 * 60;
         }
 
-        if (!$cache) {
+        if (! $cache) {
             $referer = $_SERVER['HTTP_REFERER'];
             $opts = [
                 'http' => [
@@ -93,14 +99,14 @@ class Staticmap extends BaseProvider
                 '10' => 'IMAGE',
                 '10.' => [
                     'file' => $filename,
-                ]
+                ],
             ],
         ];
 
         if ($marker['offset_x'] ?? null) {
             $config['file.']['20'] = 'IMAGE';
             $config['file.']['20.'] = [
-                'offset' => ((int)$this->config['width'] / 2 + (int)$marker['offset_x']) . ',' . ((int)$this->config['height'] / 2 + (int)$marker['offset_y']),
+                'offset' => ((int) $this->config['width'] / 2 + (int) $marker['offset_x']) . ',' . ((int) $this->config['height'] / 2 + (int) $marker['offset_y']),
                 'file' => $icon,
             ];
         }

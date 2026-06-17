@@ -1,11 +1,15 @@
 <?php
+
+declare(strict_types=1);
+
 defined('TYPO3') || die();
 
-use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use Bobosch\OdsOsm\Evaluation\LonLat;
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 
 $tempColumns = [
-    'tx_odsosm_lon' => [ // DECIMAL(9,6)
+    'tx_odsosm_lon' => [
+        // DECIMAL(9,6)
         'exclude' => 1,
         'label' => 'LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xlf:tx_odsosm_lon',
         'config' => [
@@ -15,14 +19,15 @@ $tempColumns = [
             'checkbox' => '0.000000',
             'eval' => LonLat::class,
             'fieldControl' => [
-	            'locationMap' => [
-		            'renderType' => 'coordinatepickerWizard'
-	            ]
+                'locationMap' => [
+                    'renderType' => 'coordinatepickerWizard',
+                ],
             ],
             'default' => 0.000000,
-        ]
+        ],
     ],
-    'tx_odsosm_lat' => [ // DECIMAL(8,6)
+    'tx_odsosm_lat' => [
+        // DECIMAL(8,6)
         'exclude' => 1,
         'label' => 'LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xlf:tx_odsosm_lat',
         'config' => [
@@ -31,7 +36,7 @@ $tempColumns = [
             'max' => 10,
             'eval' => LonLat::class,
             'default' => 0.000000,
-        ]
+        ],
     ],
 ];
 

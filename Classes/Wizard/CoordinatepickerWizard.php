@@ -45,12 +45,12 @@ class CoordinatepickerWizard extends AbstractNode
             $lon = $row['tx_odsosm_lon'] != '' ? htmlspecialchars((string) $row['tx_odsosm_lon']) : '';
         }
 
-        $nameLatitude = (string)str_replace('lon', 'lat', $nameLongitude);
+        $nameLatitude = (string) str_replace('lon', 'lat', $nameLongitude);
         $nameLatitudeActive = str_replace('data', 'control[active]', $nameLatitude);
         $geoCodeUrl = '';
         $geoCodeUrlShort = '';
 
-        if (empty((float)$lat) || empty((float)$lon)) {
+        if (empty((float) $lat) || empty((float) $lon)) {
             // remove all after first slash in address (top, floor ...)
             $address = preg_replace('/^([^\/]*).*$/', '$1', $row['address'] ?? '') . ' ';
             $address .= $row['city'] ?? '';

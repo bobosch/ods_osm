@@ -1,13 +1,16 @@
 <?php
+
+declare(strict_types=1);
+
 defined('TYPO3') || die();
 
 use Bobosch\OdsOsm\Evaluation\LonLat;
-
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 
 if (ExtensionManagementUtility::isLoaded('calendarize')) {
     $tempColumns = [
-        'tx_odsosm_lon' => [ // DECIMAL(9,6)
+        'tx_odsosm_lon' => [
+            // DECIMAL(9,6)
             'exclude' => 1,
             'label' => 'LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xlf:tx_odsosm_lon',
             'config' => [
@@ -18,13 +21,14 @@ if (ExtensionManagementUtility::isLoaded('calendarize')) {
                 'eval' => LonLat::class,
                 'fieldControl' => [
                     'locationMap' => [
-                        'renderType' => 'coordinatepickerWizard'
-                    ]
+                        'renderType' => 'coordinatepickerWizard',
+                    ],
                 ],
                 'default' => 0.000000,
-            ]
+            ],
         ],
-        'tx_odsosm_lat' => [ // DECIMAL(8,6)
+        'tx_odsosm_lat' => [
+            // DECIMAL(8,6)
             'exclude' => 1,
             'label' => 'LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xlf:tx_odsosm_lat',
             'config' => [
@@ -33,7 +37,7 @@ if (ExtensionManagementUtility::isLoaded('calendarize')) {
                 'max' => 10,
                 'eval' => LonLat::class,
                 'default' => 0.000000,
-            ]
+            ],
         ],
     ];
 
