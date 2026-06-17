@@ -101,7 +101,7 @@ class Div
      *
      * @uses searchAddress()
      */
-    public static function updateAddress(&$address)
+    public static function updateAddress(array &$address)
     {
         $config = self::getConfig(['cache_enabled', 'geo_service']);
 
