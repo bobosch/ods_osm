@@ -1,6 +1,7 @@
 <?php
 
-use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+declare(strict_types=1);
+
 return [
     'ctrl' => [
         'title' => 'LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xlf:tx_odsosm_marker',
@@ -21,7 +22,7 @@ return [
             'config' => [
                 'type' => 'input',
                 'size' => '30',
-            ]
+            ],
         ],
         'icon' => [
             'exclude' => 0,
@@ -31,7 +32,7 @@ return [
                 'maxitems' => 1,
                 'allowed' => 'common-image-types',
                 'default' => 0,
-            ]
+            ],
         ],
         'size_x' => [
             'exclude' => 0,
@@ -45,8 +46,8 @@ return [
                     'lower' => 0,
                     'upper' => 9999,
                 ],
-                'default' => 0
-            ]
+                'default' => 0,
+            ],
         ],
         'size_y' => [
             'exclude' => 0,
@@ -60,8 +61,8 @@ return [
                     'lower' => 0,
                     'upper' => 9999,
                 ],
-                'default' => 0
-            ]
+                'default' => 0,
+            ],
         ],
         'offset_x' => [
             'exclude' => 0,
@@ -75,8 +76,8 @@ return [
                     'lower' => -9999,
                     'upper' => 9999,
                 ],
-                'default' => 0
-            ]
+                'default' => 0,
+            ],
         ],
         'offset_y' => [
             'exclude' => 0,
@@ -90,19 +91,19 @@ return [
                     'lower' => -9999,
                     'upper' => 9999,
                 ],
-                'default' => 0
-            ]
+                'default' => 0,
+            ],
         ],
     ],
     'types' => [
         '0' => [
             'showitem' => 'title, icon,
-            --palette--;;sizeinfo'
-        ]
+            --palette--;;sizeinfo',
+        ],
     ],
     'palettes' => [
         'sizeinfo' => [
-            'showitem' => 'size_x, size_y, offset_x, offset_y'
-        ]
-    ]
+            'showitem' => 'size_x, size_y, offset_x, offset_y',
+        ],
+    ],
 ];

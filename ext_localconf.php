@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 defined('TYPO3') || die();
 
 use Bobosch\OdsOsm\Backend\FormDataProvider\FlexFormManipulation;
@@ -27,12 +29,12 @@ $GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['formDataGroup']['tcaDatabaseRe
 $GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['nodeRegistry'][1616876515] = [
     'nodeName' => 'coordinatepickerWizard',
     'priority' => 30,
-    'class' => CoordinatepickerWizard::class
+    'class' => CoordinatepickerWizard::class,
 ];
 
 // Add wizard with map for drawing GeoJSON data
 $GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['nodeRegistry'][1616968355] = [
     'nodeName' => 'vectordrawWizard',
     'priority' => 30,
-    'class' => VectordrawWizard::class
+    'class' => VectordrawWizard::class,
 ];

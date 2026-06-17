@@ -1,11 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Bobosch\OdsOsm;
 
-use TYPO3\CMS\Core\DataHandling\DataHandler;
-use \geoPHP\geoPHP;
+use geoPHP\geoPHP;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\Resource\FileRepository;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -38,7 +40,7 @@ class TceMain
         DataHandler $parentObject
     ): void {
         // guard statement, abort here if no ods_osm table
-        if (!str_starts_with($table, 'tx_odsosm_')) {
+        if (! str_starts_with($table, 'tx_odsosm_')) {
             return;
         }
 
@@ -64,7 +66,7 @@ class TceMain
             $id = $parentObject->substNEWwithIDs[$id] ?? '';
         }
 
-        if (!is_int($id)) {
+        if (! is_int($id)) {
             return;
         }
 
@@ -72,7 +74,7 @@ class TceMain
          * If ods_osm is installed via composer, the class geoPHP is already known.
          * Otherwise we use the copy in the local folder which is only available in the TER package.
          */
-        if (!class_exists(geoPHP::class)) {
+        if (! class_exists(geoPHP::class)) {
             require_once 'phar://' . ExtensionManagementUtility::extPath('ods_osm', 'Resources/Private/geophp.phar/vendor/autoload.php');
         }
 
@@ -185,12 +187,12 @@ class TceMain
                             ->executeStatement();
 
                         // handle properties
-                        $properties = (array)$polygon->getData();
+                        $properties = (array) $polygon->getData();
                         if ($properties === []) {
                             // seems to contain multiple polygones
                             $components = $polygon->getComponents();
                             // take the properties of the first polygon
-                            $properties = (array)$components[0]->getData();
+                            $properties = (array) $components[0]->getData();
                         }
 
                         if ($properties !== []) {
@@ -232,7 +234,7 @@ class TceMain
     {
         switch ($table) {
             case 'tx_odsosm_vector':
-                if (!empty($fieldArray['data'] ?? false)) {
+                if (! empty($fieldArray['data'] ?? false)) {
                     $this->lon = [];
                     $this->lat = [];
 
@@ -240,7 +242,7 @@ class TceMain
                      * If ods_osm is installed via composer, the class geoPHP is already known.
                      * Otherwise we use the copy in the local folder which is only available in the TER package.
                      */
-                    if (!class_exists(geoPHP::class)) {
+                    if (! class_exists(geoPHP::class)) {
                         require_once 'phar://' . ExtensionManagementUtility::extPath('ods_osm', 'Resources/Private/geophp.phar/vendor/autoload.php');
                     }
 
@@ -258,12 +260,12 @@ class TceMain
                         $fieldArray['min_lat'] = sprintf('%01.6f', $box['miny']);
                         $fieldArray['max_lon'] = sprintf('%01.6f', $box['maxx']);
                         $fieldArray['max_lat'] = sprintf('%01.6f', $box['maxy']);
-                        $properties = (array)$polygon->getData();
+                        $properties = (array) $polygon->getData();
                         if ($properties === []) {
                             // seems to contain multiple polygones
                             $components = $polygon->getComponents();
                             // take the properties of the first polygon
-                            $properties = (array)$components[0]->getData();
+                            $properties = (array) $components[0]->getData();
                         }
 
                         if ($properties !== []) {
@@ -315,7 +317,7 @@ class TceMain
                                 $address['lon'] = sprintf($tc['FORMAT'], $address['lon']);
                                 $address['lat'] = sprintf($tc['FORMAT'], $address['lat']);
                                 if (($address['type'] ?? false) == 'structured') {
-                                    if (isset($tc['address']) && !isset($tc['street']) && ($address['street'] ?? false)) {
+                                    if (isset($tc['address']) && ! isset($tc['street']) && ($address['street'] ?? false)) {
                                         $address['address'] = $address['street'];
                                         if ($address['housenumber'] ?? false) {
                                             $address['address'] .= ' ' . $address['housenumber'];
@@ -339,7 +341,7 @@ class TceMain
                                         continue;
                                     }
 
-                                    if (!$address[$def]) {
+                                    if (! $address[$def]) {
                                         continue;
                                     }
 

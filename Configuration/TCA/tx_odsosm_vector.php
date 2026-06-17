@@ -1,6 +1,7 @@
 <?php
 
-use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+declare(strict_types=1);
+
 return [
     'ctrl' => [
         'title' => 'LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xlf:tx_odsosm_vector',
@@ -28,10 +29,10 @@ return [
                 'items' => [
                     [
                         'label' => '',
-                        'invertStateDisplay' => true
-                    ]
+                        'invertStateDisplay' => true,
+                    ],
                 ],
-            ]
+            ],
         ],
         'title' => [
             'exclude' => 0,
@@ -39,7 +40,7 @@ return [
             'config' => [
                 'type' => 'input',
                 'size' => 30,
-            ]
+            ],
         ],
         'data' => [
             'exclude' => 0,
@@ -51,10 +52,10 @@ return [
                 'max' => 20000,
                 'fieldControl' => [
                     'vectordrawWizard' => [
-                        'renderType' => 'vectordrawWizard'
-                    ]
-                ]
-            ]
+                        'renderType' => 'vectordrawWizard',
+                    ],
+                ],
+            ],
         ],
         'color' => [
             'exclude' => 0,
@@ -63,7 +64,7 @@ return [
                 'type' => 'color',
                 'size' => 10,
                 'default' => '#3388ff',
-            ]
+            ],
         ],
         'width' => [
             'exclude' => 0,
@@ -75,9 +76,9 @@ return [
                 'default' => 3,
                 'range' => [
                     'lower' => 0,
-                    'upper' => 255
+                    'upper' => 255,
                 ],
-            ]
+            ],
         ],
         'file' => [
             'exclude' => 0,
@@ -88,9 +89,9 @@ return [
                 'maxitems' => 1,
                 'default' => 0,
                 'appearance' => [
-                    'createNewRelationLinkTitle' => 'LLL:EXT:ods_osm/Resources/Private/Language/locallang_db:tx_odsosm_vector.file.add'
+                    'createNewRelationLinkTitle' => 'LLL:EXT:ods_osm/Resources/Private/Language/locallang_db:tx_odsosm_vector.file.add',
                 ],
-            ]
+            ],
         ],
         'properties' => [
             'exclude' => 0,
@@ -100,7 +101,7 @@ return [
                 'rows' => 5,
                 'cols' => 60,
                 'max' => 2000,
-            ]
+            ],
         ],
         'properties_from_file' => [
             'exclude' => true,
@@ -109,7 +110,7 @@ return [
                 'type' => 'check',
                 'renderType' => 'checkboxToggle',
                 'default' => 1,
-            ]
+            ],
         ],
         'min_lon' => [
             'exclude' => 0,
@@ -117,7 +118,7 @@ return [
             'config' => [
                 'type' => 'none',
                 'size' => 8,
-            ]
+            ],
         ],
         'min_lat' => [
             'exclude' => 0,
@@ -125,7 +126,7 @@ return [
             'config' => [
                 'type' => 'none',
                 'size' => 8,
-            ]
+            ],
         ],
         'max_lon' => [
             'exclude' => 0,
@@ -133,7 +134,7 @@ return [
             'config' => [
                 'type' => 'none',
                 'size' => 8,
-            ]
+            ],
         ],
         'max_lat' => [
             'exclude' => 0,
@@ -141,18 +142,18 @@ return [
             'config' => [
                 'type' => 'none',
                 'size' => 8,
-            ]
+            ],
         ],
     ],
     'types' => [
         '0' => [
             'showitem' => 'hidden, title, data, color, width, file, properties, properties_from_file,
-            --palette--;;lonlatinfo'
-        ]
+            --palette--;;lonlatinfo',
+        ],
     ],
     'palettes' => [
         'lonlatinfo' => [
-            'showitem' => 'min_lon, min_lat, max_lon, max_lat'
-        ]
-    ]
+            'showitem' => 'min_lon, min_lat, max_lon, max_lat',
+        ],
+    ],
 ];

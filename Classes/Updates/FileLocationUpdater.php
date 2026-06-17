@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /***************************************************************
  *  Copyright notice
  *
@@ -64,7 +66,7 @@ class FileLocationUpdater implements UpgradeWizardInterface, ChattyInterface, Lo
      */
     protected array $fieldsToMigrate = [
         'tx_odsosm_marker' => 'icon',
-        'tx_odsosm_track' => 'file'
+        'tx_odsosm_track' => 'file',
     ];
 
     /**
@@ -121,7 +123,7 @@ class FileLocationUpdater implements UpgradeWizardInterface, ChattyInterface, Lo
     public function getPrerequisites(): array
     {
         return [
-            DatabaseUpdatedPrerequisite::class
+            DatabaseUpdatedPrerequisite::class,
         ];
     }
 
@@ -151,7 +153,6 @@ class FileLocationUpdater implements UpgradeWizardInterface, ChattyInterface, Lo
         return $result;
     }
 
-
     /**
      * Get records from table where the field to migrate is not empty (NOT NULL and != '')
      * and also not numeric (which means that it is migrated)
@@ -165,7 +166,7 @@ class FileLocationUpdater implements UpgradeWizardInterface, ChattyInterface, Lo
         $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
         $allResults = [];
         $numResults = 0;
-        foreach(array_keys($this->fieldsToMigrate) as $table) {
+        foreach (array_keys($this->fieldsToMigrate) as $table) {
             $queryBuilder = $connectionPool->getQueryBuilderForTable($table);
             $queryBuilder->getRestrictions()->removeAll();
             try {
@@ -204,7 +205,6 @@ class FileLocationUpdater implements UpgradeWizardInterface, ChattyInterface, Lo
 
         return $allResults;
     }
-
 
     /**
      * Performs the database update.
@@ -248,17 +248,17 @@ class FileLocationUpdater implements UpgradeWizardInterface, ChattyInterface, Lo
         $fileadminDirectory = rtrim((string) $GLOBALS['TYPO3_CONF_VARS']['BE']['fileadminDir'], '/') . '/';
         $i = 0;
 
-        $storageUid = (int)$this->storage->getUid();
+        $storageUid = (int) $this->storage->getUid();
         $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
 
         $fileUid = null;
-        $sourcePath = Environment::getPublicPath() . '/'  . $this->sourcePath . $fieldItem;
-        $targetDirectory = Environment::getPublicPath() . '/'  . $fileadminDirectory . $this->targetPath;
+        $sourcePath = Environment::getPublicPath() . '/' . $this->sourcePath . $fieldItem;
+        $targetDirectory = Environment::getPublicPath() . '/' . $fileadminDirectory . $this->targetPath;
         $targetPath = $targetDirectory . basename($fieldItem);
 
         // maybe the file was already moved, so check if the original file still exists
         if (file_exists($sourcePath)) {
-            if (!is_dir($targetDirectory)) {
+            if (! is_dir($targetDirectory)) {
                 GeneralUtility::mkdir_deep($targetDirectory);
             }
 

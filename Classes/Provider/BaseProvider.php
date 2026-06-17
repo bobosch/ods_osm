@@ -1,12 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Bobosch\OdsOsm\Provider;
 
 use Bobosch\OdsOsm\Div;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
+use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 
 abstract class BaseProvider
 {
@@ -19,7 +21,9 @@ abstract class BaseProvider
 
     protected string $script = '';
 
-    /** keeping all JavaScripts to be included */
+    /**
+     * keeping all JavaScripts to be included
+     */
     protected array $scripts = [];
 
     protected array $layers = [

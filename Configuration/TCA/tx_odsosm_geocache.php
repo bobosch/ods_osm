@@ -1,6 +1,9 @@
 <?php
 
+declare(strict_types=1);
+
 use Bobosch\OdsOsm\Evaluation\LonLat;
+
 return [
     'ctrl' => [
         'title' => 'LLL:EXT:ods_osm/Resources/Private/Language/locallang_db.xlf:tx_odsosm_geocache',
@@ -21,7 +24,7 @@ return [
                 'size' => 10,
                 'max' => 10,
                 'eval' => '',
-            ]
+            ],
         ],
         'service_hit' => [
             'exclude' => 0,
@@ -31,7 +34,7 @@ return [
                 'size' => 10,
                 'max' => 10,
                 'eval' => '',
-            ]
+            ],
         ],
         'search_city' => [
             'exclude' => 0,
@@ -40,7 +43,7 @@ return [
                 'type' => 'input',
                 'size' => 30,
                 'max' => 255,
-            ]
+            ],
         ],
         'country' => [
             'exclude' => 0,
@@ -49,7 +52,7 @@ return [
                 'type' => 'input',
                 'size' => 2,
                 'max' => 2,
-            ]
+            ],
         ],
         'state' => [
             'exclude' => 0,
@@ -58,7 +61,7 @@ return [
                 'type' => 'input',
                 'size' => 30,
                 'max' => 255,
-            ]
+            ],
         ],
         'city' => [
             'exclude' => 0,
@@ -67,7 +70,7 @@ return [
                 'type' => 'input',
                 'size' => 30,
                 'max' => 255,
-            ]
+            ],
         ],
         'zip' => [
             'exclude' => 0,
@@ -76,7 +79,7 @@ return [
                 'type' => 'input',
                 'size' => 5,
                 'max' => 5,
-            ]
+            ],
         ],
         'street' => [
             'exclude' => 0,
@@ -85,7 +88,7 @@ return [
                 'type' => 'input',
                 'size' => 30,
                 'max' => 255,
-            ]
+            ],
         ],
         'housenumber' => [
             'exclude' => 0,
@@ -94,7 +97,7 @@ return [
                 'type' => 'input',
                 'size' => 5,
                 'max' => 5,
-            ]
+            ],
         ],
         'lon' => [
             'exclude' => 0,
@@ -104,7 +107,7 @@ return [
                 'size' => 11,
                 'max' => 11,
                 'eval' => LonLat::class,
-            ]
+            ],
         ],
         'lat' => [
             'exclude' => 0,
@@ -114,18 +117,18 @@ return [
                 'size' => 11,
                 'max' => 10,
                 'eval' => LonLat::class,
-            ]
+            ],
         ],
     ],
     'types' => [
         '0' => [
             'showitem' => 'cache_hit,service_hit,search_city,country,state,city,zip,street,housenumber,lon,
-            --palette--;;latinfo'
-        ]
+            --palette--;;latinfo',
+        ],
     ],
     'palettes' => [
         'latinfo' => [
-            'showitem' => 'lat'
-        ]
-    ]
+            'showitem' => 'lat',
+        ],
+    ],
 ];
