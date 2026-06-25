@@ -29,6 +29,7 @@ namespace Bobosch\OdsOsm\Controller;
 
 use Bobosch\OdsOsm\Div;
 use Bobosch\OdsOsm\Provider\BaseProvider;
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Page\PageRenderer;
@@ -209,29 +210,29 @@ class PluginController
         $this->config['layers_visible'] = $this->config['show_layerswitcher'] ?? false ? [] : $this->config['layer'];
 
         if ($this->config['external_control'] ?? false) {
-            if ($GLOBALS['TYPO3_REQUEST']->getParsedBody()['lon'] ?? $GLOBALS['TYPO3_REQUEST']->getQueryParams()['lon'] ?? null) {
-                $this->config['lon'] = $GLOBALS['TYPO3_REQUEST']->getParsedBody()['lon'] ?? $GLOBALS['TYPO3_REQUEST']->getQueryParams()['lon'] ?? null;
+            if ($this->getServerRequest()->getParsedBody()['lon'] ?? $this->getServerRequest()->getQueryParams()['lon'] ?? null) {
+                $this->config['lon'] = $this->getServerRequest()->getParsedBody()['lon'] ?? $this->getServerRequest()->getQueryParams()['lon'] ?? null;
             }
 
-            if ($GLOBALS['TYPO3_REQUEST']->getParsedBody()['lat'] ?? $GLOBALS['TYPO3_REQUEST']->getQueryParams()['lat'] ?? null) {
-                $this->config['lat'] = $GLOBALS['TYPO3_REQUEST']->getParsedBody()['lat'] ?? $GLOBALS['TYPO3_REQUEST']->getQueryParams()['lat'] ?? null;
+            if ($this->getServerRequest()->getParsedBody()['lat'] ?? $this->getServerRequest()->getQueryParams()['lat'] ?? null) {
+                $this->config['lat'] = $this->getServerRequest()->getParsedBody()['lat'] ?? $this->getServerRequest()->getQueryParams()['lat'] ?? null;
             }
 
-            if ($GLOBALS['TYPO3_REQUEST']->getParsedBody()['zoom'] ?? $GLOBALS['TYPO3_REQUEST']->getQueryParams()['zoom'] ?? null) {
-                $this->config['zoom'] = $GLOBALS['TYPO3_REQUEST']->getParsedBody()['zoom'] ?? $GLOBALS['TYPO3_REQUEST']->getQueryParams()['zoom'] ?? null;
+            if ($this->getServerRequest()->getParsedBody()['zoom'] ?? $this->getServerRequest()->getQueryParams()['zoom'] ?? null) {
+                $this->config['zoom'] = $this->getServerRequest()->getParsedBody()['zoom'] ?? $this->getServerRequest()->getQueryParams()['zoom'] ?? null;
             }
 
-            if ($GLOBALS['TYPO3_REQUEST']->getParsedBody()['layers'] ?? $GLOBALS['TYPO3_REQUEST']->getQueryParams()['layers'] ?? null) {
-                $this->config['layers_visible'] = explode(',', $GLOBALS['TYPO3_REQUEST']->getParsedBody()['layers'] ?? $GLOBALS['TYPO3_REQUEST']->getQueryParams()['layers'] ?? null);
+            if ($this->getServerRequest()->getParsedBody()['layers'] ?? $this->getServerRequest()->getQueryParams()['layers'] ?? null) {
+                $this->config['layers_visible'] = explode(',', $this->getServerRequest()->getParsedBody()['layers'] ?? $this->getServerRequest()->getQueryParams()['layers'] ?? null);
             }
 
-            if ($GLOBALS['TYPO3_REQUEST']->getParsedBody()['records'] ?? $GLOBALS['TYPO3_REQUEST']->getQueryParams()['records'] ?? null) {
-                $this->config['marker'] = $this->splitGroup($GLOBALS['TYPO3_REQUEST']->getParsedBody()['records'] ?? $GLOBALS['TYPO3_REQUEST']->getQueryParams()['records'] ?? null, 'tt_address');
+            if ($this->getServerRequest()->getParsedBody()['records'] ?? $this->getServerRequest()->getQueryParams()['records'] ?? null) {
+                $this->config['marker'] = $this->splitGroup($this->getServerRequest()->getParsedBody()['records'] ?? $this->getServerRequest()->getQueryParams()['records'] ?? null, 'tt_address');
             }
         }
 
         // If EXT:calendarize is installed and the single view is called, we try to fetch the right event.
-        if (ExtensionManagementUtility::isLoaded('calendarize') && (($GLOBALS['TYPO3_REQUEST']->getParsedBody()['tx_calendarize_calendar'] ?? $GLOBALS['TYPO3_REQUEST']->getQueryParams()['tx_calendarize_calendar'] ?? null)['index'] ?? false)) {
+        if (ExtensionManagementUtility::isLoaded('calendarize') && (($this->getServerRequest()->getParsedBody()['tx_calendarize_calendar'] ?? $this->getServerRequest()->getQueryParams()['tx_calendarize_calendar'] ?? null)['index'] ?? false)) {
             $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
                 ->getQueryBuilderForTable('tx_calendarize_domain_model_index');
             $result = $queryBuilder
@@ -240,7 +241,7 @@ class PluginController
                 ->where(
                     $queryBuilder->expr()->eq(
                         'tx_calendarize_domain_model_index.uid',
-                        $queryBuilder->createNamedParameter((int) ($GLOBALS['TYPO3_REQUEST']->getParsedBody()['tx_calendarize_calendar'] ?? $GLOBALS['TYPO3_REQUEST']->getQueryParams()['tx_calendarize_calendar'] ?? null)['index'], Connection::PARAM_INT)
+                        $queryBuilder->createNamedParameter((int) ($this->getServerRequest()->getParsedBody()['tx_calendarize_calendar'] ?? $this->getServerRequest()->getQueryParams()['tx_calendarize_calendar'] ?? null)['index'], Connection::PARAM_INT)
                     )
                 )
                 ->setMaxResults(1)
@@ -365,7 +366,7 @@ class PluginController
         // if no markers are set, select current page to find records on it
         if ($recordIds === []) {
             //@extensionScannerIgnoreLine
-            $recordIds['pages'] = [$GLOBALS['TYPO3_REQUEST']->getAttribute('frontend.page.information')->getId()];
+            $recordIds['pages'] = [$this->getServerRequest()->getAttribute('frontend.page.information')->getId()];
         }
 
         // get all marker records on configured page.
@@ -750,5 +751,10 @@ class PluginController
     public function wrapInBaseClass(string $str): string
     {
         return '<div class="' . str_replace('_', '-', $this->prefixId) . '">' . $str . '</div>';
+    }
+
+    protected function getServerRequest(): ServerRequestInterface
+    {
+        return $GLOBALS['TYPO3_REQUEST'];
     }
 }
