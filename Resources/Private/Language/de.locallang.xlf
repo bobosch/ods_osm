@@ -3,43 +3,43 @@
 	<file source-language="en" target-language="de" datatype="plaintext" original="messages" date="2021-03-19T20:06:58Z" product-name="ods_osm">
 		<header/>
 		<body>
-			<trans-unit id="pi1_title" xml:space="preserve" approved="yes">
+			<trans-unit id="pi1_title" approved="yes">
 				<source>OpenStreetMap</source>
 				<target>OpenStreetMap</target>
 			</trans-unit>
-			<trans-unit id="pi1_plus_wiz_description" xml:space="preserve" approved="yes">
+			<trans-unit id="pi1_plus_wiz_description" approved="yes">
 				<source>Add an interactive map to your website.</source>
 				<target>Interaktive Karte zur Website hinzufügen.</target>
 			</trans-unit>
-			<trans-unit id="wiz_geocode" xml:space="preserve" approved="yes">
+			<trans-unit id="wiz_geocode" approved="yes">
 				<source>Geocode addresses</source>
 				<target>Adressen geokodieren</target>
 			</trans-unit>
-			<trans-unit id="openlayers.showLayerList" xml:space="preserve">
+			<trans-unit id="openlayers.showLayerList">
 				<source>Show layer list</source>
 				<target>Liste der Kartenebenen</target>
 			</trans-unit>
-			<trans-unit id="openlayers.hideLayerList" xml:space="preserve">
+			<trans-unit id="openlayers.hideLayerList">
 				<source>Hide layer list</source>
 				<target>Liste der Kartenebenen ausblenden</target>
 			</trans-unit>
-			<trans-unit id="openlayers.clusterLayer" xml:space="preserve">
+			<trans-unit id="openlayers.clusterLayer">
 				<source>Cluster Layer</source>
 				<target>Cluster Ebene</target>
 			</trans-unit>
-			<trans-unit id="base_layer" xml:space="preserve">
+			<trans-unit id="base_layer">
 				<source>Base Layer</source>
 				<target>Grundkarte</target>
 			</trans-unit>
-			<trans-unit id="overlays" xml:space="preserve">
+			<trans-unit id="overlays">
 				<source>Overlays</source>
-				<target>Überlagerungskarten</target>
+				<target>Überlagerungen</target>
 			</trans-unit>
-			<trans-unit id="file" xml:space="preserve">
+			<trans-unit id="file">
 				<source>File</source>
 				<target>Datei</target>
 			</trans-unit>
-			<trans-unit id="mouse_position" xml:space="preserve">
+			<trans-unit id="mouse_position">
 				<source>Mouse position</source>
 				<target>Mausposition</target>
 			</trans-unit>

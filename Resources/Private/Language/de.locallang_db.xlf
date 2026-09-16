@@ -79,10 +79,13 @@
 			</trans-unit>
 			<trans-unit id="tt_content.pi_flexform.overlays.description" approved="yes" xml:space="preserve">
 				<source><![CDATA[The following overlays are available in the frontend.
-				If using the layer switcher, the selected overlays may be toggled on/off. The initial state is selected by "overlays_active".
-				Without layer switcher, all overlays are active in the map.
-				]]></source>
-				<target><![CDATA[Die folgenden Überlagerungskarten stehen im Frontend zur Verfügung. Wenn der Ebenumschalter erwendet wird, können diese Ebenen ein- und ausgeschaltet werden. Die initiale Aktivierung kann mit der folgenden Einstellung ("Überlagerungskarten aktivieren") gesteuert werden. Ohne Ebenenumschalter werden alle Ebenen angezeigt.]]></target>
+				If using the layer switcher, the selected overlays may be toggled on/off.
+				The initial state is selected by "overlays_active".
+				Without layer switcher, all overlays are active in the map.]]></source>
+				<target><![CDATA[Die folgenden Überlagerungskarten stehen im Frontend zur Verfügung.
+				Wenn der Ebenumschalter verwendet wird, können diese Ebenen ein- und ausgeschaltet werden.
+				Die initiale Aktivierung kann mit der folgenden Einstellung ("Überlagerungskarten aktivieren") gesteuert werden.
+				Ohne Ebenenumschalter werden alle Ebenen angezeigt.]]></target>
 			</trans-unit>
 			<trans-unit id="tt_content.pi_flexform.overlays_active" approved="yes">
 				<source><![CDATA[Activated overlays]]></source>
@@ -142,7 +145,7 @@
 			</trans-unit>
 			<trans-unit id="tt_content.pi_flexform.use_coords_only_nomarker" approved="yes">
 				<source><![CDATA[Use this coordinates only if no marker exists]]></source>
-				<target><![CDATA[Diese Koordinaten nur verwenden wenn keine Markierung existiert]]></target>
+				<target><![CDATA[Diese Koordinaten nur verwenden, wenn keine Markierung existiert]]></target>
 			</trans-unit>
 			<trans-unit id="tt_content.pi_flexform.width" approved="yes">
 				<source><![CDATA[Width]]></source>
@@ -313,7 +316,7 @@
 				<target><![CDATA[Minimaler Breitengrad]]></target>
 			</trans-unit>
 			<trans-unit id="tx_odsosm_track.min_lon" approved="yes">
-				<source><![CDATA[Minumum Longitude]]></source>
+				<source><![CDATA[Minimum Longitude]]></source>
 				<target><![CDATA[Minimaler Längengrad]]></target>
 			</trans-unit>
 			<trans-unit id="tx_odsosm_track.title" approved="yes">
@@ -354,7 +357,7 @@
 			</trans-unit>
 			<trans-unit id="vectordrawWizard" approved="yes">
 				<source><![CDATA[Vector Draw Wizard]]></source>
-				<target><![CDATA[Kartenassitent zum Zeichnen von Vektor-Daten]]></target>
+				<target><![CDATA[Kartenassistent zum Zeichnen von Vektor-Daten]]></target>
 			</trans-unit>
 			<trans-unit id="vectordrawWizard.close" approved="yes">
 				<source><![CDATA[Close Vector Draw Wizard]]></source>
