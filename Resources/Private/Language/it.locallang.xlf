@@ -3,15 +3,15 @@
 	<file source-language="en" target-language="it" datatype="plaintext" original="messages" date="2021-03-19T20:06:58Z" product-name="ods_osm">
 		<header/>
 		<body>
-			<trans-unit id="pi1_title" xml:space="preserve" approved="yes">
+			<trans-unit id="pi1_title" approved="yes">
 				<source>OpenStreetMap</source>
 				<target>OpenStreetMap</target>
 			</trans-unit>
-			<trans-unit id="pi1_plus_wiz_description" xml:space="preserve" approved="yes">
+			<trans-unit id="pi1_plus_wiz_description" approved="yes">
 				<source>Add an interactive map to your website.</source>
 				<target>Aggiungi una mappa interattiva al tuo sito web.</target>
 			</trans-unit>
-			<trans-unit id="wiz_geocode" xml:space="preserve" approved="yes">
+			<trans-unit id="wiz_geocode" approved="yes">
 				<source>Geocode addresses</source>
 				<target>Indirizzi Geocode</target>
 			</trans-unit>

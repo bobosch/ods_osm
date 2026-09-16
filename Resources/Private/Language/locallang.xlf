@@ -3,34 +3,34 @@
 	<file source-language="en" datatype="plaintext" original="messages" date="2021-03-19T20:06:58Z" product-name="ods_osm">
 		<header/>
 		<body>
-			<trans-unit id="pi1_title" xml:space="preserve">
+			<trans-unit id="pi1_title">
 				<source>OpenStreetMap</source>
 			</trans-unit>
-			<trans-unit id="pi1_plus_wiz_description" xml:space="preserve">
+			<trans-unit id="pi1_plus_wiz_description">
 				<source>Add an interactive map to your website.</source>
 			</trans-unit>
-			<trans-unit id="wiz_geocode" xml:space="preserve">
+			<trans-unit id="wiz_geocode">
 				<source>Geocode addresses</source>
 			</trans-unit>
-			<trans-unit id="openlayers.showLayerList" xml:space="preserve">
+			<trans-unit id="openlayers.showLayerList">
 				<source>Show layer list</source>
 			</trans-unit>
-			<trans-unit id="openlayers.hideLayerList" xml:space="preserve">
+			<trans-unit id="openlayers.hideLayerList">
 				<source>Hide layer list</source>
 			</trans-unit>
-			<trans-unit id="openlayers.clusterLayer" xml:space="preserve">
+			<trans-unit id="openlayers.clusterLayer">
 				<source>Cluster Layer</source>
 			</trans-unit>
-			<trans-unit id="base_layer" xml:space="preserve">
+			<trans-unit id="base_layer">
 				<source>Base Layer</source>
 			</trans-unit>
-			<trans-unit id="overlays" xml:space="preserve">
+			<trans-unit id="overlays">
 				<source>Overlays</source>
 			</trans-unit>
-			<trans-unit id="file" xml:space="preserve">
+			<trans-unit id="file">
 				<source>File</source>
 			</trans-unit>
-			<trans-unit id="mouse_position" xml:space="preserve">
+			<trans-unit id="mouse_position">
 				<source>Mouse position</source>
 			</trans-unit>
 		</body>
