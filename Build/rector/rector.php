@@ -25,11 +25,8 @@ return static function (RectorConfig $rectorConfig): void {
         SetList::CODE_QUALITY,
         SetList::CODING_STYLE,
         SetList::DEAD_CODE,
-        SetList::STRICT_BOOLEANS,
         SetList::PRIVATIZATION,
         SetList::TYPE_DECLARATION,
-        SetList::EARLY_RETURN,
-        SetList::INSTANCEOF,
         Typo3LevelSetList::UP_TO_TYPO3_13,
     ]);
 
@@ -52,6 +49,5 @@ return static function (RectorConfig $rectorConfig): void {
     $rectorConfig->skip([
         // makes double-quoted strings, we don't want this at the moment.
         \Rector\CodingStyle\Rector\String_\SimplifyQuoteEscapeRector::class,
-        \Rector\Strict\Rector\Empty_\DisallowedEmptyRuleFixerRector::class,
     ]);
 };
