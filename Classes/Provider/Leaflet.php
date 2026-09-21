@@ -13,9 +13,9 @@ use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 
 class Leaflet extends BaseProvider
 {
-    protected $path_res;
+    protected string $path_res = '';
 
-    protected $path_leaflet;
+    protected string $path_leaflet = '';
 
     public function getMapCore($backPath = ''): void
     {
@@ -41,7 +41,7 @@ class Leaflet extends BaseProvider
 
         $vars = '';
         foreach ($controls as $obj) {
-            $vars .= "\n\t\t\t" . $this->config['id'] . '.addControl(' . $obj . ");";
+            $vars .= "\n\t\t\t" . $this->config['id'] . '.addControl(' . $obj . ');';
         }
 
         $jsMain = $this->config['id'] . "=new L.Map('" . $this->config['id'] . "',
@@ -143,7 +143,7 @@ class Leaflet extends BaseProvider
             forceSeparateButton: true,
             forcePseudoFullscreen: true, // force use of pseudo full screen even if full screen API is available, default false
             fullscreenElement: false // Dom element to render in full screen, false by default, fallback to map._container
-          }).addTo(" . $this->config['id'] . ");";
+          }).addTo(" . $this->config['id'] . ');';
     }
 
     public function getMapCenter($lat, $lon, $zoom): string
@@ -296,7 +296,7 @@ class Leaflet extends BaseProvider
                         'iconAnchor' => [-(int) $marker['offset_x'], -(int) $marker['offset_y']],
                         'popupAnchor' => [0, (int) $marker['offset_y']],
                     ];
-                    if ($marker['type'] == 'html') {
+                    if ($marker['type'] === 'html') {
                         $iconOptions['html'] = $marker['icon'];
                         $markerOptions['icon'] = 'icon: new L.divIcon(' . json_encode($iconOptions) . ')';
                     } else {
@@ -305,9 +305,7 @@ class Leaflet extends BaseProvider
                         $markerOptions['icon'] = 'icon: new L.Icon(' . json_encode($iconOptions) . ')';
                     }
                 } else {
-                    $marker = [
-                        'type' => 'image',
-                    ];
+                    $marker = ['type' => 'image'];
                     $icon = $this->path_leaflet . 'images/marker-icon.png';
                 }
 

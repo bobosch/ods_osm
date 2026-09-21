@@ -18,23 +18,18 @@ class TceMain
 
     public array $lat = [];
 
-    // ['t3lib/class.t3lib_tcemain.php']['processDatamapClass']
-    public function processDatamap_preProcessFieldArray(&$incomingFieldArray, $table, $id, $obj)
-    {
-    }
-
     /**
-     * Generate a different preview link     *
+     * Generate a different preview link
      *
      * @param string $status status
      * @param string $table table name
-     * @param int $id id of the record
+     * @param string|int $id id of the record
      * @param array $fieldArray fieldArray
      * @param DataHandler $parentObject parent Object
      */
     public function processDatamap_afterDatabaseOperations(
-        $status,
-        $table,
+        string $status,
+        string $table,
         $id,
         array $fieldArray,
         DataHandler $parentObject
@@ -82,7 +77,6 @@ class TceMain
             case 'tx_odsosm_track':
                 $fileRepository = GeneralUtility::makeInstance(FileRepository::class);
                 $fileObjects = $fileRepository->findByRelation('tx_odsosm_track', 'file', $id);
-
                 if ($fileObjects) {
                     $file = $fileObjects[0];
                 } else {
@@ -119,7 +113,6 @@ class TceMain
             case 'tx_odsosm_marker':
                 $fileRepository = GeneralUtility::makeInstance(FileRepository::class);
                 $fileObjects = $fileRepository->findByRelation('tx_odsosm_marker', 'icon', $id);
-
                 if ($fileObjects) {
                     $file = $fileObjects[0];
                 } else {
@@ -129,7 +122,6 @@ class TceMain
                 $filename = Environment::getPublicPath() . '/' . $file->getPublicUrl();
                 if (file_exists($filename)) {
                     $size = getimagesize($filename);
-
                     if ($size) {
                         // unfortunately we cannot pass the new values by reference in this hook, because the database operation is already done.
                         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
@@ -151,7 +143,6 @@ class TceMain
             case 'tx_odsosm_vector':
                 $fileRepository = GeneralUtility::makeInstance(FileRepository::class);
                 $fileObjects = $fileRepository->findByRelation('tx_odsosm_vector', 'file', $id);
-
                 if ($fileObjects) {
                     $file = $fileObjects[0];
                 } else {
@@ -160,7 +151,6 @@ class TceMain
 
                 $filename = Environment::getPublicPath() . '/' . $file->getPublicUrl();
                 if (file_exists($filename)) {
-
                     try {
                         $polygon = geoPHP::load(file_get_contents($filename), pathinfo($filename, PATHINFO_EXTENSION));
                     } catch (\Exception) {
@@ -196,7 +186,6 @@ class TceMain
                         }
 
                         if ($properties !== []) {
-
                             $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
                                 ->getQueryBuilderForTable($table);
 
@@ -269,7 +258,6 @@ class TceMain
                         }
 
                         if ($properties !== []) {
-
                             $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
                                 ->getQueryBuilderForTable($table);
 

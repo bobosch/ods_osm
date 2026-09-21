@@ -75,10 +75,7 @@ class MigrateSettings implements UpgradeWizardInterface
     public function executeUpdate(): bool
     {
         // Get all tt_content data of ods_osm and update their flexforms settings
-        $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable('tt_content');
-
-        /** @var QueryBuilder $queryBuilder */
-        $queryBuilder = $connection->createQueryBuilder();
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('tt_content');
         $statement = $queryBuilder->select('uid')
             ->addSelect('pi_flexform')
             ->from('tt_content')
@@ -108,7 +105,7 @@ class MigrateSettings implements UpgradeWizardInterface
                 continue;
             }
 
-            $queryBuilder = $connection->createQueryBuilder();
+            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('tt_content');
             $updateResult = $queryBuilder->update('tt_content')
                 ->where(
                     $queryBuilder->expr()->eq(
@@ -135,10 +132,7 @@ class MigrateSettings implements UpgradeWizardInterface
     {
         $oldSettingsFound = false;
 
-        $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable('tt_content');
-
-        /** @var QueryBuilder $queryBuilder */
-        $queryBuilder = $connection->createQueryBuilder();
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('tt_content');
         $statement = $queryBuilder->select('uid')
             ->addSelect('pi_flexform')
             ->from('tt_content')
@@ -196,7 +190,7 @@ class MigrateSettings implements UpgradeWizardInterface
         $library = $xml->xpath("//field[@index='library'][1]");
 
         // get all field elements
-        $fields = $xml->xpath("//field");
+        $fields = $xml->xpath('//field');
 
         foreach ($fields as $field) {
             if ($library[0]->value != 'staticmap' && $field['index'] == $library[0]->value . '_layer') {

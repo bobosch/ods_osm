@@ -8,7 +8,7 @@ class LonLat
 {
     public function returnFieldJS(): string
     {
-        return "return value;";
+        return 'return value;';
     }
 
     public function evaluateFieldValue($value, $is_in, &$set): string
