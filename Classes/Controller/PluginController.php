@@ -255,7 +255,7 @@ class PluginController
 
         $this->config['marker'] = $this->extractGroup($this->config['marker']);
 
-        // Show this marker's popup intially
+        // Show this marker's popup initially
         if (is_array($this->config['marker_popup_initial'])) {
             foreach ($this->config['marker_popup_initial'] as $table => $records) {
                 foreach ($records as $uid) {
@@ -276,7 +276,7 @@ class PluginController
         $this->library->cObj = $this->contentObjectRenderer;
     }
 
-    protected function initializeFlexFormOfPlugin()
+    protected function initializeFlexFormOfPlugin(): void
     {
         $field = 'pi_flexform';
         // Converting flexform data into array
@@ -398,7 +398,7 @@ class PluginController
         // get marker records from db
         $records = [];
         foreach ($recordIds as $table => $items) {
-            $tc = $tables[$table] ?? [];
+            $tableConfig = $tables[$table] ?? [];
             $connection = $this->connectionPool
                 ->getConnectionForTable($table)
                 ->createSchemaManager()
@@ -428,8 +428,8 @@ class PluginController
 
                 if ($row = $result->fetchAssociative()) {
                     // Group with relation to a field
-                    if (is_array($tc['FIND_IN_SET'] ?? null)) {
-                        foreach ($tc['FIND_IN_SET'] as $t => $f) {
+                    if (is_array($tableConfig['FIND_IN_SET'] ?? null)) {
+                        foreach ($tableConfig['FIND_IN_SET'] as $t => $f) {
                             $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
                                 ->getQueryBuilderForTable($table);
 
@@ -459,8 +459,8 @@ class PluginController
                     }
 
                     // Group with mm relation
-                    if (is_array($tc['MM'] ?? null)) {
-                        foreach ($tc['MM'] as $t => $f) {
+                    if (is_array($tableConfig['MM'] ?? null)) {
+                        foreach ($tableConfig['MM'] as $t => $f) {
                             $local = $f['local'];
                             $mm = $f['mm'];
                             $foreign = $f['foreign'];
@@ -503,14 +503,14 @@ class PluginController
                     }
 
                     // Marker
-                    if (isset($tc['lon'])) {
+                    if (isset($tableConfig['lon'])) {
                         $records[$table][$item] = $row;
-                        $records[$table][$item]['longitude'] = $row[$tc['lon']];
-                        $records[$table][$item]['latitude'] = $row[$tc['lat']];
+                        $records[$table][$item]['longitude'] = $row[$tableConfig['lon']];
+                        $records[$table][$item]['latitude'] = $row[$tableConfig['lat']];
                     }
 
                     // Special element
-                    if ($tc === true && $row) {
+                    if ($tableConfig === true) {
                         $records[$table][$item] = $row;
                     }
                 }
@@ -573,7 +573,8 @@ class PluginController
 
         $result = $queryBuilder
             ->select('*')
-            ->from('tx_odsosm_marker')->executeQuery();
+            ->from('tx_odsosm_marker')
+            ->executeQuery();
 
         $icons = [];
         while ($resArray = $result->fetchAssociative()) {

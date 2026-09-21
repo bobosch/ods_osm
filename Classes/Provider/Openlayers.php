@@ -89,7 +89,7 @@ class Openlayers extends BaseProvider
         }
 
         if ($this->config['show_scalebar']) {
-            $controls[] = "new ol.control.ScaleLine()";
+            $controls[] = 'new ol.control.ScaleLine()';
         }
 
         return "
@@ -154,7 +154,7 @@ class Openlayers extends BaseProvider
             },
         });
 
-        layers = [
+        var layers = [
             baselayergroup,
             overlaygroup
         ];
@@ -216,37 +216,37 @@ class Openlayers extends BaseProvider
         ]);
 
         if ($layer['overlay'] == 1) {
-            return $this->config['id'] . "_" . $i . "_overlayLayer =
-                    new ol.layer.Tile({
-                        visible: " . ($layer['visible'] == true ? 'true' : 'false') . ",
-                        opacity: 0.99,
-                        title: '" . $layer['title'] . "',
-                        source: new ol.source.OSM({
-                            url: '" . $layer['tile_url'] . "',
-                            attributions: [
-                                '" . $layer['attribution'] . "'
-                            ]
-                        })
-                    });
-                overlaygroup.getLayers().push(" . $this->config['id'] . "_" . $i . "_overlayLayer);
-            ";
+            return $this->config['id'] . '_' . $i . '_overlayLayer =
+                new ol.layer.Tile({
+                    visible: ' . ($layer['visible'] == true ? 'true' : 'false') . ",
+                    opacity: 0.99,
+                    title: '" . $layer['title'] . "',
+                    source: new ol.source.OSM({
+                        url: '" . $layer['tile_url'] . "',
+                        attributions: [
+                            '" . $layer['attribution'] . "'
+                        ]
+                    })
+                });
+                overlaygroup.getLayers().push(" . $this->config['id'] . '_' . $i . '_overlayLayer);
+            ';
         }
 
-        return $this->config['id'] . "_" . $i . "_baselayergroup =
-                    new ol.layer.Tile({
-                        type: 'base',
-                        combine: 'true',
-                        visible: " . ($i == 0 ? 'true' : 'false') . ",
-                        title: '" . $layer['title'] . "',
-                        source: new ol.source.OSM({
-                            url: '" . $layer['tile_url'] . "',
-                            attributions: [
-                                '" . $layer['attribution'] . "'
-                            ]
-                        })
-                    });
-                baselayergroup.getLayers().push(" . $this->config['id'] . "_" . $i . "_baselayergroup);
-        ";
+        return $this->config['id'] . '_' . $i . "_baselayergroup =
+                new ol.layer.Tile({
+                    type: 'base',
+                    combine: 'true',
+                    visible: " . ($i == 0 ? 'true' : 'false') . ",
+                    title: '" . $layer['title'] . "',
+                    source: new ol.source.OSM({
+                        url: '" . $layer['tile_url'] . "',
+                        attributions: [
+                            '" . $layer['attribution'] . "'
+                        ]
+                    })
+                });
+                baselayergroup.getLayers().push(" . $this->config['id'] . '_' . $i . '_baselayergroup);
+        ';
     }
 
     /**
@@ -257,15 +257,15 @@ class Openlayers extends BaseProvider
     protected function getLayerSwitcher(): string
     {
         return '
-         var layerSwitcher = new ol.control.LayerSwitcher({
+        var layerSwitcher = new ol.control.LayerSwitcher({
             activationMode: \'' . ($this->config['layerswitcher_activationMode'] == '1' ? 'click' : 'mouseover') . '\',
             startActive: ' . ($this->config['show_layerswitcher'] == '2' ? 'true' : 'false') . ',
             tipLabel: \'' . LocalizationUtility::translate('openlayers.showLayerList', 'OdsOsm') . '\',
             collapseTipLabel: \'' . LocalizationUtility::translate('openlayers.hideLayerList', 'OdsOsm') . '\',
             groupSelectStyle: \'children\',
             reverse: false
-          });
-          ' . $this->config['id'] . '.addControl(layerSwitcher);
+        });
+        ' . $this->config['id'] . '.addControl(layerSwitcher);
         ';
     }
 
@@ -277,8 +277,8 @@ class Openlayers extends BaseProvider
     protected function getFullScreen(): string
     {
         return '
-         var fullScreen = new ol.control.FullScreen();
-          ' . $this->config['id'] . '.addControl(fullScreen);
+        var fullScreen = new ol.control.FullScreen();
+        ' . $this->config['id'] . '.addControl(fullScreen);
         ';
     }
 
@@ -294,12 +294,12 @@ class Openlayers extends BaseProvider
         };
 
         if ($eventMethod !== false) {
-            $jsMarker .= "
-            " . $this->config['id'] . ".on('" . $eventMethod . "', function (event) {
-                    var feature = " . $this->config['id'] . ".forEachFeatureAtPixel(event.pixel, function (feat, layer) {
+            $jsMarker .= '
+            ' . $this->config['id'] . ".on('" . $eventMethod . "', function (event) {
+                    var feature = " . $this->config['id'] . '.forEachFeatureAtPixel(event.pixel, function (feat, layer) {
                         return feat;
                     });
-                    var layer = " . $this->config['id'] . ".forEachFeatureAtPixel(event.pixel, function (feat, layer) {
+                    var layer = ' . $this->config['id'] . ".forEachFeatureAtPixel(event.pixel, function (feat, layer) {
                         return layer;
                     });
 
@@ -337,7 +337,6 @@ class Openlayers extends BaseProvider
                             popup.setPosition(coordinate);
                         }
                     } else if (feature && feature.get('type') == 'Point') {
-
                         var coordinate = event.coordinate;
 
                         content.innerHTML = feature.get('desc');
@@ -351,8 +350,8 @@ class Openlayers extends BaseProvider
                                 clusterMembers.forEach((feature) =>
                                     ol.extent.extend(extent, feature.getGeometry().getExtent())
                                 );
-                                const view = " . $this->config['id'] . ".getView();
-                                const resolution = " . $this->config['id'] . ".getView().getResolution();
+                                const view = " . $this->config['id'] . '.getView();
+                                const resolution = ' . $this->config['id'] . '.getView().getResolution();
                                 if (
                                     view.getZoom() === view.getMaxZoom() ||
                                     (ol.extent.getWidth(extent) < resolution && ol.extent.getHeight(extent) < resolution)
@@ -370,12 +369,11 @@ class Openlayers extends BaseProvider
                         popup.setPosition(undefined);
                     }
                 });
-            ";
+            ';
         }
 
         // grouped marker layer
         foreach ($this->layers[2] as $group_uid => $group) {
-
             $jsMarker .= $group['layer'];
             $jsMarkerFeatureBatch = [];
             foreach ($group['jsMarkerFeatures'] as $id => $jsMarkerFeature) {
@@ -412,10 +410,14 @@ class Openlayers extends BaseProvider
         }
 
         if (strlen((string) $item['color']) === 7) {
-            $hex = [$item['color'][1] . $item['color'][2], $item['color'][3] . $item['color'][4], $item['color'][5] . $item['color'][6]];
+            $hex = [
+                $item['color'][1] . $item['color'][2],
+                $item['color'][3] . $item['color'][4],
+                $item['color'][5] . $item['color'][6],
+            ];
             $rgb = array_map(hexdec(...), $hex);
             $opacity = '0.2';
-            $item['rgba'] = 'rgba(' . implode(",", $rgb) . ',' . $opacity . ')';
+            $item['rgba'] = 'rgba(' . implode(',', $rgb) . ',' . $opacity . ')';
         }
 
         switch ($table) {
@@ -457,7 +459,7 @@ class Openlayers extends BaseProvider
                             style: ' . $jsElementVar . '_style
                         });' . "\n";
 
-                        $jsMarker .= "overlaygroup.getLayers().push(" . $jsElementVar . "_gpx);";
+                        $jsMarker .= 'overlaygroup.getLayers().push(' . $jsElementVar . '_gpx);';
                         break;
                     case 'gpx':
                         $jsMarker .= 'var ' . $jsElementVar . '_gpx = new ol.layer.Vector({
@@ -470,7 +472,7 @@ class Openlayers extends BaseProvider
                             style: ' . $jsElementVar . '_style
                         });' . "\n";
 
-                        $jsMarker .= "overlaygroup.getLayers().push(" . $jsElementVar . "_gpx);";
+                        $jsMarker .= 'overlaygroup.getLayers().push(' . $jsElementVar . '_gpx);';
                         break;
                 }
 
@@ -510,8 +512,8 @@ class Openlayers extends BaseProvider
                         properties: ' . $jsElementVar . '_file_properties,
                     });' . "\n";
 
-                    $jsMarker .= $jsElementVar . "_file.getSource().setProperties(" . $jsElementVar . "_file_properties);";
-                    $jsMarker .= "overlaygroup.getLayers().push(" . $jsElementVar . "_file);";
+                    $jsMarker .= $jsElementVar . '_file.getSource().setProperties(' . $jsElementVar . '_file_properties);';
+                    $jsMarker .= 'overlaygroup.getLayers().push(' . $jsElementVar . '_file);';
                 }
 
                 // add geojson from data field as well
@@ -534,8 +536,8 @@ class Openlayers extends BaseProvider
                         style: ' . $jsElementVar . '_style
                     });';
 
-                    $jsMarker .= $jsElementVar . "_data.setProperties(" . $jsElementVar . "_data_properties);";
-                    $jsMarker .= "overlaygroup.getLayers().push(" . $jsElementVar . "_data);";
+                    $jsMarker .= $jsElementVar . '_data.setProperties(' . $jsElementVar . '_data_properties);';
+                    $jsMarker .= 'overlaygroup.getLayers().push(' . $jsElementVar . '_data);';
                 }
 
                 break;
@@ -544,7 +546,7 @@ class Openlayers extends BaseProvider
                 $icon = null;
                 if ($item['tx_odsosm_marker'] ?? false) {
                     $marker = $item['tx_odsosm_marker'];
-                    if ($marker['type'] == 'html') {
+                    if ($marker['type'] === 'html') {
                         $markerOptions['icon'] = 'icon: new L.divIcon(' . json_encode($marker['icon']) . ')';
                     } else {
                         $icon = $marker['icon']->getPublicUrl();
@@ -556,16 +558,16 @@ class Openlayers extends BaseProvider
                     $marker['size_y'] = 41;
                 }
 
-                $markerStyle = "const " . $jsElementVar . "_style = new ol.style.Style({
+                $markerStyle = 'const ' . $jsElementVar . "_style = new ol.style.Style({
                     image: new ol.style.Icon({
                         anchor: [0.5, 46],
                         anchorXUnits: 'fraction',
                         anchorYUnits: 'pixels',
                         src: '" . $icon . "',
-                        width: " . (int) $marker['size_x'] . ",
-                        height: " . (int) $marker['size_y'] . "
+                        width: " . (int) $marker['size_x'] . ',
+                        height: ' . (int) $marker['size_y'] . '
                     }),
-                });";
+                });';
 
                 // It's a group of markers
                 if ($item['group_title'] ?? false) {
@@ -599,30 +601,30 @@ class Openlayers extends BaseProvider
                     }
                 ";
 
-                    $jsMarkerFeature = "
+                    $jsMarkerFeature = '
                     new ol.Feature({
-                        geometry: new ol.geom.Point(ol.proj.fromLonLat([" . $item['longitude'] . ", " . $item['latitude'] . "])),
+                        geometry: new ol.geom.Point(ol.proj.fromLonLat([' . $item['longitude'] . ', ' . $item['latitude'] . "])),
                         type: 'Point',
-                        desc: " . json_encode($item['popup']) . ",
-                        style: " . $jsElementVar . "_style
-                    });";
+                        desc: " . json_encode($item['popup']) . ',
+                        style: ' . $jsElementVar . '_style
+                    });';
 
                     $this->layers[2][$item['group_uid']]['jsMarkerFeatures'][] = $jsMarkerFeature;
                 } else {
                     $jsMarker .= $markerStyle;
-                    $jsMarker .= "var " . $jsElementVar . " = new ol.layer.Vector({
-                        title: '<img src=\"" . $icon . "\" class=\"marker-icon\" /> " . Openlayers::escapeEntities($item['group_title'] ?? $item['name']) . "',
+                    $jsMarker .= 'var ' . $jsElementVar . " = new ol.layer.Vector({
+                        title: '<img src=\"" . $icon . '" class="marker-icon" /> ' . $this->escapeEntities($item['group_title'] ?? $item['name']) . "',
                         source: new ol.source.Vector({
                             features: [
                                  new ol.Feature({
-                                    geometry: new ol.geom.Point(ol.proj.fromLonLat([" . $item['longitude'] . ", " . $item['latitude'] . "])),
+                                    geometry: new ol.geom.Point(ol.proj.fromLonLat([" . $item['longitude'] . ', ' . $item['latitude'] . "])),
                                     type: 'Point',
-                                    desc: " . json_encode($item['popup']) . "
+                                    desc: " . json_encode($item['popup']) . '
                                 })
                                 ]
                             }),
-                            style: " . $jsElementVar . "_style
-                        });";
+                            style: ' . $jsElementVar . '_style
+                        });';
 
                     $jsMarker .= 'overlaygroup.getLayers().push(' . $jsElementVar . ');' . "\n";
                 }
@@ -641,7 +643,7 @@ class Openlayers extends BaseProvider
      * @return string
      *              Text with HTML entities for ' and " characters.
      */
-    private static function escapeEntities(string $text): string
+    private function escapeEntities(string $text): string
     {
         $escaped = str_replace("'", "&apos;", $text);
         return str_replace('"', "&quot;", $escaped);

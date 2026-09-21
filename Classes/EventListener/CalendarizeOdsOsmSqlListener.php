@@ -25,7 +25,7 @@ class CalendarizeOdsOsmSqlListener
         $sql = [];
         foreach (Register::getRegister() as $configuration) {
             if ($configuration['tableName'] == 'tx_calendarize_domain_model_event') {
-                $sql[] = "CREATE TABLE " . $configuration['tableName'] . " (
+                $sql[] = 'CREATE TABLE ' . $configuration['tableName'] . " (
                     tx_odsosm_lon decimal(9,6) NOT NULL DEFAULT '0.000000',
                     tx_odsosm_lat decimal(8,6) NOT NULL DEFAULT '0.000000',
                 );";

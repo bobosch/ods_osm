@@ -27,4 +27,9 @@ ExtensionManagementUtility::addPiFlexFormValue(
     'ods_osm_pi1'
 );
 
-ExtensionManagementUtility::addToAllTCAtypes('tt_content', '--div--;Configuration,pi_flexform,', 'ods_osm_pi1', 'after:subheader');
+ExtensionManagementUtility::addToAllTCAtypes(
+    'tt_content',
+    '--div--;Configuration,pi_flexform,',
+    'ods_osm_pi1',
+    'after:subheader'
+);

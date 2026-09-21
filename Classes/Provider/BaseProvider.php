@@ -101,7 +101,7 @@ abstract class BaseProvider
             }
         }
 
-        return implode("\n", ($jsBaseLayer));
+        return implode("\n", $jsBaseLayer);
     }
 
     public function getOverlayLayers($layers, string $backPath = ''): string
@@ -148,7 +148,7 @@ abstract class BaseProvider
             }
 
             $popupCode = '
-                <div id="popup" class="ol-popup">
+            <div id="popup" class="ol-popup">
                 <a href="#" id="popup-closer" class="ol-popup-closer"></a>
                 <div id="popup-content"></div>
             </div>';
