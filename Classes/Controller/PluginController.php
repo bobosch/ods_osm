@@ -91,7 +91,7 @@ class PluginController
         $this->init($conf);
 
         if ($this->config['marker'] || $this->config['no_marker']) {
-            return $this->getMap();
+            $content = $this->getMap();
         }
 
         return $this->wrapInBaseClass($content);
