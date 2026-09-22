@@ -93,7 +93,7 @@ class PluginController
         return $this->wrapInBaseClass($content);
     }
 
-    public function init(array $conf): void
+    protected function init(array $conf): void
     {
         $this->initializeFlexFormOfPlugin(); // Init FlexForm configuration for plugin
 
@@ -154,7 +154,7 @@ class PluginController
                         break;
                     case 'marker':
                     case 'marker_popup_initial':
-                        $flex[$option] = $this->splitGroup($value, 'tt_address');
+                        $flex[$option] = $this->splitGroup($value ?? '', 'tt_address');
                         break;
                     default:
                         $flex[$option] = $value;
@@ -223,7 +223,7 @@ class PluginController
             }
 
             if ($this->getServerRequest()->getParsedBody()['records'] ?? $this->getServerRequest()->getQueryParams()['records'] ?? null) {
-                $this->config['marker'] = $this->splitGroup($this->getServerRequest()->getParsedBody()['records'] ?? $this->getServerRequest()->getQueryParams()['records'] ?? null, 'tt_address');
+                $this->config['marker'] = $this->splitGroup($this->getServerRequest()->getParsedBody()['records'] ?? $this->getServerRequest()->getQueryParams()['records'] ?? '', 'tt_address');
             }
         }
 
@@ -295,7 +295,7 @@ class PluginController
      * @param string $value Value pointer, eg. "vDEF
      * @return string|null The content.
      */
-    protected function getValueFromFlexForm(array $flexFormData, $fieldName, $sheet = 'sDEF', $lang = 'lDEF', $value = 'vDEF')
+    protected function getValueFromFlexForm(array $flexFormData, string $fieldName, string $sheet = 'sDEF', string $lang = 'lDEF', string $value = 'vDEF'): ?string
     {
         $sheetArray = $flexFormData['data'][$sheet][$lang] ?? '';
         if (is_array($sheetArray)) {
@@ -315,7 +315,7 @@ class PluginController
      * @internal
      * @see getValueFromFlexForm()
      */
-    protected function getValueFromFlexFormSheetArray($sheetArray, $fieldNameArr, $value)
+    protected function getValueFromFlexFormSheetArray(array $sheetArray, array $fieldNameArr, string $value): mixed
     {
         $tempArr = $sheetArray;
         foreach ($fieldNameArr as $v) {
@@ -339,9 +339,9 @@ class PluginController
         return $tempArr[$value] ?? '';
     }
 
-    protected function splitGroup($group, $default = ''): array
+    protected function splitGroup(string $group, string $default = ''): array
     {
-        $groups = explode(',', (string) $group);
+        $groups = explode(',', $group);
         $recordIds = [];
         foreach ($groups as $tempGroup) {
             $item = GeneralUtility::revExplode('_', $tempGroup, 2);

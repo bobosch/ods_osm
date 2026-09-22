@@ -14,9 +14,9 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 class TceMain
 {
-    public array $lon = [];
+    protected array $lon = [];
 
-    public array $lat = [];
+    protected array $lat = [];
 
     /**
      * Generate a different preview link
