@@ -27,7 +27,6 @@ declare(strict_types=1);
 
 namespace Bobosch\OdsOsm\Provider;
 
-use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Resource\FileRepository;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
@@ -40,12 +39,11 @@ class Openlayers extends BaseProvider
         $localOL = 'EXT:ods_osm/Resources/Public/OpenLayers/';
         $remoteOL = 'https://cdn.jsdelivr.net/npm/ol@v8.1.0/';
         $remoteLS = 'https://unpkg.com/ol-layerswitcher@4.1.1/';
-        $pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
 
         if ($this->config['local_js']) {
-            $pageRenderer->addCssFile($localOL . 'ol.css');
+            $this->pageRenderer->addCssFile($localOL . 'ol.css');
         } else {
-            $pageRenderer->addCssFile($remoteOL . 'ol.css');
+            $this->pageRenderer->addCssFile($remoteOL . 'ol.css');
         }
 
         $this->scripts['OpenLayers'] = [
@@ -57,12 +55,12 @@ class Openlayers extends BaseProvider
 
         if ($this->config['show_layerswitcher']) {
             if ($this->config['local_js']) {
-                $pageRenderer->addCssFile($localOL . 'Contrib/ol-layerswitcher/ol-layerswitcher.css');
+                $this->pageRenderer->addCssFile($localOL . 'Contrib/ol-layerswitcher/ol-layerswitcher.css');
             } else {
-                $pageRenderer->addCssFile($remoteLS . 'dist/ol-layerswitcher.css');
+                $this->pageRenderer->addCssFile($remoteLS . 'dist/ol-layerswitcher.css');
             }
 
-            $pageRenderer->addCssFile($localOL . 'Custom/ol-layerswitcher.css');
+            $this->pageRenderer->addCssFile($localOL . 'Custom/ol-layerswitcher.css');
 
             $this->scripts['OpenLayersSwitch'] = [
                 'src' => $this->config['local_js']
