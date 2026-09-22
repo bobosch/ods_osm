@@ -69,12 +69,12 @@ abstract class BaseProvider
         $baseLayers = $layers[0] ?? null;
         $overlays = $layers[1] ?? null;
 
-        $this->script = "
-			" . $this->getMapMain() . "
-			" . $this->getBaseLayers($baseLayers) . "
-		    " . $this->getOverlayLayers($overlays) . "
-			" . $this->getMapCenter($lat, $lon, $zoom) . "
-			" . $this->getMarkers($markers);
+        $this->script = '
+			' . $this->getMapMain() . '
+			' . $this->getBaseLayers($baseLayers) . '
+		    ' . $this->getOverlayLayers($overlays) . '
+			' . $this->getMapCenter($lat, $lon, $zoom) . '
+			' . $this->getMarkers($markers);
 
         if (($this->config['show_layerswitcher'] ?? null) && ($this->config['show_layerswitcher'] > 0)) {
             $this->script .= $this->getLayerSwitcher() . "\n";

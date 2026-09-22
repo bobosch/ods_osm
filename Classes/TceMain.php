@@ -198,7 +198,7 @@ class TceMain
                                 ->setMaxResults(1)
                                 ->executeQuery();
 
-                            if (($row = $result->fetchAssociative()) && ($row['properties_from_file'] && $properties !== [])) {
+                            if (($row = $result->fetchAssociative()) && $row['properties_from_file']) {
                                 $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
                                     ->getQueryBuilderForTable($table);
                                 $queryBuilder

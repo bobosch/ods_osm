@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-/***************************************************************
+/*
  *  Copyright notice
  *
  *  (c) 2022 Alexander Bigga <alexander@bigga.de>
@@ -23,13 +23,14 @@ declare(strict_types=1);
  *  GNU General Public License for more details.
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
- ***************************************************************/
+ */
 
 namespace Bobosch\OdsOsm\Provider;
 
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Resource\FileRepository;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 
 class Openlayers extends BaseProvider
@@ -250,8 +251,6 @@ class Openlayers extends BaseProvider
     }
 
     /**
-     * Get the layer switcher
-     *
      * @return string The JavaScript to add the layerswitcher
      */
     protected function getLayerSwitcher(): string
@@ -553,7 +552,7 @@ class Openlayers extends BaseProvider
                         $markerOptions['icon'] = 'icon: new L.Icon(' . json_encode($icon) . ')';
                     }
                 } else {
-                    $icon = \TYPO3\CMS\Core\Utility\PathUtility::getPublicResourceWebPath('EXT:ods_osm/Resources/Public/Icons/marker-icon.png');
+                    $icon = PathUtility::getPublicResourceWebPath('EXT:ods_osm/Resources/Public/Icons/marker-icon.png');
                     $marker['size_x'] = 25;
                     $marker['size_y'] = 41;
                 }
@@ -573,41 +572,41 @@ class Openlayers extends BaseProvider
                 if ($item['group_title'] ?? false) {
                     $jsMarker .= $markerStyle;
 
-                    $group_title = ($marker['type'] == 'html' ? $icon : "<img class='marker-icon' src='" . $icon . "' />") . ' ' . $item['group_title'];
-                    $jsMarkerGroup = "
-                    var " . $item['group_uid'] . " = new ol.layer.Vector({
-                        title: \"" . $group_title . "\",
-                        source: new ol.source.Vector({
-                            features: []
-                        }),
-                        style: " . $jsElementVar . "_style
-                    });";
+                    $group_title = ($marker['type'] === 'html' ? $icon : "<img class='marker-icon' src='" . $icon . "' />") . ' ' . $item['group_title'];
+                    $jsMarkerGroup = '
+                        var ' . $item['group_uid'] . ' = new ol.layer.Vector({
+                            title: "' . $group_title . '",
+                            source: new ol.source.Vector({
+                                features: []
+                            }),
+                            style: ' . $jsElementVar . '_style
+                        });';
 
                     $this->layers[2][$item['group_uid']]['layer'] = $jsMarkerGroup;
 
                     $popupJsCode = "
-                    function (layer) {
-                        var osm_popup = '" . ($item['popup'] ?? '') . "';
+                        function (layer) {
+                            var osm_popup = '" . ($item['popup'] ?? '') . "';
 
-                        var feature = layer.feature,
-                        props = feature.properties,
-                        ll = Object.keys(props),
-                        attribute, value = '';
+                            var feature = layer.feature,
+                            props = feature.properties,
+                            ll = Object.keys(props),
+                            attribute, value = '';
 
-                        for (attribute in props) {
-                            value += '<strong>' + attribute + '</strong>: ' + props[attribute] + '<br />';
+                            for (attribute in props) {
+                                value += '<strong>' + attribute + '</strong>: ' + props[attribute] + '<br />';
+                            }
+                            return osm_popup + value;
                         }
-                        return osm_popup + value;
-                    }
-                ";
+                    ";
 
                     $jsMarkerFeature = '
-                    new ol.Feature({
-                        geometry: new ol.geom.Point(ol.proj.fromLonLat([' . $item['longitude'] . ', ' . $item['latitude'] . "])),
-                        type: 'Point',
-                        desc: " . json_encode($item['popup']) . ',
-                        style: ' . $jsElementVar . '_style
-                    });';
+                        new ol.Feature({
+                            geometry: new ol.geom.Point(ol.proj.fromLonLat([' . $item['longitude'] . ', ' . $item['latitude'] . "])),
+                            type: 'Point',
+                            desc: " . json_encode($item['popup']) . ',
+                            style: ' . $jsElementVar . '_style
+                        });';
 
                     $this->layers[2][$item['group_uid']]['jsMarkerFeatures'][] = $jsMarkerFeature;
                 } else {

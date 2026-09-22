@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-/***************************************************************
+/*
  *  Copyright notice
  *
  *  (c) 2020 Alexander Bigga <alexander@bigga.de>
@@ -23,7 +23,7 @@ declare(strict_types=1);
  *  GNU General Public License for more details.
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
- ***************************************************************/
+ */
 
 namespace Bobosch\OdsOsm\Updates;
 
@@ -97,9 +97,6 @@ class FileLocationUpdater implements UpgradeWizardInterface, ChattyInterface, Lo
         return 'EXT:ods_osm: Migrate used files to FAL';
     }
 
-    /**
-     * Get description
-     */
     public function getDescription(): string
     {
         return 'Move marker images and track files of EXT:ods_osm to fileadmin/_migrated/tx_odsosm/ and convert reference in records.';
@@ -133,8 +130,6 @@ class FileLocationUpdater implements UpgradeWizardInterface, ChattyInterface, Lo
     }
 
     /**
-     * Execute the update
-     *
      * Called when a wizard reports that an update is necessary
      */
     public function executeUpdate(): bool
