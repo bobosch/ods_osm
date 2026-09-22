@@ -471,7 +471,7 @@ class PluginController
                             // set uid
                             $constraints[] = $queryBuilder->expr()->eq($local . '.uid', $queryBuilder->createNamedParameter($item, Connection::PARAM_INT));
 
-                            $rows = $queryBuilder
+                            $result = $queryBuilder
                                 ->select($foreign . '.*')
                                 ->from($foreign)
                                 ->join(
@@ -487,10 +487,9 @@ class PluginController
                                     $queryBuilder->expr()->eq($local . '.uid', $queryBuilder->quoteIdentifier($mm . '.uid_local'))
                                 )
                                 ->where(...$constraints)
-                                ->executeQuery()
-                                ->fetchAllAssociative();
+                                ->executeQuery();
 
-                            foreach ($rows as $r) {
+                            while ($r = $result->fetchAssociative()) {
                                 $records[$t][$r['uid']] = $r;
                                 $records[$t][$r['uid']]['group_uid'] = $table . '_' . $row['uid'];
                                 $records[$t][$r['uid']]['group_title'] = $row['title'];
