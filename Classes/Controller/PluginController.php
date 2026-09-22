@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-/***************************************************************
+/*
  *  Copyright notice
  *
  *  (c) 2010 Robert Heel <typo3@bobosch.de>
@@ -23,7 +23,7 @@ declare(strict_types=1);
  *  GNU General Public License for more details.
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
- ***************************************************************/
+ */
 
 namespace Bobosch\OdsOsm\Controller;
 
@@ -42,10 +42,6 @@ use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 
 /**
  * Plugin 'OpenStreetMap' for the 'ods_osm' extension.
- *
- * @author    Robert Heel <typo3@bobosch.de>
- * @package    TYPO3
- * @subpackage    tx_odsosm
  */
 class PluginController
 {
@@ -365,7 +361,7 @@ class PluginController
 
         // if no markers are set, select current page to find records on it
         if ($recordIds === []) {
-            //@extensionScannerIgnoreLine
+            // @extensionScannerIgnoreLine
             $recordIds['pages'] = [$this->getServerRequest()->getAttribute('frontend.page.information')->getId()];
         }
 
@@ -378,7 +374,8 @@ class PluginController
 
                     $result = $queryBuilder
                         ->select($table . '.uid')
-                        ->from($table)->where($queryBuilder->expr()->in(
+                        ->from($table)
+                        ->where($queryBuilder->expr()->in(
                             $table . '.pid',
                             $queryBuilder->createNamedParameter(
                                 $recordIds['pages'],
@@ -424,7 +421,9 @@ class PluginController
                             $table . '.uid',
                             $queryBuilder->createNamedParameter($item, Connection::PARAM_INT)
                         )
-                    )->setMaxResults(1)->executeQuery();
+                    )
+                    ->setMaxResults(1)
+                    ->executeQuery();
 
                 if ($row = $result->fetchAssociative()) {
                     // Group with relation to a field
@@ -562,7 +561,7 @@ class PluginController
         return $records;
     }
 
-    public function getMap(): string
+    protected function getMap(): string
     {
         /* ==================================================
         Marker
@@ -749,7 +748,7 @@ class PluginController
      * @param string $str HTML content to wrap in the div-tags with the "main class" of the plugin
      * @return string HTML content wrapped, ready to return to the parent object.
      */
-    public function wrapInBaseClass(string $str): string
+    protected function wrapInBaseClass(string $str): string
     {
         return '<div class="' . str_replace('_', '-', $this->prefixId) . '">' . $str . '</div>';
     }

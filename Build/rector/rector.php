@@ -32,7 +32,10 @@ return static function (RectorConfig $rectorConfig): void {
 
     $rectorConfig->phpVersion(PhpVersion::PHP_81);
 
-    $rectorConfig->rule(InlineConstructorDefaultToPropertyRector::class);
+    $rectorConfig->rules([
+        InlineConstructorDefaultToPropertyRector::class,
+        ConvertImplicitVariablesToExplicitGlobalsRector::class,
+    ]);
     $rectorConfig->ruleWithConfiguration(
         ExtEmConfRector::class,
         [
@@ -41,13 +44,18 @@ return static function (RectorConfig $rectorConfig): void {
             ExtEmConfRector::ADDITIONAL_VALUES_TO_BE_REMOVED => [],
         ]
     );
-    $rectorConfig->rule(ConvertImplicitVariablesToExplicitGlobalsRector::class);
 
     $rectorConfig->phpstanConfig(Typo3Option::PHPSTAN_FOR_RECTOR_PATH);
     $rectorConfig->phpstanConfig(__DIR__ . '/../phpstan/phpstan.neon');
+    $rectorConfig->importNames();
+    $rectorConfig->importShortClasses(false);
 
     $rectorConfig->skip([
         // makes double-quoted strings, we don't want this at the moment.
         \Rector\CodingStyle\Rector\String_\SimplifyQuoteEscapeRector::class,
+
+        \Rector\TypeDeclaration\Rector\StmtsAwareInterface\SafeDeclareStrictTypesRector::class => [
+            __DIR__ . '/../../ext_emconf.php',
+        ],
     ]);
 };

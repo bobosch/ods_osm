@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-/***************************************************************
+/*
  *  Copyright notice
  *
  *  (c) 2023 Alexander Bigga <alexander@bigga.de>
@@ -23,7 +23,7 @@ declare(strict_types=1);
  *  GNU General Public License for more details.
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
- ***************************************************************/
+ */
 
 namespace Bobosch\OdsOsm\Backend\FormDataProvider;
 
