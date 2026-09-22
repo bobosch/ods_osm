@@ -13,7 +13,7 @@ use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 abstract class BaseProvider
 {
     // Must set from instantiating class
-    public ContentObjectRenderer $cObj;
+    protected ContentObjectRenderer $cObj;
 
     protected PageRenderer $pageRenderer;
 
