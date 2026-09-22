@@ -273,7 +273,7 @@ class PluginController
 
         $this->library = GeneralUtility::makeInstance('Bobosch\\OdsOsm\\Provider\\' . GeneralUtility::underscoredToUpperCamelCase($this->config['library']));
         $this->library->init($this->config);
-        $this->library->cObj = $this->contentObjectRenderer;
+        $this->library->setContentObjectRenderer($this->contentObjectRenderer);
     }
 
     protected function initializeFlexFormOfPlugin(): void
