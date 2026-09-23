@@ -44,6 +44,10 @@ jobs:
         run: |
           composer run test:phpstan
 
+      - name: Run code style checks
+        run: |
+          composer run test:ecs
+
       - name: Run rector checks
         run: |
           composer run test:rector

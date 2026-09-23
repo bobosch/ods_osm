@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-/***************************************************************
+/*
  *  Copyright notice
  *
  *  (c) 2022 Alexander Bigga <alexander@bigga.de>
@@ -23,13 +23,12 @@ declare(strict_types=1);
  *  GNU General Public License for more details.
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
- ***************************************************************/
+ */
 
 namespace Bobosch\OdsOsm\Updates;
 
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Install\Attribute\UpgradeWizard;
 use TYPO3\CMS\Install\Updates\DatabaseUpdatedPrerequisite;
@@ -68,8 +67,6 @@ class MigrateSettings implements UpgradeWizardInterface
     }
 
     /**
-     * Execute the update
-     *
      * Called when a wizard reports that an update is necessary
      */
     public function executeUpdate(): bool

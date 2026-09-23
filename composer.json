@@ -106,7 +106,7 @@
 		],
 		"test:rector": [
 			"[ -e .Build/bin/rector ] || composer update",
-			".Build/bin/rector process --dry-run -c Build/rector/rector.php"
+			".Build/bin/rector process --dry-run -c Build/rector/rector.php --ansi"
 		]
 	}
 }

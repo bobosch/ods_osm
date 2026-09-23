@@ -7,8 +7,10 @@ use PhpCsFixer\Fixer\CastNotation\CastSpacesFixer;
 use PhpCsFixer\Fixer\Import\NoUnusedImportsFixer;
 use PhpCsFixer\Fixer\Operator\OperatorLinebreakFixer;
 use PhpCsFixer\Fixer\Strict\DeclareStrictTypesFixer;
+use PhpCsFixer\Fixer\Whitespace\MethodChainingIndentationFixer;
 use Symplify\CodingStandard\Fixer\ArrayNotation\ArrayOpenerAndCloserNewlineFixer;
 use Symplify\CodingStandard\Fixer\ArrayNotation\StandaloneLineInMultilineArrayFixer;
+use Symplify\CodingStandard\Fixer\Spacing\MethodChainingNewlineFixer;
 use Symplify\EasyCodingStandard\Config\ECSConfig;
 
 return ECSConfig::configure()
@@ -16,7 +18,6 @@ return ECSConfig::configure()
         __DIR__ . '/../../Build',
         __DIR__ . '/../../Classes',
         __DIR__ . '/../../Configuration',
-        __DIR__ . '/../../config',
     ])
     // include *.php files in the root directory
     ->withRootFiles()
@@ -35,7 +36,14 @@ return ECSConfig::configure()
         NoUnusedImportsFixer::class,
         ArraySyntaxFixer::class,
         StandaloneLineInMultilineArrayFixer::class,
-        ArrayOpenerAndCloserNewlineFixer::class,
         DeclareStrictTypesFixer::class,
         OperatorLinebreakFixer::class,
+    ])
+    ->withSkip([
+        DeclareStrictTypesFixer::class => [
+            __DIR__ . '/../../ext_emconf.php',
+        ],
+        MethodChainingIndentationFixer::class,
+        MethodChainingNewlineFixer::class,
+        ArrayOpenerAndCloserNewlineFixer::class,
     ]);

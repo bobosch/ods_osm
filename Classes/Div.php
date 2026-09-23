@@ -4,17 +4,18 @@ declare(strict_types=1);
 
 namespace Bobosch\OdsOsm;
 
+use Psr\Log\LoggerInterface;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Database\Query\Restriction\FrontendRestrictionContainer;
 use TYPO3\CMS\Core\Http\RequestFactory;
-use TYPO3\CMS\Core\Log\Logger;
 use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Page\PageRenderer;
+use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
@@ -97,7 +98,7 @@ class Div
      *
      * @param array $address Address record from database
      *
-     * @return boolean True if the address got updated, false if not.
+     * @return bool True if the address got updated, false if not.
      *
      * @uses searchAddress()
      */
@@ -132,12 +133,12 @@ class Div
      * Data lat, lon, zip and city may get updated.
      *
      * @param array $address Address record from database
-     * @param integer $service Geocoding service to use
+     * @param int $service Geocoding service to use
      *                          - 0: internal caching database table
      *                          - 1: geonames.org
      *                          - 2: nominatim.openstreetmap.org
      *
-     * @return boolean True if the address got updated, false if not.
+     * @return bool True if the address got updated, false if not.
      */
     public static function searchAddress(array &$address, int $service = 0)
     {
@@ -261,7 +262,7 @@ class Div
                         self::flashMessage(
                             (string) $result['status']['message'],
                             'GeoNames message',
-                            \TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::WARNING
+                            ContextualFeedbackSeverity::WARNING
                         );
                     }
 
@@ -359,7 +360,7 @@ class Div
      * @param array $query The query sent to the nominatim API
      * @param array $address Address record from database
      *
-     * @return boolean True if the address was found and got updated.
+     * @return bool True if the address was found and got updated.
      */
     protected static function searchAddressNominatim($query, array &$address)
     {
@@ -600,10 +601,7 @@ class Div
         return $table ? ($tables[$table] ?? []) : $tables;
     }
 
-    /**
-     * @return Logger
-     */
-    protected static function getLogger(): \Psr\Log\LoggerInterface
+    protected static function getLogger(): LoggerInterface
     {
         /** @var LogManager $loggerManager */
         $loggerManager = GeneralUtility::makeInstance(LogManager::class);
