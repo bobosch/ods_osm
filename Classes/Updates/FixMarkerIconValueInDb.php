@@ -90,11 +90,7 @@ class FixMarkerIconValueInDb implements UpgradeWizardInterface
             ->executeStatement();
 
         // exit with false if at least one update statement is not successful
-        if (! ((bool) $updateResult)) {
-            return false;
-        }
-
-        return true;
+        return (bool) $updateResult;
     }
 
     /**
@@ -141,7 +137,7 @@ class FixMarkerIconValueInDb implements UpgradeWizardInterface
             )->setMaxResults(1)
             ->executeQuery()
         ->fetchAssociative() ?: [];
-        return $row ? true : false;
+        return (bool) $row;
     }
 
     /**
