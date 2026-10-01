@@ -1,3 +1,10 @@
+2026-10-01 Release 4.3.1
+	* Bugfix: Fix apostrophe and quotation marks breaking JavaScript code
+	* Bugfix: Fix marker icon path calculation
+	* Bugfix: Correct type of icon filed in tx_odsosm_marker and add upgrade wizard to convert icon field
+	* Bugfix: Wrap map in base class
+	* Code cleanup
+
 2025-08-15 Alexander Bigga <alexander@bigga.de>
 	* Remove support for TYPO3 11.5, support for 13.4 LTS (Thanks to Hannes Bochmann)
 	* Breaking change: run update wizard for plugin migration.
