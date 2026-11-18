@@ -24,6 +24,10 @@ class Div
 {
     public const RESOURCE_BASE_PATH = 'EXT:ods_osm/Resources/Public/';
 
+    // 2 is default in ext_conf_template.txt
+    private const GEO_SERVICE_USE_NOMINATIM = 2;
+    private const GEO_SERVICE_DEFAULT = self::GEO_SERVICE_USE_NOMINATIM;
+
     public static function getConstraintsForQueryBuilder(
         $table,
         ContentObjectRenderer $cObj,
@@ -116,7 +120,7 @@ class Div
 
         if (! $ll) {
             $search = $address;
-            $ll = self::searchAddress($address, $config['geo_service']);
+            $ll = self::searchAddress($address, (int)($config['geo_service'] ?? self::GEO_SERVICE_DEFAULT));
             // Update cache when enabled or needed for statistic
             if ($ll && $config['cache_enabled']) {
                 self::updateCache($address, $search);
