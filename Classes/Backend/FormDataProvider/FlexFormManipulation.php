@@ -51,6 +51,7 @@ class FlexFormManipulation implements FormDataProviderInterface
     {
         if ($result['tableName'] === 'tt_content'
             && $result['databaseRow']['CType'] === 'ods_osm_pi1'
+            && isset($result['processedTca']['columns']['pi_flexform']['config']['ds'])
             && is_array($result['processedTca']['columns']['pi_flexform']['config']['ds'])
         ) {
             // get flexform data structure
